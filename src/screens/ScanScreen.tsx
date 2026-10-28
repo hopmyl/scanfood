@@ -28,6 +28,10 @@ import { cn, pluralRu } from '../lib/utils';
 type Phase = 'idle' | 'scanning' | 'result' | 'paywall';
 type ScanMode = 'products' | 'barcode';
 type CamState = 'starting' | 'on' | 'denied';
+/** Ступень зума как в системной камере: 1x / 2x / 3x */
+type ZoomLevel = 1 | 2 | 3;
+/** Доля диапазона нативного зума для каждой ступени (0 = мин. зум = 1x) */
+const ZOOM_RANGE: Record<ZoomLevel, number> = { 1: 0, 2: 0.45, 3: 0.8 };
 /** Причина неудачи распознавания: null — нет ошибки */
 type ScanFail = null | 'generic' | 'noprovider';
 type ProductState =
@@ -71,16 +75,25 @@ function dedupe(list: string[]): string[] {
   return [...new Set(list.filter(Boolean))];
 }
 
-/** Снимок кадра видео в JPEG-датаURL с уменьшением до 1024px */
-function frameToDataUrl(video: HTMLVideoElement): string | null {
+/**
+ * Снимок кадра видео в JPEG-датаURL с уменьшением до 1024px.
+ * digitalZoom — цифровой зум (CSS fallback): кадр кропается по центру,
+ * чтобы снимок совпадал с тем, что видит пользователь.
+ */
+function frameToDataUrl(video: HTMLVideoElement, digitalZoom: number): string | null {
   if (!video.videoWidth || !video.videoHeight) return null;
+  const zoom = Math.max(1, digitalZoom);
+  const sw = video.videoWidth / zoom;
+  const sh = video.videoHeight / zoom;
+  const sx = (video.videoWidth - sw) / 2;
+  const sy = (video.videoHeight - sh) / 2;
   const canvas = document.createElement('canvas');
-  const scale = Math.min(1, 1024 / Math.max(video.videoWidth, video.videoHeight));
-  canvas.width = Math.round(video.videoWidth * scale);
-  canvas.height = Math.round(video.videoHeight * scale);
+  const scale = Math.min(1, 1024 / Math.max(sw, sh));
+  canvas.width = Math.round(sw * scale);
+  canvas.height = Math.round(sh * scale);
   const ctx = canvas.getContext('2d');
   if (!ctx) return null;
-  ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+  ctx.drawImage(video, sx, sy, sw, sh, 0, 0, canvas.width, canvas.height);
   return canvas.toDataURL('image/jpeg', 0.82);
 }
 
@@ -138,6 +151,36 @@ export default function ScanScreen() {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const zxingRef = useRef<IScannerControls | null>(null);
 
+  // --- зум камеры ---
+  const [zoomLevel, setZoomLevel] = useState<ZoomLevel>(1);
+  /** Цифровой зум (CSS scale) — только когда нативный track.zoom недоступен */
+  const [cssZoom, setCssZoom] = useState(1);
+  const cssZoomRef = useRef(1);
+  const trackRef = useRef<MediaStreamTrack | null>(null);
+  const nativeZoomRef = useRef<{ min: number; max: number } | null>(null);
+
+  /** Переключение зума: сначала пробуем нативный зум объектива, иначе CSS-кроп */
+  const applyZoom = async (level: ZoomLevel) => {
+    setZoomLevel(level);
+    const caps = nativeZoomRef.current;
+    const track = trackRef.current;
+    if (caps && track) {
+      const target = caps.min + (caps.max - caps.min) * ZOOM_RANGE[level];
+      try {
+        await track.applyConstraints(
+          { advanced: [{ zoom: target }] } as unknown as MediaTrackConstraints,
+        );
+        cssZoomRef.current = 1;
+        setCssZoom(1);
+        return;
+      } catch {
+        /* нативный зум не применился — уходим в цифровой */
+      }
+    }
+    cssZoomRef.current = level;
+    setCssZoom(level);
+  };
+
   // ================= Камера (продукты) =================
   useEffect(() => {
     if (mode !== 'products') return;
@@ -159,6 +202,33 @@ export default function ScanScreen() {
           videoRef.current.srcObject = stream;
           await videoRef.current.play().catch(() => undefined);
         }
+
+        // Сброс дефолтного зума (часть телефонов стартует на 3-4x телеобъективе)
+        // и запоминание диапазона нативного зума для ступеней 1x/2x/3x
+        const track = stream.getVideoTracks()[0] ?? null;
+        trackRef.current = track;
+        nativeZoomRef.current = null;
+        if (track && typeof track.getCapabilities === 'function') {
+          const caps = track.getCapabilities() as unknown as {
+            zoom?: { min?: number; max?: number };
+          };
+          if (
+            caps.zoom &&
+            typeof caps.zoom.min === 'number' &&
+            typeof caps.zoom.max === 'number' &&
+            caps.zoom.max > caps.zoom.min
+          ) {
+            nativeZoomRef.current = { min: caps.zoom.min, max: caps.zoom.max };
+            try {
+              await track.applyConstraints(
+                { advanced: [{ zoom: caps.zoom.min }] } as unknown as MediaTrackConstraints,
+              );
+            } catch {
+              /* игнорируем — остаётся цифровой зум */
+            }
+          }
+        }
+
         setCamState('on');
       } catch {
         if (!cancelled) setCamState('denied');
@@ -167,6 +237,11 @@ export default function ScanScreen() {
 
     return () => {
       cancelled = true;
+      trackRef.current = null;
+      nativeZoomRef.current = null;
+      cssZoomRef.current = 1;
+      setZoomLevel(1);
+      setCssZoom(1);
       stream?.getTracks().forEach((t) => t.stop());
     };
   }, [mode]);
@@ -248,7 +323,9 @@ export default function ScanScreen() {
   };
 
   const capture = () => {
-    const dataUrl = videoRef.current ? frameToDataUrl(videoRef.current) : null;
+    const dataUrl = videoRef.current
+      ? frameToDataUrl(videoRef.current, cssZoomRef.current)
+      : null;
     if (!dataUrl) return;
     void runRecognition(dataUrl);
   };
@@ -490,16 +567,74 @@ export default function ScanScreen() {
                   camState === 'on' ? 'bg-stone-900' : 'border-2 border-dashed border-accent/40 bg-card',
                 )}
               >
-                {/* Живое видео */}
+                {/* Живое видео (CSS-цифровой зум, если нативный недоступен) */}
                 <video
                   ref={videoRef}
                   playsInline
                   muted
+                  style={{
+                    transform: `scale(${cssZoom})`,
+                    transition: 'transform 250ms ease',
+                  }}
                   className={cn(
                     'absolute inset-0 h-full w-full object-cover',
                     camState === 'on' ? 'block' : 'hidden',
                   )}
                 />
+
+                {/* Ступени зума как в системной камере */}
+                {camState === 'on' && phase !== 'scanning' && (
+                  <div className="absolute bottom-24 left-1/2 z-10 flex -translate-x-1/2 items-center gap-1 rounded-full bg-black/40 p-1 backdrop-blur-sm">
+                    {([1, 2, 3] as const).map((level) => (
+                      <button
+                        key={level}
+                        type="button"
+                        onClick={() => void applyZoom(level)}
+                        aria-label={`Зум ${level}x`}
+                        className={cn(
+                          'flex h-9 w-9 items-center justify-center rounded-full text-xs font-bold transition-colors',
+                          zoomLevel === level
+                            ? 'bg-white text-stone-900'
+                            : 'text-white/85 hover:text-white',
+                        )}
+                      >
+                        {level}×
+                      </button>
+                    ))}
+                  </div>
+                )}
+
+                {/* Панель съёмки внутри видоискателя — затвор всегда виден */}
+                {camState === 'on' && phase !== 'scanning' && (
+                  <div className="absolute bottom-4 left-0 right-0 z-10 flex items-center justify-center gap-6">
+                    <button
+                      type="button"
+                      onClick={() => fileInputRef.current?.click()}
+                      aria-label="Загрузить фото из галереи"
+                      className="flex h-12 w-12 items-center justify-center rounded-full bg-white/15 text-white backdrop-blur-sm transition-colors hover:bg-white/25"
+                    >
+                      <ImagePlus size={20} />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={capture}
+                      aria-label="Сделать снимок"
+                      className="flex h-[72px] w-[72px] items-center justify-center rounded-full border-[3px] border-white/90 bg-white/10 transition-transform active:scale-90 disabled:opacity-60"
+                    >
+                      <span className="flex h-[56px] w-[56px] items-center justify-center rounded-full bg-accent text-on-accent shadow-lg shadow-black/30">
+                        <Camera size={26} />
+                      </span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={demoScan}
+                      className="flex h-12 items-center gap-1.5 rounded-full bg-white/15 px-4 text-xs font-semibold text-white backdrop-blur-sm transition-colors hover:bg-white/25"
+                    >
+                      <RefreshCw size={14} />
+                      Демо
+                    </button>
+                  </div>
+                )}
 
                 {/* Рамка видоискателя */}
                 {camState === 'on' && phase !== 'scanning' && (
@@ -557,36 +692,7 @@ export default function ScanScreen() {
                 )}
               </div>
 
-              {/* Кнопки съёмки */}
-              {camState === 'on' ? (
-                <div className="mt-4 flex items-center justify-center gap-4">
-                  <button
-                    type="button"
-                    onClick={() => fileInputRef.current?.click()}
-                    aria-label="Загрузить фото из галереи"
-                    className="flex h-11 w-11 items-center justify-center rounded-full border border-line bg-card text-ink-2 transition-colors hover:text-ink"
-                  >
-                    <ImagePlus size={20} />
-                  </button>
-                  <button
-                    type="button"
-                    onClick={capture}
-                    disabled={phase === 'scanning'}
-                    aria-label="Сделать снимок"
-                    className="flex h-16 w-16 items-center justify-center rounded-full bg-accent text-on-accent shadow-lg shadow-accent/30 transition-transform hover:scale-105 active:scale-95 disabled:opacity-60"
-                  >
-                    <Camera size={28} />
-                  </button>
-                  <button
-                    type="button"
-                    onClick={demoScan}
-                    className="flex h-11 items-center gap-1.5 rounded-full border border-line bg-card px-4 text-xs font-semibold text-ink-2 transition-colors hover:text-ink"
-                  >
-                    <RefreshCw size={14} />
-                    Демо
-                  </button>
-                </div>
-              ) : (
+              {camState !== 'on' && (
                 <div className="mt-4 space-y-2">
                   <button
                     type="button"

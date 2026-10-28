@@ -16,17 +16,23 @@ const STYLE =
   'soft natural side lighting, appetizing, high-end restaurant plating, fresh herbs garnish, ' +
   'shallow depth of field, 45-degree angle, photorealistic, high detail, high quality';
 
+// Реалистичный «домашний» стиль для перегенерации — без нейронного глянца
+const REAL_STYLE =
+  'candid homemade food photography, natural daylight from a window, simple ceramic plate ' +
+  'on a light kitchen table, cozy home kitchen softly blurred in background, realistic ' +
+  'authentic textures, appetizing, no text, no watermark, photorealistic, high detail';
+
 const DISHES = [
-  ['cottage-cheese-pancakes', 'Cottage cheese pancakes (syrniki) with sour cream and fresh berries, a stack of small golden pancakes'],
+  ['cottage-cheese-pancakes', 'Russian syrniki: five small thick fried cottage cheese pancakes with golden crust and visible curd texture, dollop of sour cream on top, powdered sugar, fresh raspberries aside'],
   ['shakshuka', 'Shakshuka: eggs poached in tomato sauce with bell pepper in a cast iron pan, crumbled feta on top'],
   ['avocado-toast', 'Avocado toast on whole grain bread with a poached egg on top, chili flakes'],
   ['oatmeal-bowl', 'Oatmeal porridge bowl topped with sliced banana, apple, walnuts and honey drizzle'],
   ['cheese-ham-omelette', 'Fluffy folded omelette with melted cheese and diced ham, fresh herbs'],
-  ['tuna-sandwich', 'Tuna salad sandwich on whole wheat bread, cut in half, lettuce and cucumber visible'],
+  ['tuna-sandwich', 'Tuna salad sandwich on whole wheat bread cut in half: creamy yellow tuna salad filling with lettuce and cucumber visible between slices'],
   ['greek-yogurt-granola', 'Greek yogurt in a glass bowl topped with granola, honey drizzle and berries'],
   ['spinach-cheese-pancake', 'Golden thin cheese pancake (crepe) filled with cooked spinach and melted cheese, folded'],
   ['croissant-salmon', 'Croissant sandwich with salted salmon, cream cheese and cucumber slices'],
-  ['smoothie-bowl', 'Berry smoothie bowl topped with chia seeds, oat flakes, banana slices and blueberries'],
+  ['smoothie-bowl', 'Thick berry smoothie bowl topped with oat flakes, banana slices, blueberries and chia seeds in neat rows, ceramic bowl'],
   ['chicken-teriyaki', 'Chicken teriyaki glazed with shiny teriyaki sauce, sesame seeds, served with white rice'],
   ['caesar-salad', 'Caesar salad with sliced grilled chicken breast, parmesan shavings and croutons'],
   ['sweet-sour-chicken', 'Sweet and sour chicken pieces with bell peppers and pineapple in glossy sauce'],
@@ -51,17 +57,17 @@ const DISHES = [
   ['baked-dorado', 'Whole baked dorado fish with lemon slices, thyme and rosemary herbs'],
   ['shrimp-pasta', 'Shrimp pasta in garlic butter cream sauce with parsley and lemon zest'],
   ['sushi-set', 'Sushi rolls set assortment on dark slate board with chopsticks, soy sauce, ginger and wasabi'],
-  ['poke-bowl', 'Poke bowl with raw salmon cubes, rice, avocado, edamame, sesame seeds in sections'],
+  ['poke-bowl', 'Poke bowl with cubes of fresh raw salmon over white rice, sliced avocado, edamame, sesame seeds, arranged in sections in a ceramic bowl'],
   ['fried-calamari', 'Fried calamari rings, golden crispy breading, lemon wedges and dipping sauce'],
   ['tuna-steak-sesame', 'Seared tuna steak with sesame seed crust, sliced to show pink center'],
-  ['mussels-cream', 'Mussels in creamy white wine sauce in a pan, parsley, bread on side'],
-  ['tom-yum', 'Tom yum soup with shrimps, mushrooms, coconut milk swirl, lemongrass, lime'],
+  ['mussels-cream', 'Steamed mussels in opened dark shells in creamy white wine sauce with parsley, in a wide cooking pan, bread slices on the side'],
+  ['tom-yum', 'Tom yum soup with clear reddish-orange spicy broth, large whole shrimps, mushroom halves, lemongrass stalks, lime wedge, in a deep bowl'],
   ['fish-and-chips', 'Fish and chips: golden battered fried fish fillet with thick cut fries and tartar sauce'],
-  ['crispy-tofu', 'Crispy asian style tofu cubes glazed in soy sauce, sesame seeds, green onion, with rice'],
+  ['crispy-tofu', 'Crispy golden fried tofu cubes glazed in soy sauce with sesame seeds and green onion, served on steamed white rice in a bowl'],
   ['pumpkin-soup', 'Creamy pumpkin soup in a bowl with pumpkin seeds, cream swirl and herbs'],
   ['greek-salad', 'Greek salad with tomato, cucumber, olives, red onion and a big block of feta cheese'],
   ['margherita-pizza', 'Margherita pizza with melted mozzarella, tomato sauce and fresh basil leaves'],
-  ['falafel-wrap', 'Falafel wrap cut in half showing falafel balls, vegetables and tahini sauce'],
+  ['falafel-wrap', 'Falafel wrap in thin flatbread cut in half: crispy brown fried chickpea falafel balls with tomato, cucumber, lettuce and white tahini sauce inside'],
   ['mushroom-risotto', 'Creamy mushroom risotto with parmesan and fried mushrooms on top'],
   ['roasted-roots', 'Roasted root vegetables: carrots, beets, parsnips with thyme, caramelized edges'],
   ['caprese-salad', 'Caprese salad: alternating tomato and mozzarella slices with basil leaves, balsamic glaze'],
@@ -69,47 +75,47 @@ const DISHES = [
   ['buddha-bowl', 'Buddha bowl with roasted sweet potato, chickpeas, quinoa, avocado and spinach, tahini drizzle'],
   // ==================== v3: +50 новых блюд ====================
   ['cottage-cheese-casserole', 'Cottage cheese casserole (zapekanka) cut into squares with golden crust, raisins, sour cream dollop'],
-  ['milk-blini', 'Stack of thin golden milk crepes (blini) folded in triangles with sour cream and berry jam'],
-  ['kefir-pancakes', 'Stack of fluffy small thick pancakes (oladi) with sour cream and honey drizzle on rustic plate'],
-  ['lazy-vareniki', 'Lazy cottage cheese dumplings (lenivye vareniki) boiled golden diamonds with melted butter and sour cream'],
+  ['milk-blini', 'Stack of thin golden Russian blini crepes rolled into triangles with lacy edges, small bowl of sour cream and berry jam aside'],
+  ['kefir-pancakes', 'Russian oladi pancakes: small thick fluffy pancakes with golden brown crust and uneven rough edges, dollop of sour cream and honey drizzle on top'],
+  ['lazy-vareniki', 'Lazy vareniki: boiled diamond-shaped cottage cheese dough pieces with visible curd texture in a deep bowl, melted butter, sour cream and dill on top'],
   ['chicken-plov', 'Chicken plov pilaf with fluffy rice, carrot strips, whole garlic head, served on large platter'],
   ['chicken-cutlets', 'Golden breaded chicken cutlets (kotlety) with mashed potatoes and pickles on plate'],
   ['oven-shashlik', 'Chicken shashlik skewers with charred edges, red onion rings, baked in oven on wire rack, lavash on side'],
   ['chicken-thighs-potato', 'Sheet pan roasted chicken thighs crispy skin with golden potato wedges and garlic'],
   ['beef-goulash', 'Beef goulash chunks in thick tomato gravy with mashed potatoes, paprika dusted'],
-  ['lyulya-kebab', 'Lyulya kebab minced lamb skewers on lavash bread with red onion sumac salad and herbs'],
-  ['pelmeni', 'Homemade pelmeni dumplings in deep bowl with sour cream, dill, black pepper, butter melting'],
-  ['pork-french', 'Pork chops French style baked with melted golden cheese, tomato slices and onion, in baking dish'],
+  ['lyulya-kebab', 'Lyulya kebab: two oblong minced lamb kebabs with charred crust served on flat lavash bread with sliced red onion and fresh herbs'],
+  ['pelmeni', 'Homemade pelmeni dumplings in a deep ceramic bowl with dollop of sour cream, dill and melting butter piece, natural glossy broth'],
+  ['pork-french', 'Pork baked French style under golden melted cheese layer with tomato slices and onion rings in a baking dish, one piece cut showing layers'],
   ['baked-mackerel', 'Whole baked mackerel fish with lemon slices in opened foil, herbs, garlic'],
   ['trout-foil', 'Baked rainbow trout steak with lemon slices and thyme in opened foil packet'],
-  ['fish-cutlets', 'Golden fish cutlets from pollock with mashed potatoes and fresh dill on white plate'],
+  ['fish-cutlets', 'Fish cutlets from minced white fish: oval breaded fried cutlets with golden crust served with mashed potatoes and fresh dill'],
   ['garlic-shrimp', 'Shrimp in garlic butter sauce in cast iron pan with lemon wedges and chopped parsley, bread slices'],
   ['draniki', 'Potato draniki golden crispy pancakes stack with sour cream bowl and fresh herbs'],
   ['julienne', 'Mushroom julienne baked in small copper cocotte with golden melted cheese crust'],
   ['ratatouille', 'Ratatouille vegetables sliced in concentric circles: zucchini, eggplant, tomato with herbs in baking dish'],
   ['vegetable-stew', 'Vegetable stew with zucchini, potato, cabbage and carrot in tomato sauce in deep plate'],
   ['borscht', 'Borscht deep red beet soup in bowl with sour cream swirl, dill, garlic bread and salo on side'],
-  ['shchi', 'Fresh cabbage shchi soup in rustic bowl with sour cream, rye bread slice and green onion'],
-  ['solyanka', 'Meat solyanka soup with lemon slice, black olives, sour cream in bowl, rich dark broth'],
-  ['rassolnik', 'Rassolnik soup with pearl barley, pickled cucumbers and chicken, sour cream and herbs on top'],
+  ['shchi', 'Russian shchi cabbage soup: light golden broth with pieces of cabbage, potato, carrot and beef, swirl of sour cream and dill on top'],
+  ['solyanka', 'Russian meat solyanka soup: rich dark brown broth with sliced salami and beef pieces, black olive rings, lemon slice, sour cream in a bowl'],
+  ['rassolnik', 'Russian rassolnik soup: opaque pale yellowish broth with pearl barley, diced pickled cucumbers, potato cubes, chicken pieces, sour cream and dill'],
   ['mushroom-cream-soup', 'Creamy mushroom soup with croutons, mushroom slices and cream swirl, thyme sprig'],
-  ['ukha', 'Russian ukha fish soup with salmon pieces, potato, dill in traditional bowl, lemon wedge'],
-  ['pea-soup', 'Yellow split pea soup with smoked pork ribs, croutons, rye bread on wooden board'],
+  ['ukha', 'Russian ukha fish soup: clear light broth with chunks of salmon, potato wedges, carrot rounds, fresh dill sprig, in a traditional bowl'],
+  ['pea-soup', 'Russian pea soup: thick pale yellow split pea soup with smoked pork ribs, golden croutons on top, rye bread slice on wooden board'],
   ['lentil-soup', 'Red lentil soup with carrot, lemon wedge and fresh cilantro in rustic bowl'],
-  ['okroshka', 'Okroshka cold soup with kefir, diced vegetables, eggs and sausage in bowl, dill on top'],
+  ['okroshka', 'Okroshka cold soup: pale kefir base with diced cucumber, radish, boiled egg, sausage cubes and dill in a bowl, no text'],
   ['cheese-soup', 'Creamy melted cheese soup with chicken pieces, potato and carrot in white bowl'],
-  ['olivier', 'Traditional Russian Olivier salad in glass bowl, diced vegetables with mayonnaise, garnished with egg'],
+  ['olivier', 'Traditional Russian Olivier salad: diced potato, carrot, pickles, green peas, egg and ham mixed with mayonnaise in a glass bowl, garnished with dill'],
   ['vinaigrette', 'Russian vinaigrette beet salad with diced vegetables in deep plate, dressed with oil'],
-  ['herring-shuba', 'Herring under fur coat salad layered with bright beet top layer, cut to show layers, on plate'],
+  ['herring-shuba', 'Herring under fur coat salad: layered salad cut in a clean square slice showing distinct layers of herring, potato, carrot and bright beet top'],
   ['mimosa', 'Mimosa salad with yellow egg yolk snow on top, layered fish salad in glass bowl'],
   ['tuna-egg-salad', 'Light tuna salad with boiled egg quarters, cucumber slices and corn in bowl'],
   ['bruschetta', 'Tomato basil bruschetta on toasted baget slices, garlic, olive oil drizzle, basil leaves'],
-  ['zucchini-ikra', 'Zucchini caviar spread (ikra) in small bowl with toasted bread slices, rustic wooden board'],
+  ['zucchini-ikra', 'Zucchini caviar spread: pale orange-brown smooth roasted zucchini spread in a small bowl, toasted bread slices beside, sprig of dill'],
   ['korean-carrot', 'Korean-style carrot salad (morkovcha) spicy shredded carrots with sesame in bowl'],
   ['crab-corn-salad', 'Crab stick salad with sweet corn, eggs and cucumber in glass bowl'],
   ['spring-cabbage-salad', 'Fresh shredded cabbage and cucumber salad with dill and boiled egg slices'],
   ['apple-charlotte', 'Apple charlotte sponge cake with caramelized apple slices on top, dusted with powdered sugar'],
-  ['cabbage-pie', 'Russian cabbage and egg pie (pirog) with golden braided crust, one slice cut showing filling'],
+  ['cabbage-pie', 'Russian cabbage pie with golden braided crust, one slice cut showing white stewed cabbage and boiled egg filling'],
   ['ny-cheesecake', 'New York cheesecake slice with glossy top, berry sauce, mint leaf on white plate'],
   ['brownies', 'Fudgy chocolate brownies stacked with walnuts, crackly top, chocolate chunks'],
   ['oat-cookies', 'Oatmeal raisin cookies golden round on cooling rack with scattered oats and raisins'],
@@ -120,26 +126,50 @@ const DISHES = [
   ['baked-apples', 'Baked apples filled with honey, walnuts and raisins, cinnamon sticks, warm cozy style'],
 ];
 
+const PROGRESS_FILE = 'scripts/regen-progress.txt';
+
 async function main() {
   // Параллельная генерация: node generate-dish-photos.mjs <shard> <total>
   // Каждый воркер обрабатывает свою долю списка (шард), файлы скипаются по наличию
   const shard = Number(process.argv[2] ?? 0);
   const total = Number(process.argv[3] ?? 1);
+  // Точечная перегенерация: --only=id1,id2,... — только эти id, игнорируя наличие файла.
+  // Стиль «домашнее фото» вместо тёмного слейта + прогресс-файл, чтобы перезапуск
+  // после таймаута не перегенерировал уже готовые фото заново.
+  const onlyArg = process.argv.find((a) => a.startsWith('--only='));
+  const forceIds = onlyArg
+    ? onlyArg
+        .slice('--only='.length)
+        .split(',')
+        .map((s) => s.trim())
+        .filter(Boolean)
+    : null;
+  const doneIds = new Set(
+    forceIds && fs.existsSync(PROGRESS_FILE)
+      ? fs
+          .readFileSync(PROGRESS_FILE, 'utf8')
+          .split('\n')
+          .map((s) => s.trim())
+          .filter(Boolean)
+      : [],
+  );
   const zai = await ZAI.create();
   const failed = [];
 
-  const mySlice = DISHES.filter((_, i) => i % total === shard);
+  const base = forceIds ? DISHES.filter(([id]) => forceIds.includes(id)) : DISHES;
+  const mySlice = base.filter((_, i) => i % total === shard);
 
     for (let i = 0; i < mySlice.length; i++) {
     const [id, subject] = mySlice[i];
     const outPath = path.join(OUT_DIR, `${id}.jpg`);
 
-    if (fs.existsSync(outPath) && fs.statSync(outPath).size > 20000) {
+    const fresh = fs.existsSync(outPath) && fs.statSync(outPath).size > 20000;
+    if (fresh && (!forceIds || doneIds.has(id))) {
       console.log(`[шард${shard} ${i + 1}/${mySlice.length}] SKIP ${id} (уже есть)`);
       continue; // без паузы — не тратим 4с на каждый пропуск
     }
 
-    const prompt = `${subject}, ${STYLE}`;
+    const prompt = `${subject}, ${forceIds ? REAL_STYLE : STYLE}`;
     let ok = false;
 
     for (let attempt = 1; attempt <= 5 && !ok; attempt++) {
@@ -158,6 +188,7 @@ async function main() {
         await sharp(tmpPath).jpeg({ quality: 82, mozjpeg: true }).toFile(outPath);
         fs.unlinkSync(tmpPath);
         ok = true;
+        if (forceIds) fs.appendFileSync(PROGRESS_FILE, `${id}\n`);
         console.log(`[шард${shard} ${i + 1}/${mySlice.length}] OK ${id}`);
       } catch (err) {
         const isRateLimit = String(err?.message).includes('429');
@@ -174,7 +205,7 @@ async function main() {
   }
 
   console.log('=== ИТОГ ===');
-  console.log(`Успешно: ${DISHES.length - failed.length} / ${DISHES.length}`);
+  console.log(`Успешно: ${base.length - failed.length} / ${base.length}`);
   if (failed.length) console.log('Провалы:', failed.join(', '));
 }
 
