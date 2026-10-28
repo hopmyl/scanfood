@@ -1,10 +1,10 @@
 import { useMemo, useState } from 'react';
-import { Check, CookingPot, Plus, X } from 'lucide-react';
+import { AlarmClock, Check, CookingPot, Plus, X } from 'lucide-react';
 import { PRODUCT_BY_NAME, SHELF_POOL } from '../data/dishes';
 import { matchDishes } from '../lib/match';
 import DishCard from '../components/DishCard';
 import { useAppStore } from '../store/useAppStore';
-import { cn, pluralRu } from '../lib/utils';
+import { cn, daysLeft, pluralRu } from '../lib/utils';
 
 /** Высота баночки — чуть варьируем, чтобы полка выглядела живьём */
 function jarHeight(name: string): string {
@@ -12,18 +12,52 @@ function jarHeight(name: string): string {
   return h;
 }
 
-function Jar({ name, onRemove }: { name: string; onRemove: () => void }) {
+function Jar({
+  name,
+  expiresIn,
+  onRemove,
+  onSetExpiry,
+}: {
+  name: string;
+  expiresIn: number | null;
+  onRemove: () => void;
+  onSetExpiry: () => void;
+}) {
   const emoji = PRODUCT_BY_NAME.get(name.toLowerCase())?.emoji ?? '🥫';
+  const dotClass =
+    expiresIn === null
+      ? null
+      : expiresIn < 0
+        ? 'bg-red-500'
+        : expiresIn <= 1
+          ? 'bg-red-400'
+          : expiresIn <= 7
+            ? 'bg-amber-400'
+            : 'bg-emerald-400';
+  const dotLabel =
+    expiresIn === null
+      ? ''
+      : expiresIn < 0
+        ? 'Просрочено'
+        : expiresIn === 0
+          ? 'Истекает сегодня'
+          : expiresIn === 1
+            ? '1 день'
+            : `${expiresIn} дн.`;
+
   return (
     <div className="group relative flex w-[68px] flex-col items-center">
       {/* крышка */}
       <span className="h-2 w-11 rounded-t-md bg-gradient-to-b from-zinc-200 to-zinc-500 shadow-sm" />
       {/* корпус */}
-      <span
+      <button
+        type="button"
+        onClick={onSetExpiry}
+        aria-label={`Срок годности «${name}»`}
         className={cn(
-          'flex w-14 flex-col items-center justify-center rounded-b-lg rounded-t-sm',
+          'relative flex w-14 flex-col items-center justify-center rounded-b-lg rounded-t-sm',
           'bg-gradient-to-b from-white/25 to-white/5 ring-1 ring-white/25',
-          'shadow-[inset_0_-6px_12px_rgba(0,0,0,0.25)]',
+          'shadow-[inset_0_-6px_12px_rgba(0,0,0,0.25)] transition-transform active:scale-95',
           jarHeight(name),
         )}
       >
@@ -36,13 +70,19 @@ function Jar({ name, onRemove }: { name: string; onRemove: () => void }) {
         >
           {name}
         </span>
-      </span>
+        {dotClass && (
+          <span
+            title={`Срок годности: ${dotLabel}`}
+            className={cn('absolute top-1 left-1 h-2 w-2 rounded-full shadow', dotClass)}
+          />
+        )}
+      </button>
       {/* убрать из запасов */}
       <button
         type="button"
         onClick={onRemove}
         aria-label={`Убрать «${name}» из запасов`}
-        className="absolute -top-1.5 -right-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-zinc-800/85 text-zinc-200 opacity-70 transition-opacity hover:opacity-100"
+        className="absolute -top-1.5 -right-0.5 z-10 flex h-5 w-5 items-center justify-center rounded-full bg-zinc-800/85 text-zinc-200 opacity-70 transition-opacity hover:opacity-100"
       >
         <X size={11} strokeWidth={3} />
       </button>
@@ -52,13 +92,49 @@ function Jar({ name, onRemove }: { name: string; onRemove: () => void }) {
 
 export default function PantryScreen() {
   const pantry = useAppStore((s) => s.pantry);
+  const pantryExpiry = useAppStore((s) => s.pantryExpiry);
+  const setPantryExpiry = useAppStore((s) => s.setPantryExpiry);
   const addToPantry = useAppStore((s) => s.addToPantry);
   const removeFromPantry = useAppStore((s) => s.removeFromPantry);
 
   const [pickerOpen, setPickerOpen] = useState(false);
   const [addedNames, setAddedNames] = useState<string[]>([]);
+  /** Продукт, для которого открыт диалог срока годности */
+  const [expiryFor, setExpiryFor] = useState<string | null>(null);
+  const [expiryDraft, setExpiryDraft] = useState('');
 
   const match = useMemo(() => matchDishes(pantry), [pantry]);
+
+  /** Скоропорт: продукт → дней осталось (только <= 7 дней, сортировка по срочности) */
+  const expiringSoon = useMemo(
+    () =>
+      Object.entries(pantryExpiry)
+        .filter(([name]) => pantry.includes(name))
+        .map(([name, iso]) => ({ name, days: daysLeft(iso) }))
+        .filter((e): e is { name: string; days: number } => e.days !== null && e.days <= 7)
+        .sort((a, b) => a.days - b.days),
+    [pantryExpiry, pantry],
+  );
+
+  /** Блюда из запасов, в которых участвует скоропорт */
+  const useFirstDishes = useMemo(() => {
+    if (expiringSoon.length === 0) return [];
+    const soon = new Set(expiringSoon.map((e) => e.name.toLowerCase()));
+    return match.canCook
+      .filter((d) => d.ingredients.some((i) => soon.has(i.name.toLowerCase())))
+      .slice(0, 4);
+  }, [match, expiringSoon]);
+
+  const openExpiryDialog = (name: string) => {
+    setExpiryFor(name);
+    setExpiryDraft(pantryExpiry[name] ?? '');
+  };
+
+  const saveExpiry = () => {
+    if (!expiryFor) return;
+    setPantryExpiry(expiryFor, expiryDraft || undefined);
+    setExpiryFor(null);
+  };
 
   const suggestable = SHELF_POOL.filter((p) => !pantry.includes(p));
 
@@ -105,7 +181,13 @@ export default function PantryScreen() {
               <div key={i}>
                 <div className="flex min-h-24 items-end justify-start gap-3 px-1">
                   {shelf.map((name) => (
-                    <Jar key={name} name={name} onRemove={() => removeFromPantry(name)} />
+                    <Jar
+                      key={name}
+                      name={name}
+                      expiresIn={pantryExpiry[name] ? daysLeft(pantryExpiry[name]) : null}
+                      onRemove={() => removeFromPantry(name)}
+                      onSetExpiry={() => openExpiryDialog(name)}
+                    />
                   ))}
                 </div>
                 {/* доска полки */}
@@ -120,7 +202,100 @@ export default function PantryScreen() {
         </div>
       </div>
 
-      {/* ===== Подборка «пополнить запасы» ===== */}
+      {/* ===== Диалог срока годности ===== */}
+      {expiryFor && (
+        <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/40 p-4 pb-24 sm:items-center sm:pb-4">
+          <div className="w-full max-w-sm rounded-3xl border border-line bg-card p-5 shadow-xl">
+            <div className="flex items-center gap-2">
+              <span aria-hidden className="text-2xl">
+                {PRODUCT_BY_NAME.get(expiryFor.toLowerCase())?.emoji ?? '🥫'}
+              </span>
+              <h3 className="text-base font-bold text-ink">Срок годности: {expiryFor}</h3>
+            </div>
+            <p className="mt-1 text-xs text-ink-2">
+              Когда продукт испортится — подскажем, что из него приготовить
+            </p>
+            <input
+              type="date"
+              value={expiryDraft}
+              onChange={(e) => setExpiryDraft(e.target.value)}
+              className="mt-3 w-full rounded-2xl border border-line bg-soft px-4 py-3 text-sm text-ink outline-none focus:border-accent"
+            />
+            <div className="mt-4 flex gap-2">
+              <button
+                type="button"
+                onClick={saveExpiry}
+                className="flex flex-1 items-center justify-center gap-1.5 rounded-2xl bg-accent py-3 text-sm font-semibold text-on-accent transition-colors hover:bg-accent-strong"
+              >
+                <Check size={15} strokeWidth={3} />
+                Сохранить
+              </button>
+              {pantryExpiry[expiryFor] && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setPantryExpiry(expiryFor, undefined);
+                    setExpiryFor(null);
+                  }}
+                  className="rounded-2xl border border-line bg-card px-4 py-3 text-sm font-semibold text-ink-2 transition-colors hover:text-ink"
+                >
+                  Убрать
+                </button>
+              )}
+              <button
+                type="button"
+                onClick={() => setExpiryFor(null)}
+                aria-label="Закрыть"
+                className="flex h-11 w-11 items-center justify-center rounded-2xl border border-line bg-card text-ink-2 transition-colors hover:text-ink"
+              >
+                <X size={16} />
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ===== Скоро испортится ===== */}
+      {expiringSoon.length > 0 && (
+        <section className="mt-3 rounded-2xl border border-amber-300/60 bg-amber-50 p-3.5 dark:border-amber-500/30 dark:bg-amber-950/30">
+          <h2 className="flex items-center gap-1.5 text-sm font-bold text-amber-900 dark:text-amber-200">
+            <AlarmClock size={16} />
+            Скоро испортится
+          </h2>
+          <div className="mt-2 flex flex-wrap gap-1.5">
+            {expiringSoon.map((e) => (
+              <button
+                key={e.name}
+                type="button"
+                onClick={() => openExpiryDialog(e.name)}
+                className={cn(
+                  'flex items-center gap-1 rounded-full px-2.5 py-1.5 text-xs font-semibold',
+                  e.days < 0
+                    ? 'bg-red-500 text-white'
+                    : e.days <= 1
+                      ? 'bg-red-400 text-white'
+                      : 'bg-amber-400 text-amber-950',
+                )}
+              >
+                <span aria-hidden>{PRODUCT_BY_NAME.get(e.name.toLowerCase())?.emoji ?? '🥫'}</span>
+                {e.name}
+                {e.days < 0 ? ' · просрочено' : ` · ${e.days === 0 ? 'сегодня' : `${pluralRu(e.days, 'день', 'дня', 'дней')}`}`}
+              </button>
+            ))}
+          </div>
+          {useFirstDishes.length > 0 && (
+            <p className="mt-2 text-xs text-amber-900/90 dark:text-amber-200/90">
+              Приготовь из этого:{' '}
+              {useFirstDishes
+                .map((d) => d.nameRu)
+                .join(', ')}
+            </p>
+          )}
+          <p className="mt-1.5 text-[11px] text-amber-900/60 dark:text-amber-200/60">
+            Нажми на баночку в шкафчике, чтобы указать срок годности
+          </p>
+        </section>
+      )}
       {pickerOpen && (
         <section className="mt-3 rounded-2xl border border-line bg-card p-3.5">
           <p className="mb-2 text-xs font-semibold text-ink-2">Нажми на баночку, чтобы добавить:</p>

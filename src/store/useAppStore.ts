@@ -35,6 +35,8 @@ interface AppState {
   shoppingList: ShoppingItem[];
   /** запасы дома — канонические имена продуктов (см. FRIDGE_PRODUCTS) */
   pantry: string[];
+  /** сроки годности запасов: имя продукта → ISO-дата «YYYY-MM-DD» */
+  pantryExpiry: Record<string, string>;
   /** тема оформления */
   theme: ThemeId;
 
@@ -60,6 +62,9 @@ interface AppState {
   addToPantry: (names: string[]) => void;
   removeFromPantry: (name: string) => void;
 
+  /** Указать/убрать срок годности продукта (ISO-дата или undefined — убрать) */
+  setPantryExpiry: (name: string, isoDate?: string) => void;
+
   setTheme: (theme: ThemeId) => void;
 
   /** Сброс прогресса для тестов (запасы и тема сохраняются) */
@@ -79,6 +84,7 @@ export const useAppStore = create<AppState>()(
       favorites: [],
       shoppingList: [],
       pantry: DEFAULT_PANTRY,
+      pantryExpiry: {},
       theme: 'light',
 
       togglePro: () =>
@@ -162,9 +168,22 @@ export const useAppStore = create<AppState>()(
         })),
 
       removeFromPantry: (name) =>
-        set((state) => ({
-          pantry: state.pantry.filter((n) => n !== name),
-        })),
+        set((state) => {
+          const expiry = { ...state.pantryExpiry };
+          delete expiry[name];
+          return {
+            pantry: state.pantry.filter((n) => n !== name),
+            pantryExpiry: expiry,
+          };
+        }),
+
+      setPantryExpiry: (name, isoDate) =>
+        set((state) => {
+          const expiry = { ...state.pantryExpiry };
+          if (isoDate) expiry[name] = isoDate;
+          else delete expiry[name];
+          return { pantryExpiry: expiry };
+        }),
 
       setTheme: (theme) => set({ theme }),
 
@@ -173,14 +192,15 @@ export const useAppStore = create<AppState>()(
           userProfile: { isPro: false, scansLeft: FREE_SCANS_LIMIT, scannedTotal: 0 },
           favorites: [],
           shoppingList: [],
-          // pantry и theme — пользовательские настройки, не сбрасываем
+          // pantry, pantryExpiry и theme — пользовательские настройки, не сбрасываем
           pantry: state.pantry,
+          pantryExpiry: state.pantryExpiry,
           theme: state.theme,
         })),
     }),
     {
       name: 'skan-recept-store', // ключ в localStorage
-      version: 2,
+      version: 3,
       migrate: (persisted, version) => {
         const state = (persisted ?? {}) as Partial<AppState>;
         return {
@@ -192,6 +212,7 @@ export const useAppStore = create<AppState>()(
           favorites: state.favorites ?? [],
           shoppingList: state.shoppingList ?? [],
           pantry: state.pantry ?? DEFAULT_PANTRY,
+          pantryExpiry: state.pantryExpiry ?? {},
           theme: state.theme ?? 'light',
         } as AppState;
       },

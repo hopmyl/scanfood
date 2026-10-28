@@ -33,3 +33,17 @@ export function pluralRu(n: number, one: string, few: string, many: string): str
   if (m10 >= 2 && m10 <= 4 && (m100 < 10 || m100 > 20)) return few;
   return many;
 }
+
+/**
+ * Сколько дней осталось до даты «YYYY-MM-DD» (локальная таймзона).
+ * 0 = истекает сегодня, −1 = уже просрочено. Некорректная дата → null.
+ */
+export function daysLeft(isoDate: string): number | null {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(isoDate);
+  if (!m) return null;
+  const target = new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
+  if (Number.isNaN(target.getTime())) return null;
+  const today = new Date();
+  const start = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+  return Math.round((target.getTime() - start.getTime()) / 86_400_000);
+}
