@@ -8,3 +8,4 @@ scripts/*.png
 scripts/drive_list.html
 .zscripts/
 .vercel/
+.vercel
