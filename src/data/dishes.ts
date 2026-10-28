@@ -1,11 +1,28 @@
 /**
- * База блюд СканРецепт — 50 позиций в 5 категориях.
- * Названия двуязычные: EN — основное, RU — подзаголовок.
- * kcal — калорийность на порцию.
- * image — путь к AI-фото в public/dishes/.
+ * База блюд СканРецепт — v2.
+ *  • ingredients — структурированные ({ name, qty, unit }) для пересчёта порций
+ *  • bju — белки/жиры/углеводы на порцию (для PRO-подписки)
+ *  • FRIDGE_PRODUCTS — канонические продукты: распознавание, запасы, подбор рецептов
+ *  • isBaseIngredient — соль/специи/масло не учитываются при подборе «что приготовить»
  */
 
 export type DishCategory = 'breakfast' | 'chicken' | 'meat' | 'fish' | 'veg';
+
+/** Ингредиент рецепта: qty — количество на 1 порцию */
+export interface Ingredient {
+  name: string;
+  qty?: number;
+  unit?: string;
+  /** текст без количества («по вкусу», «горсть») — не масштабируется */
+  note?: string;
+}
+
+/** БЖУ на порцию, граммы */
+export interface Bju {
+  p: number;
+  f: number;
+  c: number;
+}
 
 export interface Dish {
   id: string;
@@ -14,8 +31,9 @@ export interface Dish {
   category: DishCategory;
   /** Калорийность на порцию, ккал */
   kcal: number;
+  bju: Bju;
   image: string;
-  ingredients: string[];
+  ingredients: Ingredient[];
   steps: string[];
 }
 
@@ -44,9 +62,7 @@ export const CATEGORY_FILTERS: Array<{
 export interface KcalRange {
   id: string;
   labelRu: string;
-  /** нижняя граница — не включительно */
   min?: number;
-  /** верхняя граница — включительно */
   max?: number;
 }
 
@@ -58,16 +74,146 @@ export const KCAL_RANGES: KcalRange[] = [
   { id: 'gt700', labelRu: '700+', min: 700 },
 ];
 
+// ============================================================================
+// ПРОДУКТЫ: канонический справочник для скана холодильника, запасов и подбора
+// ============================================================================
+
+export interface FridgeProduct {
+  name: string;
+  emoji: string;
+  /** подстроки (в нижнем регистре) для сопоставления с ингредиентами рецептов */
+  keys: string[];
+  /** показывать в мок-пуле «сканирование холодильника» */
+  inFridge: boolean;
+  /** показывать в подборке «пополнить запасы» */
+  inShelf: boolean;
+}
+
+export const FRIDGE_PRODUCTS: FridgeProduct[] = [
+  { name: 'Яйца', emoji: '🥚', keys: ['яйц'], inFridge: true, inShelf: false },
+  { name: 'Молоко', emoji: '🥛', keys: ['молок'], inFridge: true, inShelf: false },
+  { name: 'Сливки', emoji: '🥛', keys: ['сливк'], inFridge: true, inShelf: false },
+  { name: 'Йогурт', emoji: '🥣', keys: ['йогурт'], inFridge: true, inShelf: false },
+  { name: 'Творог', emoji: '🧈', keys: ['творог'], inFridge: true, inShelf: false },
+  { name: 'Сметана', emoji: '🥄', keys: ['сметан'], inFridge: true, inShelf: false },
+  { name: 'Сыр', emoji: '🧀', keys: ['сыр', 'пармезан', 'моцарелла', 'чеддер', 'фета'], inFridge: true, inShelf: false },
+  { name: 'Ветчина', emoji: '🥓', keys: ['ветчин'], inFridge: true, inShelf: false },
+  { name: 'Масло сливочное', emoji: '🧈', keys: ['сливочное масло'], inFridge: false, inShelf: false },
+  { name: 'Курица', emoji: '🍗', keys: ['кури', 'грудка', 'бедр', 'крылышк'], inFridge: true, inShelf: false },
+  { name: 'Фарш', emoji: '🥩', keys: ['фарш'], inFridge: true, inShelf: false },
+  { name: 'Говядина', emoji: '🥩', keys: ['говядин', 'рибай', 'вырезка'], inFridge: true, inShelf: false },
+  { name: 'Свинина', emoji: '🥓', keys: ['свин', 'рёбр', 'ребр', 'отбивн'], inFridge: false, inShelf: false },
+  { name: 'Лосось', emoji: '🐟', keys: ['лосос'], inFridge: true, inShelf: false },
+  { name: 'Креветки', emoji: '🦐', keys: ['креветк'], inFridge: true, inShelf: false },
+  { name: 'Тунец', emoji: '🐟', keys: ['тунец'], inFridge: true, inShelf: true },
+  { name: 'Треска', emoji: '🐟', keys: ['треск'], inFridge: false, inShelf: false },
+  { name: 'Дорадо', emoji: '🐟', keys: ['дорадо'], inFridge: false, inShelf: false },
+  { name: 'Кальмары', emoji: '🦑', keys: ['кальмар'], inFridge: false, inShelf: false },
+  { name: 'Мидии', emoji: '🦪', keys: ['мидии'], inFridge: false, inShelf: false },
+  { name: 'Тофу', emoji: '🥡', keys: ['тофу'], inFridge: true, inShelf: false },
+  { name: 'Нут', emoji: '🫘', keys: ['нут'], inFridge: false, inShelf: true },
+  { name: 'Фалафель', emoji: '🧆', keys: ['фалафел'], inFridge: false, inShelf: false },
+  { name: 'Шампиньоны', emoji: '🍄', keys: ['шампиньон', 'гриб'], inFridge: true, inShelf: false },
+  { name: 'Помидоры', emoji: '🍅', keys: ['томат', 'помидор'], inFridge: true, inShelf: false },
+  { name: 'Огурцы', emoji: '🥒', keys: ['огурц'], inFridge: true, inShelf: false },
+  { name: 'Болгарский перец', emoji: '🫑', keys: ['болгар'], inFridge: true, inShelf: false },
+  { name: 'Лук', emoji: '🧅', keys: ['лук', 'шалот'], inFridge: true, inShelf: true },
+  { name: 'Чеснок', emoji: '🧄', keys: ['чеснок'], inFridge: true, inShelf: true },
+  { name: 'Морковь', emoji: '🥕', keys: ['морков'], inFridge: true, inShelf: true },
+  { name: 'Картофель', emoji: '🥔', keys: ['картоф', 'батат'], inFridge: true, inShelf: true },
+  { name: 'Свёкла', emoji: '🍠', keys: ['свёкл', 'свекл'], inFridge: false, inShelf: false },
+  { name: 'Тыква', emoji: '🎃', keys: ['тыкв'], inFridge: false, inShelf: false },
+  { name: 'Баклажаны', emoji: '🍆', keys: ['баклажан', 'кабачк'], inFridge: false, inShelf: false },
+  { name: 'Брокколи', emoji: '🥦', keys: ['брокколи', 'спаржа'], inFridge: true, inShelf: false },
+  { name: 'Шпинат', emoji: '🥬', keys: ['шпинат'], inFridge: true, inShelf: false },
+  { name: 'Салат', emoji: '🥬', keys: ['салат', 'латук'], inFridge: true, inShelf: false },
+  { name: 'Зелень', emoji: '🌿', keys: ['базилик', 'зелень'], inFridge: true, inShelf: false },
+  { name: 'Авокадо', emoji: '🥑', keys: ['авокадо'], inFridge: true, inShelf: false },
+  { name: 'Лимон', emoji: '🍋', keys: ['лимон', 'лайм'], inFridge: true, inShelf: false },
+  { name: 'Яблоко', emoji: '🍎', keys: ['яблок'], inFridge: true, inShelf: true },
+  { name: 'Банан', emoji: '🍌', keys: ['банан'], inFridge: true, inShelf: true },
+  { name: 'Ягоды', emoji: '🫐', keys: ['ягод'], inFridge: true, inShelf: false },
+  { name: 'Ананас', emoji: '🍍', keys: ['ананас'], inFridge: false, inShelf: false },
+  { name: 'Оливки', emoji: '🫒', keys: ['оливк', 'каперс'], inFridge: false, inShelf: true },
+  { name: 'Мёд', emoji: '🍯', keys: ['мёд', 'мед'], inFridge: false, inShelf: true },
+  { name: 'Мука', emoji: '🌾', keys: ['мука', 'муки', 'крахмал'], inFridge: false, inShelf: true },
+  { name: 'Сахар', emoji: '🍬', keys: ['сахар'], inFridge: false, inShelf: true },
+  { name: 'Соль', emoji: '🧂', keys: ['соль'], inFridge: false, inShelf: true },
+  { name: 'Рис', emoji: '🍚', keys: ['рис'], inFridge: false, inShelf: true },
+  { name: 'Гречка', emoji: '🌾', keys: ['гречк'], inFridge: false, inShelf: true },
+  { name: 'Киноа', emoji: '🌾', keys: ['киноа'], inFridge: false, inShelf: true },
+  { name: 'Паста', emoji: '🍝', keys: ['паста', 'спагетти', 'лапша', 'макарон'], inFridge: false, inShelf: true },
+  { name: 'Овсяные хлопья', emoji: '🥣', keys: ['овсян'], inFridge: false, inShelf: true },
+  { name: 'Хлеб', emoji: '🥖', keys: ['хлеб', 'булочк', 'круассан', 'тортил', 'лаваш', 'сухарик'], inFridge: false, inShelf: true },
+  { name: 'Тесто', emoji: '🥟', keys: ['тесто'], inFridge: false, inShelf: false },
+  { name: 'Нори', emoji: '🌿', keys: ['нори'], inFridge: false, inShelf: true },
+  { name: 'Орехи и семечки', emoji: '🥜', keys: ['орех', 'семечк', 'кунжут', 'чиа', 'гранол'], inFridge: false, inShelf: true },
+  { name: 'Соевый соус', emoji: '🥢', keys: ['соев'], inFridge: false, inShelf: true },
+  { name: 'Соусы и заправки', emoji: '🥫', keys: ['соус', 'кетчуп', 'майонез', 'хумус', 'тахини', 'бальзам', 'паста том', 'том ям', 'тикка'], inFridge: false, inShelf: true },
+  { name: 'Бульон', emoji: '🥫', keys: ['бульон'], inFridge: false, inShelf: true },
+  { name: 'Кокосовое молоко', emoji: '🥥', keys: ['кокос'], inFridge: false, inShelf: true },
+  { name: 'Вино', emoji: '🍷', keys: ['вино'], inFridge: false, inShelf: true },
+  { name: 'Пиво', emoji: '🍺', keys: ['пиво'], inFridge: false, inShelf: false },
+];
+
+/** Быстрый поиск продукта по имени (в нижнем регистре) */
+export const PRODUCT_BY_NAME: Map<string, FridgeProduct> = new Map(
+  FRIDGE_PRODUCTS.map((p) => [p.name.toLowerCase(), p]),
+);
+
+/**
+ * Базовые ингредиенты, которые presumed «всегда есть дома»:
+ * соль, перец, специи, масло, вода, зелень — не участвуют в подборе рецептов.
+ * ВАЖНО: проверка «болгар» идёт первой — болгарский перец это реальный продукт.
+ */
+export function isBaseIngredient(name: string): boolean {
+  const n = name.toLowerCase();
+  if (n.includes('болгар')) return false;
+  return /(соль|чёрн\S* перец|черн\S* перец|перец, |специ|приправ|масл|вода|мускат|лавров|паприк|зира|орегано|тимьян|розмарин|кунжут|имбирь|васаби|хлопья чили|ванил|укроп|петрушк|кинза|мята|лимонн|порошок|сода)/.test(
+    n,
+  );
+}
+
+/** Мок-пул «что распознаёт ИИ на фото холодильника» */
+export const SCAN_POOL: string[] = FRIDGE_PRODUCTS.filter((p) => p.inFridge).map((p) => p.name);
+
+/** Подборка «пополнить запасы» на экране шкафчика */
+export const SHELF_POOL: string[] = FRIDGE_PRODUCTS.filter((p) => p.inShelf).map((p) => p.name);
+
+/** Стартовый набор запасов для новых пользователей */
+export const DEFAULT_PANTRY: string[] = [
+  'Мука',
+  'Яйца',
+  'Молоко',
+  'Сахар',
+  'Соль',
+  'Рис',
+  'Паста',
+  'Лук',
+  'Чеснок',
+  'Морковь',
+  'Помидоры',
+  'Сыр',
+  'Картофель',
+];
+
 export const DISHES: Dish[] = [
-  // ==================== ЗАВТРАКИ И ПЕРЕКУСЫ ====================
   {
     id: 'cottage-cheese-pancakes',
     nameEn: 'Cottage cheese pancakes with berries',
     nameRu: 'Домашние сырники с ягодами',
     category: 'breakfast',
     kcal: 380,
+    bju: { p: 16, f: 13, c: 50 },
     image: '/dishes/cottage-cheese-pancakes.jpg',
-    ingredients: ['Творог 9% — 400 г', 'Яйцо — 1 шт', 'Мука — 3 ст. л.', 'Сахар — 2 ст. л.', 'Сметана — 2 ст. л.', 'Свежие ягоды — горсть'],
+    ingredients: [
+      { name: 'Творог 9%', qty: 400, unit: 'г' },
+      { name: 'Яйцо', qty: 1, unit: 'шт' },
+      { name: 'Мука', qty: 3, unit: 'ст. л.' },
+      { name: 'Сахар', qty: 2, unit: 'ст. л.' },
+      { name: 'Сметана', qty: 2, unit: 'ст. л.' },
+      { name: 'Свежие ягоды', note: 'горсть' },
+    ],
     steps: [
       'Смешай творог, яйцо, сахар и муку до однородного теста.',
       'Сформируй небольшие сырники и обваляй в муке.',
@@ -81,8 +227,16 @@ export const DISHES: Dish[] = [
     nameRu: 'Шакшука с фетой',
     category: 'breakfast',
     kcal: 350,
+    bju: { p: 16, f: 13, c: 42 },
     image: '/dishes/shakshuka.jpg',
-    ingredients: ['Яйца — 3 шт', 'Томаты в собственном соку — 400 г', 'Болгарский перец — 1 шт', 'Лук — 1 шт', 'Фета — 80 г', 'Зира и паприка — по ½ ч. л.'],
+    ingredients: [
+      { name: 'Яйца', qty: 3, unit: 'шт' },
+      { name: 'Томаты в собственном соку', qty: 400, unit: 'г' },
+      { name: 'Болгарский перец', qty: 1, unit: 'шт' },
+      { name: 'Лук', qty: 1, unit: 'шт' },
+      { name: 'Фета', qty: 80, unit: 'г' },
+      { name: 'Зира и паприка', qty: 0.5, unit: 'ч. л.' },
+    ],
     steps: [
       'Обжарь лук и перец до мягкости.',
       'Добавь томаты и специи, туши 10 минут.',
@@ -96,8 +250,15 @@ export const DISHES: Dish[] = [
     nameRu: 'Тост с авокадо и яйцом пашот',
     category: 'breakfast',
     kcal: 320,
+    bju: { p: 15, f: 12, c: 38 },
     image: '/dishes/avocado-toast.jpg',
-    ingredients: ['Хлеб цельнозерновой — 2 ломтика', 'Авокадо — 1 шт', 'Яйца — 2 шт', 'Лимонный сок — 1 ч. л.', 'Соль, перец, хлопья чили'],
+    ingredients: [
+      { name: 'Хлеб цельнозерновой', qty: 2, unit: 'ломтика' },
+      { name: 'Авокадо', qty: 1, unit: 'шт' },
+      { name: 'Яйца', qty: 2, unit: 'шт' },
+      { name: 'Лимонный сок', qty: 1, unit: 'ч. л.' },
+      { name: 'Соль, перец, хлопья чили' },
+    ],
     steps: [
       'Подрумянь хлеб в тостере или на сухой сковороде.',
       'Разомни авокадо с лимонным соком и солью.',
@@ -111,8 +272,16 @@ export const DISHES: Dish[] = [
     nameRu: 'Овсяная каша с фруктами и орехами',
     category: 'breakfast',
     kcal: 340,
+    bju: { p: 15, f: 12, c: 43 },
     image: '/dishes/oatmeal-bowl.jpg',
-    ingredients: ['Овсяные хлопья — 60 г', 'Молоко или вода — 250 мл', 'Банан — 1 шт', 'Яблоко — 1 шт', 'Грецкие орехи — 20 г', 'Мёд — 1 ч. л.'],
+    ingredients: [
+      { name: 'Овсяные хлопья', qty: 60, unit: 'г' },
+      { name: 'Молоко или вода', qty: 250, unit: 'мл' },
+      { name: 'Банан', qty: 1, unit: 'шт' },
+      { name: 'Яблоко', qty: 1, unit: 'шт' },
+      { name: 'Грецкие орехи', qty: 20, unit: 'г' },
+      { name: 'Мёд', qty: 1, unit: 'ч. л.' },
+    ],
     steps: [
       'Свари овсянку на молоке 5–7 минут, помешивая.',
       'Нарежь фрукты кусочками.',
@@ -126,8 +295,15 @@ export const DISHES: Dish[] = [
     nameRu: 'Омлет с сыром и ветчиной',
     category: 'breakfast',
     kcal: 400,
+    bju: { p: 19, f: 15, c: 47 },
     image: '/dishes/cheese-ham-omelette.jpg',
-    ingredients: ['Яйца — 3 шт', 'Молоко — 50 мл', 'Ветчина — 60 г', 'Сыр твёрдый — 40 г', 'Зелень, соль, перец'],
+    ingredients: [
+      { name: 'Яйца', qty: 3, unit: 'шт' },
+      { name: 'Молоко', qty: 50, unit: 'мл' },
+      { name: 'Ветчина', qty: 60, unit: 'г' },
+      { name: 'Сыр твёрдый', qty: 40, unit: 'г' },
+      { name: 'Зелень, соль, перец' },
+    ],
     steps: [
       'Взбей яйца с молоком и солью.',
       'Обжарь кубики ветчины на сковороде.',
@@ -141,8 +317,16 @@ export const DISHES: Dish[] = [
     nameRu: 'Сэндвич с тунцом на зерновом хлебе',
     category: 'breakfast',
     kcal: 380,
+    bju: { p: 17, f: 14, c: 47 },
     image: '/dishes/tuna-sandwich.jpg',
-    ingredients: ['Хлеб зерновой — 2 ломтика', 'Тунец в собственном соку — 1 банка', 'Йогурт греческий — 2 ст. л.', 'Огурец — ½ шт', 'Листья салата', 'Соль, перец'],
+    ingredients: [
+      { name: 'Хлеб зерновой', qty: 2, unit: 'ломтика' },
+      { name: 'Тунец в собственном соку', qty: 1, unit: 'банка' },
+      { name: 'Йогурт греческий', qty: 2, unit: 'ст. л.' },
+      { name: 'Огурец', qty: 0.5, unit: 'шт' },
+      { name: 'Листья салата' },
+      { name: 'Соль, перец' },
+    ],
     steps: [
       'Слей жидкость с тунца и разомни вилкой.',
       'Смешай тунец с йогуртом, солью и перцем.',
@@ -156,8 +340,15 @@ export const DISHES: Dish[] = [
     nameRu: 'Греческий йогурт с гранолой и мёдом',
     category: 'breakfast',
     kcal: 290,
+    bju: { p: 13, f: 11, c: 35 },
     image: '/dishes/greek-yogurt-granola.jpg',
-    ingredients: ['Йогурт греческий — 200 г', 'Гранола — 40 г', 'Мёд — 1 ст. л.', 'Ягоды — горсть', 'Мята для украшения'],
+    ingredients: [
+      { name: 'Йогурт греческий', qty: 200, unit: 'г' },
+      { name: 'Гранола', qty: 40, unit: 'г' },
+      { name: 'Мёд', qty: 1, unit: 'ст. л.' },
+      { name: 'Ягоды', note: 'горсть' },
+      { name: 'Мята для украшения' },
+    ],
     steps: [
       'Выложи йогурт в креманку.',
       'Добавь слой гранолы.',
@@ -171,8 +362,16 @@ export const DISHES: Dish[] = [
     nameRu: 'Сырный блин со шпинатом',
     category: 'breakfast',
     kcal: 330,
+    bju: { p: 16, f: 12, c: 40 },
     image: '/dishes/spinach-cheese-pancake.jpg',
-    ingredients: ['Сыр твёрдый — 60 г', 'Шпинат — 100 г', 'Яйца — 2 шт', 'Мука — 2 ст. л.', 'Молоко — 100 мл', 'Соль, мускатный орех'],
+    ingredients: [
+      { name: 'Сыр твёрдый', qty: 60, unit: 'г' },
+      { name: 'Шпинат', qty: 100, unit: 'г' },
+      { name: 'Яйца', qty: 2, unit: 'шт' },
+      { name: 'Мука', qty: 2, unit: 'ст. л.' },
+      { name: 'Молоко', qty: 100, unit: 'мл' },
+      { name: 'Соль, мускатный орех' },
+    ],
     steps: [
       'Взбей яйца с молоком и мукой до гладкого теста.',
       'Обжарь шпинат 1–2 минуты и вмешай в тесто.',
@@ -186,8 +385,15 @@ export const DISHES: Dish[] = [
     nameRu: 'Круассан с лососем и творожным сыром',
     category: 'breakfast',
     kcal: 420,
+    bju: { p: 19, f: 15, c: 52 },
     image: '/dishes/croissant-salmon.jpg',
-    ingredients: ['Круассан — 1 шт', 'Слабосолёный лосось — 60 г', 'Творожный сыр — 30 г', 'Огурец — 3 ломтика', 'Укроп, долька лимона'],
+    ingredients: [
+      { name: 'Круассан', qty: 1, unit: 'шт' },
+      { name: 'Слабосолёный лосось', qty: 60, unit: 'г' },
+      { name: 'Творожный сыр', qty: 30, unit: 'г' },
+      { name: 'Огурец', qty: 3, unit: 'ломтика' },
+      { name: 'Укроп, долька лимона' },
+    ],
     steps: [
       'Разрежь круассан вдоль, не до конца.',
       'Намажь творожным сыром обе половины.',
@@ -201,8 +407,15 @@ export const DISHES: Dish[] = [
     nameRu: 'Смузи-боул с семенами чиа',
     category: 'breakfast',
     kcal: 280,
+    bju: { p: 12, f: 9, c: 38 },
     image: '/dishes/smoothie-bowl.jpg',
-    ingredients: ['Замороженные ягоды — 150 г', 'Банан — 1 шт', 'Йогурт — 100 г', 'Семена чиа — 1 ст. л.', 'Овсяные хлопья — 1 ст. л.'],
+    ingredients: [
+      { name: 'Замороженные ягоды', qty: 150, unit: 'г' },
+      { name: 'Банан', qty: 1, unit: 'шт' },
+      { name: 'Йогурт', qty: 100, unit: 'г' },
+      { name: 'Семена чиа', qty: 1, unit: 'ст. л.' },
+      { name: 'Овсяные хлопья', qty: 1, unit: 'ст. л.' },
+    ],
     steps: [
       'Пробей ягоды, банан и йогурт в блендере до густого смузи.',
       'Дай семенам чиа набухнуть в смузи 5 минут.',
@@ -210,16 +423,22 @@ export const DISHES: Dish[] = [
       'Укрась чиа, хлопьями и ягодами.',
     ],
   },
-
-  // ==================== КУРИЦА ====================
   {
     id: 'chicken-teriyaki',
     nameEn: 'Chicken Teriyaki with rice and sesame',
     nameRu: 'Курица Терияки с рисом и кунжутом',
     category: 'chicken',
     kcal: 520,
+    bju: { p: 50, f: 19, c: 37 },
     image: '/dishes/chicken-teriyaki.jpg',
-    ingredients: ['Куриное бедро — 400 г', 'Соевый соус — 4 ст. л.', 'Мёд — 2 ст. л.', 'Рис — 150 г', 'Кунжут — 1 ч. л.', 'Чеснок — 2 зубчика'],
+    ingredients: [
+      { name: 'Куриное бедро', qty: 400, unit: 'г' },
+      { name: 'Соевый соус', qty: 4, unit: 'ст. л.' },
+      { name: 'Мёд', qty: 2, unit: 'ст. л.' },
+      { name: 'Рис', qty: 150, unit: 'г' },
+      { name: 'Кунжут', qty: 1, unit: 'ч. л.' },
+      { name: 'Чеснок', qty: 2, unit: 'зубчика' },
+    ],
     steps: [
       'Отвари рис до готовности.',
       'Обжарь курицу до золотистой корочки.',
@@ -233,8 +452,15 @@ export const DISHES: Dish[] = [
     nameRu: 'Салат Цезарь с курицей гриль',
     category: 'chicken',
     kcal: 450,
+    bju: { p: 47, f: 18, c: 25 },
     image: '/dishes/caesar-salad.jpg',
-    ingredients: ['Куриная грудка — 200 г', 'Салат романо — 1 пучок', 'Пармезан — 30 г', 'Сухарики — горсть', 'Соус цезарь — 3 ст. л.'],
+    ingredients: [
+      { name: 'Куриная грудка', qty: 200, unit: 'г' },
+      { name: 'Салат романо', qty: 1, unit: 'пучок' },
+      { name: 'Пармезан', qty: 30, unit: 'г' },
+      { name: 'Сухарики', note: 'горсть' },
+      { name: 'Соус цезарь', qty: 3, unit: 'ст. л.' },
+    ],
     steps: [
       'Обжарь грудку гриль по 4–5 минут с каждой стороны.',
       'Нарви романо и выложи в миску.',
@@ -248,8 +474,16 @@ export const DISHES: Dish[] = [
     nameRu: 'Курица в кисло-сладком соусе с перцем',
     category: 'chicken',
     kcal: 540,
+    bju: { p: 54, f: 21, c: 34 },
     image: '/dishes/sweet-sour-chicken.jpg',
-    ingredients: ['Куриная грудка — 400 г', 'Болгарский перец — 2 шт', 'Ананас — 150 г', 'Кетчуп — 3 ст. л.', 'Соевый соус — 2 ст. л.', 'Крахмал — 1 ст. л.'],
+    ingredients: [
+      { name: 'Куриная грудка', qty: 400, unit: 'г' },
+      { name: 'Болгарский перец', qty: 2, unit: 'шт' },
+      { name: 'Ананас', qty: 150, unit: 'г' },
+      { name: 'Кетчуп', qty: 3, unit: 'ст. л.' },
+      { name: 'Соевый соус', qty: 2, unit: 'ст. л.' },
+      { name: 'Крахмал', qty: 1, unit: 'ст. л.' },
+    ],
     steps: [
       'Нарежь курицу кубиками и обваляй в крахмале.',
       'Обжарь до румяной корочки.',
@@ -263,8 +497,16 @@ export const DISHES: Dish[] = [
     nameRu: 'Паста с курицей и грибами в сливках',
     category: 'chicken',
     kcal: 610,
+    bju: { p: 62, f: 24, c: 37 },
     image: '/dishes/chicken-mushroom-pasta.jpg',
-    ingredients: ['Паста — 120 г', 'Куриная грудка — 200 г', 'Шампиньоны — 200 г', 'Сливки 20% — 150 мл', 'Пармезан — 20 г', 'Чеснок — 1 зубчик'],
+    ingredients: [
+      { name: 'Паста', qty: 120, unit: 'г' },
+      { name: 'Куриная грудка', qty: 200, unit: 'г' },
+      { name: 'Шампиньоны', qty: 200, unit: 'г' },
+      { name: 'Сливки 20%', qty: 150, unit: 'мл' },
+      { name: 'Пармезан', qty: 20, unit: 'г' },
+      { name: 'Чеснок', qty: 1, unit: 'зубчик' },
+    ],
     steps: [
       'Отвари пасту до аль денте.',
       'Обжарь курицу кубиками, добавь грибы и чеснок.',
@@ -278,8 +520,15 @@ export const DISHES: Dish[] = [
     nameRu: 'Запечённые куриные крылышки BBQ',
     category: 'chicken',
     kcal: 560,
+    bju: { p: 58, f: 23, c: 30 },
     image: '/dishes/bbq-chicken-wings.jpg',
-    ingredients: ['Крылышки — 600 г', 'Соус BBQ — 5 ст. л.', 'Паприка — 1 ч. л.', 'Чесночный порошок — 1 ч. л.', 'Масло — 1 ст. л.'],
+    ingredients: [
+      { name: 'Крылышки', qty: 600, unit: 'г' },
+      { name: 'Соус BBQ', qty: 5, unit: 'ст. л.' },
+      { name: 'Паприка', qty: 1, unit: 'ч. л.' },
+      { name: 'Чесночный порошок', qty: 1, unit: 'ч. л.' },
+      { name: 'Масло', qty: 1, unit: 'ст. л.' },
+    ],
     steps: [
       'Замаринуй крылышки в специях и масле на 20 минут.',
       'Запекай при 200°C 25 минут.',
@@ -293,8 +542,15 @@ export const DISHES: Dish[] = [
     nameRu: 'Куриный суп с лапшой',
     category: 'chicken',
     kcal: 350,
+    bju: { p: 33, f: 13, c: 25 },
     image: '/dishes/chicken-noodle-soup.jpg',
-    ingredients: ['Куриные бёдра — 300 г', 'Лапша — 80 г', 'Морковь — 1 шт', 'Лук — 1 шт', 'Лавровый лист, зелень'],
+    ingredients: [
+      { name: 'Куриные бёдра', qty: 300, unit: 'г' },
+      { name: 'Лапша', qty: 80, unit: 'г' },
+      { name: 'Морковь', qty: 1, unit: 'шт' },
+      { name: 'Лук', qty: 1, unit: 'шт' },
+      { name: 'Лавровый лист, зелень' },
+    ],
     steps: [
       'Свари бульон из курицы 30 минут, снимая пену.',
       'Добавь морковь и лук, вари 10 минут.',
@@ -308,8 +564,15 @@ export const DISHES: Dish[] = [
     nameRu: 'Куриная грудка гриль с брокколи',
     category: 'chicken',
     kcal: 320,
+    bju: { p: 33, f: 13, c: 18 },
     image: '/dishes/grilled-chicken-broccoli.jpg',
-    ingredients: ['Куриная грудка — 250 г', 'Брокколи — 200 г', 'Оливковое масло — 1 ст. л.', 'Паприка, соль, перец', 'Лимон — ½ шт'],
+    ingredients: [
+      { name: 'Куриная грудка', qty: 250, unit: 'г' },
+      { name: 'Брокколи', qty: 200, unit: 'г' },
+      { name: 'Оливковое масло', qty: 1, unit: 'ст. л.' },
+      { name: 'Паприка, соль, перец' },
+      { name: 'Лимон', qty: 0.5, unit: 'шт' },
+    ],
     steps: [
       'Замаринуй грудку в масле и специях на 15 минут.',
       'Обжарь на гриль-сковороде по 5 минут с каждой стороны.',
@@ -323,8 +586,16 @@ export const DISHES: Dish[] = [
     nameRu: 'Курица Тикка Масала с рисом',
     category: 'chicken',
     kcal: 580,
+    bju: { p: 61, f: 24, c: 30 },
     image: '/dishes/chicken-tikka-masala.jpg',
-    ingredients: ['Куриные бёдра — 400 г', 'Томаты — 300 г', 'Сливки — 100 мл', 'Паста тикка масала — 2 ст. л.', 'Рис басмати — 150 г', 'Имбирь, чеснок'],
+    ingredients: [
+      { name: 'Куриные бёдра', qty: 400, unit: 'г' },
+      { name: 'Томаты', qty: 300, unit: 'г' },
+      { name: 'Сливки', qty: 100, unit: 'мл' },
+      { name: 'Паста тикка масала', qty: 2, unit: 'ст. л.' },
+      { name: 'Рис басмати', qty: 150, unit: 'г' },
+      { name: 'Имбирь, чеснок' },
+    ],
     steps: [
       'Замаринуй курицу в пасте тикка на 30 минут.',
       'Обжарь до румяности.',
@@ -338,8 +609,16 @@ export const DISHES: Dish[] = [
     nameRu: 'Куриный фахитас с тортильями',
     category: 'chicken',
     kcal: 510,
+    bju: { p: 51, f: 20, c: 32 },
     image: '/dishes/chicken-fajitas.jpg',
-    ingredients: ['Куриная грудка — 300 г', 'Тортильи — 4 шт', 'Болгарский перец — 2 шт', 'Лук — 1 шт', 'Специи фахита — 1 ст. л.', 'Лайм, сметана'],
+    ingredients: [
+      { name: 'Куриная грудка', qty: 300, unit: 'г' },
+      { name: 'Тортильи', qty: 4, unit: 'шт' },
+      { name: 'Болгарский перец', qty: 2, unit: 'шт' },
+      { name: 'Лук', qty: 1, unit: 'шт' },
+      { name: 'Специи фахита', qty: 1, unit: 'ст. л.' },
+      { name: 'Лайм, сметана' },
+    ],
     steps: [
       'Нарежь курицу полосками и замаринуй в специях с лаймом.',
       'Обжарь на сильном огне 5–7 минут.',
@@ -353,8 +632,16 @@ export const DISHES: Dish[] = [
     nameRu: 'Курица вок с овощами',
     category: 'chicken',
     kcal: 470,
+    bju: { p: 49, f: 19, c: 26 },
     image: '/dishes/chicken-stir-fry.jpg',
-    ingredients: ['Куриная грудка — 300 г', 'Овощная смесь вок — 400 г', 'Соевый соус — 3 ст. л.', 'Кунжутное масло — 1 ч. л.', 'Имбирь — 20 г', 'Чеснок — 2 зубчика'],
+    ingredients: [
+      { name: 'Куриная грудка', qty: 300, unit: 'г' },
+      { name: 'Овощная смесь вок', qty: 400, unit: 'г' },
+      { name: 'Соевый соус', qty: 3, unit: 'ст. л.' },
+      { name: 'Кунжутное масло', qty: 1, unit: 'ч. л.' },
+      { name: 'Имбирь', qty: 20, unit: 'г' },
+      { name: 'Чеснок', qty: 2, unit: 'зубчика' },
+    ],
     steps: [
       'Раскали вок с маслом.',
       'Обжарь курицу полосками 4–5 минут.',
@@ -362,16 +649,21 @@ export const DISHES: Dish[] = [
       'Влей соевый соус и прогрей 1 минуту.',
     ],
   },
-
-  // ==================== МЯСО ====================
   {
     id: 'pasta-carbonara',
     nameEn: 'Pasta Carbonara with crispy bacon',
     nameRu: 'Паста Карбонара с хрустящим беконом',
     category: 'meat',
     kcal: 650,
+    bju: { p: 59, f: 28, c: 41 },
     image: '/dishes/pasta-carbonara.jpg',
-    ingredients: ['Спагетти — 120 г', 'Бекон — 100 г', 'Яичные желтки — 2 шт', 'Пармезан — 40 г', 'Чёрный перец, чеснок'],
+    ingredients: [
+      { name: 'Спагетти', qty: 120, unit: 'г' },
+      { name: 'Бекон', qty: 100, unit: 'г' },
+      { name: 'Яичные желтки', qty: 2, unit: 'шт' },
+      { name: 'Пармезан', qty: 40, unit: 'г' },
+      { name: 'Чёрный перец, чеснок' },
+    ],
     steps: [
       'Отвари спагетти до аль денте.',
       'Обжарь бекон до хрустящей корочки.',
@@ -385,8 +677,15 @@ export const DISHES: Dish[] = [
     nameRu: 'Стейк из говядины с розмарином',
     category: 'meat',
     kcal: 680,
+    bju: { p: 62, f: 29, c: 43 },
     image: '/dishes/beef-steak.jpg',
-    ingredients: ['Стейк рибай — 300 г', 'Розмарин — 2 веточки', 'Чеснок — 3 зубчика', 'Сливочное масло — 30 г', 'Соль крупная, перец'],
+    ingredients: [
+      { name: 'Стейк рибай', qty: 300, unit: 'г' },
+      { name: 'Розмарин', qty: 2, unit: 'веточки' },
+      { name: 'Чеснок', qty: 3, unit: 'зубчика' },
+      { name: 'Сливочное масло', qty: 30, unit: 'г' },
+      { name: 'Соль крупная, перец' },
+    ],
     steps: [
       'Дай стейку согреться до комнатной температуры 30 минут.',
       'Жарь на раскалённой сковороде по 2–3 минуты с каждой стороны.',
@@ -400,8 +699,16 @@ export const DISHES: Dish[] = [
     nameRu: 'Лапша соба с говядиной и овощами',
     category: 'meat',
     kcal: 520,
+    bju: { p: 50, f: 23, c: 28 },
     image: '/dishes/soba-beef.jpg',
-    ingredients: ['Лапша соба — 100 г', 'Говядина — 200 г', 'Болгарский перец — 1 шт', 'Морковь — 1 шт', 'Соевый соус — 3 ст. л.', 'Кунжут'],
+    ingredients: [
+      { name: 'Лапша соба', qty: 100, unit: 'г' },
+      { name: 'Говядина', qty: 200, unit: 'г' },
+      { name: 'Болгарский перец', qty: 1, unit: 'шт' },
+      { name: 'Морковь', qty: 1, unit: 'шт' },
+      { name: 'Соевый соус', qty: 3, unit: 'ст. л.' },
+      { name: 'Кунжут' },
+    ],
     steps: [
       'Отвари собу 4 минуты и промой холодной водой.',
       'Обжарь тонкие ломтики говядины на сильном огне.',
@@ -415,8 +722,15 @@ export const DISHES: Dish[] = [
     nameRu: 'Классический бургер с говядиной',
     category: 'meat',
     kcal: 750,
+    bju: { p: 76, f: 36, c: 31 },
     image: '/dishes/beef-burger.jpg',
-    ingredients: ['Булочка бриошь — 1 шт', 'Котлета из говядины — 150 г', 'Чеддер — 2 ломтика', 'Помидор, маринованный огурец', 'Бургерный соус, салат'],
+    ingredients: [
+      { name: 'Булочка бриошь', qty: 1, unit: 'шт' },
+      { name: 'Котлета из говядины', qty: 150, unit: 'г' },
+      { name: 'Чеддер', qty: 2, unit: 'ломтика' },
+      { name: 'Помидор, маринованный огурец' },
+      { name: 'Бургерный соус, салат' },
+    ],
     steps: [
       'Сформируй котлету и посоли снаружи.',
       'Жарь по 3–4 минуты с каждой стороны, в конце накрой сыром.',
@@ -430,8 +744,16 @@ export const DISHES: Dish[] = [
     nameRu: 'Спагетти Болоньезе с пармезаном',
     category: 'meat',
     kcal: 640,
+    bju: { p: 59, f: 27, c: 40 },
     image: '/dishes/spaghetti-bolognese.jpg',
-    ingredients: ['Спагетти — 120 г', 'Фарш говяжий — 250 г', 'Томаты в соку — 400 г', 'Лук, морковь, сельдерей — по 1 шт', 'Пармезан — 30 г', 'Базилик'],
+    ingredients: [
+      { name: 'Спагетти', qty: 120, unit: 'г' },
+      { name: 'Фарш говяжий', qty: 250, unit: 'г' },
+      { name: 'Томаты в соку', qty: 400, unit: 'г' },
+      { name: 'Лук, морковь, сельдерей', qty: 1, unit: 'шт' },
+      { name: 'Пармезан', qty: 30, unit: 'г' },
+      { name: 'Базилик' },
+    ],
     steps: [
       'Обжарь мелко нарезанные овощи 5 минут.',
       'Добавь фарш, разбивай комочки, жарь 7 минут.',
@@ -445,8 +767,15 @@ export const DISHES: Dish[] = [
     nameRu: 'Свиные рёбрышки барбекю',
     category: 'meat',
     kcal: 820,
+    bju: { p: 77, f: 36, c: 47 },
     image: '/dishes/bbq-pork-ribs.jpg',
-    ingredients: ['Свиные рёбра — 800 г', 'Соус BBQ — 6 ст. л.', 'Паприка копчёная — 1 ст. л.', 'Чесночный порошок — 1 ч. л.', 'Мёд — 1 ст. л.'],
+    ingredients: [
+      { name: 'Свиные рёбра', qty: 800, unit: 'г' },
+      { name: 'Соус BBQ', qty: 6, unit: 'ст. л.' },
+      { name: 'Паприка копчёная', qty: 1, unit: 'ст. л.' },
+      { name: 'Чесночный порошок', qty: 1, unit: 'ч. л.' },
+      { name: 'Мёд', qty: 1, unit: 'ст. л.' },
+    ],
     steps: [
       'Натри рёбра специями и заверни в фольгу.',
       'Запекай при 160°C 2 часа.',
@@ -460,8 +789,16 @@ export const DISHES: Dish[] = [
     nameRu: 'Бефстроганов с картофельным пюре',
     category: 'meat',
     kcal: 620,
+    bju: { p: 57, f: 26, c: 40 },
     image: '/dishes/beef-stroganoff.jpg',
-    ingredients: ['Говяжья вырезка — 300 г', 'Шампиньоны — 200 г', 'Лук — 1 шт', 'Сметана — 3 ст. л.', 'Картофель — 500 г', 'Молоко, масло'],
+    ingredients: [
+      { name: 'Говяжья вырезка', qty: 300, unit: 'г' },
+      { name: 'Шампиньоны', qty: 200, unit: 'г' },
+      { name: 'Лук', qty: 1, unit: 'шт' },
+      { name: 'Сметана', qty: 3, unit: 'ст. л.' },
+      { name: 'Картофель', qty: 500, unit: 'г' },
+      { name: 'Молоко, масло' },
+    ],
     steps: [
       'Отвари картофель и сделай пюре с молоком.',
       'Обжарь полоски говядины на сильном огне 3 минуты.',
@@ -475,8 +812,15 @@ export const DISHES: Dish[] = [
     nameRu: 'Свиная отбивная с запечённым картофелем',
     category: 'meat',
     kcal: 700,
+    bju: { p: 64, f: 30, c: 44 },
     image: '/dishes/pork-chops.jpg',
-    ingredients: ['Свиные отбивные — 2 шт', 'Картофель — 400 г', 'Розмарин — 2 веточки', 'Оливковое масло — 2 ст. л.', 'Чеснок — 3 зубчика'],
+    ingredients: [
+      { name: 'Свиные отбивные', qty: 2, unit: 'шт' },
+      { name: 'Картофель', qty: 400, unit: 'г' },
+      { name: 'Розмарин', qty: 2, unit: 'веточки' },
+      { name: 'Оливковое масло', qty: 2, unit: 'ст. л.' },
+      { name: 'Чеснок', qty: 3, unit: 'зубчика' },
+    ],
     steps: [
       'Отбей отбивные, посоли и поперчи.',
       'Картофель нарежь дольками и запекай с розмарином 35 минут при 200°C.',
@@ -490,8 +834,16 @@ export const DISHES: Dish[] = [
     nameRu: 'Мясные тефтели в томатном соусе',
     category: 'meat',
     kcal: 540,
+    bju: { p: 50, f: 23, c: 33 },
     image: '/dishes/meatballs-tomato.jpg',
-    ingredients: ['Фарш смешанный — 400 г', 'Рис — 60 г', 'Лук — 1 шт', 'Томаты в соку — 400 г', 'Сметана — 2 ст. л.', 'Лавровый лист'],
+    ingredients: [
+      { name: 'Фарш смешанный', qty: 400, unit: 'г' },
+      { name: 'Рис', qty: 60, unit: 'г' },
+      { name: 'Лук', qty: 1, unit: 'шт' },
+      { name: 'Томаты в соку', qty: 400, unit: 'г' },
+      { name: 'Сметана', qty: 2, unit: 'ст. л.' },
+      { name: 'Лавровый лист' },
+    ],
     steps: [
       'Смешай фарш с полуготовым рисом и луком.',
       'Сформируй тефтели.',
@@ -505,8 +857,16 @@ export const DISHES: Dish[] = [
     nameRu: 'Тако с говядиной и сальсой',
     category: 'meat',
     kcal: 560,
+    bju: { p: 51, f: 24, c: 35 },
     image: '/dishes/beef-tacos.jpg',
-    ingredients: ['Кукурузные тортильи — 6 шт', 'Говяжий фарш — 300 г', 'Помидоры — 2 шт', 'Лук красный — ½ шт', 'Кинза, лайм', 'Специи тако'],
+    ingredients: [
+      { name: 'Кукурузные тортильи', qty: 6, unit: 'шт' },
+      { name: 'Говяжий фарш', qty: 300, unit: 'г' },
+      { name: 'Помидоры', qty: 2, unit: 'шт' },
+      { name: 'Лук красный', qty: 0.5, unit: 'шт' },
+      { name: 'Кинза, лайм' },
+      { name: 'Специи тако' },
+    ],
     steps: [
       'Обжарь фарш со специями тако 7–8 минут.',
       'Сделай сальсу: помидоры, лук, кинза и сок лайма.',
@@ -514,16 +874,22 @@ export const DISHES: Dish[] = [
       'Собери тако: фарш, сальса и долька лайма.',
     ],
   },
-
-  // ==================== РЫБА И МОРЕПРОДУКТЫ ====================
   {
     id: 'baked-salmon-quinoa',
     nameEn: 'Baked salmon with quinoa and lemon',
     nameRu: 'Запечённый лосось с киноа и лимоном',
     category: 'fish',
     kcal: 520,
+    bju: { p: 53, f: 18, c: 37 },
     image: '/dishes/baked-salmon-quinoa.jpg',
-    ingredients: ['Филе лосося — 250 г', 'Киноа — 100 г', 'Лимон — ½ шт', 'Оливковое масло — 1 ст. л.', 'Чеснок, укроп', 'Спаржа — 100 г'],
+    ingredients: [
+      { name: 'Филе лосося', qty: 250, unit: 'г' },
+      { name: 'Киноа', qty: 100, unit: 'г' },
+      { name: 'Лимон', qty: 0.5, unit: 'шт' },
+      { name: 'Оливковое масло', qty: 1, unit: 'ст. л.' },
+      { name: 'Чеснок, укроп' },
+      { name: 'Спаржа', qty: 100, unit: 'г' },
+    ],
     steps: [
       'Отвари киноа 15 минут.',
       'Филе сбрызни маслом и лимоном, посыпь чесноком.',
@@ -537,8 +903,15 @@ export const DISHES: Dish[] = [
     nameRu: 'Запечённая дорадо с травами',
     category: 'fish',
     kcal: 380,
+    bju: { p: 40, f: 13, c: 26 },
     image: '/dishes/baked-dorado.jpg',
-    ingredients: ['Дорадо — 1 шт (400 г)', 'Лимон — 1 шт', 'Тимьян и розмарин — по 2 веточки', 'Оливковое масло — 1 ст. л.', 'Соль крупная'],
+    ingredients: [
+      { name: 'Дорадо', qty: 1, unit: 'шт', note: '400 г' },
+      { name: 'Лимон', qty: 1, unit: 'шт' },
+      { name: 'Тимьян и розмарин', qty: 2, unit: 'веточки' },
+      { name: 'Оливковое масло', qty: 1, unit: 'ст. л.' },
+      { name: 'Соль крупная' },
+    ],
     steps: [
       'Почисти рыбу и сделай надрезы на коже.',
       'Нафаршируй лимоном и травами.',
@@ -552,8 +925,16 @@ export const DISHES: Dish[] = [
     nameRu: 'Паста с креветками в чесночном соусе',
     category: 'fish',
     kcal: 640,
+    bju: { p: 64, f: 21, c: 49 },
     image: '/dishes/shrimp-pasta.jpg',
-    ingredients: ['Паста — 120 г', 'Креветки — 200 г', 'Сливочное масло — 40 г', 'Чеснок — 3 зубчика', 'Сливки — 100 мл', 'Петрушка, лимон'],
+    ingredients: [
+      { name: 'Паста', qty: 120, unit: 'г' },
+      { name: 'Креветки', qty: 200, unit: 'г' },
+      { name: 'Сливочное масло', qty: 40, unit: 'г' },
+      { name: 'Чеснок', qty: 3, unit: 'зубчика' },
+      { name: 'Сливки', qty: 100, unit: 'мл' },
+      { name: 'Петрушка, лимон' },
+    ],
     steps: [
       'Отвари пасту до аль денте.',
       'Растопи масло и обжарь чеснок 1 минуту.',
@@ -567,8 +948,16 @@ export const DISHES: Dish[] = [
     nameRu: 'Сет суши-роллов',
     category: 'fish',
     kcal: 450,
+    bju: { p: 43, f: 14, c: 38 },
     image: '/dishes/sushi-set.jpg',
-    ingredients: ['Рис для суши — 300 г', 'Нори — 4 листа', 'Лосось — 150 г', 'Огурец, авокадо', 'Сливочный сыр — 60 г', 'Соевый соус, васаби, имбирь'],
+    ingredients: [
+      { name: 'Рис для суши', qty: 300, unit: 'г' },
+      { name: 'Нори', qty: 4, unit: 'листа' },
+      { name: 'Лосось', qty: 150, unit: 'г' },
+      { name: 'Огурец, авокадо' },
+      { name: 'Сливочный сыр', qty: 60, unit: 'г' },
+      { name: 'Соевый соус, васаби, имбирь' },
+    ],
     steps: [
       'Свари суши-рис и заправь уксусной смесью.',
       'Распредели рис по нори и выложи начинку.',
@@ -582,8 +971,16 @@ export const DISHES: Dish[] = [
     nameRu: 'Поке-боул с лососем',
     category: 'fish',
     kcal: 480,
+    bju: { p: 51, f: 17, c: 31 },
     image: '/dishes/poke-bowl.jpg',
-    ingredients: ['Лосось суши-класса — 150 г', 'Рис — 150 г', 'Авокадо — ½ шт', 'Эдамаме — 50 г', 'Соевый соус, кунжутное масло', 'Кунжут, нори'],
+    ingredients: [
+      { name: 'Лосось суши-класса', qty: 150, unit: 'г' },
+      { name: 'Рис', qty: 150, unit: 'г' },
+      { name: 'Авокадо', qty: 0.5, unit: 'шт' },
+      { name: 'Эдамаме', qty: 50, unit: 'г' },
+      { name: 'Соевый соус, кунжутное масло' },
+      { name: 'Кунжут, нори' },
+    ],
     steps: [
       'Отвари рис и остуди.',
       'Нарежь лосось кубиками и маринуй в соевом соусе с маслом 10 минут.',
@@ -597,8 +994,16 @@ export const DISHES: Dish[] = [
     nameRu: 'Жареные кольца кальмара с соусом',
     category: 'fish',
     kcal: 390,
+    bju: { p: 36, f: 12, c: 35 },
     image: '/dishes/fried-calamari.jpg',
-    ingredients: ['Кальмары — 400 г', 'Мука — 4 ст. л.', 'Крахмал — 2 ст. л.', 'Масло для фритюра', 'Лимон', 'Чесночный соус'],
+    ingredients: [
+      { name: 'Кальмары', qty: 400, unit: 'г' },
+      { name: 'Мука', qty: 4, unit: 'ст. л.' },
+      { name: 'Крахмал', qty: 2, unit: 'ст. л.' },
+      { name: 'Масло для фритюра' },
+      { name: 'Лимон' },
+      { name: 'Чесночный соус' },
+    ],
     steps: [
       'Нарежь кальмаров кольцами и обсуши.',
       'Смешай муку с крахмалом и солью.',
@@ -612,8 +1017,15 @@ export const DISHES: Dish[] = [
     nameRu: 'Стейк тунца в кунжутной корочке',
     category: 'fish',
     kcal: 410,
+    bju: { p: 43, f: 14, c: 28 },
     image: '/dishes/tuna-steak-sesame.jpg',
-    ingredients: ['Стейк тунца — 250 г', 'Кунжут белый и чёрный — 3 ст. л.', 'Соевый соус — 2 ст. л.', 'Кунжутное масло — 1 ч. л.', 'Васаби-майонез'],
+    ingredients: [
+      { name: 'Стейк тунца', qty: 250, unit: 'г' },
+      { name: 'Кунжут белый и чёрный', qty: 3, unit: 'ст. л.' },
+      { name: 'Соевый соус', qty: 2, unit: 'ст. л.' },
+      { name: 'Кунжутное масло', qty: 1, unit: 'ч. л.' },
+      { name: 'Васаби-майонез' },
+    ],
     steps: [
       'Обмакни стейк в соевый соус.',
       'Обваляй в смеси кунжута со всех сторон.',
@@ -627,8 +1039,16 @@ export const DISHES: Dish[] = [
     nameRu: 'Мидии в сливочном соусе с вином',
     category: 'fish',
     kcal: 380,
+    bju: { p: 40, f: 13, c: 26 },
     image: '/dishes/mussels-cream.jpg',
-    ingredients: ['Мидии — 500 г', 'Белое сухое вино — 150 мл', 'Сливки — 150 мл', 'Чеснок — 3 зубчика', 'Шалот — 1 шт', 'Петрушка'],
+    ingredients: [
+      { name: 'Мидии', qty: 500, unit: 'г' },
+      { name: 'Белое сухое вино', qty: 150, unit: 'мл' },
+      { name: 'Сливки', qty: 150, unit: 'мл' },
+      { name: 'Чеснок', qty: 3, unit: 'зубчика' },
+      { name: 'Шалот', qty: 1, unit: 'шт' },
+      { name: 'Петрушка' },
+    ],
     steps: [
       'Обжарь шалот и чеснок в масле.',
       'Влей вино и доведи до кипения.',
@@ -642,8 +1062,16 @@ export const DISHES: Dish[] = [
     nameRu: 'Суп Том Ям с креветками',
     category: 'fish',
     kcal: 350,
+    bju: { p: 33, f: 11, c: 30 },
     image: '/dishes/tom-yum.jpg',
-    ingredients: ['Креветки — 200 г', 'Паста том ям — 2 ст. л.', 'Кокосовое молоко — 200 мл', 'Лемонграсс — 1 стебель', 'Шампиньоны — 100 г', 'Лайм, рыбный соус'],
+    ingredients: [
+      { name: 'Креветки', qty: 200, unit: 'г' },
+      { name: 'Паста том ям', qty: 2, unit: 'ст. л.' },
+      { name: 'Кокосовое молоко', qty: 200, unit: 'мл' },
+      { name: 'Лемонграсс', qty: 1, unit: 'стебель' },
+      { name: 'Шампиньоны', qty: 100, unit: 'г' },
+      { name: 'Лайм, рыбный соус' },
+    ],
     steps: [
       'Вскипяти 500 мл воды с лемонграссом и пастой том ям.',
       'Добавь грибы и вари 3 минуты.',
@@ -657,8 +1085,16 @@ export const DISHES: Dish[] = [
     nameRu: 'Фиш-энд-чипс с тартаром',
     category: 'fish',
     kcal: 780,
+    bju: { p: 75, f: 25, c: 64 },
     image: '/dishes/fish-and-chips.jpg',
-    ingredients: ['Треска — 300 г', 'Картофель — 500 г', 'Мука — 100 г', 'Пиво светлое — 150 мл', 'Масло для фритюра', 'Тартар: майонез, огурец, каперсы'],
+    ingredients: [
+      { name: 'Треска', qty: 300, unit: 'г' },
+      { name: 'Картофель', qty: 500, unit: 'г' },
+      { name: 'Мука', qty: 100, unit: 'г' },
+      { name: 'Пиво светлое', qty: 150, unit: 'мл' },
+      { name: 'Масло для фритюра' },
+      { name: 'Тартар: майонез, огурец, каперсы' },
+    ],
     steps: [
       'Нарежь картофель и обжарь во фритюре до золотистости.',
       'Сделай кляр из муки и ледяного пива.',
@@ -666,16 +1102,22 @@ export const DISHES: Dish[] = [
       'Подавай с домашним тартаром и долькой лимона.',
     ],
   },
-
-  // ==================== ВЕГЕТАРИАНСКОЕ И ВЕГАН ====================
   {
     id: 'crispy-tofu',
     nameEn: 'Asian style crispy tofu with rice',
     nameRu: 'Тофу в азиатском стиле с рисом',
     category: 'veg',
     kcal: 440,
+    bju: { p: 17, f: 18, c: 53 },
     image: '/dishes/crispy-tofu.jpg',
-    ingredients: ['Тофу плотный — 300 г', 'Рис — 150 г', 'Соевый соус — 3 ст. л.', 'Крахмал кукурузный — 3 ст. л.', 'Кунжутное масло, чеснок', 'Зелёный лук, кунжут'],
+    ingredients: [
+      { name: 'Тофу плотный', qty: 300, unit: 'г' },
+      { name: 'Рис', qty: 150, unit: 'г' },
+      { name: 'Соевый соус', qty: 3, unit: 'ст. л.' },
+      { name: 'Крахмал кукурузный', qty: 3, unit: 'ст. л.' },
+      { name: 'Кунжутное масло, чеснок' },
+      { name: 'Зелёный лук, кунжут' },
+    ],
     steps: [
       'Нарежь тофу кубиками и обваляй в крахмале.',
       'Обжарь до хрустящей корочки со всех сторон.',
@@ -689,8 +1131,16 @@ export const DISHES: Dish[] = [
     nameRu: 'Крем-суп из тыквы с семечками',
     category: 'veg',
     kcal: 230,
+    bju: { p: 9, f: 9, c: 28 },
     image: '/dishes/pumpkin-soup.jpg',
-    ingredients: ['Тыква — 600 г', 'Лук — 1 шт', 'Сливки — 100 мл', 'Овощной бульон — 400 мл', 'Тыквенные семечки — 2 ст. л.', 'Мускатный орех'],
+    ingredients: [
+      { name: 'Тыква', qty: 600, unit: 'г' },
+      { name: 'Лук', qty: 1, unit: 'шт' },
+      { name: 'Сливки', qty: 100, unit: 'мл' },
+      { name: 'Овощной бульон', qty: 400, unit: 'мл' },
+      { name: 'Тыквенные семечки', qty: 2, unit: 'ст. л.' },
+      { name: 'Мускатный орех' },
+    ],
     steps: [
       'Обжарь лук, добавь кубики тыквы.',
       'Влей бульон и вари 20 минут до мягкости.',
@@ -704,8 +1154,16 @@ export const DISHES: Dish[] = [
     nameRu: 'Греческий салат с фетой',
     category: 'veg',
     kcal: 280,
+    bju: { p: 10, f: 10, c: 38 },
     image: '/dishes/greek-salad.jpg',
-    ingredients: ['Помидоры — 3 шт', 'Огурец — 1 шт', 'Фета — 100 г', 'Оливки — горсть', 'Красный лук — ¼ шт', 'Оливковое масло, орегано'],
+    ingredients: [
+      { name: 'Помидоры', qty: 3, unit: 'шт' },
+      { name: 'Огурец', qty: 1, unit: 'шт' },
+      { name: 'Фета', qty: 100, unit: 'г' },
+      { name: 'Оливки', note: 'горсть' },
+      { name: 'Красный лук', qty: 0.25, unit: 'шт' },
+      { name: 'Оливковое масло, орегано' },
+    ],
     steps: [
       'Нарежь помидоры и огурец крупными кусками.',
       'Добавь лук полукольцами и оливки.',
@@ -719,8 +1177,15 @@ export const DISHES: Dish[] = [
     nameRu: 'Пицца Маргарита с базиликом',
     category: 'veg',
     kcal: 580,
+    bju: { p: 23, f: 24, c: 68 },
     image: '/dishes/margherita-pizza.jpg',
-    ingredients: ['Тесто для пиццы — 250 г', 'Томаты в соку — 150 г', 'Моцарелла — 150 г', 'Базилик — пучок', 'Оливковое масло — 1 ст. л.'],
+    ingredients: [
+      { name: 'Тесто для пиццы', qty: 250, unit: 'г' },
+      { name: 'Томаты в соку', qty: 150, unit: 'г' },
+      { name: 'Моцарелла', qty: 150, unit: 'г' },
+      { name: 'Базилик', note: 'пучок' },
+      { name: 'Оливковое масло', qty: 1, unit: 'ст. л.' },
+    ],
     steps: [
       'Разогрей духовку с противнем до 250°C.',
       'Раскатай тесто и смажь томатным соусом.',
@@ -734,8 +1199,15 @@ export const DISHES: Dish[] = [
     nameRu: 'Ролл с фалафелем и овощами',
     category: 'veg',
     kcal: 460,
+    bju: { p: 18, f: 19, c: 54 },
     image: '/dishes/falafel-wrap.jpg',
-    ingredients: ['Фалафель — 6 шт', 'Лаваш или тортилья — 2 шт', 'Хумус — 3 ст. л.', 'Помидор, огурец, салат', 'Тахини-соус — 2 ст. л.'],
+    ingredients: [
+      { name: 'Фалафель', qty: 6, unit: 'шт' },
+      { name: 'Лаваш или тортилья', qty: 2, unit: 'шт' },
+      { name: 'Хумус', qty: 3, unit: 'ст. л.' },
+      { name: 'Помидор, огурец, салат' },
+      { name: 'Тахини-соус', qty: 2, unit: 'ст. л.' },
+    ],
     steps: [
       'Разогрей фалафель в духовке 8 минут.',
       'Смажь лаваш хумусом.',
@@ -749,8 +1221,16 @@ export const DISHES: Dish[] = [
     nameRu: 'Грибное ризотто с пармезаном',
     category: 'veg',
     kcal: 540,
+    bju: { p: 21, f: 22, c: 65 },
     image: '/dishes/mushroom-risotto.jpg',
-    ingredients: ['Рис арборио — 150 г', 'Шампиньоны — 250 г', 'Белое вино — 80 мл', 'Овощной бульон — 600 мл', 'Пармезан — 30 г', 'Сливочное масло, шалот'],
+    ingredients: [
+      { name: 'Рис арборио', qty: 150, unit: 'г' },
+      { name: 'Шампиньоны', qty: 250, unit: 'г' },
+      { name: 'Белое вино', qty: 80, unit: 'мл' },
+      { name: 'Овощной бульон', qty: 600, unit: 'мл' },
+      { name: 'Пармезан', qty: 30, unit: 'г' },
+      { name: 'Сливочное масло, шалот' },
+    ],
     steps: [
       'Обжарь грибы до золотистости и отложи.',
       'Пассеруй шалот, добавь рис и обжарь 1 минуту.',
@@ -764,8 +1244,16 @@ export const DISHES: Dish[] = [
     nameRu: 'Запечённые корнеплоды с тимьяном',
     category: 'veg',
     kcal: 260,
+    bju: { p: 10, f: 11, c: 30 },
     image: '/dishes/roasted-roots.jpg',
-    ingredients: ['Морковь — 3 шт', 'Свёкла — 2 шт', 'Пастернак — 2 шт', 'Оливковое масло — 2 ст. л.', 'Тимьян — 4 веточки', 'Мёд — 1 ч. л.'],
+    ingredients: [
+      { name: 'Морковь', qty: 3, unit: 'шт' },
+      { name: 'Свёкла', qty: 2, unit: 'шт' },
+      { name: 'Пастернак', qty: 2, unit: 'шт' },
+      { name: 'Оливковое масло', qty: 2, unit: 'ст. л.' },
+      { name: 'Тимьян', qty: 4, unit: 'веточки' },
+      { name: 'Мёд', qty: 1, unit: 'ч. л.' },
+    ],
     steps: [
       'Нарежь корнеплоды крупными брусками.',
       'Смешай с маслом, тимьяном и солью.',
@@ -779,8 +1267,15 @@ export const DISHES: Dish[] = [
     nameRu: 'Салат Капрезе с моцареллой',
     category: 'veg',
     kcal: 300,
+    bju: { p: 11, f: 11, c: 39 },
     image: '/dishes/caprese-salad.jpg',
-    ingredients: ['Помидоры — 3 шт', 'Моцарелла — 200 г', 'Базилик свежий — пучок', 'Оливковое масло — 2 ст. л.', 'Бальзамический крем'],
+    ingredients: [
+      { name: 'Помидоры', qty: 3, unit: 'шт' },
+      { name: 'Моцарелла', qty: 200, unit: 'г' },
+      { name: 'Базилик свежий', note: 'пучок' },
+      { name: 'Оливковое масло', qty: 2, unit: 'ст. л.' },
+      { name: 'Бальзамический крем' },
+    ],
     steps: [
       'Нарежь помидоры и моцареллу кружками по 5 мм.',
       'Выложи в шахматном порядке с листьями базилика.',
@@ -794,8 +1289,16 @@ export const DISHES: Dish[] = [
     nameRu: 'Баклажаны пармиджано',
     category: 'veg',
     kcal: 420,
+    bju: { p: 16, f: 17, c: 51 },
     image: '/dishes/eggplant-parmesan.jpg',
-    ingredients: ['Баклажаны — 2 шт', 'Томаты в соку — 400 г', 'Моцарелла — 150 г', 'Пармезан — 40 г', 'Базилик, чеснок', 'Мука для панировки'],
+    ingredients: [
+      { name: 'Баклажаны', qty: 2, unit: 'шт' },
+      { name: 'Томаты в соку', qty: 400, unit: 'г' },
+      { name: 'Моцарелла', qty: 150, unit: 'г' },
+      { name: 'Пармезан', qty: 40, unit: 'г' },
+      { name: 'Базилик, чеснок' },
+      { name: 'Мука для панировки' },
+    ],
     steps: [
       'Нарежь баклажаны пластами, посоли на 20 минут и обсуши.',
       'Обваляй в муке и обжарь до румяности.',
@@ -809,8 +1312,16 @@ export const DISHES: Dish[] = [
     nameRu: 'Боул с нутом и бататом',
     category: 'veg',
     kcal: 470,
+    bju: { p: 18, f: 18, c: 59 },
     image: '/dishes/buddha-bowl.jpg',
-    ingredients: ['Нут отварной — 200 г', 'Батат — 200 г', 'Киноа — 80 г', 'Авокадо — ½ шт', 'Шпинат — горсть', 'Тахини-заправка, паприка'],
+    ingredients: [
+      { name: 'Нут отварной', qty: 200, unit: 'г' },
+      { name: 'Батат', qty: 200, unit: 'г' },
+      { name: 'Киноа', qty: 80, unit: 'г' },
+      { name: 'Авокадо', qty: 0.5, unit: 'шт' },
+      { name: 'Шпинат', note: 'горсть' },
+      { name: 'Тахини-заправка, паприка' },
+    ],
     steps: [
       'Запеки кубики батата со специями 25 минут.',
       'Отвари киноа.',

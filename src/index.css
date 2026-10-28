@@ -1,24 +1,131 @@
 @import 'tailwindcss';
 @import '@fontsource-variable/inter';
 
-@theme {
+/*
+ * Семантические токены темы. Значения — CSS-переменные, которые
+ * переопределяются атрибутом [data-theme] на <html>, поэтому смена темы
+ * работает на лету без перезагрузки. @theme inline заставляет утилиты
+ * Tailwind ссылаться на переменные (bg-app → background-color: var(--app)).
+ */
+@theme inline {
   --font-sans: 'Inter Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
 
-  /* Фирменная палитра СканРецепт — тёплый терракотовый оранжевый */
-  --color-brand-50: #fff4ed;
-  --color-brand-100: #ffe6d5;
-  --color-brand-200: #feccaa;
-  --color-brand-300: #fda574;
-  --color-brand-400: #fb8437;
-  --color-brand-500: #f26b1d;
-  --color-brand-600: #ea580c;
-  --color-brand-700: #c2410c;
-  --color-brand-800: #9a3412;
-  --color-brand-900: #7c2d12;
+  --color-app: var(--app);
+  --color-card: var(--card);
+  --color-soft: var(--soft);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-ink: var(--accent-ink);
+  --color-on-accent: var(--on-accent);
+  --color-good: var(--good);
+  --color-pro: var(--pro);
+  --color-pro-ink: var(--pro-ink);
+}
 
-  --color-cream: #fdf9f3;
-  --color-pro-500: #16a34a;
-  --color-pro-600: #15803d;
+/* ---------- Светлая (по умолчанию) ---------- */
+:root,
+[data-theme='light'] {
+  color-scheme: light;
+  --app: #fdf9f3;
+  --card: #ffffff;
+  --soft: #f5efe6;
+  --ink: #1c1917;
+  --ink-2: #78716c;
+  --ink-3: #a8a29e;
+  --line: #e9e1d5;
+  --accent: #ea580c;
+  --accent-strong: #c2410c;
+  --accent-soft: #fdeee2;
+  --accent-ink: #c2410c;
+  --on-accent: #ffffff;
+  --good: #16a34a;
+  --pro: #16a34a;
+  --pro-ink: #15803d;
+}
+
+/* ---------- Тёмная ---------- */
+[data-theme='dark'] {
+  color-scheme: dark;
+  --app: #14110e;
+  --card: #1e1a16;
+  --soft: #272019;
+  --ink: #f4f0ea;
+  --ink-2: #a89f94;
+  --ink-3: #6e675e;
+  --line: #332b23;
+  --accent: #f97316;
+  --accent-strong: #fb8a3c;
+  --accent-soft: #2f1d10;
+  --accent-ink: #fdba74;
+  --on-accent: #ffffff;
+  --good: #22c55e;
+  --pro: #22c55e;
+  --pro-ink: #4ade80;
+}
+
+/* ---------- Бордо ---------- */
+[data-theme='burgundy'] {
+  color-scheme: dark;
+  --app: #241019;
+  --card: #301722;
+  --soft: #3a1d2a;
+  --ink: #f7e9ed;
+  --ink-2: #c7a0ac;
+  --ink-3: #8f6e7b;
+  --line: #482936;
+  --accent: #e8536b;
+  --accent-strong: #f06a80;
+  --accent-soft: #3c1b28;
+  --accent-ink: #f8a8b8;
+  --on-accent: #ffffff;
+  --good: #4ade80;
+  --pro: #e879a8;
+  --pro-ink: #f0a8c8;
+}
+
+/* ---------- Лесная ---------- */
+[data-theme='forest'] {
+  color-scheme: dark;
+  --app: #101b14;
+  --card: #182619;
+  --soft: #203023;
+  --ink: #eaf2eb;
+  --ink-2: #9fb4a5;
+  --ink-3: #6d8273;
+  --line: #273a2c;
+  --accent: #5cbf7a;
+  --accent-strong: #74d291;
+  --accent-soft: #1d3425;
+  --accent-ink: #9adbb2;
+  --on-accent: #0c2415;
+  --good: #5cbf7a;
+  --pro: #d9a05b;
+  --pro-ink: #e8c08e;
+}
+
+/* ---------- Океан ---------- */
+[data-theme='ocean'] {
+  color-scheme: dark;
+  --app: #0e1722;
+  --card: #16232f;
+  --soft: #1c2c3a;
+  --ink: #e8eff6;
+  --ink-2: #92a7bc;
+  --ink-3: #5f7a94;
+  --line: #24374a;
+  --accent: #38bdf8;
+  --accent-strong: #62cafa;
+  --accent-soft: #13293c;
+  --accent-ink: #7cc8f0;
+  --on-accent: #071622;
+  --good: #34d399;
+  --pro: #a78bfa;
+  --pro-ink: #c4b5fd;
 }
 
 html {
@@ -26,7 +133,7 @@ html {
 }
 
 body {
-  @apply bg-cream text-stone-900 antialiased;
+  @apply bg-app text-ink antialiased;
   font-family: var(--font-sans);
 }
 

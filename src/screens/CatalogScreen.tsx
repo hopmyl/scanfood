@@ -3,7 +3,7 @@ import { Crown, Flame, RotateCcw, Search } from 'lucide-react';
 import { CATEGORY_FILTERS, DISHES, KCAL_RANGES, type DishCategory } from '../data/dishes';
 import DishCard from '../components/DishCard';
 import { useAppStore } from '../store/useAppStore';
-import { cn } from '../lib/utils';
+import { cn, pluralRu } from '../lib/utils';
 
 export default function CatalogScreen() {
   const isPro = useAppStore((s) => s.userProfile.isPro);
@@ -40,13 +40,13 @@ export default function CatalogScreen() {
       {/* Шапка */}
       <header className="mb-4 flex items-center justify-between">
         <div>
-          <h1 className="text-xl font-bold tracking-tight text-stone-900">СканРецепт</h1>
-          <p className="text-xs text-stone-500">{DISHES.length} рецептов от ИИ</p>
+          <h1 className="text-xl font-bold tracking-tight text-ink">СканРецепт</h1>
+          <p className="text-xs text-ink-2">{DISHES.length} рецептов от ИИ</p>
         </div>
         <span
           className={cn(
             'flex items-center gap-1 rounded-full px-3 py-1 text-xs font-semibold',
-            isPro ? 'bg-pro-500/10 text-pro-600' : 'bg-stone-200/70 text-stone-600',
+            isPro ? 'bg-pro/10 text-pro-ink' : 'bg-soft text-ink-2',
           )}
         >
           <Crown size={13} className={cn(isPro && 'fill-current')} />
@@ -56,13 +56,13 @@ export default function CatalogScreen() {
 
       {/* Поиск */}
       <div className="relative mb-3">
-        <Search size={18} className="absolute top-1/2 left-3.5 -translate-y-1/2 text-stone-400" />
+        <Search size={18} className="absolute top-1/2 left-3.5 -translate-y-1/2 text-ink-3" />
         <input
           type="search"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Найти блюдо: карбонара, сырники…"
-          className="w-full rounded-2xl border border-stone-200 bg-white py-2.5 pr-4 pl-10 text-sm text-stone-900 placeholder:text-stone-400 focus:border-brand-400 focus:ring-2 focus:ring-brand-200 focus:outline-none"
+          placeholder="Найти блюдо: борщ, сырники…"
+          className="w-full rounded-2xl border border-line bg-card py-2.5 pr-4 pl-10 text-sm text-ink placeholder:text-ink-3 focus:border-accent focus:outline-none"
         />
       </div>
 
@@ -76,8 +76,8 @@ export default function CatalogScreen() {
             className={cn(
               'flex shrink-0 items-center gap-1.5 rounded-full border px-3.5 py-1.5 text-sm font-medium whitespace-nowrap transition-colors',
               category === c.id
-                ? 'border-brand-600 bg-brand-600 text-white'
-                : 'border-stone-200 bg-white text-stone-600 hover:border-stone-300',
+                ? 'border-accent bg-accent text-on-accent'
+                : 'border-line bg-card text-ink-2 hover:border-ink-3',
             )}
           >
             <span aria-hidden>{c.emoji}</span>
@@ -96,8 +96,8 @@ export default function CatalogScreen() {
             className={cn(
               'shrink-0 rounded-full border px-3.5 py-1.5 text-sm font-medium whitespace-nowrap transition-colors',
               kcalId === r.id
-                ? 'border-stone-900 bg-stone-900 text-white'
-                : 'border-stone-200 bg-white text-stone-600 hover:border-stone-300',
+                ? 'border-ink bg-ink text-app'
+                : 'border-line bg-card text-ink-2 hover:border-ink-3',
             )}
           >
             <span className="inline-flex items-center gap-1">
@@ -109,10 +109,14 @@ export default function CatalogScreen() {
       </div>
 
       {/* Счётчик результатов */}
-      <p className="mb-3 text-xs text-stone-500">
-        Найдено: {filtered.length} {plural(filtered.length)}
+      <p className="mb-3 text-xs text-ink-2">
+        Найдено: {filtered.length} {pluralRu(filtered.length, 'блюдо', 'блюда', 'блюд')}
         {hasActiveFilters && (
-          <button type="button" onClick={reset} className="ml-2 font-medium text-brand-600 hover:underline">
+          <button
+            type="button"
+            onClick={reset}
+            className="ml-2 font-medium text-accent hover:underline"
+          >
             сбросить
           </button>
         )}
@@ -126,16 +130,16 @@ export default function CatalogScreen() {
           ))}
         </div>
       ) : (
-        <div className="flex flex-col items-center rounded-2xl border border-dashed border-stone-300 bg-white/60 py-12 text-center">
+        <div className="flex flex-col items-center rounded-2xl border border-dashed border-line bg-soft/50 py-12 text-center">
           <span className="mb-2 text-4xl" aria-hidden>
             🍳
           </span>
-          <p className="text-sm font-medium text-stone-700">Ничего не нашлось</p>
-          <p className="mt-1 mb-4 text-xs text-stone-500">Попробуй изменить фильтры или запрос</p>
+          <p className="text-sm font-medium text-ink">Ничего не нашлось</p>
+          <p className="mt-1 mb-4 text-xs text-ink-2">Попробуй изменить фильтры или запрос</p>
           <button
             type="button"
             onClick={reset}
-            className="flex items-center gap-1.5 rounded-full bg-brand-600 px-4 py-2 text-xs font-semibold text-white transition-colors hover:bg-brand-700"
+            className="flex items-center gap-1.5 rounded-full bg-accent px-4 py-2 text-xs font-semibold text-on-accent transition-colors hover:bg-accent-strong"
           >
             <RotateCcw size={13} />
             Сбросить фильтры
@@ -144,13 +148,4 @@ export default function CatalogScreen() {
       )}
     </div>
   );
-}
-
-/** Русская плюрализация слова «блюдо» */
-function plural(n: number): string {
-  const mod10 = n % 10;
-  const mod100 = n % 100;
-  if (mod10 === 1 && mod100 !== 11) return 'блюдо';
-  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 10 || mod100 > 20)) return 'блюда';
-  return 'блюд';
 }

@@ -31,8 +31,8 @@ export default function ProToggle() {
       onClick={togglePro}
       className={cn(
         'relative inline-flex h-7 w-12 shrink-0 cursor-pointer items-center rounded-full transition-colors duration-200',
-        'focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 focus:outline-none',
-        isPro ? 'bg-pro-500' : 'bg-stone-300',
+        'focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:outline-none',
+        isPro ? 'bg-pro' : 'bg-ink/25',
       )}
     >
       <span

@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { DEFAULT_PANTRY } from '../data/dishes';
 
 /** Профиль пользователя — ровно та же структура, что в твоём проекте */
 export interface UserProfile {
@@ -8,10 +9,22 @@ export interface UserProfile {
   scannedTotal: number;
 }
 
+export type ThemeId = 'light' | 'dark' | 'burgundy' | 'forest' | 'ocean';
+
 export interface ShoppingItem {
   id: string;
   name: string;
+  /** количество с учётом порций, например «400 г» */
+  qty?: string;
   done: boolean;
+  /** из какого рецепта добавлено — для группировки в списке покупок */
+  dishId?: string;
+}
+
+export interface NewShoppingItem {
+  name: string;
+  qty?: string;
+  dishId?: string;
 }
 
 interface AppState {
@@ -20,21 +33,15 @@ interface AppState {
   favorites: string[];
   /** список покупок */
   shoppingList: ShoppingItem[];
+  /** запасы дома — канонические имена продуктов (см. FRIDGE_PRODUCTS) */
+  pantry: string[];
+  /** тема оформления */
+  theme: ThemeId;
 
   /**
-   * ✅ ИСПРАВЛЕННЫЙ togglePro (причина твоего бага была здесь или в селекторе).
-   *
-   * БЫЛО (классическая ошибка мутации вложенного объекта):
-   *   togglePro: () => set((state) => {
-   *     state.userProfile.isPro = !state.userProfile.isPro; // ❌ мутация
-   *     return state;                                       // ❌ тот же референс
-   *   })
-   * Объект userProfile оставался ТЕМ ЖЕ объектом по ссылке, поэтому компонент,
-   * подписанный на useAppStore((s) => s.userProfile), не получал ререндер:
-   * Object.is(prev, next) === true. Тумблер «не нажимался».
-   *
-   * СТАЛО: всегда создаём НОВЫЙ объект userProfile через spread —
-   * ссылка меняется, все подписчики честно перерисовываются.
+   * ✅ ИСПРАВЛЕННЫЙ togglePro (причина бага «тумблер не нажимается»).
+   * Всегда создаём НОВЫЙ объект userProfile через spread — ссылка меняется,
+   * все подписчики честно перерисовываются. Никаких мутаций вложенных объектов.
    */
   togglePro: () => void;
 
@@ -42,11 +49,20 @@ interface AppState {
   performScan: () => 'ok' | 'pro' | 'limit';
 
   toggleFavorite: (dishId: string) => void;
-  addIngredients: (names: string[]) => void;
+
+  /** Добавить ингредиенты в список покупок (с количеством и рецептом-источником) */
+  addToShoppingList: (items: NewShoppingItem[]) => void;
   toggleShoppingItem: (id: string) => void;
   removeShoppingItem: (id: string) => void;
+  removeDoneFromShoppingList: () => void;
   clearShoppingList: () => void;
-  /** Сброс прогресса для тестов */
+
+  addToPantry: (names: string[]) => void;
+  removeFromPantry: (name: string) => void;
+
+  setTheme: (theme: ThemeId) => void;
+
+  /** Сброс прогресса для тестов (запасы и тема сохраняются) */
   resetProgress: () => void;
 }
 
@@ -62,6 +78,8 @@ export const useAppStore = create<AppState>()(
       },
       favorites: [],
       shoppingList: [],
+      pantry: DEFAULT_PANTRY,
+      theme: 'light',
 
       togglePro: () =>
         set((state) => ({
@@ -104,14 +122,16 @@ export const useAppStore = create<AppState>()(
             : [...state.favorites, dishId],
         })),
 
-      addIngredients: (names) =>
+      addToShoppingList: (items) =>
         set((state) => {
           const existing = new Set(state.shoppingList.map((i) => i.name.toLowerCase()));
-          const fresh: ShoppingItem[] = names
-            .filter((name) => name && !existing.has(name.toLowerCase()))
-            .map((name, i) => ({
+          const fresh: ShoppingItem[] = items
+            .filter((item) => item.name && !existing.has(item.name.toLowerCase()))
+            .map((item, i) => ({
               id: `${Date.now()}-${i}-${Math.random().toString(36).slice(2, 7)}`,
-              name,
+              name: item.name,
+              qty: item.qty,
+              dishId: item.dishId,
               done: false,
             }));
           return { shoppingList: [...state.shoppingList, ...fresh] };
@@ -129,17 +149,52 @@ export const useAppStore = create<AppState>()(
           shoppingList: state.shoppingList.filter((item) => item.id !== id),
         })),
 
+      removeDoneFromShoppingList: () =>
+        set((state) => ({
+          shoppingList: state.shoppingList.filter((item) => !item.done),
+        })),
+
       clearShoppingList: () => set({ shoppingList: [] }),
 
+      addToPantry: (names) =>
+        set((state) => ({
+          pantry: [...state.pantry, ...names.filter((n) => !state.pantry.includes(n))],
+        })),
+
+      removeFromPantry: (name) =>
+        set((state) => ({
+          pantry: state.pantry.filter((n) => n !== name),
+        })),
+
+      setTheme: (theme) => set({ theme }),
+
       resetProgress: () =>
-        set({
+        set((state) => ({
           userProfile: { isPro: false, scansLeft: FREE_SCANS_LIMIT, scannedTotal: 0 },
           favorites: [],
           shoppingList: [],
-        }),
+          // pantry и theme — пользовательские настройки, не сбрасываем
+          pantry: state.pantry,
+          theme: state.theme,
+        })),
     }),
     {
       name: 'skan-recept-store', // ключ в localStorage
+      version: 2,
+      migrate: (persisted, version) => {
+        const state = (persisted ?? {}) as Partial<AppState>;
+        return {
+          userProfile: state.userProfile ?? {
+            isPro: false,
+            scansLeft: FREE_SCANS_LIMIT,
+            scannedTotal: 0,
+          },
+          favorites: state.favorites ?? [],
+          shoppingList: state.shoppingList ?? [],
+          pantry: state.pantry ?? DEFAULT_PANTRY,
+          theme: state.theme ?? 'light',
+        } as AppState;
+      },
     },
   ),
 );
