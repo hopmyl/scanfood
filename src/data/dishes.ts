@@ -6,7 +6,15 @@
  *  • isBaseIngredient — соль/специи/масло не учитываются при подборе «что приготовить»
  */
 
-export type DishCategory = 'breakfast' | 'chicken' | 'meat' | 'fish' | 'veg';
+export type DishCategory =
+  | 'breakfast'
+  | 'chicken'
+  | 'meat'
+  | 'fish'
+  | 'veg'
+  | 'soups'
+  | 'salads'
+  | 'baking';
 
 /** Ингредиент рецепта: qty — количество на 1 порцию */
 export interface Ingredient {
@@ -43,6 +51,9 @@ export const CATEGORY_META: Record<DishCategory, { labelRu: string; emoji: strin
   meat: { labelRu: 'Мясо', emoji: '🥩' },
   fish: { labelRu: 'Рыба и морепродукты', emoji: '🐟' },
   veg: { labelRu: 'Вегетарианское', emoji: '🥗' },
+  soups: { labelRu: 'Супы', emoji: '🍲' },
+  salads: { labelRu: 'Салаты и закуски', emoji: '🥙' },
+  baking: { labelRu: 'Выпечка и десерты', emoji: '🧁' },
 };
 
 export const CATEGORY_FILTERS: Array<{
@@ -52,10 +63,13 @@ export const CATEGORY_FILTERS: Array<{
 }> = [
   { id: 'all', labelRu: 'Все', emoji: '🍽️' },
   { id: 'breakfast', labelRu: 'Завтраки', emoji: '🥐' },
+  { id: 'soups', labelRu: 'Супы', emoji: '🍲' },
+  { id: 'salads', labelRu: 'Салаты', emoji: '🥙' },
   { id: 'chicken', labelRu: 'Курица', emoji: '🍗' },
   { id: 'meat', labelRu: 'Мясо', emoji: '🥩' },
   { id: 'fish', labelRu: 'Рыба', emoji: '🐟' },
   { id: 'veg', labelRu: 'Вег', emoji: '🥗' },
+  { id: 'baking', labelRu: 'Выпечка', emoji: '🧁' },
 ];
 
 /** Диапазоны фильтра калорийности (чипсы) */
@@ -96,7 +110,9 @@ export const FRIDGE_PRODUCTS: FridgeProduct[] = [
   { name: 'Йогурт', emoji: '🥣', keys: ['йогурт'], inFridge: true, inShelf: false },
   { name: 'Творог', emoji: '🧈', keys: ['творог'], inFridge: true, inShelf: false },
   { name: 'Сметана', emoji: '🥄', keys: ['сметан'], inFridge: true, inShelf: false },
-  { name: 'Сыр', emoji: '🧀', keys: ['сыр', 'пармезан', 'моцарелла', 'чеддер', 'фета'], inFridge: true, inShelf: false },
+  { name: 'Сыр', emoji: '🧀', keys: ['сыр', 'пармезан', 'моцарелла', 'чеддер', 'фета', 'сулугуни', 'чечил', 'рокфор', 'рикотта', 'маскарпоне'], inFridge: true, inShelf: false },
+  { name: 'Кефир', emoji: '🥛', keys: ['кефир', 'простокваш', 'ряженк', 'айран'], inFridge: true, inShelf: true },
+  { name: 'Колбаса и копчёности', emoji: '🌭', keys: ['колбас', 'сосиск', 'сардельк', 'бекон', 'карбонад', 'буженин', 'копчён'], inFridge: true, inShelf: false },
   { name: 'Ветчина', emoji: '🥓', keys: ['ветчин'], inFridge: true, inShelf: false },
   { name: 'Масло сливочное', emoji: '🧈', keys: ['сливочное масло'], inFridge: false, inShelf: false },
   { name: 'Курица', emoji: '🍗', keys: ['кури', 'грудка', 'бедр', 'крылышк'], inFridge: true, inShelf: false },
@@ -106,7 +122,7 @@ export const FRIDGE_PRODUCTS: FridgeProduct[] = [
   { name: 'Лосось', emoji: '🐟', keys: ['лосос'], inFridge: true, inShelf: false },
   { name: 'Креветки', emoji: '🦐', keys: ['креветк'], inFridge: true, inShelf: false },
   { name: 'Тунец', emoji: '🐟', keys: ['тунец'], inFridge: true, inShelf: true },
-  { name: 'Треска', emoji: '🐟', keys: ['треск'], inFridge: false, inShelf: false },
+  { name: 'Треска', emoji: '🐟', keys: ['треск', 'минтай', 'хек', 'путассу'], inFridge: false, inShelf: false },
   { name: 'Дорадо', emoji: '🐟', keys: ['дорадо'], inFridge: false, inShelf: false },
   { name: 'Кальмары', emoji: '🦑', keys: ['кальмар'], inFridge: false, inShelf: false },
   { name: 'Мидии', emoji: '🦪', keys: ['мидии'], inFridge: false, inShelf: false },
@@ -123,7 +139,18 @@ export const FRIDGE_PRODUCTS: FridgeProduct[] = [
   { name: 'Картофель', emoji: '🥔', keys: ['картоф', 'батат'], inFridge: true, inShelf: true },
   { name: 'Свёкла', emoji: '🍠', keys: ['свёкл', 'свекл'], inFridge: false, inShelf: false },
   { name: 'Тыква', emoji: '🎃', keys: ['тыкв'], inFridge: false, inShelf: false },
-  { name: 'Баклажаны', emoji: '🍆', keys: ['баклажан', 'кабачк'], inFridge: false, inShelf: false },
+  { name: 'Баклажаны', emoji: '🍆', keys: ['баклажан'], inFridge: false, inShelf: false },
+  { name: 'Кабачки', emoji: '🥒', keys: ['кабачк', 'цуккини', 'патиссон'], inFridge: false, inShelf: false },
+  { name: 'Капуста', emoji: '🥬', keys: ['капуст', 'кольраби', 'брюссельск', 'цветн'], inFridge: true, inShelf: true },
+  { name: 'Сельдь', emoji: '🐟', keys: ['сельд', 'селёдк', 'иваси'], inFridge: false, inShelf: false },
+  { name: 'Скумбрия', emoji: '🐟', keys: ['скумбри', 'макрель'], inFridge: false, inShelf: false },
+  { name: 'Форель', emoji: '🐟', keys: ['форель', 'горбуш', 'кета', 'радужн', 'сёмг', 'семг'], inFridge: false, inShelf: false },
+  { name: 'Баранина', emoji: '🥩', keys: ['баран', 'ягнят', 'люля'], inFridge: false, inShelf: false },
+  { name: 'Крабовые палочки', emoji: '🦀', keys: ['крабов'], inFridge: true, inShelf: false },
+  { name: 'Кукуруза', emoji: '🌽', keys: ['кукуруз'], inFridge: false, inShelf: true },
+  { name: 'Зелёный горошек', emoji: '🫛', keys: ['горошек', 'горошк'], inFridge: false, inShelf: true },
+  { name: 'Чечевица', emoji: '🫘', keys: ['чечевиц'], inFridge: false, inShelf: true },
+  { name: 'Крупы', emoji: '🌾', keys: ['перлов', 'пшено', 'булгур', 'ячнев', 'манка', 'манной', 'горох', 'нут', 'кускус'], inFridge: false, inShelf: true },
   { name: 'Брокколи', emoji: '🥦', keys: ['брокколи', 'спаржа'], inFridge: true, inShelf: false },
   { name: 'Шпинат', emoji: '🥬', keys: ['шпинат'], inFridge: true, inShelf: false },
   { name: 'Салат', emoji: '🥬', keys: ['салат', 'латук'], inFridge: true, inShelf: false },
@@ -132,9 +159,9 @@ export const FRIDGE_PRODUCTS: FridgeProduct[] = [
   { name: 'Лимон', emoji: '🍋', keys: ['лимон', 'лайм'], inFridge: true, inShelf: false },
   { name: 'Яблоко', emoji: '🍎', keys: ['яблок'], inFridge: true, inShelf: true },
   { name: 'Банан', emoji: '🍌', keys: ['банан'], inFridge: true, inShelf: true },
-  { name: 'Ягоды', emoji: '🫐', keys: ['ягод'], inFridge: true, inShelf: false },
+  { name: 'Ягоды', emoji: '🫐', keys: ['ягод', 'черник', 'малин', 'клубник', 'смородин', 'вишн', 'брусник', 'клюкв'], inFridge: true, inShelf: false },
   { name: 'Ананас', emoji: '🍍', keys: ['ананас'], inFridge: false, inShelf: false },
-  { name: 'Оливки', emoji: '🫒', keys: ['оливк', 'каперс'], inFridge: false, inShelf: true },
+  { name: 'Оливки и маслины', emoji: '🫒', keys: ['оливк', 'маслин', 'каперс'], inFridge: false, inShelf: true },
   { name: 'Мёд', emoji: '🍯', keys: ['мёд', 'мед'], inFridge: false, inShelf: true },
   { name: 'Мука', emoji: '🌾', keys: ['мука', 'муки', 'крахмал'], inFridge: false, inShelf: true },
   { name: 'Сахар', emoji: '🍬', keys: ['сахар'], inFridge: false, inShelf: true },
@@ -144,12 +171,15 @@ export const FRIDGE_PRODUCTS: FridgeProduct[] = [
   { name: 'Киноа', emoji: '🌾', keys: ['киноа'], inFridge: false, inShelf: true },
   { name: 'Паста', emoji: '🍝', keys: ['паста', 'спагетти', 'лапша', 'макарон'], inFridge: false, inShelf: true },
   { name: 'Овсяные хлопья', emoji: '🥣', keys: ['овсян'], inFridge: false, inShelf: true },
-  { name: 'Хлеб', emoji: '🥖', keys: ['хлеб', 'булочк', 'круассан', 'тортил', 'лаваш', 'сухарик'], inFridge: false, inShelf: true },
+  { name: 'Хлеб', emoji: '🥖', keys: ['хлеб', 'булочк', 'круассан', 'тортил', 'лаваш', 'сухар', 'багет', 'чиабатт'], inFridge: false, inShelf: true },
+  { name: 'Печенье', emoji: '🍪', keys: ['печенье', 'бисквит', 'песочн'], inFridge: false, inShelf: true },
+  { name: 'Сухофрукты', emoji: '🍇', keys: ['изюм', 'курага', 'чернослив', 'цукат', 'финик', 'инжир суш'], inFridge: false, inShelf: true },
+  { name: 'Шоколад и какао', emoji: '🍫', keys: ['шоколад', 'какао', 'ганаш', 'нутелла', 'нутэлла'], inFridge: false, inShelf: true },
   { name: 'Тесто', emoji: '🥟', keys: ['тесто'], inFridge: false, inShelf: false },
   { name: 'Нори', emoji: '🌿', keys: ['нори'], inFridge: false, inShelf: true },
   { name: 'Орехи и семечки', emoji: '🥜', keys: ['орех', 'семечк', 'кунжут', 'чиа', 'гранол'], inFridge: false, inShelf: true },
   { name: 'Соевый соус', emoji: '🥢', keys: ['соев'], inFridge: false, inShelf: true },
-  { name: 'Соусы и заправки', emoji: '🥫', keys: ['соус', 'кетчуп', 'майонез', 'хумус', 'тахини', 'бальзам', 'паста том', 'том ям', 'тикка'], inFridge: false, inShelf: true },
+  { name: 'Соусы и заправки', emoji: '🥫', keys: ['соус', 'кетчуп', 'майонез', 'хумус', 'тахини', 'бальзам', 'паста том', 'том ям', 'тикка', 'горчиц', 'хрен', 'аджик', 'сироп'], inFridge: false, inShelf: true },
   { name: 'Бульон', emoji: '🥫', keys: ['бульон'], inFridge: false, inShelf: true },
   { name: 'Кокосовое молоко', emoji: '🥥', keys: ['кокос'], inFridge: false, inShelf: true },
   { name: 'Вино', emoji: '🍷', keys: ['вино'], inFridge: false, inShelf: true },
@@ -169,7 +199,7 @@ export const PRODUCT_BY_NAME: Map<string, FridgeProduct> = new Map(
 export function isBaseIngredient(name: string): boolean {
   const n = name.toLowerCase();
   if (n.includes('болгар')) return false;
-  return /(соль|чёрн\S* перец|черн\S* перец|перец, |специ|приправ|масл|вода|мускат|лавров|паприк|зира|орегано|тимьян|розмарин|кунжут|имбирь|васаби|хлопья чили|ванил|укроп|петрушк|кинза|мята|лимонн|порошок|сода)/.test(
+  return /(соль|чёрн\S* перец|черн\S* перец|перец, |специ|приправ|масл|вода|мускат|лавров|паприк|зира|орегано|тимьян|розмарин|кунжут|имбирь|васаби|хлопья чили|ванил|укроп|петрушк|кинза|мята|лимонн|порошок|сода|разрыхл|дрожж|уксус|бальзам|кориц|куркум|кориандр|сунели|гвоздик|шафран|прованск|итальянск трав)/.test(
     n,
   );
 }
@@ -196,6 +226,8 @@ export const DEFAULT_PANTRY: string[] = [
   'Сыр',
   'Картофель',
 ];
+
+import { DISHES_MORE } from './dishes-more';
 
 export const DISHES: Dish[] = [
   {
@@ -1329,4 +1361,6 @@ export const DISHES: Dish[] = [
       'Собери боул секторами и полей тахини-заправкой.',
     ],
   },
+  // ==================== v3: +50 оригинальных домашних рецептов ====================
+  ...DISHES_MORE,
 ];

@@ -67,6 +67,57 @@ const DISHES = [
   ['caprese-salad', 'Caprese salad: alternating tomato and mozzarella slices with basil leaves, balsamic glaze'],
   ['eggplant-parmesan', 'Eggplant parmesan baked with melted cheese and tomato sauce, golden crust'],
   ['buddha-bowl', 'Buddha bowl with roasted sweet potato, chickpeas, quinoa, avocado and spinach, tahini drizzle'],
+  // ==================== v3: +50 новых блюд ====================
+  ['cottage-cheese-casserole', 'Cottage cheese casserole (zapekanka) cut into squares with golden crust, raisins, sour cream dollop'],
+  ['milk-blini', 'Stack of thin golden milk crepes (blini) folded in triangles with sour cream and berry jam'],
+  ['kefir-pancakes', 'Stack of fluffy small thick pancakes (oladi) with sour cream and honey drizzle on rustic plate'],
+  ['lazy-vareniki', 'Lazy cottage cheese dumplings (lenivye vareniki) boiled golden diamonds with melted butter and sour cream'],
+  ['chicken-plov', 'Chicken plov pilaf with fluffy rice, carrot strips, whole garlic head, served on large platter'],
+  ['chicken-cutlets', 'Golden breaded chicken cutlets (kotlety) with mashed potatoes and pickles on plate'],
+  ['oven-shashlik', 'Chicken shashlik skewers with charred edges, red onion rings, baked in oven on wire rack, lavash on side'],
+  ['chicken-thighs-potato', 'Sheet pan roasted chicken thighs crispy skin with golden potato wedges and garlic'],
+  ['beef-goulash', 'Beef goulash chunks in thick tomato gravy with mashed potatoes, paprika dusted'],
+  ['lyulya-kebab', 'Lyulya kebab minced lamb skewers on lavash bread with red onion sumac salad and herbs'],
+  ['pelmeni', 'Homemade pelmeni dumplings in deep bowl with sour cream, dill, black pepper, butter melting'],
+  ['pork-french', 'Pork chops French style baked with melted golden cheese, tomato slices and onion, in baking dish'],
+  ['baked-mackerel', 'Whole baked mackerel fish with lemon slices in opened foil, herbs, garlic'],
+  ['trout-foil', 'Baked rainbow trout steak with lemon slices and thyme in opened foil packet'],
+  ['fish-cutlets', 'Golden fish cutlets from pollock with mashed potatoes and fresh dill on white plate'],
+  ['garlic-shrimp', 'Shrimp in garlic butter sauce in cast iron pan with lemon wedges and chopped parsley, bread slices'],
+  ['draniki', 'Potato draniki golden crispy pancakes stack with sour cream bowl and fresh herbs'],
+  ['julienne', 'Mushroom julienne baked in small copper cocotte with golden melted cheese crust'],
+  ['ratatouille', 'Ratatouille vegetables sliced in concentric circles: zucchini, eggplant, tomato with herbs in baking dish'],
+  ['vegetable-stew', 'Vegetable stew with zucchini, potato, cabbage and carrot in tomato sauce in deep plate'],
+  ['borscht', 'Borscht deep red beet soup in bowl with sour cream swirl, dill, garlic bread and salo on side'],
+  ['shchi', 'Fresh cabbage shchi soup in rustic bowl with sour cream, rye bread slice and green onion'],
+  ['solyanka', 'Meat solyanka soup with lemon slice, black olives, sour cream in bowl, rich dark broth'],
+  ['rassolnik', 'Rassolnik soup with pearl barley, pickled cucumbers and chicken, sour cream and herbs on top'],
+  ['mushroom-cream-soup', 'Creamy mushroom soup with croutons, mushroom slices and cream swirl, thyme sprig'],
+  ['ukha', 'Russian ukha fish soup with salmon pieces, potato, dill in traditional bowl, lemon wedge'],
+  ['pea-soup', 'Yellow split pea soup with smoked pork ribs, croutons, rye bread on wooden board'],
+  ['lentil-soup', 'Red lentil soup with carrot, lemon wedge and fresh cilantro in rustic bowl'],
+  ['okroshka', 'Okroshka cold soup with kefir, diced vegetables, eggs and sausage in bowl, dill on top'],
+  ['cheese-soup', 'Creamy melted cheese soup with chicken pieces, potato and carrot in white bowl'],
+  ['olivier', 'Traditional Russian Olivier salad in glass bowl, diced vegetables with mayonnaise, garnished with egg'],
+  ['vinaigrette', 'Russian vinaigrette beet salad with diced vegetables in deep plate, dressed with oil'],
+  ['herring-shuba', 'Herring under fur coat salad layered with bright beet top layer, cut to show layers, on plate'],
+  ['mimosa', 'Mimosa salad with yellow egg yolk snow on top, layered fish salad in glass bowl'],
+  ['tuna-egg-salad', 'Light tuna salad with boiled egg quarters, cucumber slices and corn in bowl'],
+  ['bruschetta', 'Tomato basil bruschetta on toasted baget slices, garlic, olive oil drizzle, basil leaves'],
+  ['zucchini-ikra', 'Zucchini caviar spread (ikra) in small bowl with toasted bread slices, rustic wooden board'],
+  ['korean-carrot', 'Korean-style carrot salad (morkovcha) spicy shredded carrots with sesame in bowl'],
+  ['crab-corn-salad', 'Crab stick salad with sweet corn, eggs and cucumber in glass bowl'],
+  ['spring-cabbage-salad', 'Fresh shredded cabbage and cucumber salad with dill and boiled egg slices'],
+  ['apple-charlotte', 'Apple charlotte sponge cake with caramelized apple slices on top, dusted with powdered sugar'],
+  ['cabbage-pie', 'Russian cabbage and egg pie (pirog) with golden braided crust, one slice cut showing filling'],
+  ['ny-cheesecake', 'New York cheesecake slice with glossy top, berry sauce, mint leaf on white plate'],
+  ['brownies', 'Fudgy chocolate brownies stacked with walnuts, crackly top, chocolate chunks'],
+  ['oat-cookies', 'Oatmeal raisin cookies golden round on cooling rack with scattered oats and raisins'],
+  ['blueberry-muffins', 'Blueberry muffins with domed golden tops, berries bursting, in paper liners'],
+  ['banana-bread', 'Banana bread loaf with walnut topping, one slice cut, ripe banana on side'],
+  ['pepperoni-pizza', 'Pepperoni pizza with crispy curled pepperoni cups, melted mozzarella, fresh basil'],
+  ['adjarian-khachapuri', 'Adjarian khachapuri boat-shaped bread with molten cheese and runny egg yolk in center, butter'],
+  ['baked-apples', 'Baked apples filled with honey, walnuts and raisins, cinnamon sticks, warm cozy style'],
 ];
 
 async function main() {
@@ -79,13 +130,13 @@ async function main() {
 
   const mySlice = DISHES.filter((_, i) => i % total === shard);
 
-  for (let i = 0; i < mySlice.length; i++) {
+    for (let i = 0; i < mySlice.length; i++) {
     const [id, subject] = mySlice[i];
     const outPath = path.join(OUT_DIR, `${id}.jpg`);
 
     if (fs.existsSync(outPath) && fs.statSync(outPath).size > 20000) {
       console.log(`[шард${shard} ${i + 1}/${mySlice.length}] SKIP ${id} (уже есть)`);
-      continue;
+      continue; // без паузы — не тратим 4с на каждый пропуск
     }
 
     const prompt = `${subject}, ${STYLE}`;

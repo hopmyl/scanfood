@@ -150,3 +150,22 @@ body {
 .pb-safe {
   padding-bottom: env(safe-area-inset-bottom, 0px);
 }
+
+/* Лазерная линия сканера штрих-кодов */
+@keyframes barcode-laser {
+  0% {
+    transform: translateX(-60%);
+    opacity: 0.25;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(60%);
+    opacity: 0.25;
+  }
+}
+.barcode-laser {
+  animation: barcode-laser 1.6s ease-in-out infinite alternate;
+  background: linear-gradient(90deg, transparent, currentColor 30%, currentColor 70%, transparent);
+}

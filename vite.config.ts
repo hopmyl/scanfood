@@ -2,11 +2,13 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 import { VitePWA } from 'vite-plugin-pwa';
+import { scanApiPlugin } from './scan-api';
 
 export default defineConfig({
   plugins: [
     react(),
     tailwindcss(),
+    scanApiPlugin(),
     VitePWA({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.svg'],
@@ -14,7 +16,7 @@ export default defineConfig({
         name: 'СканРецепт — рецепты из твоих продуктов',
         short_name: 'СканРецепт',
         description:
-          'Сканируй продукты камерой и получай подобранные ИИ рецепты. Лайт и PRO режимы.',
+          'Сканируй продукты камерой или штрих-код и получай рецепты из своих продуктов. Лайт и PRO режимы.',
         lang: 'ru',
         dir: 'ltr',
         theme_color: '#EA580C',

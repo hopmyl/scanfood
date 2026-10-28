@@ -41,7 +41,7 @@ export default function CatalogScreen() {
       <header className="mb-4 flex items-center justify-between">
         <div>
           <h1 className="text-xl font-bold tracking-tight text-ink">СканРецепт</h1>
-          <p className="text-xs text-ink-2">{DISHES.length} рецептов от ИИ</p>
+          <p className="text-xs text-ink-2">Из того, что есть — в то, что вкусно</p>
         </div>
         <span
           className={cn(
