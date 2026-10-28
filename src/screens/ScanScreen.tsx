@@ -28,6 +28,8 @@ import { cn, pluralRu } from '../lib/utils';
 type Phase = 'idle' | 'scanning' | 'result' | 'paywall';
 type ScanMode = 'products' | 'barcode';
 type CamState = 'starting' | 'on' | 'denied';
+/** Причина неудачи распознавания: null — нет ошибки */
+type ScanFail = null | 'generic' | 'noprovider';
 type ProductState =
   | { kind: 'idle' }
   | { kind: 'loading'; code: string }
@@ -125,7 +127,7 @@ export default function ScanScreen() {
   const [match, setMatch] = useState<MatchResult | null>(null);
   const [savedToPantry, setSavedToPantry] = useState(false);
   const [addedNames, setAddedNames] = useState<string[]>([]);
-  const [scanFailed, setScanFailed] = useState(false);
+  const [scanFailed, setScanFailed] = useState<ScanFail>(null);
 
   // --- штрих-код ---
   const [productState, setProductState] = useState<ProductState>({ kind: 'idle' });
@@ -215,7 +217,7 @@ export default function ScanScreen() {
     }
 
     setPhase('scanning');
-    setScanFailed(false);
+    setScanFailed(null);
     setIsDemo(false);
     try {
       const r = await fetch('/api/scan', {
@@ -223,6 +225,12 @@ export default function ScanScreen() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ image: dataUrl }),
       });
+      if (r.status === 501) {
+        // на сервере не настроен vision-провайдер — честно предлагаем демо
+        setPhase('idle');
+        setScanFailed('noprovider');
+        return;
+      }
       if (!r.ok) throw new Error(`scan api ${r.status}`);
       const data = (await r.json()) as { ingredients: string[] };
       const canonical = dedupe(data.ingredients.map(mapToCanonical));
@@ -235,7 +243,7 @@ export default function ScanScreen() {
       setPhase('result');
     } catch {
       setPhase('idle');
-      setScanFailed(true);
+      setScanFailed('generic');
     }
   };
 
@@ -249,7 +257,7 @@ export default function ScanScreen() {
     if (!file) return;
     fileToDataUrl(file)
       .then((dataUrl) => runRecognition(dataUrl))
-      .catch(() => setScanFailed(true));
+      .catch(() => setScanFailed('generic'));
   };
 
   /** Демо-скан: фолбэк без списания скана */
@@ -260,11 +268,47 @@ export default function ScanScreen() {
     setSavedToPantry(false);
     setAddedNames([]);
     setIsDemo(true);
-    setScanFailed(false);
+    setScanFailed(null);
     setPhase('result');
   };
 
   // ================= Штрих-код =================
+  /** Прямой запрос в Open Food Facts из браузера — фолбэк, когда /api недоступен (статический хостинг) */
+  const fetchOffDirect = async (code: string): Promise<BarcodeProduct | null> => {
+    const fields =
+      'product_name,product_name_ru,brands,image_front_small_url,image_url,' +
+      'nutriments,ingredients_text,ingredients_text_ru';
+    const r = await fetch(
+      `https://world.openfoodfacts.org/api/v2/product/${code}.json?fields=${fields}`,
+    );
+    const data = await r.json();
+    if (data?.status !== 1) return null;
+    const p = data.product;
+    const name: string = (p.product_name_ru || p.product_name || '').trim();
+    if (!name) return null;
+    const n = p.nutriments ?? {};
+    const toNum = (v: unknown): number | null => {
+      const x = typeof v === 'string' ? Number.parseFloat(v) : (v as number);
+      return Number.isFinite(x) ? Math.round(x * 10) / 10 : null;
+    };
+    let kcal = toNum(n['energy-kcal_100g']);
+    if (kcal === null && n['energy_100g'] !== undefined) {
+      const kj = toNum(n['energy_100g']);
+      if (kj !== null) kcal = Math.round((kj / 4.184) * 10) / 10;
+    }
+    return {
+      barcode: code,
+      name,
+      brands: (p.brands || '').split(',').map((s: string) => s.trim()).filter(Boolean)[0] ?? '',
+      image: p.image_front_small_url || p.image_url || null,
+      kcal,
+      protein: toNum(n.proteins_100g),
+      fat: toNum(n.fat_100g),
+      carbs: toNum(n.carbohydrates_100g),
+      ingredientsText: (p.ingredients_text_ru || p.ingredients_text || '').trim(),
+    };
+  };
+
   const handleBarcode = async (code: string) => {
     if (productState.kind === 'loading') return;
     zxingRef.current?.stop();
@@ -281,10 +325,18 @@ export default function ScanScreen() {
       } else if ('found' in data) {
         setProductState({ kind: 'notfound', code });
       } else {
-        setProductState({ kind: 'error', code });
+        // сервер вернул ошибку — пробуем напрямую из браузера
+        const direct = await fetchOffDirect(code).catch(() => null);
+        setProductState(
+          direct ? { kind: 'found', code, product: direct } : { kind: 'error', code },
+        );
       }
     } catch {
-      setProductState({ kind: 'error', code });
+      // например, статический хостинг без /api — Open Food Facts отвечает и из браузера (CORS разрешён)
+      const direct = await fetchOffDirect(code).catch(() => null);
+      setProductState(
+        direct ? { kind: 'found', code, product: direct } : { kind: 'error', code },
+      );
     }
   };
 
@@ -322,7 +374,7 @@ export default function ScanScreen() {
 
   const resetResult = () => {
     setPhase('idle');
-    setScanFailed(false);
+    setScanFailed(null);
   };
 
   const emojiFor = (name: string): string =>
@@ -571,7 +623,9 @@ export default function ScanScreen() {
               {scanFailed && (
                 <div className="mt-3 rounded-2xl border border-accent/30 bg-accent-soft px-4 py-3 text-center">
                   <p className="text-xs font-medium text-accent-ink">
-                    Не получилось распознать фото. Попробуй ещё раз при другом освещении.
+                    {scanFailed === 'noprovider'
+                      ? 'Распознавание по фото на сервере не настроено. Попробуй демо-скан или штрих-код.'
+                      : 'Не получилось распознать фото. Попробуй ещё раз при другом освещении.'}
                   </p>
                 </div>
               )}
