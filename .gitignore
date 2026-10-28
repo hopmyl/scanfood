@@ -1,2 +1,9 @@
-skills/
 node_modules/
+dist/
+dev.log
+server.log
+scripts/photo-tmp/
+scripts/*.log
+scripts/*.png
+scripts/drive_list.html
+.zscripts/

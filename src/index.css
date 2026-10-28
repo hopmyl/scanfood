@@ -1,0 +1,45 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/inter';
+
+@theme {
+  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  /* Фирменная палитра СканРецепт — тёплый терракотовый оранжевый */
+  --color-brand-50: #fff4ed;
+  --color-brand-100: #ffe6d5;
+  --color-brand-200: #feccaa;
+  --color-brand-300: #fda574;
+  --color-brand-400: #fb8437;
+  --color-brand-500: #f26b1d;
+  --color-brand-600: #ea580c;
+  --color-brand-700: #c2410c;
+  --color-brand-800: #9a3412;
+  --color-brand-900: #7c2d12;
+
+  --color-cream: #fdf9f3;
+  --color-pro-500: #16a34a;
+  --color-pro-600: #15803d;
+}
+
+html {
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  @apply bg-cream text-stone-900 antialiased;
+  font-family: var(--font-sans);
+}
+
+/* Скрываем скроллбар у горизонтальных лент чипсов */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Отступ под нижнюю навигацию с учётом safe area (iPhone) */
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
