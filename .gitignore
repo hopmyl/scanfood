@@ -9,3 +9,9 @@ scripts/drive_list.html
 .zscripts/
 .vercel/
 .vercel
+upload/
+tool-results/
+db/
+gen-run*.log
+photo-gen-*.log
+*.log
