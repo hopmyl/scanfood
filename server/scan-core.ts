@@ -62,9 +62,23 @@ export function resolveScanProvider(): ScanProvider {
   return process.env.GEMINI_API_KEY ? 'gemini' : 'zai';
 }
 
-/** z-ai-web-dev-sdk — vision через createVision */
+/** z-ai-web-dev-sdk — vision через createVision.
+ *  Спецификатор в переменной, чтобы бандлер Vercel (esbuild) не пытался
+ *  инлайнить SDK в serverless-функции: вне песочницы путь zai не используется
+ *  (там работает gemini), а сломанный бандл может валить функцию на старте. */
+type ZaiClient = {
+  chat: {
+    completions: {
+      createVision: (args: unknown) => Promise<unknown>;
+    };
+  };
+};
+
 async function scanWithZai(imageDataUrl: string): Promise<string[]> {
-  const { default: ZAI } = await import('z-ai-web-dev-sdk');
+  const specifier = 'z-ai-web-dev-sdk';
+  const mod = await import(specifier);
+  const ZAI = (mod as { default?: { create: () => Promise<ZaiClient> } }).default;
+  if (!ZAI) throw new Error('z-ai-web-dev-sdk is unavailable');
   const zai = await ZAI.create();
 
   const completion = await Promise.race([
@@ -79,13 +93,15 @@ async function scanWithZai(imageDataUrl: string): Promise<string[]> {
         },
       ],
       thinking: { type: 'disabled' },
-    } as never),
+    }),
     new Promise((_resolve, reject) =>
       setTimeout(() => reject(new Error('scan timeout')), 55_000),
     ),
   ]);
 
-  const content: string = completion?.choices?.[0]?.message?.content ?? '';
+  const content: string =
+    (completion as { choices?: Array<{ message?: { content?: string } }> })
+      ?.choices?.[0]?.message?.content ?? '';
   return extractIngredients(content);
 }
 
