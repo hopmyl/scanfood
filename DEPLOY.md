@@ -2,8 +2,13 @@
 
 ## Что уже готово
 
-- `api/scan.ts` и `api/barcode.ts` — serverless-функции Vercel (тот же контракт, что и локальный Vite-эндпоинт).
-- `server/scan-core.ts` — общее ядро: логика одна и та же локально и на Vercel.
+- `api/scan.ts` и `api/barcode.ts` — serverless-функции Vercel. Они **самодостаточные**
+  (без импортов из `../server/…`): Vercel собирает `api/*.ts` как ESM, а Node-ESM
+  не разрешает импорты без расширения файла — из-за этого функция падает с
+  FUNCTION_INVOCATION_FAILED. Логика продублирована из `server/scan-core.ts`.
+- `server/scan-core.ts` — ядро для локальной разработки (`scan-api.ts`, Vite-плагин):
+  поддерживает оба провайдера (gemini и zai).
+- `api/ping.ts` — диагностический: `GET /api/ping` → `{ ok, node, hasGeminiKey }`.
 - `vercel.json` — SPA-роутинг (React Router) + таймаут функций 60 с.
 
 ## Бесплатное распознавание через Gemini
