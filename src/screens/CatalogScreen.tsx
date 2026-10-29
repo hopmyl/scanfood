@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { Crown, Flame, RotateCcw, Search } from 'lucide-react';
-import { CATEGORY_FILTERS, DISHES, KCAL_RANGES, type DishCategory } from '../data/dishes';
+import { CATEGORY_FILTERS, CUISINE_META, DISHES, KCAL_RANGES, type CuisineId, type DishCategory } from '../data/dishes';
 import DishCard from '../components/DishCard';
 import { useAppStore } from '../store/useAppStore';
 import { cn, pluralRu } from '../lib/utils';
@@ -11,6 +11,17 @@ export default function CatalogScreen() {
   const [category, setCategory] = useState<DishCategory | 'all'>('all');
   const [kcalId, setKcalId] = useState('any');
   const [query, setQuery] = useState('');
+  /** Выбранные кухни: пустой набор = все кухни; несколько = объединение */
+  const [cuisines, setCuisines] = useState<Set<CuisineId>>(new Set());
+
+  const toggleCuisine = (c: CuisineId) => {
+    setCuisines((prev) => {
+      const next = new Set(prev);
+      if (next.has(c)) next.delete(c);
+      else next.add(c);
+      return next;
+    });
+  };
 
   const filtered = useMemo(() => {
     const range = KCAL_RANGES.find((r) => r.id === kcalId);
@@ -18,6 +29,7 @@ export default function CatalogScreen() {
 
     return DISHES.filter((d) => {
       if (category !== 'all' && d.category !== category) return false;
+      if (cuisines.size > 0 && !cuisines.has(d.cuisine ?? 'russian')) return false;
       if (range?.min !== undefined && d.kcal < range.min) return false;
       if (range?.max !== undefined && d.kcal > range.max) return false;
       if (q && !d.nameEn.toLowerCase().includes(q) && !d.nameRu.toLowerCase().includes(q)) {
@@ -25,14 +37,16 @@ export default function CatalogScreen() {
       }
       return true;
     });
-  }, [category, kcalId, query]);
+  }, [category, kcalId, query, cuisines]);
 
-  const hasActiveFilters = category !== 'all' || kcalId !== 'any' || query.trim() !== '';
+  const hasActiveFilters =
+    category !== 'all' || kcalId !== 'any' || query.trim() !== '' || cuisines.size > 0;
 
   const reset = () => {
     setCategory('all');
     setKcalId('any');
     setQuery('');
+    setCuisines(new Set());
   };
 
   return (
@@ -84,6 +98,30 @@ export default function CatalogScreen() {
             {c.labelRu}
           </button>
         ))}
+      </div>
+
+      {/* Чипсы кухонь (мультивыбор: русская + тайская = обе сразу) */}
+      <div className="no-scrollbar -mx-4 mb-2 flex gap-2 overflow-x-auto px-4 pb-1">
+        {(Object.keys(CUISINE_META) as CuisineId[]).map((c) => {
+          const active = cuisines.has(c);
+          return (
+            <button
+              key={c}
+              type="button"
+              onClick={() => toggleCuisine(c)}
+              aria-pressed={active}
+              className={cn(
+                'flex shrink-0 items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-medium whitespace-nowrap transition-colors',
+                active
+                  ? 'border-ink bg-ink text-app'
+                  : 'border-line bg-card text-ink-2 hover:border-ink-3',
+              )}
+            >
+              <span aria-hidden>{CUISINE_META[c].emoji}</span>
+              {CUISINE_META[c].labelRu}
+            </button>
+          );
+        })}
       </div>
 
       {/* Чипсы калорийности */}

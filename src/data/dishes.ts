@@ -43,6 +43,8 @@ export interface Dish {
   image: string;
   ingredients: Ingredient[];
   steps: string[];
+  /** Кухня (для фильтра каталога); старые блюда получают её из CUISINE_OVERRIDES */
+  cuisine?: import('./dishes').CuisineId;
   /** Тир доступа: free — классика (бесплатно), pro — авторская коллекция */
   tier?: 'free' | 'pro';
 }
@@ -240,6 +242,7 @@ export const DEFAULT_PANTRY: string[] = [
 ];
 
 import { DISHES_MORE } from './dishes-more';
+import { DISHES_WORLD, WORLD_PRO_IDS } from './dishes-world';
 
 const ALL_DISHES: Dish[] = [
   {
@@ -1375,7 +1378,55 @@ const ALL_DISHES: Dish[] = [
   },
   // ==================== v3: +50 оригинальных домашних рецептов ====================
   ...DISHES_MORE,
+  // ==================== v4: +300 блюд 9 кухонь мира ====================
+  ...DISHES_WORLD,
 ];
+
+// ==================== Кухни: тип и подписи фильтра ====================
+
+export type CuisineId =
+  | 'russian'
+  | 'mediterranean'
+  | 'italian'
+  | 'thai'
+  | 'chinese'
+  | 'japanese'
+  | 'american'
+  | 'mexican'
+  | 'indian'
+  | 'korean';
+
+export const CUISINE_META: Record<CuisineId, { labelRu: string; emoji: string }> = {
+  russian: { labelRu: 'Русская', emoji: '🫕' },
+  mediterranean: { labelRu: 'Средиземноморская', emoji: '🫒' },
+  italian: { labelRu: 'Итальянская', emoji: '🍝' },
+  thai: { labelRu: 'Тайская', emoji: '🍜' },
+  chinese: { labelRu: 'Китайская', emoji: '🥡' },
+  japanese: { labelRu: 'Японская', emoji: '🍱' },
+  american: { labelRu: 'Американская', emoji: '🍔' },
+  mexican: { labelRu: 'Мексиканская', emoji: '🌮' },
+  indian: { labelRu: 'Индийская', emoji: '🍛' },
+  korean: { labelRu: 'Корейская', emoji: '🌶️' },
+};
+
+/** Кухни существующих 100 блюд (по умолчанию — русская) */
+const CUISINE_OVERRIDES: Partial<Record<CuisineId, string[]>> = {
+  mediterranean: ['shakshuka', 'greek-salad', 'falafel-wrap', 'baked-dorado', 'fried-calamari', 'mussels-cream', 'tuna-steak-sesame', 'pumpkin-soup', 'ratatouille', 'garlic-shrimp', 'croissant-salmon', 'lyulya-kebab', 'greek-yogurt-granola', 'baked-salmon-quinoa'],
+  italian: ['pasta-carbonara', 'spaghetti-bolognese', 'margherita-pizza', 'caprese-salad', 'mushroom-risotto', 'eggplant-parmesan', 'pepperoni-pizza', 'bruschetta', 'chicken-mushroom-pasta', 'shrimp-pasta'],
+  thai: ['tom-yum'],
+  japanese: ['sushi-set', 'poke-bowl', 'soba-beef', 'chicken-teriyaki'],
+  chinese: ['sweet-sour-chicken', 'chicken-stir-fry'],
+  american: ['beef-burger', 'bbq-pork-ribs', 'fish-and-chips', 'ny-cheesecake', 'brownies', 'bbq-chicken-wings', 'tuna-sandwich', 'blueberry-muffins', 'banana-bread', 'caesar-salad', 'avocado-toast', 'smoothie-bowl'],
+  mexican: ['beef-tacos', 'chicken-fajitas'],
+  indian: ['chicken-tikka-masala'],
+  korean: ['korean-carrot'],
+};
+
+const CUISINE_BY_ID: Map<string, CuisineId> = new Map(
+  Object.entries(CUISINE_OVERRIDES).flatMap(([c, ids]) =>
+    (ids ?? []).map((id) => [id, c as CuisineId]),
+  ),
+);
 
 // ==================== Free / PRO: 60 классических бесплатно, 40 авторских с PRO ====================
 
@@ -1424,12 +1475,16 @@ export const PRO_DISH_IDS: ReadonlySet<string> = new Set([
   'caprese-salad',
   'adjarian-khachapuri',
   'ny-cheesecake',
+  // Кухни мира: авторская коллекция
+  ...WORLD_PRO_IDS,
 ]);
 
 export const PRO_DISHES_COUNT = PRO_DISH_IDS.size;
 export const FREE_DISHES_COUNT = ALL_DISHES.length - PRO_DISH_IDS.size;
 
-/** Итоговый каталог: каждому блюду присвоен тир free/pro */
-export const DISHES: Dish[] = ALL_DISHES.map((d) =>
-  PRO_DISH_IDS.has(d.id) ? { ...d, tier: 'pro' as const } : d,
-);
+/** Итоговый каталог: каждому блюду присвоены тир free/pro и кухня */
+export const DISHES: Dish[] = ALL_DISHES.map((d) => ({
+  ...d,
+  cuisine: (d.cuisine ?? CUISINE_BY_ID.get(d.id) ?? 'russian') as Dish['cuisine'],
+  tier: PRO_DISH_IDS.has(d.id) ? ('pro' as const) : undefined,
+}));

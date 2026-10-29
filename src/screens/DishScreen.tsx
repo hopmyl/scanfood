@@ -169,7 +169,7 @@ export default function DishScreen() {
           <ul className="mt-4 space-y-2 text-left">
             <li className="flex items-center gap-2.5 rounded-xl bg-soft px-3.5 py-2.5 text-sm text-ink">
               <InfinityIcon size={16} className="shrink-0 text-accent" />
-              Все 100 рецептов: 60 классических бесплатны, 40 авторских — с PRO
+              Все 399 рецептов: 248 блюд бесплатно, 151 авторское — с PRO
             </li>
             <li className="flex items-center gap-2.5 rounded-xl bg-soft px-3.5 py-2.5 text-sm text-ink">
               <Sparkles size={16} className="shrink-0 text-accent" />

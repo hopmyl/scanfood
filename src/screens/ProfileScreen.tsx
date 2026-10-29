@@ -57,8 +57,8 @@ export default function ProfileScreen() {
     },
     {
       icon: Sparkles,
-      title: 'Вся база — 100 блюд',
-      text: '60 классических бесплатно и 40 авторских с PRO',
+      title: 'Вся база — 399 рецептов',
+      text: '248 блюд бесплатно и 151 авторское с PRO',
     },
   ];
 

@@ -142,6 +142,14 @@ async function main() {
   // Стиль «домашнее фото» вместо тёмного слейта + прогресс-файл, чтобы перезапуск
   // после таймаута не перегенерировал уже готовые фото заново.
   const onlyArg = process.argv.find((a) => a.startsWith('--only='));
+  // Промпты из данных приложения (399 блюд) — у них приоритет, старый список — фолбэк
+  const SUBJECTS = fs.existsSync('scripts/photo-subjects.json')
+    ? JSON.parse(fs.readFileSync('scripts/photo-subjects.json', 'utf8'))
+    : {};
+  const ALL_IDS = [
+    ...new Set([...DISHES.map(([id]) => id), ...Object.keys(SUBJECTS)]),
+  ].map((id) => [id, SUBJECTS[id] ?? (DISHES.find(([i]) => i === id)?.[1] ?? id)]);
+
   const forceIds = onlyArg
     ? onlyArg
         .slice('--only='.length)
@@ -161,7 +169,7 @@ async function main() {
   const zai = await ZAI.create();
   const failed = [];
 
-  const base = forceIds ? DISHES.filter(([id]) => forceIds.includes(id)) : DISHES;
+  const base = forceIds ? ALL_IDS.filter(([id]) => forceIds.includes(id)) : ALL_IDS;
   const mySlice = base.filter((_, i) => i % total === shard);
 
     for (let i = 0; i < mySlice.length; i++) {
@@ -174,7 +182,7 @@ async function main() {
       continue; // без паузы — не тратим 4с на каждый пропуск
     }
 
-    const prompt = `${subject}, ${forceIds ? REAL_STYLE : STYLE}`;
+    const prompt = `${subject}, ${REAL_STYLE}`;
     let ok = false;
 
     for (let attempt = 1; attempt <= 8 && !ok; attempt++) {
