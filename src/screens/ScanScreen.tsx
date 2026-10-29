@@ -190,16 +190,19 @@ export default function ScanScreen() {
   const cssZoomRef = useRef(1);
   const trackRef = useRef<MediaStreamTrack | null>(null);
   const nativeZoomRef = useRef<{ min: number; max: number } | null>(null);
+  /** Зум потока при старте = честная 1x в единицах устройства (калибровка) */
+  const baseZoomRef = useRef(1);
 
-  /** Переключение зума: сначала пробуем нативный зум объектива, иначе CSS-кроп.
-   *  Честные кратные: min диапазона — это и есть 1×, значит «2×» = min*2,
-   *  а не доля диапазона — поэтому подпись на чипе совпадает с реальным зумом. */
+  /** Переключение зума: нативный зум объектива, иначе CSS-кроп.
+   *  Цели считаем от базовой точки — зума только что открытого потока
+   *  (он равен родному полю зрения камеры в ЛЮБЫХ единицах: у ряда телефонов
+   *  min диапазона — не 1x, из-за чего чип «1x» оказывался реальными 2-2.5x). */
   const applyZoom = async (level: ZoomLevel) => {
     setZoomLevel(level);
     const caps = nativeZoomRef.current;
     const track = trackRef.current;
     if (caps && track) {
-      const target = Math.min(caps.max, Math.max(caps.min, caps.min * level));
+      const target = Math.min(caps.max, Math.max(caps.min, baseZoomRef.current * level));
       try {
         await track.applyConstraints(
           { advanced: [{ zoom: target }] } as unknown as MediaTrackConstraints,
@@ -248,14 +251,14 @@ export default function ScanScreen() {
     setCamState('starting');
     (async () => {
       try {
-        // Портретный запрос 3:4: современные Chrome на Android умеют кадрировать
-        // под аспект. Если телефон вернул ландшафтный кадр — перезапускаем с 720×1280.
+        // Без жёсткого aspectRatio: принудительный 3:4 заставляет часть HAL
+        // кропировать сенсор — появляется ложный «зум 2-2.5x». Просим просто
+        // широкий кадр: в портрете Chrome сам отдаёт 9:16 на всю ширину сенсора.
         stream = await navigator.mediaDevices.getUserMedia({
           video: {
             facingMode: 'environment',
-            aspectRatio: { ideal: 0.75 },
-            width: { ideal: 1080 },
-            height: { ideal: 1440 },
+            width: { ideal: 1280 },
+            height: { ideal: 720 },
           },
           audio: false,
         });
@@ -286,29 +289,34 @@ export default function ScanScreen() {
           video && video.videoWidth > 0 ? video.videoWidth / video.videoHeight : 3 / 4,
         );
 
-        // Сброс дефолтного зума (часть телефонов стартует на 3-4x телеобъективе)
-        // и запоминание диапазона нативного зума для ступеней 1x/2x/3x
+        // Калибровка зума: запоминаем диапазон нативного зума и ТОЧКУ ОТСЧЁТА —
+        // текущий зум свежего потока (getSettings().zoom), а не min диапазона.
         const track = stream.getVideoTracks()[0] ?? null;
         trackRef.current = track;
         nativeZoomRef.current = null;
-        if (track && typeof track.getCapabilities === 'function') {
-          const caps = track.getCapabilities() as unknown as {
-            zoom?: { min?: number; max?: number };
-          };
-          if (
-            caps.zoom &&
-            typeof caps.zoom.min === 'number' &&
-            typeof caps.zoom.max === 'number' &&
-            caps.zoom.max > caps.zoom.min
-          ) {
-            nativeZoomRef.current = { min: caps.zoom.min, max: caps.zoom.max };
-            try {
-              await track.applyConstraints(
-                { advanced: [{ zoom: caps.zoom.min }] } as unknown as MediaTrackConstraints,
-              );
-            } catch {
-              /* игнорируем — остаётся цифровой зум */
+        baseZoomRef.current = 1;
+        if (track) {
+          if (typeof track.getCapabilities === 'function') {
+            const caps = track.getCapabilities() as unknown as {
+              zoom?: { min?: number; max?: number };
+            };
+            if (
+              caps.zoom &&
+              typeof caps.zoom.min === 'number' &&
+              typeof caps.zoom.max === 'number' &&
+              caps.zoom.max > caps.zoom.min
+            ) {
+              nativeZoomRef.current = { min: caps.zoom.min, max: caps.zoom.max };
             }
+          }
+          const settings = track.getSettings() as unknown as { zoom?: number };
+          if (typeof settings.zoom === 'number' && settings.zoom > 0) {
+            // Свежий поток уже находится в своей честной 1x — фиксируем её как базу
+            baseZoomRef.current = settings.zoom;
+          } else if (nativeZoomRef.current) {
+            // Единицы не рассказывают, где 1x, — берём min: хуже не станет,
+            // потому что принудительный сброс зума мы больше не делаем
+            baseZoomRef.current = nativeZoomRef.current.min;
           }
         }
 
@@ -322,6 +330,7 @@ export default function ScanScreen() {
       cancelled = true;
       trackRef.current = null;
       nativeZoomRef.current = null;
+      baseZoomRef.current = 1;
       cssZoomRef.current = 1;
       setZoomLevel(1);
       setCssZoom(1);

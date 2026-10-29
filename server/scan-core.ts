@@ -124,11 +124,10 @@ async function scanWithGemini(imageDataUrl: string): Promise<DetectedProduct[]> 
   const key = process.env.GEMINI_API_KEY?.trim();
   if (!key) throw new Error('GEMINI_API_KEY is not set');
 
-  // gemini-2.0-flash выключен Google 01.06.2026 — дефолт только на живых моделях.
-  // 2.5-flash-lite: без thinking по умолчанию и исторически самая щедрая
-  // бесплатная квота (RPD). Свежее (gemini-3.8-flash и т.п.) задаётся через
-  // GEMINI_MODEL, квоты плавают — сверяйся с AI Studio → Rate limits.
-  const model = process.env.GEMINI_MODEL?.trim() || 'gemini-2.5-flash-lite';
+  // gemini-2.0-flash выключен Google 01.06.2026, а gemini-2.5-flash-lite закрыт
+  // для новых пользователей — дефолт только на живых моделях: 3.5-flash-lite
+  // (та же модель, что и в самодостаточном api/scan.ts на Vercel).
+  const model = process.env.GEMINI_MODEL?.trim() || 'gemini-3.5-flash-lite';
   const match = imageDataUrl.match(/^data:(image\/[a-z0-9.+-]+);base64,(.+)$/i);
   if (!match) throw new Error('bad image data url');
   const [, mime, base64] = match;

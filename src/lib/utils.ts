@@ -48,6 +48,14 @@ export function daysLeft(isoDate: string): number | null {
   return Math.round((target.getTime() - start.getTime()) / 86_400_000);
 }
 
+/** ISO-дата «YYYY-MM-DD» через n дней от сегодня (локальная таймзона) */
+export function isoInDays(n: number): string {
+  const d = new Date();
+  d.setDate(d.getDate() + n);
+  const p = (x: number) => String(x).padStart(2, '0');
+  return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
+}
+
 /**
  * Версия статики фото блюд. Увеличиваем при перегенерации фото —
  * меняющийся ?v= сбрасывает HTTP-кэш телефонов, иначе браузер показывает старьё.

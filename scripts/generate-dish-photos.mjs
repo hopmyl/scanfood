@@ -16,11 +16,16 @@ const STYLE =
   'soft natural side lighting, appetizing, high-end restaurant plating, fresh herbs garnish, ' +
   'shallow depth of field, 45-degree angle, photorealistic, high detail, high quality';
 
-// Реалистичный «домашний» стиль для перегенерации — без нейронного глянца
+// Реалистичный «домашний» стиль для перегенерации — без нейронного глянца.
+// Проверен визуально: пар, крошки, естественный свет — еда, которую хочется съесть.
 const REAL_STYLE =
-  'candid homemade food photography, natural daylight from a window, simple ceramic plate ' +
-  'on a light kitchen table, cozy home kitchen softly blurred in background, realistic ' +
-  'authentic textures, appetizing, no text, no watermark, photorealistic, high detail';
+  'ultra realistic photo taken with a smartphone camera by a regular person, ' +
+  'real homemade food on a simple ceramic plate on a lived-in kitchen table, ' +
+  'soft natural daylight from a window, slight shadows, gentle steam rising, ' +
+  'a few crumbs and natural imperfections on the table, true-to-life textures, ' +
+  'colors and proportions, looks like a real snapshot from a home cooking blog, ' +
+  'amateur photography, not a render, not CGI, not 3D, not illustration, ' +
+  'no text, no watermark';
 
 const DISHES = [
   ['cottage-cheese-pancakes', 'Russian syrniki: five small thick fried cottage cheese pancakes with golden crust and visible curd texture, dollop of sour cream on top, powdered sugar, fresh raspberries aside'],
