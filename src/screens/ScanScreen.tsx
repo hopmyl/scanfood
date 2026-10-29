@@ -70,6 +70,87 @@ function pickRandom<T>(arr: T[], n: number): T[] {
   return out;
 }
 
+// --- Автоподбор самой широкой задней камеры ---
+// Часть телефонов (в т.ч. realme и др.) по умолчанию включает телеобъектив
+// или «склеенный» блок, у которого минимальный зум 2-2.5x: чип «1x» врёт,
+// холодильник вблизи не снять. Перебираем задние камеры и ищем самую широкую.
+
+/** Кеш самой широкой задней камеры — зондирование один раз за сессию */
+const WIDE_CAM_KEY = 'skanrecept-wide-cam';
+
+/** Мин зум трека или null, если зум не поддерживается */
+function trackZoomMin(track: MediaStreamTrack | null | undefined): number | null {
+  if (!track || typeof track.getCapabilities !== 'function') return null;
+  try {
+    const caps = track.getCapabilities() as unknown as { zoom?: { min?: number; max?: number } };
+    if (caps.zoom && typeof caps.zoom.min === 'number') return caps.zoom.min;
+  } catch {
+    /* некоторые движки кидают на getCapabilities — считаем, что зума нет */
+  }
+  return null;
+}
+
+/** Быстро открыть камеру по id, узнать её минимальный зум и сразу закрыть */
+async function probeZoomMin(deviceId: string, timeoutMs = 2500): Promise<number | null> {
+  let stream: MediaStream | null = null;
+  const stop = () => stream?.getTracks().forEach((t) => t.stop());
+  const gump = navigator.mediaDevices
+    .getUserMedia({ video: { deviceId: { exact: deviceId } }, audio: false })
+    .then((s) => {
+      stream = s;
+      return s;
+    });
+  try {
+    const s = await Promise.race([
+      gump,
+      new Promise<never>((_, reject) =>
+        setTimeout(() => reject(new Error('probe timeout')), timeoutMs),
+      ),
+    ]);
+    const track = s.getVideoTracks()[0] ?? null;
+    // Страховка: вдруг попали на фронталку — её в подбор не берём
+    if (track?.getSettings?.().facingMode === 'user') {
+      stop();
+      return null;
+    }
+    const min = trackZoomMin(track);
+    stop();
+    return min;
+  } catch {
+    // Таймаут: getUserMedia может разрешиться позже — гасим камеру тогда,
+    // иначе на медленном телефоне она останется включённой
+    void gump.then(stop).catch(stop);
+    return null;
+  }
+}
+
+/**
+ * Перебираем «задние» камеры по подписи и ищем самую широкую (min zoom).
+ * На десктопе (нет «задних» подписей) и iOS (нет getCapabilities) — no-op.
+ */
+async function findWidestBackCamera(
+  currentDeviceId: string | null,
+): Promise<{ deviceId: string; min: number } | null> {
+  try {
+    const devices = await navigator.mediaDevices.enumerateDevices();
+    const isFront = (label: string) => /front|фронт|передн|user|face/i.test(label);
+    const backs = devices
+      .filter((d) => d.kind === 'videoinput' && d.label && !isFront(d.label))
+      .slice(0, 6);
+    if (backs.length === 0) return null;
+    let best: { deviceId: string; min: number } | null = null;
+    for (const d of backs) {
+      if (currentDeviceId && d.deviceId === currentDeviceId) continue;
+      const min = await probeZoomMin(d.deviceId);
+      if (min !== null && min < (best?.min ?? Infinity)) best = { deviceId: d.deviceId, min };
+      if (best && best.min <= 0.71) break; // ультраширик найден — хватит
+    }
+    return best;
+  } catch {
+    return null;
+  }
+}
+
 /** Приводим распознанную строку к каноническому продукту справочника */
 function mapToCanonical(raw: string): string {
   const n = raw.toLowerCase();
@@ -250,33 +331,77 @@ export default function ScanScreen() {
 
     setCamState('starting');
     (async () => {
+      /** Базовые видео-констрейнты: без жёсткого aspectRatio — принудительный 3:4
+       *  заставляет часть HAL кропировать сенсор (ложный «зум 2-2.5x»). */
+      const VIDEO_BASE: MediaTrackConstraints = {
+        facingMode: 'environment',
+        width: { ideal: 1280 },
+        height: { ideal: 720 },
+      };
+      const VIDEO_PORTRAIT: MediaTrackConstraints = {
+        facingMode: 'environment',
+        width: { ideal: 720 },
+        height: { ideal: 1280 },
+      };
+      /** Открыть поток, опционально на конкретной камере */
+      const openWith = async (deviceId?: string | null) => {
+        const video: MediaTrackConstraints = deviceId
+          ? { ...VIDEO_BASE, deviceId: { exact: deviceId } }
+          : { ...VIDEO_BASE };
+        return navigator.mediaDevices.getUserMedia({ video, audio: false });
+      };
+      /** Перезапуск в портрете, не теряя выбранную камеру */
+      const restartPortrait = async (deviceId?: string | null) => {
+        const video: MediaTrackConstraints = deviceId
+          ? { ...VIDEO_PORTRAIT, deviceId: { exact: deviceId } }
+          : { ...VIDEO_PORTRAIT };
+        return navigator.mediaDevices.getUserMedia({ video, audio: false });
+      };
+
       try {
-        // Без жёсткого aspectRatio: принудительный 3:4 заставляет часть HAL
-        // кропировать сенсор — появляется ложный «зум 2-2.5x». Просим просто
-        // широкий кадр: в портрете Chrome сам отдаёт 9:16 на всю ширину сенсора.
-        stream = await navigator.mediaDevices.getUserMedia({
-          video: {
-            facingMode: 'environment',
-            width: { ideal: 1280 },
-            height: { ideal: 720 },
-          },
-          audio: false,
-        });
+        // Быстрый путь: в прошлый раз уже нашли самую широкую заднюю камеру
+        let cachedWide: string | null = null;
+        try {
+          cachedWide = sessionStorage.getItem(WIDE_CAM_KEY);
+        } catch {
+          /* нет доступа к хранилищу */
+        }
+        if (cachedWide) {
+          try {
+            stream = await openWith(cachedWide);
+          } catch {
+            try {
+              sessionStorage.removeItem(WIDE_CAM_KEY);
+            } catch {
+              /* не критично */
+            }
+            stream = null;
+          }
+        }
+        if (!stream) {
+          stream = await openWith();
+        }
         if (cancelled) {
           stream.getTracks().forEach((t) => t.stop());
           return;
         }
+        const deviceIdOf = (s: MediaStream | null): string | null => {
+          const id = s?.getVideoTracks()[0]?.getSettings?.().deviceId;
+          return typeof id === 'string' && id ? id : null;
+        };
+        let activeDeviceId = deviceIdOf(stream);
+
+        // Альбомный кадр в портретном видоискателе = скрытый кроп-зум —
+        // перезапускаем поток явно портретными размерами (камеру сохраняем)
         let orientation = await attach(stream);
         if (orientation === 'landscape') {
           stream.getTracks().forEach((t) => t.stop());
-          stream = await navigator.mediaDevices.getUserMedia({
-            video: { facingMode: 'environment', width: { ideal: 720 }, height: { ideal: 1280 } },
-            audio: false,
-          });
+          stream = await restartPortrait(activeDeviceId);
           if (cancelled) {
             stream.getTracks().forEach((t) => t.stop());
             return;
           }
+          activeDeviceId = deviceIdOf(stream);
           orientation = await attach(stream);
           if (orientation === 'landscape') {
             // Телефон отдаёт только ландшафт — принимаем: видоискатель object-contain,
@@ -284,6 +409,45 @@ export default function ScanScreen() {
             console.info('[scan] камера отдаёт ландшафтный поток, показываем весь кадр');
           }
         }
+
+        // Подбор самой широкой камеры: если у текущей min зум заметно больше 1 —
+        // вероятно, попали на телеобъектив. Ищем шире и переключаемся.
+        let track = stream.getVideoTracks()[0] ?? null;
+        const currentMin = trackZoomMin(track);
+        if (currentMin !== null && currentMin > 1.05) {
+          const wider = await findWidestBackCamera(activeDeviceId);
+          if (wider && wider.min < currentMin) {
+            try {
+              sessionStorage.setItem(WIDE_CAM_KEY, wider.deviceId);
+            } catch {
+              /* нет доступа к хранилищу — просто будем искать каждый раз */
+            }
+            stream.getTracks().forEach((t) => t.stop());
+            if (cancelled) return;
+            stream = await openWith(wider.deviceId);
+            if (cancelled) {
+              stream.getTracks().forEach((t) => t.stop());
+              return;
+            }
+            activeDeviceId = deviceIdOf(stream);
+            orientation = await attach(stream);
+            if (orientation === 'landscape') {
+              stream.getTracks().forEach((t) => t.stop());
+              try {
+                stream = await restartPortrait(activeDeviceId);
+                if (cancelled) {
+                  stream.getTracks().forEach((t) => t.stop());
+                  return;
+                }
+                await attach(stream);
+              } catch {
+                /* не вышло — оставляем как есть, снимок всё равно кропается под превью */
+              }
+            }
+            track = stream.getVideoTracks()[0] ?? null;
+          }
+        }
+
         const video = videoRef.current;
         setStreamAR(
           video && video.videoWidth > 0 ? video.videoWidth / video.videoHeight : 3 / 4,
@@ -291,7 +455,6 @@ export default function ScanScreen() {
 
         // Калибровка зума: запоминаем диапазон нативного зума и ТОЧКУ ОТСЧЁТА —
         // текущий зум свежего потока (getSettings().zoom), а не min диапазона.
-        const track = stream.getVideoTracks()[0] ?? null;
         trackRef.current = track;
         nativeZoomRef.current = null;
         baseZoomRef.current = 1;
