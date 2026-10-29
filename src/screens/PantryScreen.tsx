@@ -5,7 +5,7 @@ import { SHELF_POOL } from '../data/dishes';
 import { emojiFor, matchDishes } from '../lib/match';
 import DishCard from '../components/DishCard';
 import { useAppStore } from '../store/useAppStore';
-import { cn, daysLeft, pluralRu } from '../lib/utils';
+import { cn, daysLeft, isoInDays, pluralRu } from '../lib/utils';
 
 function Jar({
   name,
@@ -200,7 +200,12 @@ export default function PantryScreen() {
         </div>
       </div>
 
-      {/* ===== Диалог срока годности ===== */}
+      {/* Подсказка про сроки, пока ни один не указан — иначе фичу не найти */}
+      {pantry.length > 0 && Object.keys(pantryExpiry).length === 0 && (
+        <p className="mt-2 text-center text-[11px] text-ink-2">
+          Нажми на баночку и укажи срок годности — подскажем, что приготовить раньше остального
+        </p>
+      )}
       {expiryFor && (
         <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/40 p-4 pb-24 sm:items-center sm:pb-4">
           <div className="w-full max-w-sm rounded-3xl border border-line bg-card p-5 shadow-xl">
@@ -219,6 +224,25 @@ export default function PantryScreen() {
               onChange={(e) => setExpiryDraft(e.target.value)}
               className="mt-3 w-full rounded-2xl border border-line bg-soft px-4 py-3 text-sm text-ink outline-none focus:border-accent"
             />
+            {/* Быстрые пресеты — на телефоне/date-пикере долго возиться руками */}
+            <div className="mt-2 flex flex-wrap gap-1.5">
+              {[
+                { d: 0, l: 'Сегодня' },
+                { d: 3, l: '3 дня' },
+                { d: 7, l: 'Неделя' },
+                { d: 14, l: '2 недели' },
+                { d: 30, l: 'Месяц' },
+              ].map((p) => (
+                <button
+                  key={p.d}
+                  type="button"
+                  onClick={() => setExpiryDraft(isoInDays(p.d))}
+                  className="rounded-full border border-line bg-soft px-3 py-1.5 text-xs font-medium text-ink-2 transition-colors hover:border-accent hover:text-accent"
+                >
+                  {p.l}
+                </button>
+              ))}
+            </div>
             <div className="mt-4 flex gap-2">
               <button
                 type="button"

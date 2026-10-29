@@ -28,10 +28,99 @@ import { cn, pluralRu } from '../lib/utils';
 type Phase = 'idle' | 'scanning' | 'result' | 'paywall';
 type ScanMode = 'products' | 'barcode';
 type CamState = 'starting' | 'on' | 'denied';
-/** Ступень зума как в системной камере: 1x / 2x / 3x */
-type ZoomLevel = 1 | 2 | 3;
-/** Доля диапазона нативного зума для каждой ступени (0 = мин. зум = 1x) */
-const ZOOM_RANGE: Record<ZoomLevel, number> = { 1: 0, 2: 0.45, 3: 0.8 };
+/** Прочитать диапазон нативного зума трека (если камера его поддерживает) */
+function zoomCapsOf(
+  track: MediaStreamTrack | null | undefined,
+): { min: number; max: number } | null {
+  if (!track || typeof track.getCapabilities !== 'function') return null;
+  const caps = track.getCapabilities() as unknown as {
+    zoom?: { min?: number; max?: number };
+  };
+  if (
+    caps.zoom &&
+    typeof caps.zoom.min === 'number' &&
+    typeof caps.zoom.max === 'number' &&
+    caps.zoom.max > caps.zoom.min
+  ) {
+    return { min: caps.zoom.min, max: caps.zoom.max };
+  }
+  return null;
+}
+
+/**
+ * Честные ступени зума: минимум объектива (у ультраширика это 0,6×!),
+ * затем 2× и 3× — без дублей и ступеней выше максимума камеры.
+ * Чип всегда показывает РЕАЛЬНЫЙ множитель, а не «1×» при фактических 2×.
+ */
+function zoomChipFactors(caps: { min: number; max: number } | null): number[] {
+  if (!caps) return [1, 2, 3]; // нативный зум недоступен — цифровой CSS-зум
+  const factors = [caps.min, 2, 3].filter((f) => f <= caps.max + 0.001);
+  return [...new Set(factors.map((f) => Math.round(f * 10) / 10))].sort((a, b) => a - b);
+}
+
+/** «0,6×» / «2×» — по-русски, с запятой */
+function fmtZoom(f: number): string {
+  return `${String(Math.round(f * 10) / 10).replace('.', ',')}×`;
+}
+
+/** Кеш самой широкой задней камеры — зондирование один раз за сессию */
+const WIDE_CAM_KEY = 'skanrecept-wide-cam';
+
+/** Быстро открыть камеру по id, узнать её минимальный зум и сразу закрыть */
+async function probeZoomMin(deviceId: string, timeoutMs = 2500): Promise<number | null> {
+  let stream: MediaStream | null = null;
+  const stop = () => stream?.getTracks().forEach((t) => t.stop());
+  const gump = navigator.mediaDevices
+    .getUserMedia({ video: { deviceId: { exact: deviceId } }, audio: false })
+    .then((s) => {
+      stream = s;
+      return s;
+    });
+  try {
+    const s = await Promise.race([
+      gump,
+      new Promise<never>((_, reject) =>
+        setTimeout(() => reject(new Error('probe timeout')), timeoutMs),
+      ),
+    ]);
+    const min = zoomCapsOf(s.getVideoTracks()[0] ?? null)?.min ?? null;
+    stop();
+    return min;
+  } catch {
+    // Таймаут: getUserMedia может разрешиться позже — гасим камеру тогда,
+    // иначе на медленном телефоне она останется включённой
+    void gump.then(stop).catch(stop);
+    return null;
+  }
+}
+
+/**
+ * Часть телефонов отдаёт по умолчанию телеобъектив или склеенный блок,
+ * у которого минимальный зум 2× — холодильник вблизи не снять.
+ * Перебираем «задние» камеры по подписи и ищем самую широкую (min zoom).
+ * На десктопе (нет «задних» подписей) и iOS (нет getCapabilities) — no-op.
+ */
+async function findWidestBackCamera(
+  currentDeviceId: string | null,
+): Promise<{ deviceId: string; min: number } | null> {
+  try {
+    const devices = await navigator.mediaDevices.enumerateDevices();
+    const backs = devices
+      .filter((d) => d.kind === 'videoinput' && /back|задн|rear/i.test(d.label))
+      .slice(0, 5);
+    if (backs.length === 0) return null;
+    let best: { deviceId: string; min: number } | null = null;
+    for (const d of backs) {
+      if (currentDeviceId && d.deviceId === currentDeviceId) continue;
+      const min = await probeZoomMin(d.deviceId);
+      if (min !== null && min < (best?.min ?? Infinity)) best = { deviceId: d.deviceId, min };
+      if (best && best.min <= 0.71) break; // ультраширик найден — хватит
+    }
+    return best;
+  } catch {
+    return null;
+  }
+}
 /** Причина неудачи распознавания: null — нет ошибки */
 type ScanFail = null | 'generic' | 'noprovider';
 type ProductState =
@@ -152,20 +241,23 @@ export default function ScanScreen() {
   const zxingRef = useRef<IScannerControls | null>(null);
 
   // --- зум камеры ---
-  const [zoomLevel, setZoomLevel] = useState<ZoomLevel>(1);
+  /** Активная ступень зума — реальный множитель (может быть 0,6 у ультраширика) */
+  const [zoomFactor, setZoomFactor] = useState(1);
+  /** Честные ступени: вычисляются из возможностей камеры после старта */
+  const [zoomChips, setZoomChips] = useState<number[]>([1, 2, 3]);
   /** Цифровой зум (CSS scale) — только когда нативный track.zoom недоступен */
   const [cssZoom, setCssZoom] = useState(1);
   const cssZoomRef = useRef(1);
   const trackRef = useRef<MediaStreamTrack | null>(null);
   const nativeZoomRef = useRef<{ min: number; max: number } | null>(null);
 
-  /** Переключение зума: сначала пробуем нативный зум объектива, иначе CSS-кроп */
-  const applyZoom = async (level: ZoomLevel) => {
-    setZoomLevel(level);
+  /** Переключение зума: нативный зум объектива по множителю, иначе CSS-кроп */
+  const applyZoom = async (factor: number) => {
+    setZoomFactor(factor);
     const caps = nativeZoomRef.current;
     const track = trackRef.current;
     if (caps && track) {
-      const target = caps.min + (caps.max - caps.min) * ZOOM_RANGE[level];
+      const target = Math.min(Math.max(factor, caps.min), caps.max);
       try {
         await track.applyConstraints(
           { advanced: [{ zoom: target }] } as unknown as MediaTrackConstraints,
@@ -177,8 +269,8 @@ export default function ScanScreen() {
         /* нативный зум не применился — уходим в цифровой */
       }
     }
-    cssZoomRef.current = level;
-    setCssZoom(level);
+    cssZoomRef.current = factor;
+    setCssZoom(factor);
   };
 
   // ================= Камера (продукты) =================
@@ -189,11 +281,39 @@ export default function ScanScreen() {
 
     setCamState('starting');
     (async () => {
+      const baseVideo: MediaTrackConstraints = {
+        facingMode: 'environment',
+        width: { ideal: 1280 },
+        height: { ideal: 720 },
+      };
+
+      // Быстрый путь: в прошлый раз уже нашли самую широкую заднюю камеру
+      // (sessionStorage может кидать в приватном режиме — оборачиваем)
+      let cachedWide: string | null = null;
       try {
-        stream = await navigator.mediaDevices.getUserMedia({
-          video: { facingMode: 'environment', width: { ideal: 1280 }, height: { ideal: 720 } },
-          audio: false,
-        });
+        cachedWide = sessionStorage.getItem(WIDE_CAM_KEY);
+      } catch {
+        /* нет доступа к хранилищу */
+      }
+      if (cachedWide) {
+        try {
+          stream = await navigator.mediaDevices.getUserMedia({
+            video: { ...baseVideo, deviceId: { exact: cachedWide } },
+            audio: false,
+          });
+        } catch {
+          sessionStorage.removeItem(WIDE_CAM_KEY);
+          stream = null;
+        }
+      }
+
+      try {
+        if (!stream) {
+          stream = await navigator.mediaDevices.getUserMedia({
+            video: baseVideo,
+            audio: false,
+          });
+        }
         if (cancelled) {
           stream.getTracks().forEach((t) => t.stop());
           return;
@@ -203,29 +323,52 @@ export default function ScanScreen() {
           await videoRef.current.play().catch(() => undefined);
         }
 
-        // Сброс дефолтного зума (часть телефонов стартует на 3-4x телеобъективе)
-        // и запоминание диапазона нативного зума для ступеней 1x/2x/3x
-        const track = stream.getVideoTracks()[0] ?? null;
-        trackRef.current = track;
-        nativeZoomRef.current = null;
-        if (track && typeof track.getCapabilities === 'function') {
-          const caps = track.getCapabilities() as unknown as {
-            zoom?: { min?: number; max?: number };
-          };
-          if (
-            caps.zoom &&
-            typeof caps.zoom.min === 'number' &&
-            typeof caps.zoom.max === 'number' &&
-            caps.zoom.max > caps.zoom.min
-          ) {
-            nativeZoomRef.current = { min: caps.zoom.min, max: caps.zoom.max };
+        // Сброс дефолтного зума (часть телефонов стартует на телеобъективе)
+        let track = stream.getVideoTracks()[0] ?? null;
+        let caps = zoomCapsOf(track);
+
+        // Камера по умолчанию умеет минимум 2× — ищем среди «задних» самую
+        // широкую. Без этого «1×» на чипе врёт, и холодильник вблизи не снять.
+        if (caps && caps.min > 1.05) {
+          const currentId = track?.getSettings?.().deviceId ?? null;
+          const wider = await findWidestBackCamera(currentId);
+          if (wider && wider.min < caps.min) {
             try {
-              await track.applyConstraints(
-                { advanced: [{ zoom: caps.zoom.min }] } as unknown as MediaTrackConstraints,
-              );
+              sessionStorage.setItem(WIDE_CAM_KEY, wider.deviceId);
             } catch {
-              /* игнорируем — остаётся цифровой зум */
+              /* нет доступа к хранилищу — просто будем искать каждый раз */
             }
+            stream.getTracks().forEach((t) => t.stop());
+            if (cancelled) return;
+            stream = await navigator.mediaDevices.getUserMedia({
+              video: { ...baseVideo, deviceId: { exact: wider.deviceId } },
+              audio: false,
+            });
+            if (cancelled) {
+              stream.getTracks().forEach((t) => t.stop());
+              return;
+            }
+            if (videoRef.current) {
+              videoRef.current.srcObject = stream;
+              await videoRef.current.play().catch(() => undefined);
+            }
+            track = stream.getVideoTracks()[0] ?? null;
+            caps = zoomCapsOf(track);
+          }
+        }
+
+        trackRef.current = track;
+        nativeZoomRef.current = caps;
+        setZoomChips(zoomChipFactors(caps));
+
+        // Стартуем с минимума объектива — это и есть настоящая «1×»
+        if (caps && track) {
+          try {
+            await track.applyConstraints(
+              { advanced: [{ zoom: caps.min }] } as unknown as MediaTrackConstraints,
+            );
+          } catch {
+            /* игнорируем — остаётся цифровой зум */
           }
         }
 
@@ -240,7 +383,8 @@ export default function ScanScreen() {
       trackRef.current = null;
       nativeZoomRef.current = null;
       cssZoomRef.current = 1;
-      setZoomLevel(1);
+      setZoomFactor(1);
+      setZoomChips([1, 2, 3]);
       setCssZoom(1);
       stream?.getTracks().forEach((t) => t.stop());
     };
@@ -579,23 +723,24 @@ export default function ScanScreen() {
                   )}
                 />
 
-                {/* Ступени зума как в системной камере */}
+                {/* Ступени зума как в системной камере — честные множители,
+                    минимальный = настоящий минимум объектива (может быть 0,6×) */}
                 {camState === 'on' && phase !== 'scanning' && (
                   <div className="absolute bottom-24 left-1/2 z-10 flex -translate-x-1/2 items-center gap-1 rounded-full bg-black/40 p-1 backdrop-blur-sm">
-                    {([1, 2, 3] as const).map((level) => (
+                    {zoomChips.map((f) => (
                       <button
-                        key={level}
+                        key={f}
                         type="button"
-                        onClick={() => void applyZoom(level)}
-                        aria-label={`Зум ${level}x`}
+                        onClick={() => void applyZoom(f)}
+                        aria-label={`Зум ${fmtZoom(f)}`}
                         className={cn(
-                          'flex h-9 w-9 items-center justify-center rounded-full text-xs font-bold transition-colors',
-                          zoomLevel === level
+                          'flex h-9 min-w-9 items-center justify-center rounded-full px-1.5 text-xs font-bold transition-colors',
+                          zoomFactor === f
                             ? 'bg-white text-stone-900'
                             : 'text-white/85 hover:text-white',
                         )}
                       >
-                        {level}×
+                        {fmtZoom(f)}
                       </button>
                     ))}
                   </div>
