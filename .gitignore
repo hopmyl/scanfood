@@ -15,3 +15,5 @@ db/
 gen-run*.log
 photo-gen-*.log
 *.log
+skills/
+download/
