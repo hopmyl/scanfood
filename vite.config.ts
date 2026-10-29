@@ -35,6 +35,9 @@ export default defineConfig({
         globPatterns: ['**/*.{js,css,html,svg,png,woff2}'],
         runtimeCaching: [
           {
+            // ⚠️ CacheFirst живёт 30 дней и переживает обновления SW. Инвалидация
+            // версий фото — через ?v=N в URL (DISH_IMG_V в src/lib/utils.ts):
+            // новый параметр = новый ключ кэша = телефон видит свежее фото.
             urlPattern: /\/dishes\/.+\.(jpg|png)$/i,
             handler: 'CacheFirst',
             options: {

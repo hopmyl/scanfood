@@ -47,3 +47,14 @@ export function daysLeft(isoDate: string): number | null {
   const start = new Date(today.getFullYear(), today.getMonth(), today.getDate());
   return Math.round((target.getTime() - start.getTime()) / 86_400_000);
 }
+
+/**
+ * Версия статики фото блюд. Увеличиваем при перегенерации фото —
+ * меняющийся ?v= сбрасывает HTTP-кэш телефонов, иначе браузер показывает старьё.
+ */
+export const DISH_IMG_V = 3;
+
+/** Путь к фото блюда с кэш-бастингом: '/dishes/x.jpg' → '/dishes/x.jpg?v=3' */
+export function dishImgUrl(src: string): string {
+  return `${src}?v=${DISH_IMG_V}`;
+}

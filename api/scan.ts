@@ -48,12 +48,16 @@ export default async function handler(req: Req, res: ServerResponse): Promise<vo
   }
 
   try {
-    const ingredients = await scanIngredients(image);
-    if (ingredients.length === 0) {
+    const products = await scanIngredients(image);
+    if (products.length === 0) {
       sendJson(502, { error: 'no_ingredients' });
       return;
     }
-    sendJson(200, { ingredients });
+    // ingredients — плоские имена (обратная совместимость), products — с уверенностью
+    sendJson(200, {
+      ingredients: products.map((p) => p.name),
+      products,
+    });
   } catch (err) {
     sendJson(502, { error: 'scan_failed', detail: errMsg(err) });
   }

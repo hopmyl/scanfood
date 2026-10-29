@@ -25,9 +25,22 @@ export const SCAN_PROMPT =
   'Правила: от 3 до 12 наименований; по-русски; именительный падеж; ' +
   'множественное число, где уместно (помидоры, яйца, огурцы); ' +
   'без упаковок, посуды, приборов и непродуктов; без пояснений и комментариев. ' +
-  'Ответ — СТРОГО валидный JSON без markdown-обёрток: {"ingredients": ["...", "..."]}';
+  'Для каждого продукта оцени уверенность: "high" — уверен, что определил верно; ' +
+  '"medium" — продукт только похож на указанный, возможна ошибка. ' +
+  'Ответ — СТРОГО валидный JSON без markdown-обёрток: ' +
+  '{"ingredients": [{"name": "сыр", "confidence": "high"}, {"name": "сметана", "confidence": "medium"}]}';
 
-export function extractIngredients(raw: string): string[] {
+/** Распознанный продукт с уверенностью модели */
+export interface DetectedProduct {
+  name: string;
+  confidence: 'high' | 'medium';
+}
+
+/**
+ * Парсит ответ модели. Терпим к формату: принимает и новые объекты
+ * {name, confidence}, и старые строки — так ответ старой модели не уронит API.
+ */
+export function extractProducts(raw: string): DetectedProduct[] {
   if (!raw) return [];
   // Убираем возможные markdown-обёртки ```json ... ```
   let text = raw.trim().replace(/^```(?:json)?\s*/i, '').replace(/```\s*$/, '');
@@ -46,11 +59,28 @@ export function extractIngredients(raw: string): string[] {
   }
   const list = (parsed as { ingredients?: unknown })?.ingredients;
   if (!Array.isArray(list)) return [];
-  return list
-    .filter((item): item is string => typeof item === 'string')
-    .map((s) => s.trim().replace(/^[«"'\-–—\s]+|[«"'\s]+$/g, ''))
-    .filter((s) => s.length >= 2 && s.length <= 40)
-    .slice(0, 15);
+
+  const out: DetectedProduct[] = [];
+  const seen = new Set<string>();
+  for (const item of list) {
+    let name = '';
+    let confidence: DetectedProduct['confidence'] = 'high';
+    if (typeof item === 'string') {
+      name = item;
+    } else if (item && typeof item === 'object') {
+      const o = item as { name?: unknown; confidence?: unknown };
+      name = typeof o.name === 'string' ? o.name : '';
+      confidence = o.confidence === 'medium' || o.confidence === 'low' ? 'medium' : 'high';
+    }
+    name = name.trim().replace(/^[«"'\-–—\s]+|[«"'\s]+$/g, '');
+    if (name.length < 2 || name.length > 40) continue;
+    const key = name.toLowerCase();
+    if (seen.has(key)) continue;
+    seen.add(key);
+    out.push({ name, confidence });
+    if (out.length >= 12) break;
+  }
+  return out;
 }
 
 export type ScanProvider = 'zai' | 'gemini';
@@ -63,7 +93,7 @@ export function resolveScanProvider(): ScanProvider {
 }
 
 /** z-ai-web-dev-sdk — vision через createVision */
-async function scanWithZai(imageDataUrl: string): Promise<string[]> {
+async function scanWithZai(imageDataUrl: string): Promise<DetectedProduct[]> {
   const { default: ZAI } = await import('z-ai-web-dev-sdk');
   const zai = await ZAI.create();
 
@@ -86,11 +116,11 @@ async function scanWithZai(imageDataUrl: string): Promise<string[]> {
   ]);
 
   const content: string = completion?.choices?.[0]?.message?.content ?? '';
-  return extractIngredients(content);
+  return extractProducts(content);
 }
 
 /** Google AI Studio (Gemini Flash) — бесплатный тариф */
-async function scanWithGemini(imageDataUrl: string): Promise<string[]> {
+async function scanWithGemini(imageDataUrl: string): Promise<DetectedProduct[]> {
   const key = process.env.GEMINI_API_KEY?.trim();
   if (!key) throw new Error('GEMINI_API_KEY is not set');
 
@@ -133,14 +163,14 @@ async function scanWithGemini(imageDataUrl: string): Promise<string[]> {
       }
     )?.candidates?.[0]?.content?.parts;
     const text = (parts ?? []).map((p) => p.text ?? '').join('');
-    return extractIngredients(text);
+    return extractProducts(text);
   } finally {
     clearTimeout(timer);
   }
 }
 
 /** Точка входа: распознать продукты на фото (data:image/...;base64,…) */
-export async function scanIngredients(imageDataUrl: string): Promise<string[]> {
+export async function scanIngredients(imageDataUrl: string): Promise<DetectedProduct[]> {
   const provider = resolveScanProvider();
   try {
     return provider === 'gemini'

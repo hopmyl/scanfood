@@ -1,10 +1,10 @@
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Check, Heart } from 'lucide-react';
+import { Check, Crown, Heart } from 'lucide-react';
 import { CATEGORY_META, type Dish } from '../data/dishes';
 import { canCookFrom } from '../lib/match';
 import { useAppStore } from '../store/useAppStore';
-import { cn, formatKcal } from '../lib/utils';
+import { cn, dishImgUrl, formatKcal } from '../lib/utils';
 
 /**
  * Фото блюда с graceful-fallback: если AI-фото не загрузилось —
@@ -30,7 +30,7 @@ export function DishImage({ dish, className }: { dish: Dish; className?: string 
 
   return (
     <img
-      src={dish.image}
+      src={dishImgUrl(dish.image)}
       alt={dish.nameRu}
       loading="lazy"
       onError={() => setFailed(true)}
@@ -57,6 +57,13 @@ export default function DishCard({ dish }: { dish: Dish }) {
         <span className="absolute top-2 left-2 rounded-full bg-black/55 px-2 py-0.5 text-[11px] font-medium text-white backdrop-blur-sm">
           {formatKcal(dish.kcal)}
         </span>
+        {/* Авторская коллекция PRO — видна в списке, рецепт открывается по подписке */}
+        {dish.tier === 'pro' && (
+          <span className="absolute right-2 bottom-2 flex items-center gap-1 rounded-full bg-pro/90 px-2 py-0.5 text-[10px] font-bold text-white backdrop-blur-sm">
+            <Crown size={10} className="fill-current" />
+            PRO
+          </span>
+        )}
         {cookable && (
           <span className="absolute bottom-2 left-2 flex items-center gap-1 rounded-full bg-good/90 px-2 py-0.5 text-[10px] font-semibold text-white backdrop-blur-sm">
             <Check size={11} strokeWidth={3} />

@@ -172,7 +172,7 @@ async function main() {
     const prompt = `${subject}, ${forceIds ? REAL_STYLE : STYLE}`;
     let ok = false;
 
-    for (let attempt = 1; attempt <= 5 && !ok; attempt++) {
+    for (let attempt = 1; attempt <= 8 && !ok; attempt++) {
       try {
         const response = await zai.images.generations.create({
           prompt,
@@ -193,9 +193,10 @@ async function main() {
       } catch (err) {
         const isRateLimit = String(err?.message).includes('429');
         console.error(`[шард${shard}] попытка ${attempt} failed ${id}: ${err.message}`);
-        // При 429 ждём дольше — даём API остыть
-        const backoff = isRateLimit ? 20000 * attempt : 3000 * attempt;
-        if (attempt < 5) await new Promise((r) => setTimeout(r, backoff));
+        // При 429 ждём подольше — окно квоты может открыться в любой момент,
+        // терпеливый бэкофф позволяет «поймать» его внутри одного чанка
+        const backoff = isRateLimit ? 75000 : 3000 * attempt;
+        if (attempt < 8) await new Promise((r) => setTimeout(r, backoff));
       }
     }
 

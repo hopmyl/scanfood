@@ -43,6 +43,8 @@ export interface Dish {
   image: string;
   ingredients: Ingredient[];
   steps: string[];
+  /** Тир доступа: free — классика (бесплатно), pro — авторская коллекция */
+  tier?: 'free' | 'pro';
 }
 
 export const CATEGORY_META: Record<DishCategory, { labelRu: string; emoji: string }> = {
@@ -239,7 +241,7 @@ export const DEFAULT_PANTRY: string[] = [
 
 import { DISHES_MORE } from './dishes-more';
 
-export const DISHES: Dish[] = [
+const ALL_DISHES: Dish[] = [
   {
     id: 'cottage-cheese-pancakes',
     nameEn: 'Cottage cheese pancakes with berries',
@@ -1374,3 +1376,60 @@ export const DISHES: Dish[] = [
   // ==================== v3: +50 оригинальных домашних рецептов ====================
   ...DISHES_MORE,
 ];
+
+// ==================== Free / PRO: 60 классических бесплатно, 40 авторских с PRO ====================
+
+/**
+ * Авторская коллекция PRO: блюда видны в каталоге (фото, название, ккал),
+ * но ингредиенты и шаги открываются по подписке PRO.
+ */
+export const PRO_DISH_IDS: ReadonlySet<string> = new Set([
+  'tom-yum',
+  'poke-bowl',
+  'sushi-set',
+  'crispy-tofu',
+  'chicken-tikka-masala',
+  'soba-beef',
+  'chicken-teriyaki',
+  'chicken-stir-fry',
+  'sweet-sour-chicken',
+  'mussels-cream',
+  'tuna-steak-sesame',
+  'fried-calamari',
+  'baked-dorado',
+  'baked-salmon-quinoa',
+  'shrimp-pasta',
+  'garlic-shrimp',
+  'beef-steak',
+  'mushroom-risotto',
+  'eggplant-parmesan',
+  'julienne',
+  'pork-french',
+  'lyulya-kebab',
+  'ratatouille',
+  'buddha-bowl',
+  'beef-burger',
+  'fish-and-chips',
+  'beef-tacos',
+  'chicken-fajitas',
+  'bbq-pork-ribs',
+  'bbq-chicken-wings',
+  'pepperoni-pizza',
+  'falafel-wrap',
+  'croissant-salmon',
+  'avocado-toast',
+  'smoothie-bowl',
+  'spinach-cheese-pancake',
+  'bruschetta',
+  'caprese-salad',
+  'adjarian-khachapuri',
+  'ny-cheesecake',
+]);
+
+export const PRO_DISHES_COUNT = PRO_DISH_IDS.size;
+export const FREE_DISHES_COUNT = ALL_DISHES.length - PRO_DISH_IDS.size;
+
+/** Итоговый каталог: каждому блюду присвоен тир free/pro */
+export const DISHES: Dish[] = ALL_DISHES.map((d) =>
+  PRO_DISH_IDS.has(d.id) ? { ...d, tier: 'pro' as const } : d,
+);

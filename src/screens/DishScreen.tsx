@@ -5,10 +5,12 @@ import {
   Check,
   Crown,
   Heart,
+  Infinity as InfinityIcon,
   Lock,
   Minus,
   Plus,
   ShoppingBasket,
+  Sparkles,
 } from 'lucide-react';
 import { CATEGORY_META, DISHES } from '../data/dishes';
 import { coveredBy } from '../lib/match';
@@ -62,6 +64,8 @@ export default function DishScreen() {
   const meta = CATEGORY_META[dish.category];
   const maxPortions = isPro ? MAX_PORTIONS_PRO : MAX_PORTIONS_LITE;
   const atCap = !isPro && portions >= MAX_PORTIONS_LITE;
+  /** Авторское блюдо без подписки: показываем витрину вместо рецепта */
+  const locked = dish.tier === 'pro' && !isPro;
 
   const changePortions = (delta: number) => {
     const next = portions + delta;
@@ -148,7 +152,45 @@ export default function DishScreen() {
         {meta.labelRu}
       </span>
 
-      {/* ===== КБЖУ: в Лайте заблюрено, в PRO открыто ===== */}
+      {/* ===== КБЖУ, порции, ингредиенты и шаги — только вне замка ===== */}
+      {locked ? (
+        /* ---------- Витрина авторского блюда: рецепт — с PRO ---------- */
+        <section className="mt-5 rounded-3xl border border-pro/30 bg-card p-5 text-center shadow-sm">
+          <span className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-pro/10 text-pro">
+            <Crown size={26} className="fill-current" />
+          </span>
+          <h2 className="text-lg font-bold text-ink">Рецепт из PRO-коллекции</h2>
+          <p className="mt-1 text-sm text-ink-2">
+            {dish.ingredients.length}{' '}
+            {pluralRu(dish.ingredients.length, 'ингредиент', 'ингредиента', 'ингредиентов')} и{' '}
+            {dish.steps.length} {pluralRu(dish.steps.length, 'шаг', 'шага', 'шагов')} откроются с
+            подпиской PRO
+          </p>
+          <ul className="mt-4 space-y-2 text-left">
+            <li className="flex items-center gap-2.5 rounded-xl bg-soft px-3.5 py-2.5 text-sm text-ink">
+              <InfinityIcon size={16} className="shrink-0 text-accent" />
+              Все 100 рецептов: 60 классических бесплатны, 40 авторских — с PRO
+            </li>
+            <li className="flex items-center gap-2.5 rounded-xl bg-soft px-3.5 py-2.5 text-sm text-ink">
+              <Sparkles size={16} className="shrink-0 text-accent" />
+              Безлимитные сканы и КБЖУ без размытия
+            </li>
+          </ul>
+          <button
+            type="button"
+            onClick={togglePro}
+            className="mt-4 flex w-full items-center justify-center gap-2 rounded-2xl bg-pro py-3 text-sm font-semibold text-on-accent transition-opacity hover:opacity-90"
+          >
+            <Crown size={16} className="fill-current" />
+            Открыть рецепт с PRO
+          </button>
+          <p className="mt-2 text-[11px] text-ink-3">
+            Тестовый режим: подписка включается без оплаты
+          </p>
+        </section>
+      ) : (
+        <>
+      {/* ===== КБЖУ: в Лайте размыто, в PRO открыто ===== */}
       <section className="mt-5" aria-label="КБЖУ на порцию">
         <div className="mb-2 flex items-center justify-between">
           <h2 className="text-base font-bold text-ink">КБЖУ на порцию</h2>
@@ -316,6 +358,8 @@ export default function DishScreen() {
           ))}
         </ol>
       </section>
+        </>
+      )}
     </div>
   );
 }
