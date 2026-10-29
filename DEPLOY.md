@@ -24,7 +24,7 @@
 
 Как получить ключ: https://aistudio.google.com → «Get API key» → скопировать.
 
-Модель: по умолчанию `gemini-2.5-flash-lite` (без «размышлений», исторически самая
+Модель: по умолчанию `gemini-3.5-flash-lite` (без «размышлений», исторически самая
 щедрая бесплатная квота). Важно: `gemini-2.0-flash` Google выключил 01.06.2026 —
 гайды с ним больше не работают. Более свежую модель (например `gemini-3.8-flash`)
 можно задать переменной `GEMINI_MODEL`.
@@ -42,7 +42,7 @@
 2. Vercel → Add New Project → импортируй репозиторий. Framework Preset подхватится автоматически (Vite), менять ничего не надо.
 3. Settings → Environment Variables — добавь:
    - `GEMINI_API_KEY` = твой ключ Google AI Studio
-   - (опционально) `SCAN_PROVIDER=gemini`, `GEMINI_MODEL=gemini-2.5-flash-lite`
+   - (опционально) `SCAN_PROVIDER=gemini`, `GEMINI_MODEL=gemini-3.5-flash-lite`
 4. Deploy. Готово: PWA на `*.vercel.app`, сканы — на бесплатном Gemini, штрих-коды — бесплатный Open Food Facts.
 
 ## Проверка после деплоя
