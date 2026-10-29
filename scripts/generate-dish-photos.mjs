@@ -25,7 +25,7 @@ const REAL_STYLE =
   'a few crumbs and natural imperfections on the table, true-to-life textures, ' +
   'colors and proportions, looks like a real snapshot from a home cooking blog, ' +
   'amateur photography, not a render, not CGI, not 3D, not illustration, ' +
-  'no text, no watermark';
+  'no hands, no phones, no people, no text, no watermark';
 
 const DISHES = [
   ['cottage-cheese-pancakes', 'Russian syrniki: five small thick fried cottage cheese pancakes with golden crust and visible curd texture, dollop of sour cream on top, powdered sugar, fresh raspberries aside'],
