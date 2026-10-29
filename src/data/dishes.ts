@@ -103,12 +103,22 @@ export interface FridgeProduct {
   inShelf: boolean;
 }
 
+/*
+ * Эмодзи подобраны по правилу «первая ассоциация русского покупателя».
+ * Там, где точного эмодзи не существует, взято ближайшее по смыслу — это
+ * осознанные допущения, а не ошибки:
+ *   Свёкла 🍠, Кабачки 🥒, Тофу 🥡, Тесто 🥟, Сахар 🍬, Сухофрукты 🍇,
+ *   Фарш 🥩, Сметана 🥄, Мидии 🦪 (нет отдельных эмодзи).
+ * Семейные группы: белые напитки (Молоко/Сливки/Кефир/Йогурт) — 🥛,
+ * зерно и крупы (Крупы/Мука/Гречка/Киноа/Овсяные хлопья) — 🌾, листовые
+ * (Капуста/Шпинат/Салат/Нори) — 🥬.
+ */
 export const FRIDGE_PRODUCTS: FridgeProduct[] = [
   { name: 'Яйца', emoji: '🥚', keys: ['яйц'], inFridge: true, inShelf: false },
   { name: 'Молоко', emoji: '🥛', keys: ['молок'], inFridge: true, inShelf: false },
   { name: 'Сливки', emoji: '🥛', keys: ['сливк'], inFridge: true, inShelf: false },
-  { name: 'Йогурт', emoji: '🥣', keys: ['йогурт'], inFridge: true, inShelf: false },
-  { name: 'Творог', emoji: '🧈', keys: ['творог'], inFridge: true, inShelf: false },
+  { name: 'Йогурт', emoji: '🥛', keys: ['йогурт'], inFridge: true, inShelf: false },
+  { name: 'Творог', emoji: '🥣', keys: ['творог'], inFridge: true, inShelf: false },
   { name: 'Сметана', emoji: '🥄', keys: ['сметан'], inFridge: true, inShelf: false },
   { name: 'Сыр', emoji: '🧀', keys: ['сыр', 'пармезан', 'моцарелла', 'чеддер', 'фета', 'сулугуни', 'чечил', 'рокфор', 'рикотта', 'маскарпоне'], inFridge: true, inShelf: false },
   { name: 'Кефир', emoji: '🥛', keys: ['кефир', 'простокваш', 'ряженк', 'айран'], inFridge: true, inShelf: true },
@@ -170,15 +180,15 @@ export const FRIDGE_PRODUCTS: FridgeProduct[] = [
   { name: 'Гречка', emoji: '🌾', keys: ['гречк'], inFridge: false, inShelf: true },
   { name: 'Киноа', emoji: '🌾', keys: ['киноа'], inFridge: false, inShelf: true },
   { name: 'Паста', emoji: '🍝', keys: ['паста', 'спагетти', 'лапша', 'макарон'], inFridge: false, inShelf: true },
-  { name: 'Овсяные хлопья', emoji: '🥣', keys: ['овсян'], inFridge: false, inShelf: true },
+  { name: 'Овсяные хлопья', emoji: '🌾', keys: ['овсян'], inFridge: false, inShelf: true },
   { name: 'Хлеб', emoji: '🥖', keys: ['хлеб', 'булочк', 'круассан', 'тортил', 'лаваш', 'сухар', 'багет', 'чиабатт'], inFridge: false, inShelf: true },
   { name: 'Печенье', emoji: '🍪', keys: ['печенье', 'бисквит', 'песочн'], inFridge: false, inShelf: true },
   { name: 'Сухофрукты', emoji: '🍇', keys: ['изюм', 'курага', 'чернослив', 'цукат', 'финик', 'инжир суш'], inFridge: false, inShelf: true },
   { name: 'Шоколад и какао', emoji: '🍫', keys: ['шоколад', 'какао', 'ганаш', 'нутелла', 'нутэлла'], inFridge: false, inShelf: true },
   { name: 'Тесто', emoji: '🥟', keys: ['тесто'], inFridge: false, inShelf: false },
-  { name: 'Нори', emoji: '🌿', keys: ['нори'], inFridge: false, inShelf: true },
+  { name: 'Нори', emoji: '🥬', keys: ['нори'], inFridge: false, inShelf: true },
   { name: 'Орехи и семечки', emoji: '🥜', keys: ['орех', 'семечк', 'кунжут', 'чиа', 'гранол'], inFridge: false, inShelf: true },
-  { name: 'Соевый соус', emoji: '🥢', keys: ['соев'], inFridge: false, inShelf: true },
+  { name: 'Соевый соус', emoji: '🍶', keys: ['соев'], inFridge: false, inShelf: true },
   { name: 'Соусы и заправки', emoji: '🥫', keys: ['соус', 'кетчуп', 'майонез', 'хумус', 'тахини', 'бальзам', 'паста том', 'том ям', 'тикка', 'горчиц', 'хрен', 'аджик', 'сироп'], inFridge: false, inShelf: true },
   { name: 'Бульон', emoji: '🥫', keys: ['бульон'], inFridge: false, inShelf: true },
   { name: 'Кокосовое молоко', emoji: '🥥', keys: ['кокос'], inFridge: false, inShelf: true },

@@ -12,22 +12,32 @@
 
 | Провайдер | Условия | Ключ |
 |---|---|---|
-| `gemini` | Бесплатный тариф Google AI Studio (без карты). Лимиты зависят от модели: примерно 250–1500 сканов/день на Flash-модели, проверяй в AI Studio → Rate limits | `GEMINI_API_KEY` |
+| `gemini` | Бесплатный тариф Google AI Studio (без карты) | `GEMINI_API_KEY` |
 | `zai` | z-ai-web-dev-sdk (работает в песочнице, вне её может требовать свои ключи) | — |
 
 **Если задан `GEMINI_API_KEY`, а `SCAN_PROVIDER` не указан — автоматически используется Gemini.**
 
 Как получить ключ: https://aistudio.google.com → «Get API key» → скопировать.
 
-Кастомная модель (опционально): `GEMINI_MODEL=gemini-2.0-flash` (или другая Flash-модель).
+Модель: по умолчанию `gemini-2.5-flash-lite` (без «размышлений», исторически самая
+щедрая бесплатная квота). Важно: `gemini-2.0-flash` Google выключил 01.06.2026 —
+гайды с ним больше не работают. Более свежую модель (например `gemini-3.8-flash`)
+можно задать переменной `GEMINI_MODEL`.
+
+Квоты бесплатного тарифа (RPM/RPD) Google регулярно меняет: у Flash-моделей бывало
+и ~20, и ~250, и ~1500 сканов/день. Точные цифры своего проекта — в AI Studio →
+«View active rate limits». Ориентир: даже 250 сканов/день хватает на ~50 пользователей
+при лимите Лайт 5 сканов/день.
 
 ## Шаги деплоя
 
+0. Если проект уже импортирован в Vercel — опубликовать новую версию просто:
+   `git add -A && git commit -m "update" && git push` — Vercel сам пересоберёт и выкатит.
 1. Запушь проект в GitHub-репозиторий.
 2. Vercel → Add New Project → импортируй репозиторий. Framework Preset подхватится автоматически (Vite), менять ничего не надо.
 3. Settings → Environment Variables — добавь:
    - `GEMINI_API_KEY` = твой ключ Google AI Studio
-   - (опционально) `SCAN_PROVIDER=gemini`, `GEMINI_MODEL=gemini-2.0-flash`
+   - (опционально) `SCAN_PROVIDER=gemini`, `GEMINI_MODEL=gemini-2.5-flash-lite`
 4. Deploy. Готово: PWA на `*.vercel.app`, сканы — на бесплатном Gemini, штрих-коды — бесплатный Open Food Facts.
 
 ## Проверка после деплоя

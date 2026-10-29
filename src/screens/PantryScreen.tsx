@@ -1,16 +1,11 @@
 import { useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { AlarmClock, Check, CookingPot, Plus, X } from 'lucide-react';
-import { PRODUCT_BY_NAME, SHELF_POOL } from '../data/dishes';
-import { matchDishes } from '../lib/match';
+import { SHELF_POOL } from '../data/dishes';
+import { emojiFor, matchDishes } from '../lib/match';
 import DishCard from '../components/DishCard';
 import { useAppStore } from '../store/useAppStore';
 import { cn, daysLeft, pluralRu } from '../lib/utils';
-
-/** Высота баночки — чуть варьируем, чтобы полка выглядела живьём */
-function jarHeight(name: string): string {
-  const h = ['h-14', 'h-16', 'h-12'][name.length % 3];
-  return h;
-}
 
 function Jar({
   name,
@@ -23,7 +18,7 @@ function Jar({
   onRemove: () => void;
   onSetExpiry: () => void;
 }) {
-  const emoji = PRODUCT_BY_NAME.get(name.toLowerCase())?.emoji ?? '🥫';
+  const emoji = emojiFor(name);
   const dotClass =
     expiresIn === null
       ? null
@@ -46,7 +41,7 @@ function Jar({
             : `${expiresIn} дн.`;
 
   return (
-    <div className="group relative flex w-[68px] flex-col items-center">
+    <div className="group relative flex w-full max-w-[68px] flex-col items-center">
       {/* крышка */}
       <span className="h-2 w-11 rounded-t-md bg-gradient-to-b from-zinc-200 to-zinc-500 shadow-sm" />
       {/* корпус */}
@@ -55,20 +50,23 @@ function Jar({
         onClick={onSetExpiry}
         aria-label={`Срок годности «${name}»`}
         className={cn(
-          'relative flex w-14 flex-col items-center justify-center rounded-b-lg rounded-t-sm',
+          'relative flex h-14 w-14 flex-col items-center justify-center rounded-b-lg rounded-t-sm',
           'bg-gradient-to-b from-white/25 to-white/5 ring-1 ring-white/25',
           'shadow-[inset_0_-6px_12px_rgba(0,0,0,0.25)] transition-transform active:scale-95',
-          jarHeight(name),
         )}
       >
         <span className="text-xl leading-none drop-shadow" aria-hidden>
           {emoji}
         </span>
-        <span
-          title={name}
-          className="mt-1 max-w-[58px] truncate rounded-sm bg-amber-100/95 px-1 py-px text-[8px] leading-tight font-semibold text-amber-900"
-        >
-          {name}
+        {/* Фиксированный слот под 2 строки: баночки строго одинаковые,
+            длинные названия («Крабовые палочки») переносятся, а не обрезаются */}
+        <span className="mt-1 flex h-[22px] w-[54px] items-center justify-center">
+          <span
+            title={name}
+            className="line-clamp-2 rounded-sm bg-amber-100/95 px-1 text-center text-[8px] leading-[1.25] font-semibold text-amber-900"
+          >
+            {name}
+          </span>
         </span>
         {dotClass && (
           <span
@@ -179,7 +177,7 @@ export default function PantryScreen() {
           {shelves.length > 0 ? (
             shelves.map((shelf, i) => (
               <div key={i}>
-                <div className="flex min-h-24 items-end justify-start gap-3 px-1">
+                <div className="grid min-h-24 grid-cols-4 items-end justify-items-center gap-2 px-1">
                   {shelf.map((name) => (
                     <Jar
                       key={name}
@@ -208,7 +206,7 @@ export default function PantryScreen() {
           <div className="w-full max-w-sm rounded-3xl border border-line bg-card p-5 shadow-xl">
             <div className="flex items-center gap-2">
               <span aria-hidden className="text-2xl">
-                {PRODUCT_BY_NAME.get(expiryFor.toLowerCase())?.emoji ?? '🥫'}
+                {emojiFor(expiryFor)}
               </span>
               <h3 className="text-base font-bold text-ink">Срок годности: {expiryFor}</h3>
             </div>
@@ -277,7 +275,7 @@ export default function PantryScreen() {
                       : 'bg-amber-400 text-amber-950',
                 )}
               >
-                <span aria-hidden>{PRODUCT_BY_NAME.get(e.name.toLowerCase())?.emoji ?? '🥫'}</span>
+                <span aria-hidden>{emojiFor(e.name)}</span>
                 {e.name}
                 {e.days < 0 ? ' · просрочено' : ` · ${e.days === 0 ? 'сегодня' : `${pluralRu(e.days, 'день', 'дня', 'дней')}`}`}
               </button>
@@ -286,9 +284,17 @@ export default function PantryScreen() {
           {useFirstDishes.length > 0 && (
             <p className="mt-2 text-xs text-amber-900/90 dark:text-amber-200/90">
               Приготовь из этого:{' '}
-              {useFirstDishes
-                .map((d) => d.nameRu)
-                .join(', ')}
+              {useFirstDishes.map((d, i) => (
+                <span key={d.id}>
+                  {i > 0 && ', '}
+                  <Link
+                    to={`/dish/${d.id}`}
+                    className="font-semibold underline decoration-amber-500/50 underline-offset-2 transition-colors hover:text-amber-700 dark:hover:text-amber-100"
+                  >
+                    {d.nameRu}
+                  </Link>
+                </span>
+              ))}
             </p>
           )}
           <p className="mt-1.5 text-[11px] text-amber-900/60 dark:text-amber-200/60">
@@ -307,7 +313,7 @@ export default function PantryScreen() {
                 onClick={() => addToPantry([p])}
                 className="flex items-center gap-1 rounded-full border border-line bg-soft px-2.5 py-1.5 text-xs font-medium text-ink transition-colors hover:border-accent hover:text-accent"
               >
-                <span aria-hidden>{PRODUCT_BY_NAME.get(p.toLowerCase())?.emoji ?? '🥫'}</span>
+                <span aria-hidden>{emojiFor(p)}</span>
                 {p}
               </button>
             ))}

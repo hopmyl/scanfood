@@ -3,7 +3,7 @@
  * Тот же контракт, что и локальный Vite-эндпоинт: { image: dataURL } → { ingredients: [] }
  *
  * Env: SCAN_PROVIDER=zai|gemini, GEMINI_API_KEY (бесплатный ключ Google AI Studio),
- *      GEMINI_MODEL (опционально, по умолчанию gemini-2.0-flash).
+ *      GEMINI_MODEL (опционально, по умолчанию gemini-2.5-flash-lite).
  */
 import type { IncomingMessage, ServerResponse } from 'node:http';
 import { errMsg, scanIngredients } from '../server/scan-core';

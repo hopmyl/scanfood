@@ -19,8 +19,8 @@ import {
   Sparkles,
   Store,
 } from 'lucide-react';
-import { FRIDGE_PRODUCTS, PRODUCT_BY_NAME, SCAN_POOL } from '../data/dishes';
-import { matchDishes, type MatchResult } from '../lib/match';
+import { FRIDGE_PRODUCTS, SCAN_POOL } from '../data/dishes';
+import { emojiFor, matchDishes, type MatchResult } from '../lib/match';
 import DishCard from '../components/DishCard';
 import { useAppStore } from '../store/useAppStore';
 import { cn, pluralRu } from '../lib/utils';
@@ -453,9 +453,6 @@ export default function ScanScreen() {
     setPhase('idle');
     setScanFailed(null);
   };
-
-  const emojiFor = (name: string): string =>
-    PRODUCT_BY_NAME.get(name.toLowerCase())?.emoji ?? '🥫';
 
   const productBusy = productState.kind === 'loading';
   const product = productState.kind === 'found' ? productState.product : null;
