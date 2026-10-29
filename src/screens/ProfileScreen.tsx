@@ -47,7 +47,7 @@ export default function ProfileScreen() {
     },
     {
       icon: BarChart3,
-      title: 'КБЖУ без блура',
+      title: 'КБЖУ без размытия',
       text: 'Калории, белки, жиры и углеводы на порцию',
     },
     {
@@ -57,8 +57,8 @@ export default function ProfileScreen() {
     },
     {
       icon: Sparkles,
-      title: 'Вся база рецептов',
-      text: '50 блюд и все новые обновления базы',
+      title: 'Вся база — 100 блюд',
+      text: '60 классических бесплатно и 40 авторских с PRO',
     },
   ];
 

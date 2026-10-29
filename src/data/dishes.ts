@@ -43,6 +43,8 @@ export interface Dish {
   image: string;
   ingredients: Ingredient[];
   steps: string[];
+  /** Уровень доступа: free — классика (бесплатно), pro — авторская коллекция */
+  tier?: 'free' | 'pro';
 }
 
 export const CATEGORY_META: Record<DishCategory, { labelRu: string; emoji: string }> = {
@@ -239,7 +241,7 @@ export const DEFAULT_PANTRY: string[] = [
 
 import { DISHES_MORE } from './dishes-more';
 
-export const DISHES: Dish[] = [
+const ALL_DISHES: Dish[] = [
   {
     id: 'cottage-cheese-pancakes',
     nameEn: 'Cottage cheese pancakes with berries',
@@ -1374,3 +1376,64 @@ export const DISHES: Dish[] = [
   // ==================== v3: +50 оригинальных домашних рецептов ====================
   ...DISHES_MORE,
 ];
+
+/**
+ * PRO-коллекция — 40 авторских/ресторанных блюд.
+ * Видны в каталоге всем (фото, название, ккал), но ингредиенты и шаги — с PRO.
+ * Остальные 60 блюд классической домашней кухни — бесплатные.
+ */
+export const PRO_DISH_IDS: ReadonlySet<string> = new Set([
+  // Азия и поке
+  'tom-yum',
+  'poke-bowl',
+  'sushi-set',
+  'crispy-tofu',
+  'chicken-tikka-masala',
+  'soba-beef',
+  'chicken-teriyaki',
+  'chicken-stir-fry',
+  'sweet-sour-chicken',
+  // Рыба и морепродукты
+  'mussels-cream',
+  'tuna-steak-sesame',
+  'fried-calamari',
+  'baked-dorado',
+  'baked-salmon-quinoa',
+  'shrimp-pasta',
+  'garlic-shrimp',
+  // Ресторанная классика
+  'beef-steak',
+  'mushroom-risotto',
+  'eggplant-parmesan',
+  'julienne',
+  'pork-french',
+  'lyulya-kebab',
+  'ratatouille',
+  'buddha-bowl',
+  // Фастфуд и уличная еда
+  'beef-burger',
+  'fish-and-chips',
+  'beef-tacos',
+  'chicken-fajitas',
+  'bbq-pork-ribs',
+  'bbq-chicken-wings',
+  'pepperoni-pizza',
+  'falafel-wrap',
+  // Завтраки и закуски
+  'croissant-salmon',
+  'avocado-toast',
+  'smoothie-bowl',
+  'spinach-cheese-pancake',
+  'bruschetta',
+  'caprese-salad',
+  // Выпечка и десерты
+  'adjarian-khachapuri',
+  'ny-cheesecake',
+]);
+
+export const PRO_DISHES_COUNT = PRO_DISH_IDS.size;
+
+/** Итоговая база: 100 блюд, авторские помечены tier: 'pro' */
+export const DISHES: Dish[] = ALL_DISHES.map((d) =>
+  PRO_DISH_IDS.has(d.id) ? { ...d, tier: 'pro' as const } : d,
+);

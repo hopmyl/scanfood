@@ -1,5 +1,8 @@
-// Генерация 50 AI-фото блюд для СканРецепт в едином визуальном стиле.
+// Генерация 100 AI-фото блюд для СканРецепт — фотореалистичный стиль v3.
 // Использует z-ai-web-dev-sdk (только бэкенд). Результат: public/dishes/<id>.jpg
+// Запуск: node scripts/generate-dish-photos.mjs --force (перегенерировать всё)
+// Прогресс пишется в scripts/regen-progress.txt — после таймаута просто
+// перезапусти ту же команду: готовое не тронется.
 import ZAI from 'z-ai-web-dev-sdk';
 import sharp from 'sharp';
 import fs from 'node:fs';
@@ -10,17 +13,20 @@ const TMP_DIR = 'scripts/photo-tmp';
 fs.mkdirSync(OUT_DIR, { recursive: true });
 fs.mkdirSync(TMP_DIR, { recursive: true });
 
-// Единый стиль для всей базы — узнаваемая подача «на тёмном слейте»
-const STYLE =
-  'professional food photography, served on a dark slate plate on a rustic dark wooden table, ' +
-  'soft natural side lighting, appetizing, high-end restaurant plating, fresh herbs garnish, ' +
-  'shallow depth of field, 45-degree angle, photorealistic, high detail, high quality';
-
-// Реалистичный «домашний» стиль для перегенерации — без нейронного глянца
-const REAL_STYLE =
-  'candid homemade food photography, natural daylight from a window, simple ceramic plate ' +
-  'on a light kitchen table, cozy home kitchen softly blurred in background, realistic ' +
-  'authentic textures, appetizing, no text, no watermark, photorealistic, high detail';
+/**
+ * Фотореалистичный «домашний» стиль v3 — против нейронного пластика.
+ * Ключи реализма: смартфонный любительский кадр, естественный свет из окна,
+ * несовершенства настоящей кухни (крошки, пар, лёгкий беспорядок), явные
+ * отрицания CGI/рендера. Никаких «high-end plating» и студийных слов.
+ */
+const REALISTIC_STYLE =
+  'ultra realistic photo taken with a smartphone camera by a regular person, ' +
+  'real homemade food on a simple ceramic plate on a lived-in kitchen table, ' +
+  'soft natural daylight from a window, slight shadows, gentle steam rising, ' +
+  'a few crumbs and natural imperfections on the table, true-to-life textures, ' +
+  'colors and proportions, looks like a real snapshot from a home cooking blog, ' +
+  'amateur photography, not a render, not CGI, not 3D, not illustration, ' +
+  'no text, no watermark';
 
 const DISHES = [
   ['cottage-cheese-pancakes', 'Russian syrniki: five small thick fried cottage cheese pancakes with golden crust and visible curd texture, dollop of sour cream on top, powdered sugar, fresh raspberries aside'],
@@ -128,24 +134,44 @@ const DISHES = [
 
 const PROGRESS_FILE = 'scripts/regen-progress.txt';
 
+/** Сгенерировать одно фото с ретраями; прогресс — в файл, чтобы докачивать после таймаута */
+async function genOne(zai, id, subject) {
+  const outPath = path.join(OUT_DIR, `${id}.jpg`);
+  const prompt = `${subject}, ${REALISTIC_STYLE}`;
+  for (let attempt = 1; attempt <= 5; attempt++) {
+    try {
+      const response = await zai.images.generations.create({
+        prompt,
+        size: '1024x1024',
+      });
+      const base64 = response?.data?.[0]?.base64;
+      if (!base64) throw new Error('пустой ответ API');
+
+      const tmpPath = path.join(TMP_DIR, `${id}.png`);
+      fs.writeFileSync(tmpPath, Buffer.from(base64, 'base64'));
+      // Конвертация в JPG q82 — вес фото ~100-200 КБ вместо 1-2 МБ PNG
+      await sharp(tmpPath).jpeg({ quality: 82, mozjpeg: true }).toFile(outPath);
+      fs.unlinkSync(tmpPath);
+      fs.appendFileSync(PROGRESS_FILE, `${id}\n`);
+      return true;
+    } catch (err) {
+      const isRateLimit = String(err?.message).includes('429');
+      console.error(`  попытка ${attempt} failed ${id}: ${err.message}`);
+      // При 429 ждём дольше — даём API остыть
+      if (attempt < 5) {
+        await new Promise((r) => setTimeout(r, (isRateLimit ? 20000 : 3000) * attempt));
+      }
+    }
+  }
+  return false;
+}
+
 async function main() {
-  // Параллельная генерация: node generate-dish-photos.mjs <shard> <total>
-  // Каждый воркер обрабатывает свою долю списка (шард), файлы скипаются по наличию
-  const shard = Number(process.argv[2] ?? 0);
-  const total = Number(process.argv[3] ?? 1);
-  // Точечная перегенерация: --only=id1,id2,... — только эти id, игнорируя наличие файла.
-  // Стиль «домашнее фото» вместо тёмного слейта + прогресс-файл, чтобы перезапуск
-  // после таймаута не перегенерировал уже готовые фото заново.
-  const onlyArg = process.argv.find((a) => a.startsWith('--only='));
-  const forceIds = onlyArg
-    ? onlyArg
-        .slice('--only='.length)
-        .split(',')
-        .map((s) => s.trim())
-        .filter(Boolean)
-    : null;
+  // --force — перегенерировать все блюда (независимо от наличия файлов).
+  // Без --force генерируются только отсутствующие/битые фото.
+  const force = process.argv.includes('--force');
   const doneIds = new Set(
-    forceIds && fs.existsSync(PROGRESS_FILE)
+    fs.existsSync(PROGRESS_FILE)
       ? fs
           .readFileSync(PROGRESS_FILE, 'utf8')
           .split('\n')
@@ -153,60 +179,42 @@ async function main() {
           .filter(Boolean)
       : [],
   );
-  const zai = await ZAI.create();
+
+  const targets = DISHES.filter(([id]) => {
+    if (doneIds.has(id)) return false; // уже сделано в этой серии
+    const p = path.join(OUT_DIR, `${id}.jpg`);
+    return force || !(fs.existsSync(p) && fs.statSync(p).size > 20000);
+  });
+
+  const jobs = Number(process.env.GEN_JOBS ?? 3);
+  let index = 0;
+  let okCount = 0;
   const failed = [];
+  const zai = await ZAI.create();
 
-  const base = forceIds ? DISHES.filter(([id]) => forceIds.includes(id)) : DISHES;
-  const mySlice = base.filter((_, i) => i % total === shard);
-
-    for (let i = 0; i < mySlice.length; i++) {
-    const [id, subject] = mySlice[i];
-    const outPath = path.join(OUT_DIR, `${id}.jpg`);
-
-    const fresh = fs.existsSync(outPath) && fs.statSync(outPath).size > 20000;
-    if (fresh && (!forceIds || doneIds.has(id))) {
-      console.log(`[шард${shard} ${i + 1}/${mySlice.length}] SKIP ${id} (уже есть)`);
-      continue; // без паузы — не тратим 4с на каждый пропуск
+  async function worker(wid) {
+    for (;;) {
+      const i = index++;
+      if (i >= targets.length) break;
+      const [id, subject] = targets[i];
+      const ok = await genOne(zai, id, subject);
+      if (ok) okCount++;
+      else failed.push(id);
+      console.log(`[w${wid}] ${i + 1}/${targets.length} ${ok ? 'OK' : 'FAIL'} ${id}`);
+      // Пауза между изображениями — бережём rate limit
+      await new Promise((r) => setTimeout(r, 1500));
     }
-
-    const prompt = `${subject}, ${forceIds ? REAL_STYLE : STYLE}`;
-    let ok = false;
-
-    for (let attempt = 1; attempt <= 5 && !ok; attempt++) {
-      try {
-        const response = await zai.images.generations.create({
-          prompt,
-          size: '1024x1024',
-        });
-        const base64 = response?.data?.[0]?.base64;
-        if (!base64) throw new Error('пустой ответ API');
-
-        const tmpPath = path.join(TMP_DIR, `${id}.png`);
-        fs.writeFileSync(tmpPath, Buffer.from(base64, 'base64'));
-
-        // Конвертация в JPG q82 — вес фото ~100-200 КБ вместо 1-2 МБ PNG
-        await sharp(tmpPath).jpeg({ quality: 82, mozjpeg: true }).toFile(outPath);
-        fs.unlinkSync(tmpPath);
-        ok = true;
-        if (forceIds) fs.appendFileSync(PROGRESS_FILE, `${id}\n`);
-        console.log(`[шард${shard} ${i + 1}/${mySlice.length}] OK ${id}`);
-      } catch (err) {
-        const isRateLimit = String(err?.message).includes('429');
-        console.error(`[шард${shard}] попытка ${attempt} failed ${id}: ${err.message}`);
-        // При 429 ждём дольше — даём API остыть
-        const backoff = isRateLimit ? 20000 * attempt : 3000 * attempt;
-        if (attempt < 5) await new Promise((r) => setTimeout(r, backoff));
-      }
-    }
-
-    if (!ok) failed.push(id);
-    // Пауза между изображениями — бережём rate limit
-    await new Promise((r) => setTimeout(r, 4000));
   }
 
+  console.log(`Целей: ${targets.length}, параллельных воркеров: ${jobs}`);
+  await Promise.all(Array.from({ length: Math.min(jobs, Math.max(targets.length, 1)) }, (_, w) => worker(w)));
+
   console.log('=== ИТОГ ===');
-  console.log(`Успешно: ${base.length - failed.length} / ${base.length}`);
-  if (failed.length) console.log('Провалы:', failed.join(', '));
+  console.log(`Успешно: ${okCount} / ${targets.length}`);
+  if (failed.length) {
+    console.log('Провалы:', failed.join(', '));
+    process.exitCode = 2; // перезапуск докачает провалы
+  }
 }
 
 main().catch((e) => {

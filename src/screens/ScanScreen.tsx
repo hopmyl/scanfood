@@ -54,8 +54,20 @@ function zoomCapsOf(
  */
 function zoomChipFactors(caps: { min: number; max: number } | null): number[] {
   if (!caps) return [1, 2, 3]; // нативный зум недоступен — цифровой CSS-зум
-  const factors = [caps.min, 2, 3].filter((f) => f <= caps.max + 0.001);
+  const min = caps.min;
+  // Часть Android-камер отдаёт зум в абсолютных единицах (100 = 1×):
+  // min=100, max=400 — множители считаем делением на минимум.
+  const steps = min >= 10 ? [1, 2, 3] : min < 1 ? [min, 1, 2, 3] : [min, 2, 3];
+  const maxFactor = caps.max / (min >= 10 ? min : 1);
+  const factors = steps.filter((f) => f <= maxFactor + 0.001);
   return [...new Set(factors.map((f) => Math.round(f * 10) / 10))].sort((a, b) => a - b);
+}
+
+/** Множитель «1×»/«2×» → значение зума в единицах конкретной камеры */
+function zoomTarget(factor: number, caps: { min: number; max: number } | null): number | null {
+  if (!caps) return null;
+  const target = caps.min >= 10 ? caps.min * factor : factor;
+  return Math.min(Math.max(target, caps.min), caps.max);
 }
 
 /** «0,6×» / «2×» — по-русски, с запятой */
@@ -83,7 +95,13 @@ async function probeZoomMin(deviceId: string, timeoutMs = 2500): Promise<number 
         setTimeout(() => reject(new Error('probe timeout')), timeoutMs),
       ),
     ]);
-    const min = zoomCapsOf(s.getVideoTracks()[0] ?? null)?.min ?? null;
+    const track = s.getVideoTracks()[0] ?? null;
+    // Страховка: вдруг попали на фронталку — её в подбор не берём
+    if (track?.getSettings?.().facingMode === 'user') {
+      stop();
+      return null;
+    }
+    const min = zoomCapsOf(track)?.min ?? null;
     stop();
     return min;
   } catch {
@@ -105,9 +123,10 @@ async function findWidestBackCamera(
 ): Promise<{ deviceId: string; min: number } | null> {
   try {
     const devices = await navigator.mediaDevices.enumerateDevices();
+    const isFront = (label: string) => /front|фронт|передн|user|face/i.test(label);
     const backs = devices
-      .filter((d) => d.kind === 'videoinput' && /back|задн|rear/i.test(d.label))
-      .slice(0, 5);
+      .filter((d) => d.kind === 'videoinput' && d.label && !isFront(d.label))
+      .slice(0, 6);
     if (backs.length === 0) return null;
     let best: { deviceId: string; min: number } | null = null;
     for (const d of backs) {
@@ -164,16 +183,31 @@ function dedupe(list: string[]): string[] {
   return [...new Set(list.filter(Boolean))];
 }
 
+/** Аспект видоискателя (портрет 3:4) — снимок вырезает ровно видимую область */
+const VIEWFINDER_AR = 3 / 4;
+
 /**
- * Снимок кадра видео в JPEG-датаURL с уменьшением до 1024px.
- * digitalZoom — цифровой зум (CSS fallback): кадр кропается по центру,
- * чтобы снимок совпадал с тем, что видит пользователь.
+ * Снимок кадра видео в JPEG-датаURL — СТРОГО то, что видит пользователь:
+ * сначала кроп под видоискатель 3:4 (object-cover), затем цифровой зум
+ * (центральный кроп), затем уменьшение до 1024px. Без этого превью и
+ * снимок расходились: пользователь наводил на продукты, а на сервер
+ * уходил весь широкий кадр — продукты становились мелкими.
  */
 function frameToDataUrl(video: HTMLVideoElement, digitalZoom: number): string | null {
   if (!video.videoWidth || !video.videoHeight) return null;
   const zoom = Math.max(1, digitalZoom);
-  const sw = video.videoWidth / zoom;
-  const sh = video.videoHeight / zoom;
+  // 1) Кроп под видоискатель
+  let sw = video.videoWidth;
+  let sh = video.videoHeight;
+  const streamAR = sw / sh;
+  if (streamAR > VIEWFINDER_AR) {
+    sw = sh * VIEWFINDER_AR; // альбомный поток — режем бока
+  } else if (streamAR < VIEWFINDER_AR) {
+    sh = sw / VIEWFINDER_AR; // более вертикальный поток — режем верх/низ
+  }
+  // 2) Цифровой зум — центральный кроп поверх видоискателя
+  sw /= zoom;
+  sh /= zoom;
   const sx = (video.videoWidth - sw) / 2;
   const sy = (video.videoHeight - sh) / 2;
   const canvas = document.createElement('canvas');
@@ -186,30 +220,55 @@ function frameToDataUrl(video: HTMLVideoElement, digitalZoom: number): string | 
   return canvas.toDataURL('image/jpeg', 0.82);
 }
 
-/** Файл из галереи → уменьшенный JPEG-датаURL */
+/** Файл из галереи → уменьшенный JPEG-датаURL (с учётом EXIF-поворота) */
 function fileToDataUrl(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
-    const img = new Image();
-    const url = URL.createObjectURL(file);
-    img.onload = () => {
+    const drawAndResolve = (
+      source: ImageBitmap | HTMLImageElement,
+      w: number,
+      h: number,
+      cleanup: () => void,
+    ) => {
       const canvas = document.createElement('canvas');
-      const scale = Math.min(1, 1024 / Math.max(img.width, img.height));
-      canvas.width = Math.round(img.width * scale);
-      canvas.height = Math.round(img.height * scale);
+      const scale = Math.min(1, 1024 / Math.max(w, h));
+      canvas.width = Math.round(w * scale);
+      canvas.height = Math.round(h * scale);
       const ctx = canvas.getContext('2d');
       if (!ctx) {
+        cleanup();
         reject(new Error('canvas'));
         return;
       }
-      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-      URL.revokeObjectURL(url);
+      ctx.drawImage(source, 0, 0, canvas.width, canvas.height);
+      cleanup();
       resolve(canvas.toDataURL('image/jpeg', 0.82));
     };
-    img.onerror = () => {
-      URL.revokeObjectURL(url);
-      reject(new Error('image decode'));
+
+    // createImageBitmap({ imageOrientation: 'from-image' }) уважает EXIF —
+    // фото с телефона не окажется вверх ногами на сервере
+    const modern = () =>
+      createImageBitmap(file, { imageOrientation: 'from-image' })
+        .then((bmp) =>
+          drawAndResolve(bmp, bmp.width, bmp.height, () => {
+            bmp.close();
+          }),
+        )
+        .catch(() => legacy());
+
+    const legacy = () => {
+      const img = new Image();
+      const url = URL.createObjectURL(file);
+      img.onload = () =>
+        drawAndResolve(img, img.width, img.height, () => URL.revokeObjectURL(url));
+      img.onerror = () => {
+        URL.revokeObjectURL(url);
+        reject(new Error('image decode'));
+      };
+      img.src = url;
     };
-    img.src = url;
+
+    if (typeof createImageBitmap === 'function') modern();
+    else legacy();
   });
 }
 
@@ -230,6 +289,10 @@ export default function ScanScreen() {
   const [savedToPantry, setSavedToPantry] = useState(false);
   const [addedNames, setAddedNames] = useState<string[]>([]);
   const [scanFailed, setScanFailed] = useState<ScanFail>(null);
+  /** Техническая причина неудачи с сервера (видна мелким текстом под баннером) */
+  const [scanDetail, setScanDetail] = useState('');
+  /** Последний снимок — для кнопки «Повторить» */
+  const lastShotRef = useRef<string | null>(null);
 
   // --- штрих-код ---
   const [productState, setProductState] = useState<ProductState>({ kind: 'idle' });
@@ -257,7 +320,7 @@ export default function ScanScreen() {
     const caps = nativeZoomRef.current;
     const track = trackRef.current;
     if (caps && track) {
-      const target = Math.min(Math.max(factor, caps.min), caps.max);
+      const target = zoomTarget(factor, caps);
       try {
         await track.applyConstraints(
           { advanced: [{ zoom: target }] } as unknown as MediaTrackConstraints,
@@ -283,8 +346,35 @@ export default function ScanScreen() {
     (async () => {
       const baseVideo: MediaTrackConstraints = {
         facingMode: 'environment',
-        width: { ideal: 1280 },
-        height: { ideal: 720 },
+        // Видоискатель портретный 3:4 — просим портретный поток. Раньше был
+        // жёсткий 1280×720: object-cover срезал до ~40% ширины кадра, из-за
+        // чего честная «1×» выглядела как 2×+ и холодильник не влезал в кадр.
+        aspectRatio: { ideal: 0.75 },
+        width: { ideal: 1080 },
+        height: { ideal: 1440 },
+      };
+
+      // Камера вернула альбомный кадр — переспрашиваем явно портретными
+      // размерами (часть браузеров не знает аспект, но умеет размеры)
+      const cameLandscape = async (): Promise<boolean> => {
+        const v = videoRef.current;
+        if (!v || !v.videoWidth || !v.videoHeight) return false;
+        return v.videoWidth / v.videoHeight > 1.05;
+      };
+      const restartPortrait = async () => {
+        stream?.getTracks().forEach((t) => t.stop());
+        stream = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: 'environment', width: { ideal: 720 }, height: { ideal: 1280 } },
+          audio: false,
+        });
+        if (cancelled) {
+          stream.getTracks().forEach((t) => t.stop());
+          return;
+        }
+        if (videoRef.current) {
+          videoRef.current.srcObject = stream;
+          await videoRef.current.play().catch(() => undefined);
+        }
       };
 
       // Быстрый путь: в прошлый раз уже нашли самую широкую заднюю камеру
@@ -321,6 +411,16 @@ export default function ScanScreen() {
         if (videoRef.current) {
           videoRef.current.srcObject = stream;
           await videoRef.current.play().catch(() => undefined);
+        }
+
+        // Альбомный кадр в портретном видоискателе = скрытый кроп-зум —
+        // перезапускаем поток явно портретными размерами
+        if (!cancelled && (await cameLandscape())) {
+          try {
+            await restartPortrait();
+          } catch {
+            /* не вышло — оставляем как есть, снимок всё равно кропается под превью */
+          }
         }
 
         // Сброс дефолтного зума (часть телефонов стартует на телеобъективе)
@@ -437,7 +537,9 @@ export default function ScanScreen() {
 
     setPhase('scanning');
     setScanFailed(null);
+    setScanDetail('');
     setIsDemo(false);
+    lastShotRef.current = dataUrl;
     try {
       const r = await fetch('/api/scan', {
         method: 'POST',
@@ -450,7 +552,17 @@ export default function ScanScreen() {
         setScanFailed('noprovider');
         return;
       }
-      if (!r.ok) throw new Error(`scan api ${r.status}`);
+      if (!r.ok) {
+        // Достаём причину с сервера — без неё «не распозналось» не отладить
+        let detail = '';
+        try {
+          const j = (await r.json()) as { detail?: string; error?: string };
+          detail = (j.detail || j.error || '').slice(0, 160);
+        } catch {
+          /* тело не JSON */
+        }
+        throw new Error(detail || `scan api ${r.status}`);
+      }
       const data = (await r.json()) as { ingredients: string[] };
       const canonical = dedupe(data.ingredients.map(mapToCanonical));
       if (canonical.length === 0) throw new Error('empty result');
@@ -460,7 +572,9 @@ export default function ScanScreen() {
       setSavedToPantry(false);
       setAddedNames([]);
       setPhase('result');
-    } catch {
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : '';
+      setScanDetail(msg.startsWith('scan api') ? '' : msg);
       setPhase('idle');
       setScanFailed('generic');
     }
@@ -860,7 +974,6 @@ export default function ScanScreen() {
                 ref={fileInputRef}
                 type="file"
                 accept="image/*"
-                capture="environment"
                 className="hidden"
                 onChange={(e) => {
                   onFilePicked(e.target.files?.[0]);
@@ -875,6 +988,20 @@ export default function ScanScreen() {
                       ? 'Распознавание по фото на сервере не настроено. Попробуй демо-скан или штрих-код.'
                       : 'Не получилось распознать фото. Попробуй ещё раз при другом освещении.'}
                   </p>
+                  {scanDetail && (
+                    <p className="mt-1 break-words text-[10px] leading-snug text-accent-ink/70">
+                      Причина: {scanDetail}
+                    </p>
+                  )}
+                  {scanFailed === 'generic' && lastShotRef.current && (
+                    <button
+                      type="button"
+                      onClick={() => void runRecognition(lastShotRef.current as string)}
+                      className="mt-2 rounded-full bg-accent px-4 py-1.5 text-[11px] font-semibold text-on-accent transition-colors hover:bg-accent-strong"
+                    >
+                      Повторить
+                    </button>
+                  )}
                 </div>
               )}
 
