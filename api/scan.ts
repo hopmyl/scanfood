@@ -11,6 +11,7 @@
  * Google AI Studio): env GEMINI_API_KEY, опционально GEMINI_MODEL.
  * Путь z-ai-web-dev-sdk остался только в dev-плагине scan-api.ts.
  */
+
 import type { IncomingMessage, ServerResponse } from 'node:http';
 
 export const config = {

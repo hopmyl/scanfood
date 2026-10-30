@@ -161,15 +161,27 @@ function mapToCanonical(raw: string): string {
 }
 
 /**
- * Снимок кадра видео в JPEG-датаURL с уменьшением до 1024px.
- * digitalZoom — цифровой зум (CSS fallback): кадр кропается по центру,
- * чтобы снимок совпадал с тем, что видит пользователь.
+ * Снимок кадра видео в JPEG-датаURL — СТРОГО то, что видит пользователь:
+ * сначала кроп под видоискатель 3:4 (object-cover), затем цифровой зум
+ * (центральный кроп), затем уменьшение до 1024px. Без этого превью и
+ * снимок расходились: пользователь наводил на продукты, а на сервер
+ * уходил весь широкий кадр — продукты становились мелкими.
  */
 function frameToDataUrl(video: HTMLVideoElement, digitalZoom: number): string | null {
   if (!video.videoWidth || !video.videoHeight) return null;
   const zoom = Math.max(1, digitalZoom);
-  const sw = video.videoWidth / zoom;
-  const sh = video.videoHeight / zoom;
+  // 1) Кроп под видоискатель
+  let sw = video.videoWidth;
+  let sh = video.videoHeight;
+  const streamAR = sw / sh;
+  if (streamAR > VIEWFINDER_AR) {
+    sw = sh * VIEWFINDER_AR; // альбомный поток — режем бока
+  } else if (streamAR < VIEWFINDER_AR) {
+    sh = sw / VIEWFINDER_AR; // более вертикальный поток — режем верх/низ
+  }
+  // 2) Цифровой зум — центральный кроп поверх видоискателя
+  sw /= zoom;
+  sh /= zoom;
   const sx = (video.videoWidth - sw) / 2;
   const sy = (video.videoHeight - sh) / 2;
   const canvas = document.createElement('canvas');
@@ -203,27 +215,52 @@ async function fileToDataUrl(file: File): Promise<string> {
     }
   }
   return new Promise((resolve, reject) => {
-    const img = new Image();
-    const url = URL.createObjectURL(file);
-    img.onload = () => {
+    const drawAndResolve = (
+      source: ImageBitmap | HTMLImageElement,
+      w: number,
+      h: number,
+      cleanup: () => void,
+    ) => {
       const canvas = document.createElement('canvas');
       const scale = Math.min(1, 1024 / Math.max(img.naturalWidth, img.naturalHeight));
       canvas.width = Math.round(img.naturalWidth * scale);
       canvas.height = Math.round(img.naturalHeight * scale);
       const ctx = canvas.getContext('2d');
       if (!ctx) {
+        cleanup();
         reject(new Error('canvas'));
         return;
       }
-      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-      URL.revokeObjectURL(url);
+      ctx.drawImage(source, 0, 0, canvas.width, canvas.height);
+      cleanup();
       resolve(canvas.toDataURL('image/jpeg', 0.82));
     };
-    img.onerror = () => {
-      URL.revokeObjectURL(url);
-      reject(new Error('image decode'));
+
+    // createImageBitmap({ imageOrientation: 'from-image' }) уважает EXIF —
+    // фото с телефона не окажется вверх ногами на сервере
+    const modern = () =>
+      createImageBitmap(file, { imageOrientation: 'from-image' })
+        .then((bmp) =>
+          drawAndResolve(bmp, bmp.width, bmp.height, () => {
+            bmp.close();
+          }),
+        )
+        .catch(() => legacy());
+
+    const legacy = () => {
+      const img = new Image();
+      const url = URL.createObjectURL(file);
+      img.onload = () =>
+        drawAndResolve(img, img.width, img.height, () => URL.revokeObjectURL(url));
+      img.onerror = () => {
+        URL.revokeObjectURL(url);
+        reject(new Error('image decode'));
+      };
+      img.src = url;
     };
-    img.src = url;
+
+    if (typeof createImageBitmap === 'function') modern();
+    else legacy();
   });
 }
 
@@ -265,7 +302,10 @@ export default function ScanScreen() {
   const lastShotRef = useRef<string | null>(null);
 
   // --- зум камеры ---
-  const [zoomLevel, setZoomLevel] = useState<ZoomLevel>(1);
+  /** Активная ступень зума — реальный множитель (может быть 0,6 у ультраширика) */
+  const [zoomFactor, setZoomFactor] = useState(1);
+  /** Честные ступени: вычисляются из возможностей камеры после старта */
+  const [zoomChips, setZoomChips] = useState<number[]>([1, 2, 3]);
   /** Цифровой зум (CSS scale) — только когда нативный track.zoom недоступен */
   const [cssZoom, setCssZoom] = useState(1);
   const cssZoomRef = useRef(1);
@@ -295,8 +335,8 @@ export default function ScanScreen() {
         /* нативный зум не применился — уходим в цифровой */
       }
     }
-    cssZoomRef.current = level;
-    setCssZoom(level);
+    cssZoomRef.current = factor;
+    setCssZoom(factor);
   };
 
   // ================= Камера (продукты) =================
@@ -409,6 +449,7 @@ export default function ScanScreen() {
             console.info('[scan] камера отдаёт ландшафтный поток, показываем весь кадр');
           }
         }
+      };
 
         // Подбор самой широкой камеры: если у текущей min зум заметно больше 1 —
         // вероятно, попали на телеобъектив. Ищем шире и переключаемся.
@@ -471,6 +512,37 @@ export default function ScanScreen() {
             ) {
               nativeZoomRef.current = { min: caps.zoom.min, max: caps.zoom.max };
             }
+            stream.getTracks().forEach((t) => t.stop());
+            if (cancelled) return;
+            stream = await navigator.mediaDevices.getUserMedia({
+              video: { ...baseVideo, deviceId: { exact: wider.deviceId } },
+              audio: false,
+            });
+            if (cancelled) {
+              stream.getTracks().forEach((t) => t.stop());
+              return;
+            }
+            if (videoRef.current) {
+              videoRef.current.srcObject = stream;
+              await videoRef.current.play().catch(() => undefined);
+            }
+            track = stream.getVideoTracks()[0] ?? null;
+            caps = zoomCapsOf(track);
+          }
+        }
+
+        trackRef.current = track;
+        nativeZoomRef.current = caps;
+        setZoomChips(zoomChipFactors(caps));
+
+        // Стартуем с минимума объектива — это и есть настоящая «1×»
+        if (caps && track) {
+          try {
+            await track.applyConstraints(
+              { advanced: [{ zoom: caps.min }] } as unknown as MediaTrackConstraints,
+            );
+          } catch {
+            /* игнорируем — остаётся цифровой зум */
           }
           const settings = track.getSettings() as unknown as { zoom?: number };
           if (typeof settings.zoom === 'number' && settings.zoom > 0) {
@@ -495,7 +567,8 @@ export default function ScanScreen() {
       nativeZoomRef.current = null;
       baseZoomRef.current = 1;
       cssZoomRef.current = 1;
-      setZoomLevel(1);
+      setZoomFactor(1);
+      setZoomChips([1, 2, 3]);
       setCssZoom(1);
       setStreamAR(null);
       stream?.getTracks().forEach((t) => t.stop());
@@ -950,23 +1023,24 @@ export default function ScanScreen() {
                   )}
                 />
 
-                {/* Ступени зума как в системной камере */}
+                {/* Ступени зума как в системной камере — честные множители,
+                    минимальный = настоящий минимум объектива (может быть 0,6×) */}
                 {camState === 'on' && phase !== 'scanning' && (
                   <div className="absolute bottom-24 left-1/2 z-10 flex -translate-x-1/2 items-center gap-1 rounded-full bg-black/40 p-1 backdrop-blur-sm">
-                    {([1, 2, 3] as const).map((level) => (
+                    {zoomChips.map((f) => (
                       <button
-                        key={level}
+                        key={f}
                         type="button"
-                        onClick={() => void applyZoom(level)}
-                        aria-label={`Зум ${level}x`}
+                        onClick={() => void applyZoom(f)}
+                        aria-label={`Зум ${fmtZoom(f)}`}
                         className={cn(
-                          'flex h-9 w-9 items-center justify-center rounded-full text-xs font-bold transition-colors',
-                          zoomLevel === level
+                          'flex h-9 min-w-9 items-center justify-center rounded-full px-1.5 text-xs font-bold transition-colors',
+                          zoomFactor === f
                             ? 'bg-white text-stone-900'
                             : 'text-white/85 hover:text-white',
                         )}
                       >
-                        {level}×
+                        {fmtZoom(f)}
                       </button>
                     ))}
                   </div>

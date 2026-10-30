@@ -109,7 +109,7 @@ async function scanWithZai(imageDataUrl: string): Promise<DetectedProduct[]> {
         },
       ],
       thinking: { type: 'disabled' },
-    } as never),
+    }),
     new Promise((_resolve, reject) =>
       setTimeout(() => reject(new Error('scan timeout')), 55_000),
     ),

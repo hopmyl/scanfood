@@ -1,5 +1,8 @@
-// Генерация 50 AI-фото блюд для СканРецепт в едином визуальном стиле.
+// Генерация 100 AI-фото блюд для СканРецепт — фотореалистичный стиль v3.
 // Использует z-ai-web-dev-sdk (только бэкенд). Результат: public/dishes/<id>.jpg
+// Запуск: node scripts/generate-dish-photos.mjs --force (перегенерировать всё)
+// Прогресс пишется в scripts/regen-progress.txt — после таймаута просто
+// перезапусти ту же команду: готовое не тронется.
 import ZAI from 'z-ai-web-dev-sdk';
 import sharp from 'sharp';
 import fs from 'node:fs';
@@ -140,6 +143,38 @@ const DISHES = [
 
 const PROGRESS_FILE = 'scripts/regen-progress.txt';
 
+/** Сгенерировать одно фото с ретраями; прогресс — в файл, чтобы докачивать после таймаута */
+async function genOne(zai, id, subject) {
+  const outPath = path.join(OUT_DIR, `${id}.jpg`);
+  const prompt = `${subject}, ${REALISTIC_STYLE}`;
+  for (let attempt = 1; attempt <= 5; attempt++) {
+    try {
+      const response = await zai.images.generations.create({
+        prompt,
+        size: '1024x1024',
+      });
+      const base64 = response?.data?.[0]?.base64;
+      if (!base64) throw new Error('пустой ответ API');
+
+      const tmpPath = path.join(TMP_DIR, `${id}.png`);
+      fs.writeFileSync(tmpPath, Buffer.from(base64, 'base64'));
+      // Конвертация в JPG q82 — вес фото ~100-200 КБ вместо 1-2 МБ PNG
+      await sharp(tmpPath).jpeg({ quality: 82, mozjpeg: true }).toFile(outPath);
+      fs.unlinkSync(tmpPath);
+      fs.appendFileSync(PROGRESS_FILE, `${id}\n`);
+      return true;
+    } catch (err) {
+      const isRateLimit = String(err?.message).includes('429');
+      console.error(`  попытка ${attempt} failed ${id}: ${err.message}`);
+      // При 429 ждём дольше — даём API остыть
+      if (attempt < 5) {
+        await new Promise((r) => setTimeout(r, (isRateLimit ? 20000 : 3000) * attempt));
+      }
+    }
+  }
+  return false;
+}
+
 async function main() {
   // Параллельная генерация: node generate-dish-photos.mjs <shard> <total>
   // Каждый воркер обрабатывает свою долю списка (шард), файлы скипаются по наличию
@@ -188,6 +223,7 @@ async function main() {
           .filter((id) => !doneIds.has(id));
   const zai = await ZAI.create();
   const failed = [];
+  const zai = await ZAI.create();
 
   const base = forceIds
     ? ALL_IDS.filter(([id]) => forceIds.includes(id))
@@ -244,9 +280,15 @@ async function main() {
     await new Promise((r) => setTimeout(r, 4000));
   }
 
+  console.log(`Целей: ${targets.length}, параллельных воркеров: ${jobs}`);
+  await Promise.all(Array.from({ length: Math.min(jobs, Math.max(targets.length, 1)) }, (_, w) => worker(w)));
+
   console.log('=== ИТОГ ===');
-  console.log(`Успешно: ${base.length - failed.length} / ${base.length}`);
-  if (failed.length) console.log('Провалы:', failed.join(', '));
+  console.log(`Успешно: ${okCount} / ${targets.length}`);
+  if (failed.length) {
+    console.log('Провалы:', failed.join(', '));
+    process.exitCode = 2; // перезапуск докачает провалы
+  }
 }
 
 main().catch((e) => {

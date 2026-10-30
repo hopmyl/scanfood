@@ -2,8 +2,13 @@
 
 ## Что уже готово
 
-- `api/scan.ts` и `api/barcode.ts` — serverless-функции Vercel (тот же контракт, что и локальный Vite-эндпоинт).
-- `server/scan-core.ts` — общее ядро: логика одна и та же локально и на Vercel.
+- `api/scan.ts` и `api/barcode.ts` — serverless-функции Vercel. Они **самодостаточные**
+  (без импортов из `../server/…`): Vercel собирает `api/*.ts` как ESM, а Node-ESM
+  не разрешает импорты без расширения файла — из-за этого функция падает с
+  FUNCTION_INVOCATION_FAILED. Логика продублирована из `server/scan-core.ts`.
+- `server/scan-core.ts` — ядро для локальной разработки (`scan-api.ts`, Vite-плагин):
+  поддерживает оба провайдера (gemini и zai).
+- `api/ping.ts` — диагностический: `GET /api/ping` → `{ ok, node, hasGeminiKey }`.
 - `vercel.json` — SPA-роутинг (React Router) + таймаут функций 60 с.
 
 ## Бесплатное распознавание через Gemini
@@ -19,7 +24,7 @@
 
 Как получить ключ: https://aistudio.google.com → «Get API key» → скопировать.
 
-Модель: по умолчанию `gemini-2.5-flash-lite` (без «размышлений», исторически самая
+Модель: по умолчанию `gemini-3.5-flash-lite` (без «размышлений», исторически самая
 щедрая бесплатная квота). Важно: `gemini-2.0-flash` Google выключил 01.06.2026 —
 гайды с ним больше не работают. Более свежую модель (например `gemini-3.8-flash`)
 можно задать переменной `GEMINI_MODEL`.
@@ -37,7 +42,7 @@
 2. Vercel → Add New Project → импортируй репозиторий. Framework Preset подхватится автоматически (Vite), менять ничего не надо.
 3. Settings → Environment Variables — добавь:
    - `GEMINI_API_KEY` = твой ключ Google AI Studio
-   - (опционально) `SCAN_PROVIDER=gemini`, `GEMINI_MODEL=gemini-2.5-flash-lite`
+   - (опционально) `SCAN_PROVIDER=gemini`, `GEMINI_MODEL=gemini-3.5-flash-lite`
 4. Deploy. Готово: PWA на `*.vercel.app`, сканы — на бесплатном Gemini, штрих-коды — бесплатный Open Food Facts.
 
 ## Проверка после деплоя

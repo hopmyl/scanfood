@@ -43,6 +43,9 @@ export default function DishCard({ dish }: { dish: Dish }) {
   const isFav = useAppStore((s) => s.favorites.includes(dish.id));
   const toggleFavorite = useAppStore((s) => s.toggleFavorite);
   const pantry = useAppStore((s) => s.pantry);
+  const isPro = useAppStore((s) => s.userProfile.isPro);
+  /** Авторское блюдо, ещё не открытое подпиской — видно в списке, рецепт с PRO */
+  const proLocked = dish.tier === 'pro' && !isPro;
 
   // Блюдо целиком готовится из текущих запасов — показываем зелёный бейдж
   const cookable = useMemo(() => canCookFrom(dish, pantry), [dish, pantry]);
@@ -68,6 +71,12 @@ export default function DishCard({ dish }: { dish: Dish }) {
           <span className="absolute bottom-2 left-2 flex items-center gap-1 rounded-full bg-good/90 px-2 py-0.5 text-[10px] font-semibold text-white backdrop-blur-sm">
             <Check size={11} strokeWidth={3} />
             из запасов
+          </span>
+        )}
+        {proLocked && (
+          <span className="absolute right-2 bottom-2 flex items-center gap-1 rounded-full bg-pro/90 px-2 py-0.5 text-[10px] font-bold text-white backdrop-blur-sm">
+            <Crown size={11} className="fill-current" />
+            PRO
           </span>
         )}
         <button
