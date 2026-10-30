@@ -1,0 +1,23 @@
+# Netlify: полноценное зеркало СканРецепт (статика + функции)
+# Vercel этот файл игнорирует, GH Pages тоже — безопасно держать в репо.
+
+[build]
+  command = "npm run build"
+  publish = "dist"
+  functions = "netlify/functions"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+# Сначала API-маршруты (порядок важен), потом SPA-фолбэк из public/_redirects
+[[redirects]]
+  from = "/api/scan"
+  to = "/.netlify/functions/scan"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/barcode"
+  to = "/.netlify/functions/barcode"
+  status = 200
+  force = true
