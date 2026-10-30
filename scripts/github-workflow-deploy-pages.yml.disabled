@@ -1,0 +1,45 @@
+name: Deploy Pages mirror
+
+# Зеркало для доступа из РФ: при каждом пуше в main пересобираем статику
+# и force-push-им её в репозиторий hopmyl.github.io (GitHub Pages).
+# Vercel при этом деплоится как раньше (GitHub integration) — два прода.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Установка зависимостей
+        run: npm ci
+
+      - name: Сборка
+        run: npm run build
+
+      - name: Публикация в hopmyl.github.io
+        env:
+          MIRROR_TOKEN: ${{ secrets.MIRROR_TOKEN }}
+        run: |
+          cp index.html dist/404.html   # SPA-фолбэк для прямых заходов на /scan и /dish/*
+          BUNDLE_ID=$(grep -o 'index-[^"]*\.js' dist/index.html | head -1)
+          cd dist
+          git init -q -b main
+          git config user.name "deploy-bot"
+          git config user.email "deploy-bot@users.noreply.github.com"
+          git add -A
+          git commit -qm "mirror: ${GITHUB_SHA::7} (${BUNDLE_ID})"
+          git push -q --force "https://x-access-token:${MIRROR_TOKEN}@github.com/hopmyl/hopmyl.github.io.git" main
+          echo "Зеркало обновлено: ${BUNDLE_ID}"

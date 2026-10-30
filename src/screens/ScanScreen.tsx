@@ -623,7 +623,9 @@ export default function ScanScreen() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ image: dataUrl }),
       });
-      if (r.status === 501) {
+      // 501 — сервер без vision-провайдера; 404 — статический хостинг без /api
+      // (например, зеркало на GitHub Pages): в обоих случаях честно предлагаем демо
+      if (r.status === 501 || r.status === 404) {
         // на сервере не настроен vision-провайдер — честно предлагаем демо
         setPhase('idle');
         setScanFailed('noprovider');
