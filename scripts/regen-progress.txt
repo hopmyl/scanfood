@@ -17,3 +17,11 @@ chicago-hot-dog
 cinnamon-rolls
 buttermilk-biscuits
 potato-skins
+bbq-chicken-wings
+beef-steak
+beef-stroganoff
+beef-goulash
+borscht
+baked-apples
+baba-ganoush
+briam
