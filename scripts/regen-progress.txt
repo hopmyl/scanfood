@@ -80,3 +80,13 @@ jiaozi-pork
 hot-sour-soup
 homestyle-tofu
 eggs-benedict
+lazy-vareniki
+lahmacun
+kibbeh
+massaman-beef
+kluay-tod
+kluay-buat-chi
+mapo-tofu
+liang-ban-tofu
+meatloaf
+grilled-cheese-soup
