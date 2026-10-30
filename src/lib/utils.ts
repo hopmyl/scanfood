@@ -62,7 +62,15 @@ export function isoInDays(n: number): string {
  */
 export const DISH_IMG_V = 3;
 
-/** Путь к фото блюда с кэш-бастингом: '/dishes/x.jpg' → '/dishes/x.jpg?v=3' */
+/**
+ * Путь к фото блюда с кэш-бастингом и учётом базы Vite:
+ * '/dishes/x.jpg' → '/dishes/x.jpg?v=3' на Vercel (base '/'),
+ * '/scanfood/dishes/x.jpg?v=3' на зеркале GitHub Pages (base '/scanfood/').
+ */
 export function dishImgUrl(src: string): string {
-  return `${src}?v=${DISH_IMG_V}`;
+  const base = import.meta.env.BASE_URL.endsWith('/')
+    ? import.meta.env.BASE_URL
+    : `${import.meta.env.BASE_URL}/`;
+  const clean = src.startsWith('/') ? src.slice(1) : src;
+  return `${base}${clean}?v=${DISH_IMG_V}`;
 }

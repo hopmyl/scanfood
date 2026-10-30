@@ -4,7 +4,13 @@ import tailwindcss from '@tailwindcss/vite';
 import { VitePWA } from 'vite-plugin-pwa';
 import { scanApiPlugin } from './scan-api';
 
+// GitHub Pages обслуживает проект из подпути /scanfood/, Vercel и локальная
+// сборка — из корня. Раннер GitHub Actions всегда выставляет GITHUB_ACTIONS=true,
+// на Vercel и локально переменной нет, поэтому base остаётся '/'.
+const BASE = process.env.GITHUB_ACTIONS === 'true' ? '/scanfood/' : '/';
+
 export default defineConfig({
+  base: BASE,
   plugins: [
     react(),
     tailwindcss(),
@@ -23,11 +29,11 @@ export default defineConfig({
         background_color: '#FDF9F3',
         display: 'standalone',
         orientation: 'portrait',
-        start_url: '/',
+        start_url: BASE,
         icons: [
-          { src: '/icons/icon-192.png', sizes: '192x192', type: 'image/png' },
-          { src: '/icons/icon-512.png', sizes: '512x512', type: 'image/png' },
-          { src: '/icons/maskable-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
+          { src: `${BASE}icons/icon-192.png`, sizes: '192x192', type: 'image/png' },
+          { src: `${BASE}icons/icon-512.png`, sizes: '512x512', type: 'image/png' },
+          { src: `${BASE}icons/maskable-512.png`, sizes: '512x512', type: 'image/png', purpose: 'maskable' },
         ],
       },
       workbox: {
