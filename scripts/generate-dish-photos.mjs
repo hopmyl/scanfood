@@ -17,14 +17,18 @@ const STYLE =
   'shallow depth of field, 45-degree angle, photorealistic, high detail, high quality';
 
 // Реалистичный «домашний» стиль для перегенерации — без нейронного глянца.
-// Проверен визуально: пар, крошки, естественный свет — еда, которую хочется съесть.
+// Уроки аудита: «gentle steam» давал рисованный пар, «ultra realistic» — восковой
+// глянцевый CGI (круассан-пластилин, мраморные помидоры). Лечится матовостью,
+// неоднородностью и явным запретом пара/пластика.
 const REAL_STYLE =
-  'ultra realistic photo taken with a smartphone camera by a regular person, ' +
-  'real homemade food on a simple ceramic plate on a lived-in kitchen table, ' +
-  'soft natural daylight from a window, slight shadows, gentle steam rising, ' +
-  'a few crumbs and natural imperfections on the table, true-to-life textures, ' +
-  'colors and proportions, looks like a real snapshot from a home cooking blog, ' +
-  'amateur photography, not a render, not CGI, not 3D, not illustration, ' +
+  'candid amateur smartphone photo of real homemade food, casual snapshot for a home cooking blog, ' +
+  'food with matte natural textures: visible crumb and grains, air pockets, uneven browning, ' +
+  'slightly irregular shapes, small dents and imperfections on baked goods, ' +
+  'simple ceramic plate on a lived-in wooden kitchen table, soft daylight from a window, ' +
+  'muted natural colors, mild shadows, a few crumbs on the table, imperfect messy plating, ' +
+  'strictly no steam and no smoke, no glossy plastic sheen, no waxy or marble-like surfaces, ' +
+  'no studio lighting, shot handheld at a slight angle, slightly imperfect framing, ' +
+  'not a render, not CGI, not 3D, not illustration, ' +
   'no hands, no phones, no people, no text, no watermark';
 
 const DISHES = [
