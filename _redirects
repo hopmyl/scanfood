@@ -1,1 +1,5 @@
-/*    /index.html   200
+# Порядок важен: сначала API-функции Netlify, потом SPA-фолбэк.
+# На GH Pages и Vercel этот файл игнорируется.
+/api/scan    /.netlify/functions/scan     200
+/api/barcode /.netlify/functions/barcode  200
+/*           /index.html                  200
