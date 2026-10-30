@@ -25,3 +25,12 @@ borscht
 baked-apples
 baba-ganoush
 briam
+cheese-ham-omelette
+chicken-cutlets
+cheese-soup
+caponata
+baked-feta-pasta
+chicken-congee
+char-siu-pork
+beef-chow-fun
+buffalo-wings
