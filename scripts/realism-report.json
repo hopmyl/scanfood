@@ -1,0 +1,17 @@
+{
+ "cottage-cheese-pancakes": {
+  "score": -1,
+  "kind": "error",
+  "note": "ошибка проверки"
+ },
+ "paella-seafood": {
+  "score": -1,
+  "kind": "error",
+  "note": "ошибка проверки"
+ },
+ "spanakopita": {
+  "score": -1,
+  "kind": "error",
+  "note": "ошибка проверки"
+ }
+}
