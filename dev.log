@@ -1,6 +1,5 @@
 
-  VITE v7.3.7  ready in 265 ms
+  VITE v7.3.7  ready in 257 ms
 
   ➜  Local:   http://localhost:3000/
-  ➜  Network: http://21.0.17.131:3000/
-11:06:06 AM [vite] (client) hmr update /src/index.css, /src/screens/ScanScreen.tsx
+  ➜  Network: http://21.0.2.156:3000/
