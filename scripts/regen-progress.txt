@@ -34,3 +34,13 @@ chicken-congee
 char-siu-pork
 beef-chow-fun
 buffalo-wings
+chicken-fajitas
+chicken-stir-fry
+chicken-souvlaki
+chicken-shawarma
+chicken-tagine
+chicken-satay
+corn-chicken-soup
+bbq-pulled-pork
+coleslaw
+clam-chowder
