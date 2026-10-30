@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'DejaVu Sans', 'PT Sans', Arial, sans-serif; background: #FFFFFF; }
+#root { width: fit-content; min-width: 1000px; padding: 44px 56px; background: #FFFFFF; }
+
+.diagram-title { font-size: 24px; font-weight: 700; color: #1F2937; text-align: center; margin-bottom: 12px; }
+.diagram-subtitle { font-size: 14px; color: #6B7280; text-align: center; margin-bottom: 34px; }
+
+.quadrant-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; max-width: 980px; margin: 0 auto; }
+
+.quadrant { border-radius: 12px; padding: 24px; border: 1.5px solid; min-height: 240px; }
+.quadrant .q-title { font-size: 17px; font-weight: 700; margin-bottom: 14px; display: flex; align-items: center; gap: 9px; }
+.quadrant .q-icon { width: 30px; height: 30px; border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 700; flex-shrink: 0; }
+.quadrant .q-items { list-style: none; }
+.quadrant .q-items li { font-size: 13.5px; padding: 5px 0 5px 18px; position: relative; line-height: 1.5; }
+.quadrant .q-items li::before { content: ''; position: absolute; left: 0; top: 12px; width: 6px; height: 6px; border-radius: 50%; }
+
+.q-strengths { background: #F0FDF4; border-color: #86EFAC; }
+.q-strengths .q-title { color: #065F46; }
+.q-strengths .q-icon { background: #D1FAE5; color: #065F46; }
+.q-strengths li { color: #1F2937; }
+.q-strengths li::before { background: #10B981; }
+
+.q-weaknesses { background: #FEF2F2; border-color: #FECACA; }
+.q-weaknesses .q-title { color: #991B1B; }
+.q-weaknesses .q-icon { background: #FEE2E2; color: #991B1B; }
+.q-weaknesses li { color: #1F2937; }
+.q-weaknesses li::before { background: #EF4444; }
+
+.q-opportunities { background: #EFF6FF; border-color: #93C5FD; }
+.q-opportunities .q-title { color: #1E40AF; }
+.q-opportunities .q-icon { background: #DBEAFE; color: #1E40AF; }
+.q-opportunities li { color: #1F2937; }
+.q-opportunities li::before { background: #3B82F6; }
+
+.q-threats { background: #FFF7ED; border-color: #FDE68A; }
+.q-threats .q-title { color: #92400E; }
+.q-threats .q-icon { background: #FEF3C7; color: #92400E; }
+.q-threats li { color: #1F2937; }
+.q-threats li::before { background: #F59E0B; }
+</style>
+</head>
+<body>
+<div id="root">
+  <div class="diagram-title">SWOT-анализ СканРецепт</div>
+  <div class="diagram-subtitle">PWA-приложение рецептов со сканом продуктов, рынок РФ, октябрь 2026</div>
+
+  <div class="quadrant-grid">
+    <div class="quadrant q-strengths">
+      <div class="q-title"><div class="q-icon">S</div> Сильные стороны</div>
+      <ul class="q-items">
+        <li>Скан фото и штрихкодов → список продуктов с уверенностью</li>
+        <li>Подбор по реальным запасам — уникально для рынка РФ</li>
+        <li>Честное КБЖУ на порцию, 399 рецептов 9 кухонь с фото</li>
+        <li>Без рекламы; PWA — не нужны магазины приложений</li>
+        <li>Фильтры времени и сложности, честный freemium</li>
+      </ul>
+    </div>
+
+    <div class="quadrant q-weaknesses">
+      <div class="q-title"><div class="q-icon">W</div> Слабые стороны</div>
+      <ul class="q-items">
+        <li>Нет режима готовки (крупный текст, таймеры, wake-lock)</li>
+        <li>Нет пересчёта порций, списка покупок и планировщика</li>
+        <li>Нулевая узнаваемость бренда, нет базы отзывов</li>
+        <li>Зависимость от бесплатных квот AI-провайдеров</li>
+        <li>Разработка на одном человеке — риск простоя</li>
+      </ul>
+    </div>
+
+    <div class="quadrant q-opportunities">
+      <div class="q-title"><div class="q-icon">O</div> Возможности</div>
+      <ul class="q-items">
+        <li>ИИ-чаты приучили аудиторию спрашивать «что приготовить» — но без памяти о запасах</li>
+        <li>RuStore и VK как каналы дистрибуции без Google Play</li>
+        <li>Низкий CPI в РФ: 20–100 ₽ (Android) — дешёвый трафик</li>
+        <li>Ниша «из того, что есть» занята контент-сайтами со слабым UX</li>
+        <li>Партнёрство с ритейлом: список покупок → корзина</li>
+      </ul>
+    </div>
+
+    <div class="quadrant q-threats">
+      <div class="q-title"><div class="q-icon">T</div> Угрозы</div>
+      <ul class="q-items">
+        <li>Алиса, GigaChat и ChatGPT отвечают на кулинарные запросы прямо в выдаче</li>
+        <li>Ритейлеры (Самокат, ВкусВилл) могут выпустить свой «скан холодильника»</li>
+        <li>Нестабильные квоты и политики AI-провайдеров</li>
+        <li>Блокировки и инфраструктурные ограничения РФ</li>
+        <li>Копирование фич SuperCook и Samsung Food при их выходе на RU</li>
+      </ul>
+    </div>
+  </div>
+</div>
+</body>
+</html>

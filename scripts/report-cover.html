@@ -1,52 +1,78 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="utf-8">
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;900&display=swap" rel="stylesheet">
 <style>
   @page { size: 794px 1123px; margin: 0; }
-  html, body { margin: 0; padding: 0; background: #f7f7f6; }
-  .poster {
-    position: relative; width: 794px; height: 1123px;
-    background: #f7f7f6; font-family: 'DejaVu Sans', Arial, sans-serif;
-    border: none; outline: none; box-shadow: none;
+  :root {
+    --c-bg: #f7f6f4;
+    --c-accent: #87702a;
+    --c-text: #1c1c1a;
+    --c-muted: #78766f;
+    --c-mid: #504933;
   }
-  /* Layer 1: сетка-фон */
+  html, body { margin: 0; padding: 0; width: 794px; height: 1123px; background: var(--c-bg); font-family: 'Inter', 'DejaVu Sans', sans-serif; }
+  @media screen {
+    html { height: auto; display: flex; justify-content: center; min-height: 100vh; background: #e8e8e8; }
+    body { transform-origin: top center; scale: min(1, calc(100vw / 794), calc(100vh / 1123)); margin: 0 auto; box-shadow: 0 0 60px rgba(0,0,0,0.15); }
+  }
+  .cover { width: 794px; height: 1123px; position: relative; border: none; outline: none; box-shadow: none; }
+
+  /* Layer 1: фоновая сетка, 2% */
   .layer1 { position: absolute; inset: 0; overflow: hidden; z-index: 1;
     background-image:
-      linear-gradient(rgba(36,36,33,0.04) 0.5px, transparent 0.5px),
-      linear-gradient(90deg, rgba(36,36,33,0.04) 0.5px, transparent 0.5px);
-    background-size: 50px 50px; }
-  /* Layer 2: якорная линия */
+      linear-gradient(rgba(80, 73, 51, 0.05) 0.5px, transparent 0.5px),
+      linear-gradient(90deg, rgba(80, 73, 51, 0.05) 0.5px, transparent 0.5px);
+    background-size: 50px 50px;
+  }
+  /* Layer 2: левая опорная линия */
   .layer2 { position: absolute; inset: 0; z-index: 2; }
-  .anchor-line { position: absolute; left: 95px; top: 112px; width: 6px; height: 899px; background: #686048; }
+  .anchor-line { position: absolute; left: 95px; top: 112px; bottom: 112px; width: 8px; background: var(--c-mid); }
   /* Layer 3: контент */
   .layer3 { position: absolute; inset: 0; z-index: 3; }
-  .kicker { position: absolute; left: 145px; top: 168px; width: 560px;
-    font-size: 16px; letter-spacing: 4px; color: #242421; opacity: 0.6;
-    text-transform: uppercase; }
-  .hero { position: absolute; left: 145px; top: 320px; width: 580px;
-    font-size: 62px; font-weight: 900; line-height: 1.15; color: #242421; }
-  .hero .accent { color: #87702b; }
-  .summary { position: absolute; left: 145px; top: 560px; width: 476px;
-    font-size: 17px; line-height: 1.6; color: #242421; opacity: 0.85; }
-  .meta { position: absolute; left: 145px; top: 842px; font-size: 17px;
-    line-height: 1.7; color: #242421; opacity: 0.85; }
-  .footer { position: absolute; left: 145px; top: 1010px; font-size: 15px;
-    letter-spacing: 3px; color: #242421; opacity: 0.6; text-transform: uppercase; }
-  @media screen { html { overflow: auto; } body { transform-origin: top left; } }
+  .kicker {
+    position: absolute; left: 143px; top: 168px;
+    font-size: 15px; font-weight: 400; letter-spacing: 4px;
+    text-transform: uppercase; color: var(--c-text); opacity: 0.6;
+  }
+  .hero {
+    position: absolute; left: 143px; top: 300px;
+    font-size: 76px; font-weight: 900; line-height: 1.15;
+    color: var(--c-text); max-width: 560px;
+  }
+  .summary {
+    position: absolute; left: 143px; top: 545px;
+    font-size: 17px; font-weight: 300; line-height: 1.65;
+    color: var(--c-text); opacity: 0.85; max-width: 470px;
+  }
+  .meta {
+    position: absolute; left: 143px; top: 830px;
+    font-size: 17px; font-weight: 400; color: var(--c-text); line-height: 1.75;
+  }
+  .meta .m-label { color: var(--c-muted); font-size: 13px; letter-spacing: 2px; text-transform: uppercase; }
+  .footer {
+    position: absolute; left: 143px; bottom: 92px;
+    font-size: 13px; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--c-text); opacity: 0.6;
+  }
 </style>
 </head>
 <body>
-<div class="poster">
-  <div class="layer1"></div>
-  <div class="layer2"><div class="anchor-line"></div></div>
-  <div class="layer3">
-    <div class="kicker">Анализ рынка и рекомендации · 2026</div>
-    <div class="hero">Скан<span class="accent">Рецепт</span><br>роадмап<br>роста</div>
-    <div class="summary">Сравнительный анализ кулинарных приложений: SuperCook, Samsung Food, Paprika, Food.ru, Cookpad и ИИ-ассистентов. Пробелы текущего продукта, приоритизированные фичи на 3 горизонта и стратегия монетизации freemium.</div>
-    <div class="meta">Продукт: СканРецепт · PWA, 399 рецептов, 9 кухонь<br>Дата: 30 октября 2026</div>
-    <div class="footer">Scanrecipe · Product research</div>
+  <div class="cover">
+    <div class="layer1"></div>
+    <div class="layer2"><div class="anchor-line"></div></div>
+    <div class="layer3">
+      <div class="kicker">Маркетинговый анализ · Октябрь 2026</div>
+      <div class="hero">СканРецепт</div>
+      <div class="summary">Воронка продаж с приоритетами пользователей на каждой ступени, customer journey map ключевого сегмента, поисковые запросы аудитории с разбором органики и платной выдачи, SWOT-анализ и план приоритетов продукта.</div>
+      <div class="meta">
+        <div class="m-label">Содержание</div>
+        <div>Воронка · CJM · Поисковый спрос · SWOT · Приоритеты</div>
+        <div style="color: var(--c-muted); font-size: 14px;">Октябрь 2026 · версия 1.0 · PWA «СканРецепт»</div>
+      </div>
+      <div class="footer">Подготовлено: Z.ai · по заказу разработчика СканРецепт</div>
+    </div>
   </div>
-</div>
 </body>
 </html>

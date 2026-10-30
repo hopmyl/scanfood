@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'DejaVu Sans', 'PT Sans', Arial, sans-serif; background: #FFFFFF; }
+#root { width: fit-content; min-width: 1360px; padding: 44px 52px; background: #FFFFFF; }
+
+.diagram-title { font-size: 24px; font-weight: 700; color: #1F2937; text-align: center; margin-bottom: 6px; }
+.diagram-subtitle { font-size: 14px; color: #6B7280; text-align: center; margin-bottom: 30px; }
+
+.cjm { display: flex; flex-direction: column; gap: 10px; }
+.cjm-head { display: flex; gap: 10px; }
+.cjm-head div {
+  font-size: 13px; font-weight: 700; color: #475569;
+  background: #F1F5F9; border-radius: 8px; padding: 10px 12px; text-align: center;
+}
+.row { display: flex; gap: 10px; align-items: stretch; }
+.cell {
+  border-radius: 10px; padding: 12px 14px; font-size: 13px; color: #334155;
+  line-height: 1.5; border: 1px solid #E2E8F0; background: #FFFFFF;
+}
+.c-stage { flex: 0 0 150px; display: flex; flex-direction: column; justify-content: center; }
+.c-act   { flex: 0 0 252px; }
+.c-pain  { flex: 0 0 262px; }
+.c-chan  { flex: 0 0 216px; }
+.c-role  { flex: 0 0 268px; }
+.c-metr  { flex: 1 1 auto; }
+
+.stage-chip {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-size: 14px; font-weight: 700; color: #FFFFFF;
+  border-radius: 8px; padding: 7px 10px; margin-bottom: 7px;
+}
+.stage-num { font-size: 11px; font-weight: 700; opacity: 0.75; }
+.stage-sub { font-size: 11px; color: #64748B; line-height: 1.35; }
+
+.cell ul { list-style: none; }
+.cell li { padding: 3px 0 3px 14px; position: relative; }
+.cell li::before { content: ''; position: absolute; left: 0; top: 10px; width: 5px; height: 5px; border-radius: 50%; background: #94A3B8; }
+
+/* палитра ступеней: один сине-серый поток, активация — акцент */
+.s1 .stage-chip { background: #334155; }
+.s2 .stage-chip { background: #3B5A80; }
+.s3 .stage-chip { background: #34699A; }
+.s4 .stage-chip { background: #B45309; }
+.s5 .stage-chip { background: #2F6B8F; }
+.s6 .stage-chip { background: #1E4E6E; }
+.s4 .cell { border-color: #F59E0B; background: #FFFDF5; }
+.s4 .cell li::before { background: #D97706; }
+.pain li::before { background: #EF4444 !important; }
+.role li::before { background: #10B981 !important; }
+.metr { font-weight: 700; color: #1F2937; display: flex; align-items: center; }
+
+.legend { margin-top: 22px; font-size: 12px; color: #6B7280; text-align: center; }
+</style>
+</head>
+<body>
+<div id="root">
+  <div class="diagram-title">Customer Journey Map — сегмент «Хозяйка с остатками»</div>
+  <div class="diagram-subtitle">Ключевой сегмент СканРецепт: путь от вечернего «что приготовить» до PRO-подписки и рекомендации</div>
+
+  <div class="cjm">
+    <div class="cjm-head">
+      <div class="c-stage">Этап</div>
+      <div class="c-act">Действия пользователя</div>
+      <div class="c-pain">Мысли и боли</div>
+      <div class="c-chan">Каналы касания</div>
+      <div class="c-role">Что делает СканРецепт</div>
+      <div class="c-metr">Метрика этапа</div>
+    </div>
+
+    <div class="row s1">
+      <div class="cell c-stage"><span class="stage-chip"><span class="stage-num">1</span>Триггер</span>
+        <span class="stage-sub">вечер, продукты есть — идей нет</span></div>
+      <div class="cell c-act"><ul><li>Открывает холодильник, оценивает остатки</li><li>Перебирает знакомые блюда «по кругу»</li></ul></div>
+      <div class="cell c-pain pain"><ul><li>«Опять готовить то же самое»</li><li>Жалко выбрасывать несвежие продукты</li></ul></div>
+      <div class="cell c-chan">офлайн, быт</div>
+      <div class="cell c-role role">Момент потребности — приложение должно быть уже установлено</div>
+      <div class="cell c-metr">частота: ежедневно</div>
+    </div>
+
+    <div class="row s2">
+      <div class="cell c-stage"><span class="stage-chip"><span class="stage-num">2</span>Поиск идеи</span>
+        <span class="stage-sub">выбор источника рецептов</span></div>
+      <div class="cell c-act"><ul><li>Ищет «что приготовить из …» в Яндексе</li><li>Спрашивает ИИ-чат / Алису, листает VK и Telegram</li></ul></div>
+      <div class="cell c-pain pain"><ul><li>Рецепты не подходят под её набор продуктов</li><li>Длинные статьи, реклама, всплывающие окна</li></ul></div>
+      <div class="cell c-chan">Яндекс, Google, YouTube, VK, Telegram, Алиса/ChatGPT</div>
+      <div class="cell c-role role">SEO-страницы «рецепты из …», соцсети, каталог открыт по ссылке без установки</div>
+      <div class="cell c-metr">показы, CTR в поиск</div>
+    </div>
+
+    <div class="row s3">
+      <div class="cell c-stage"><span class="stage-chip"><span class="stage-num">3</span>Знакомство</span>
+        <span class="stage-sub">первый контакт с продуктом</span></div>
+      <div class="cell c-act"><ul><li>Открывает лендинг/PWA, листает каталог</li><li>Смотрит фото, КБЖУ, фильтры</li></ul></div>
+      <div class="cell c-pain pain"><ul><li>«Зачем ещё одно приложение?»</li><li>Недоверие: снова реклама и подписки</li></ul></div>
+      <div class="cell c-chan">лендинг, каталог, отзывы друзей</div>
+      <div class="cell c-role role">399 блюд с фото без регистрации; честно: без рекламы, фильтры время/сложность</div>
+      <div class="cell c-metr">лендинг → установка 25–40%</div>
+    </div>
+
+    <div class="row s4">
+      <div class="cell c-stage"><span class="stage-chip"><span class="stage-num">4</span>Активация</span>
+        <span class="stage-sub">момент истины — первый скан</span></div>
+      <div class="cell c-act"><ul><li>Фотографирует полку холодильника</li><li>Подтверждает распознанное, получает подборку «можно приготовить»</li></ul></div>
+      <div class="cell c-pain pain"><ul><li>Страх: «не распознает мои продукты»</li><li>Не хочет вручную вбивать запасы</li></ul></div>
+      <div class="cell c-chan">приложение</div>
+      <div class="cell c-role role">Скан фото + штрихкода → список продуктов с уверенностью → подбор по реальным запасам — уникальность на рынке РФ</div>
+      <div class="cell c-metr">40–55% установок</div>
+    </div>
+
+    <div class="row s5">
+      <div class="cell c-stage"><span class="stage-chip"><span class="stage-num">5</span>Готовка и повтор</span>
+        <span class="stage-sub">формирование привычки</span></div>
+      <div class="cell c-act"><ul><li>Готовит по рецепту, сохраняет в избранное</li><li>Возвращается: запасы уже сохранены</li></ul></div>
+      <div class="cell c-pain pain"><ul><li>Телефон гаснет над кастрюлей, мелкий шрифт</li><li>Без режима готовки возвращается в заметки</li></ul></div>
+      <div class="cell c-chan">приложение, PWA-иконка на столе</div>
+      <div class="cell c-role role">Персистентные запасы, избранное, фильтры «до 15 мин», «лёгкая»; режим готовки — приоритет №1 роадмапа</div>
+      <div class="cell c-metr">возвраты D7/D30</div>
+    </div>
+
+    <div class="row s6">
+      <div class="cell c-stage"><span class="stage-chip"><span class="stage-num">6</span>Монетизация</span>
+        <span class="stage-sub">PRO и рекомендация</span></div>
+      <div class="cell c-act"><ul><li>Упирается в лимит Лайта (5 сканов/день)</li><li>Хочет авторские коллекции → оформляет PRO, делится рецептом</li></ul></div>
+      <div class="cell c-pain pain"><ul><li>«А не обманут ли с подпиской?»</li><li>Не любит навязчивые офферы</li></ul></div>
+      <div class="cell c-chan">приложение, соцсети</div>
+      <div class="cell c-role role">Один честный апгрейд-момент: 151 авторское блюдо; без рекламы и тёмных паттернов</div>
+      <div class="cell c-metr">PRO 1–3% активных; шеринг 8–12%</div>
+    </div>
+  </div>
+
+  <div class="legend">Оранжевая строка — момент истины: уникальная связка «скан → запасы → подбор», которую не воспроизводят ни контент-сайты, ни ИИ-чаты. Конверсии — ориентиры категории (RevenueCat 2025).</div>
+</div>
+</body>
+</html>
