@@ -6,3 +6,14 @@ cobb-salad
 american-pancakes
 blt-sandwich
 glazed-donuts
+tuna-sandwich
+croissant-salmon
+apple-charlotte
+blueberry-muffins
+banana-bread
+arroz-con-pollo
+avgolemono
+chicago-hot-dog
+cinnamon-rolls
+buttermilk-biscuits
+potato-skins

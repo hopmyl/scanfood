@@ -32,9 +32,9 @@ const REAL_STYLE =
   'simple ceramic plate on a lived-in wooden kitchen table, soft daylight from a window, ' +
   'muted natural colors, mild shadows, a few crumbs on the table, imperfect messy plating, ' +
   'no glossy plastic sheen, no waxy or marble-like surfaces, ' +
-  'no studio lighting, shot handheld at a slight angle, slightly imperfect framing, ' +
+  'no studio lighting, camera at a slight angle from above, static view of the table, ' +
   'not a render, not CGI, not 3D, not illustration, ' +
-  'no hands, no phones, no people, no text, no watermark, ' +
+  'only the dish and simple tableware in the frame, clean empty tabletop around the plate, nothing else on the table, no text, no watermark, ' +
   'absolutely no steam wisps and no smoke curls rising from the food';
 
 const DISHES = [
