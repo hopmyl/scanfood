@@ -1,5 +1,7 @@
 
-  VITE v7.3.7  ready in 273 ms
+  VITE v7.3.7  ready in 271 ms
 
   ➜  Local:   http://localhost:3000/
-  ➜  Network: http://21.0.7.43:3000/
+  ➜  Network: http://21.0.5.158:3000/
+4:50:46 PM [vite] (client) hmr update /src/index.css
+4:53:15 PM [vite] (client) hmr update /src/index.css
