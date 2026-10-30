@@ -99,6 +99,7 @@ async function scanWithZai(imageDataUrl: string): Promise<DetectedProduct[]> {
 
   const completion = await Promise.race([
     zai.chat.completions.createVision({
+      model: 'glm-4.5v',
       messages: [
         {
           role: 'user',

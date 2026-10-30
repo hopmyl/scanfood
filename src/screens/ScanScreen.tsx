@@ -31,6 +31,10 @@ type ScanMode = 'products' | 'barcode';
 type CamState = 'starting' | 'on' | 'denied';
 /** Ступень зума как в системной камере: 1x / 2x / 3x */
 type ZoomLevel = 1 | 2 | 3;
+
+/** Чип зума: целые — «1×», дробные — с десятичной запятой («0,6×») */
+const fmtZoom = (f: number): string =>
+  `${Number.isInteger(f) ? f : f.toFixed(1).replace('.', ',')}×`;
 /** Уверенность распознавания: high — точно, medium — возможно */
 type Confidence = 'high' | 'medium';
 /** Продукт из распознавания: имя + уверенность + отметка пользователя */
@@ -77,6 +81,9 @@ function pickRandom<T>(arr: T[], n: number): T[] {
 
 /** Кеш самой широкой задней камеры — зондирование один раз за сессию */
 const WIDE_CAM_KEY = 'skanrecept-wide-cam';
+
+/** Соотношение сторон видоискателя 3:4 — под него кропается снимок в frameToDataUrl */
+const VIEWFINDER_AR = 3 / 4;
 
 /** Мин зум трека или null, если зум не поддерживается */
 function trackZoomMin(track: MediaStreamTrack | null | undefined): number | null {
@@ -222,9 +229,9 @@ async function fileToDataUrl(file: File): Promise<string> {
       cleanup: () => void,
     ) => {
       const canvas = document.createElement('canvas');
-      const scale = Math.min(1, 1024 / Math.max(img.naturalWidth, img.naturalHeight));
-      canvas.width = Math.round(img.naturalWidth * scale);
-      canvas.height = Math.round(img.naturalHeight * scale);
+      const scale = Math.min(1, 1024 / Math.max(w, h));
+      canvas.width = Math.round(w * scale);
+      canvas.height = Math.round(h * scale);
       const ctx = canvas.getContext('2d');
       if (!ctx) {
         cleanup();
@@ -319,7 +326,7 @@ export default function ScanScreen() {
    *  (он равен родному полю зрения камеры в ЛЮБЫХ единицах: у ряда телефонов
    *  min диапазона — не 1x, из-за чего чип «1x» оказывался реальными 2-2.5x). */
   const applyZoom = async (level: ZoomLevel) => {
-    setZoomLevel(level);
+    setZoomFactor(level);
     const caps = nativeZoomRef.current;
     const track = trackRef.current;
     if (caps && track) {
@@ -335,8 +342,8 @@ export default function ScanScreen() {
         /* нативный зум не применился — уходим в цифровой */
       }
     }
-    cssZoomRef.current = factor;
-    setCssZoom(factor);
+    cssZoomRef.current = level;
+    setCssZoom(level);
   };
 
   // ================= Камера (продукты) =================
@@ -449,7 +456,6 @@ export default function ScanScreen() {
             console.info('[scan] камера отдаёт ландшафтный поток, показываем весь кадр');
           }
         }
-      };
 
         // Подбор самой широкой камеры: если у текущей min зум заметно больше 1 —
         // вероятно, попали на телеобъектив. Ищем шире и переключаемся.
@@ -499,41 +505,21 @@ export default function ScanScreen() {
         trackRef.current = track;
         nativeZoomRef.current = null;
         baseZoomRef.current = 1;
-        if (track) {
-          if (typeof track.getCapabilities === 'function') {
-            const caps = track.getCapabilities() as unknown as {
-              zoom?: { min?: number; max?: number };
-            };
-            if (
-              caps.zoom &&
-              typeof caps.zoom.min === 'number' &&
-              typeof caps.zoom.max === 'number' &&
-              caps.zoom.max > caps.zoom.min
-            ) {
-              nativeZoomRef.current = { min: caps.zoom.min, max: caps.zoom.max };
-            }
-            stream.getTracks().forEach((t) => t.stop());
-            if (cancelled) return;
-            stream = await navigator.mediaDevices.getUserMedia({
-              video: { ...baseVideo, deviceId: { exact: wider.deviceId } },
-              audio: false,
-            });
-            if (cancelled) {
-              stream.getTracks().forEach((t) => t.stop());
-              return;
-            }
-            if (videoRef.current) {
-              videoRef.current.srcObject = stream;
-              await videoRef.current.play().catch(() => undefined);
-            }
-            track = stream.getVideoTracks()[0] ?? null;
-            caps = zoomCapsOf(track);
+        let caps: { min: number; max: number } | null = null;
+        if (track && typeof track.getCapabilities === 'function') {
+          const raw = track.getCapabilities() as unknown as {
+            zoom?: { min?: number; max?: number };
+          };
+          if (
+            raw.zoom &&
+            typeof raw.zoom.min === 'number' &&
+            typeof raw.zoom.max === 'number' &&
+            raw.zoom.max > raw.zoom.min
+          ) {
+            caps = { min: raw.zoom.min, max: raw.zoom.max };
+            nativeZoomRef.current = caps;
           }
         }
-
-        trackRef.current = track;
-        nativeZoomRef.current = caps;
-        setZoomChips(zoomChipFactors(caps));
 
         // Стартуем с минимума объектива — это и есть настоящая «1×»
         if (caps && track) {
@@ -1031,7 +1017,7 @@ export default function ScanScreen() {
                       <button
                         key={f}
                         type="button"
-                        onClick={() => void applyZoom(f)}
+                        onClick={() => void applyZoom(f as ZoomLevel)}
                         aria-label={`Зум ${fmtZoom(f)}`}
                         className={cn(
                           'flex h-9 min-w-9 items-center justify-center rounded-full px-1.5 text-xs font-bold transition-colors',
