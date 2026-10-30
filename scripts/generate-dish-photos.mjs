@@ -22,14 +22,17 @@ const STYLE =
 // неоднородностью и явным запретом пара/пластика.
 const REAL_STYLE =
   'candid amateur smartphone photo of real homemade food, casual snapshot for a home cooking blog, ' +
+  'strictly no steam, no smoke, no vapor, no fog, clean clear air, dry food surface, ' +
+  'photo taken a few minutes after serving when the dish has settled, ' +
   'food with matte natural textures: visible crumb and grains, air pockets, uneven browning, ' +
   'slightly irregular shapes, small dents and imperfections on baked goods, ' +
   'simple ceramic plate on a lived-in wooden kitchen table, soft daylight from a window, ' +
   'muted natural colors, mild shadows, a few crumbs on the table, imperfect messy plating, ' +
-  'strictly no steam and no smoke, no glossy plastic sheen, no waxy or marble-like surfaces, ' +
+  'no glossy plastic sheen, no waxy or marble-like surfaces, ' +
   'no studio lighting, shot handheld at a slight angle, slightly imperfect framing, ' +
   'not a render, not CGI, not 3D, not illustration, ' +
-  'no hands, no phones, no people, no text, no watermark';
+  'no hands, no phones, no people, no text, no watermark, ' +
+  'absolutely no steam wisps and no smoke curls rising from the food';
 
 const DISHES = [
   ['cottage-cheese-pancakes', 'Russian syrniki: five small thick fried cottage cheese pancakes with golden crust and visible curd texture, dollop of sour cream on top, powdered sugar, fresh raspberries aside'],
@@ -162,7 +165,7 @@ async function main() {
         .filter(Boolean)
     : null;
   const doneIds = new Set(
-    forceIds && fs.existsSync(PROGRESS_FILE)
+    fs.existsSync(PROGRESS_FILE)
       ? fs
           .readFileSync(PROGRESS_FILE, 'utf8')
           .split('\n')
@@ -170,18 +173,37 @@ async function main() {
           .filter(Boolean)
       : [],
   );
+  // Приоритет аудита: шорт-лист «плохих» фото (пар/воск/пластик) перегенерируется
+  // ПЕРВЫМ, до догенерации новых блюд — пользователь прежде всего ждёт правки.
+  // Каждое перегенерированное id пишется в прогресс, чтобы не крутить его бесконечно.
+  const SHORTLIST_FILE = 'scripts/regen-shortlist.txt';
+  const auditIds =
+    forceIds || !fs.existsSync(SHORTLIST_FILE)
+      ? []
+      : fs
+          .readFileSync(SHORTLIST_FILE, 'utf8')
+          .split('\n')
+          .map((s) => s.trim())
+          .filter(Boolean)
+          .filter((id) => !doneIds.has(id));
   const zai = await ZAI.create();
   const failed = [];
 
-  const base = forceIds ? ALL_IDS.filter(([id]) => forceIds.includes(id)) : ALL_IDS;
+  const base = forceIds
+    ? ALL_IDS.filter(([id]) => forceIds.includes(id))
+    : [
+        ...auditIds.map((id) => [id, ALL_IDS.find(([i]) => i === id)?.[1] ?? id]),
+        ...ALL_IDS,
+      ];
   const mySlice = base.filter((_, i) => i % total === shard);
 
     for (let i = 0; i < mySlice.length; i++) {
     const [id, subject] = mySlice[i];
     const outPath = path.join(OUT_DIR, `${id}.jpg`);
 
+    const isAudit = !forceIds && auditIds.includes(id);
     const fresh = fs.existsSync(outPath) && fs.statSync(outPath).size > 20000;
-    if (fresh && (!forceIds || doneIds.has(id))) {
+    if (fresh && (isAudit ? doneIds.has(id) : !forceIds)) {
       console.log(`[шард${shard} ${i + 1}/${mySlice.length}] SKIP ${id} (уже есть)`);
       continue; // без паузы — не тратим 4с на каждый пропуск
     }
@@ -205,7 +227,7 @@ async function main() {
         await sharp(tmpPath).jpeg({ quality: 82, mozjpeg: true }).toFile(outPath);
         fs.unlinkSync(tmpPath);
         ok = true;
-        if (forceIds) fs.appendFileSync(PROGRESS_FILE, `${id}\n`);
+        if (forceIds || isAudit) fs.appendFileSync(PROGRESS_FILE, `${id}\n`);
         console.log(`[шард${shard} ${i + 1}/${mySlice.length}] OK ${id}`);
       } catch (err) {
         const isRateLimit = String(err?.message).includes('429');
