@@ -143,6 +143,12 @@ export default async function handler(req: Request): Promise<Response> {
     return sendJson(400, { error: 'bad_image' });
   }
 
+  // Без ключа — 501: приложение понимает этот статус как «нет vision-провайдера»
+  // и честно предлагает демо-режим вместо пугающей ошибки
+  if (!process.env.GEMINI_API_KEY?.trim()) {
+    return sendJson(501, { error: 'no_provider' });
+  }
+
   try {
     const products = await scanWithGemini(image);
     if (products.length === 0) {
