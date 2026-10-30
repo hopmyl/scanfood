@@ -3,9 +3,11 @@
  * Контракт: { image: dataURL } → { ingredients: string[], products: {name, confidence}[] }
  *
  * Самодостаточная копия логики api/scan.ts (Vercel) — синхронизируй при изменении.
- * На Netlify распознавание работает через Gemini (бесплатный тариф Google AI
- * Studio): env GEMINI_API_KEY, опционально GEMINI_MODEL. Без ключа функция
- * вернёт 502 с detail — приложение честно предложит демо-режим.
+ * На Netlify распознавание работает через OpenRouter (env OPENROUTER_API_KEY —
+ * OpenAI-совместимый агрегатор, доступен из РФ без VPN, есть бесплатные
+ * vision-модели с суффиксом :free) либо через Gemini (GEMINI_API_KEY).
+ * OpenRouter проверяется первым. Без обоих ключей функция вернёт 501 no_provider
+ * — приложение честно предложит демо-режим вместо пугающей ошибки.
  */
 
 const SCAN_PROMPT =
@@ -71,11 +73,61 @@ function extractProducts(raw: string): DetectedProduct[] {
   return out;
 }
 
+/**
+ * OpenRouter — OpenAI-совместимый агрегатор (openrouter.ai), доступен из РФ
+ * без VPN. Бесплатные vision-модели (суффикс :free): лимит 20 запросов/мин
+ * и 50/день (после разового пополнения $10 — 1000/день), для теста друзьями
+ * достаточно. dataURL передаётся в image_url как есть.
+ */
+async function scanWithOpenRouter(imageDataUrl: string): Promise<DetectedProduct[]> {
+  const key = process.env.OPENROUTER_API_KEY!.trim();
+  const model = process.env.OPENROUTER_MODEL?.trim() || 'google/gemma-4-31b-it:free';
+
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 50_000);
+  try {
+    const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${key}`,
+        'Content-Type': 'application/json',
+        'X-Title': 'ScanRecipe',
+      },
+      signal: controller.signal,
+      body: JSON.stringify({
+        model,
+        messages: [
+          {
+            role: 'user',
+            content: [
+              { type: 'text', text: SCAN_PROMPT },
+              { type: 'image_url', image_url: { url: imageDataUrl } },
+            ],
+          },
+        ],
+        max_tokens: 512,
+        temperature: 0.2,
+      }),
+    });
+    if (!res.ok) {
+      const detail = (await res.text()).slice(0, 200);
+      throw new Error(`openrouter ${res.status}: ${detail}`);
+    }
+    const data: unknown = await res.json();
+    const text =
+      (data as { choices?: Array<{ message?: { content?: string } }> })?.choices?.[0]
+        ?.message?.content ?? '';
+    return extractProducts(text);
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
 async function scanWithGemini(imageDataUrl: string): Promise<DetectedProduct[]> {
   const key = process.env.GEMINI_API_KEY?.trim();
   if (!key) {
     throw new Error(
-      'GEMINI_API_KEY не задан — добавь его в Netlify: Site configuration → Environment variables',
+      'Ни OPENROUTER_API_KEY, ни GEMINI_API_KEY не заданы — добавь ключ в Netlify: Site configuration → Environment variables',
     );
   }
   const model = process.env.GEMINI_MODEL?.trim() || 'gemini-3.5-flash-lite';
@@ -143,14 +195,17 @@ export default async function handler(req: Request): Promise<Response> {
     return sendJson(400, { error: 'bad_image' });
   }
 
-  // Без ключа — 501: приложение понимает этот статус как «нет vision-провайдера»
+  // Без ключей — 501: приложение понимает этот статус как «нет vision-провайдера»
   // и честно предлагает демо-режим вместо пугающей ошибки
-  if (!process.env.GEMINI_API_KEY?.trim()) {
+  const hasOpenRouter = !!process.env.OPENROUTER_API_KEY?.trim();
+  if (!hasOpenRouter && !process.env.GEMINI_API_KEY?.trim()) {
     return sendJson(501, { error: 'no_provider' });
   }
 
   try {
-    const products = await scanWithGemini(image);
+    const products = hasOpenRouter
+      ? await scanWithOpenRouter(image)
+      : await scanWithGemini(image);
     if (products.length === 0) {
       return sendJson(502, { error: 'no_ingredients' });
     }

@@ -7,8 +7,10 @@
  * расширения — из-за этого функция падает с FUNCTION_INVOCATION_FAILED.
  * Логика продублирована из server/scan-core.ts — при изменении синхронизируй.
  *
- * На Vercel распознавание работает ТОЛЬКО через Gemini (бесплатный тариф
- * Google AI Studio): env GEMINI_API_KEY, опционально GEMINI_MODEL.
+ * На Vercel распознавание работает через OpenRouter (env OPENROUTER_API_KEY —
+ * OpenAI-совместимый агрегатор, доступен из РФ без VPN, есть бесплатные
+ * vision-модели с суффиксом :free) либо через Gemini (GEMINI_API_KEY).
+ * OpenRouter проверяется первым.
  * Путь z-ai-web-dev-sdk остался только в dev-плагине scan-api.ts.
  */
 
@@ -90,12 +92,61 @@ export function extractProducts(raw: string): DetectedProduct[] {
   return out;
 }
 
-/** Google AI Studio (Gemini Flash) — бесплатный тариф */
+/**
+ * OpenRouter — OpenAI-совместимый агрегатор (openrouter.ai), доступен из РФ
+ * без VPN. Бесплатные vision-модели (суффикс :free): лимит 20 запросов/мин
+ * и 50/день (после разового пополнения $10 — 1000/день).
+ */
+async function scanWithOpenRouter(imageDataUrl: string): Promise<DetectedProduct[]> {
+  const key = process.env.OPENROUTER_API_KEY!.trim();
+  const model = process.env.OPENROUTER_MODEL?.trim() || 'google/gemma-4-31b-it:free';
+
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 50_000);
+  try {
+    const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${key}`,
+        'Content-Type': 'application/json',
+        'X-Title': 'ScanRecipe',
+      },
+      signal: controller.signal,
+      body: JSON.stringify({
+        model,
+        messages: [
+          {
+            role: 'user',
+            content: [
+              { type: 'text', text: SCAN_PROMPT },
+              { type: 'image_url', image_url: { url: imageDataUrl } },
+            ],
+          },
+        ],
+        max_tokens: 512,
+        temperature: 0.2,
+      }),
+    });
+    if (!res.ok) {
+      const detail = (await res.text()).slice(0, 200);
+      throw new Error(`openrouter ${res.status}: ${detail}`);
+    }
+    const data: unknown = await res.json();
+    const text =
+      (data as { choices?: Array<{ message?: { content?: string } }> })?.choices?.[0]
+        ?.message?.content ?? '';
+    return extractProducts(text);
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+/** Google AI Studio (Gemini Flash) — бесплатный тариф, резервный путь */
 async function scanWithGemini(imageDataUrl: string): Promise<DetectedProduct[]> {
   const key = process.env.GEMINI_API_KEY?.trim();
   if (!key) {
     throw new Error(
-      'GEMINI_API_KEY не задан — добавь его в Vercel: Settings → Environment Variables',
+      'Ни OPENROUTER_API_KEY, ни GEMINI_API_KEY не заданы — добавь ключ в Vercel: Settings → Environment Variables',
     );
   }
 
@@ -177,7 +228,9 @@ export default async function handler(req: Req, res: ServerResponse): Promise<vo
   }
 
   try {
-    const products = await scanWithGemini(image);
+    const products = process.env.OPENROUTER_API_KEY?.trim()
+      ? await scanWithOpenRouter(image)
+      : await scanWithGemini(image);
     if (products.length === 0) {
       sendJson(502, { error: 'no_ingredients' });
       return;

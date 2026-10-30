@@ -17,12 +17,17 @@
 
 | Провайдер | Условия | Ключ |
 |---|---|---|
+| `openrouter` | OpenRouter (openrouter.ai) — доступен из РФ без VPN, регистрация через Google/GitHub/email, карта не нужна. Бесплатные vision-модели (`:free`): 20 запросов/мин, 50/день | `OPENROUTER_API_KEY` |
 | `gemini` | Бесплатный тариф Google AI Studio (без карты) | `GEMINI_API_KEY` |
 | `zai` | z-ai-web-dev-sdk (работает в песочнице, вне её может требовать свои ключи) | — |
 
-**Если задан `GEMINI_API_KEY`, а `SCAN_PROVIDER` не указан — автоматически используется Gemini.**
+**На серверных функциях (Vercel `api/scan.ts` и Netlify `netlify/functions/scan.ts`)
+провайдер выбирается по наличию ключа: сначала `OPENROUTER_API_KEY`, затем
+`GEMINI_API_KEY`.** Модель OpenRouter по умолчанию — `google/gemma-4-31b-it:free`
+(мультимодальная), меняется переменной `OPENROUTER_MODEL`.
 
 Как получить ключ: https://aistudio.google.com → «Get API key» → скопировать.
+Для OpenRouter: https://openrouter.ai → Sign in → Keys → Create key (работает из РФ без VPN).
 
 Модель: по умолчанию `gemini-3.5-flash-lite` (без «размышлений», исторически самая
 щедрая бесплатная квота). Важно: `gemini-2.0-flash` Google выключил 01.06.2026 —
