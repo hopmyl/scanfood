@@ -223,7 +223,6 @@ async function main() {
           .filter((id) => !doneIds.has(id));
   const zai = await ZAI.create();
   const failed = [];
-  const zai = await ZAI.create();
 
   const base = forceIds
     ? ALL_IDS.filter(([id]) => forceIds.includes(id))
