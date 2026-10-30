@@ -7,10 +7,10 @@
  * расширения — из-за этого функция падает с FUNCTION_INVOCATION_FAILED.
  * Логика продублирована из server/scan-core.ts — при изменении синхронизируй.
  *
- * На Vercel распознавание работает через OpenRouter (env OPENROUTER_API_KEY —
- * OpenAI-совместимый агрегатор, доступен из РФ без VPN, есть бесплатные
- * vision-модели с суффиксом :free) либо через Gemini (GEMINI_API_KEY).
- * OpenRouter проверяется первым.
+ * На Vercel провайдер выбирается по env (первый заданный побеждает):
+ * 1) AI_BASE_URL + AI_API_KEY (+ AI_MODEL) — любой OpenAI-совместимый сервис;
+ * 2) OPENROUTER_API_KEY — OpenRouter (открыт из РФ, есть бесплатные vision-модели);
+ * 3) GEMINI_API_KEY — Gemini (резерв).
  * Путь z-ai-web-dev-sdk остался только в dev-плагине scan-api.ts.
  */
 
@@ -92,28 +92,69 @@ export function extractProducts(raw: string): DetectedProduct[] {
   return out;
 }
 
-/**
- * OpenRouter — OpenAI-совместимый агрегатор (openrouter.ai), доступен из РФ
- * без VPN. Бесплатные vision-модели (суффикс :free): лимит 20 запросов/мин
- * и 50/день (после разового пополнения $10 — 1000/день).
- */
-async function scanWithOpenRouter(imageDataUrl: string): Promise<DetectedProduct[]> {
-  const key = process.env.OPENROUTER_API_KEY!.trim();
-  const model = process.env.OPENROUTER_MODEL?.trim() || 'google/gemma-4-31b-it:free';
+/** Дескриптор выбранного vision-провайдера */
+interface VisionProvider {
+  kind: 'openai' | 'gemini';
+  base?: string;
+  key?: string;
+  model?: string;
+}
 
+/**
+ * Выбор провайдера по env (первый заданный побеждает):
+ * 1) универсальный OpenAI-совместимый: AI_BASE_URL + AI_API_KEY, модель в AI_MODEL
+ * 2) OpenRouter: OPENROUTER_API_KEY (бесплатные vision-модели с суффиксом :free)
+ * 3) Gemini: GEMINI_API_KEY (резерв)
+ */
+function visionProvider(): VisionProvider | null {
+  const aiBase = process.env.AI_BASE_URL?.trim();
+  const aiKey = process.env.AI_API_KEY?.trim();
+  if (aiBase && aiKey) {
+    return {
+      kind: 'openai',
+      base: aiBase.replace(/\/+$/, ''),
+      key: aiKey,
+      model: process.env.AI_MODEL?.trim() || '',
+    };
+  }
+  const orKey = process.env.OPENROUTER_API_KEY?.trim();
+  if (orKey) {
+    return {
+      kind: 'openai',
+      base: 'https://openrouter.ai/api/v1',
+      key: orKey,
+      model: process.env.OPENROUTER_MODEL?.trim() || 'google/gemma-4-31b-it:free',
+    };
+  }
+  if (process.env.GEMINI_API_KEY?.trim()) return { kind: 'gemini' };
+  return null;
+}
+
+/**
+ * Любой OpenAI-совместимый API: POST {base}/chat/completions с контентом
+ * [{type:'text'},{type:'image_url'}]. dataURL передаётся как есть.
+ */
+async function scanWithOpenAICompat(
+  provider: VisionProvider,
+  imageDataUrl: string,
+): Promise<DetectedProduct[]> {
+  if (!provider.model) {
+    throw new Error(
+      'AI_MODEL не задан — укажи модель провайдера (например, llama-3.2-11b-vision-instruct для Groq, Qwen/Qwen2.5-VL-7B-Instruct для HuggingFace)',
+    );
+  }
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), 50_000);
   try {
-    const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+    const res = await fetch(`${provider.base}/chat/completions`, {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${key}`,
+        Authorization: `Bearer ${provider.key ?? ''}`,
         'Content-Type': 'application/json',
-        'X-Title': 'ScanRecipe',
       },
       signal: controller.signal,
       body: JSON.stringify({
-        model,
+        model: provider.model,
         messages: [
           {
             role: 'user',
@@ -129,7 +170,7 @@ async function scanWithOpenRouter(imageDataUrl: string): Promise<DetectedProduct
     });
     if (!res.ok) {
       const detail = (await res.text()).slice(0, 200);
-      throw new Error(`openrouter ${res.status}: ${detail}`);
+      throw new Error(`openai-compat ${res.status}: ${detail}`);
     }
     const data: unknown = await res.json();
     const text =
@@ -146,7 +187,7 @@ async function scanWithGemini(imageDataUrl: string): Promise<DetectedProduct[]> 
   const key = process.env.GEMINI_API_KEY?.trim();
   if (!key) {
     throw new Error(
-      'Ни OPENROUTER_API_KEY, ни GEMINI_API_KEY не заданы — добавь ключ в Vercel: Settings → Environment Variables',
+      'Ни AI_API_KEY, ни OPENROUTER_API_KEY, ни GEMINI_API_KEY не заданы — добавь ключ в Vercel: Settings → Environment Variables',
     );
   }
 
@@ -227,10 +268,18 @@ export default async function handler(req: Req, res: ServerResponse): Promise<vo
     return;
   }
 
+  // Без провайдера — 501: клиент понимает этот статус как «демо-режим»
+  const provider = visionProvider();
+  if (!provider) {
+    sendJson(501, { error: 'no_provider' });
+    return;
+  }
+
   try {
-    const products = process.env.OPENROUTER_API_KEY?.trim()
-      ? await scanWithOpenRouter(image)
-      : await scanWithGemini(image);
+    const products =
+      provider.kind === 'openai'
+        ? await scanWithOpenAICompat(provider, image)
+        : await scanWithGemini(image);
     if (products.length === 0) {
       sendJson(502, { error: 'no_ingredients' });
       return;

@@ -11,23 +11,31 @@
 - `api/ping.ts` — диагностический: `GET /api/ping` → `{ ok, node, hasGeminiKey }`.
 - `vercel.json` — SPA-роутинг (React Router) + таймаут функций 60 с.
 
-## Бесплатное распознавание через Gemini
+## Провайдеры распознавания (`server.mjs` и `api/scan.ts`)
 
-Функция `/api/scan` поддерживает два провайдера (переменная `SCAN_PROVIDER`):
+Провайдер выбирается автоматически по наличию ключа (первый заданный побеждает):
 
-| Провайдер | Условия | Ключ |
-|---|---|---|
-| `openrouter` | OpenRouter (openrouter.ai) — доступен из РФ без VPN, регистрация через Google/GitHub/email, карта не нужна. Бесплатные vision-модели (`:free`): 20 запросов/мин, 50/день | `OPENROUTER_API_KEY` |
-| `gemini` | Бесплатный тариф Google AI Studio (без карты) | `GEMINI_API_KEY` |
-| `zai` | z-ai-web-dev-sdk (работает в песочнице, вне её может требовать свои ключи) | — |
+| Приоритет | Переменные | Сервис | Доступность из РФ |
+|---|---|---|---|
+| 1 | `AI_BASE_URL` + `AI_API_KEY` + `AI_MODEL` | Любой OpenAI-совместимый (Groq, HuggingFace router, VseGPT, ProxyAPI…) | зависит от сервиса |
+| 2 | `OPENROUTER_API_KEY` (+ `OPENROUTER_MODEL`) | OpenRouter, модель по умолчанию `google/gemma-4-31b-it:free` | сайт/API открыт без VPN |
+| 3 | `GEMINI_API_KEY` (+ `GEMINI_MODEL`) | Gemini, модель по умолчанию `gemini-3.5-flash-lite` | только ключ из-за рубежа |
 
-**На серверных функциях (Vercel `api/scan.ts` и Netlify `netlify/functions/scan.ts`)
-провайдер выбирается по наличию ключа: сначала `OPENROUTER_API_KEY`, затем
-`GEMINI_API_KEY`.** Модель OpenRouter по умолчанию — `google/gemma-4-31b-it:free`
-(мультимодальная), меняется переменной `OPENROUTER_MODEL`.
+Примеры универсального слота:
 
-Как получить ключ: https://aistudio.google.com → «Get API key» → скопировать.
-Для OpenRouter: https://openrouter.ai → Sign in → Keys → Create key (работает из РФ без VPN).
+```
+# Groq (бесплатно, llama-4-scout видит картинки):
+AI_BASE_URL=https://api.groq.com/openai/v1
+AI_API_KEY=gsk_...
+AI_MODEL=meta-llama/llama-4-scout-17b-16e-instruct
+
+# HuggingFace Inference (бесплатные кредиты):
+AI_BASE_URL=https://router.huggingface.co/v1
+AI_API_KEY=hf_...
+AI_MODEL=Qwen/Qwen2.5-VL-7B-Instruct
+```
+
+Без ключей `/api/scan` отвечает `501 no_provider` — приложение показывает демо-режим.
 
 Модель: по умолчанию `gemini-3.5-flash-lite` (без «размышлений», исторически самая
 щедрая бесплатная квота). Важно: `gemini-2.0-flash` Google выключил 01.06.2026 —

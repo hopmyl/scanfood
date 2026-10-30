@@ -5,7 +5,12 @@
  *   GET  /                → dist/index.html (+ SPA-фолбэк)
  *   GET  /assets/*        → статика сборки Vite
  *   GET  /dishes/*.jpg    → фото блюд
- *   POST /api/scan        → распознавание продуктов (Gemini, env GEMINI_API_KEY)
+ *   POST /api/scan        → распознавание продуктов. Провайдер выбирается по env:
+ *                           1) AI_BASE_URL + AI_API_KEY (+ AI_MODEL) — любой
+ *                              OpenAI-совместимый сервис (Groq, HuggingFace,
+ *                              VseGPT, ProxyAPI…);
+ *                           2) OPENROUTER_API_KEY — OpenRouter (открыт из РФ);
+ *                           3) GEMINI_API_KEY — Gemini (резерв).
  *   GET  /api/barcode     → Open Food Facts по штрих-коду
  *   GET  /api/ping        → healthcheck
  *
@@ -79,6 +84,83 @@ function extractProducts(raw) {
     if (out.length >= 12) break;
   }
   return out;
+}
+
+/**
+ * Выбор vision-провайдера по переменным окружения (первый заданный побеждает):
+ * 1) универсальный OpenAI-совместимый: AI_BASE_URL + AI_API_KEY, модель в AI_MODEL
+ * 2) OpenRouter: OPENROUTER_API_KEY (бесплатные vision-модели с суффиксом :free)
+ * 3) Gemini: GEMINI_API_KEY (резерв)
+ */
+function visionProvider() {
+  const aiBase = process.env.AI_BASE_URL?.trim();
+  const aiKey = process.env.AI_API_KEY?.trim();
+  if (aiBase && aiKey) {
+    return {
+      kind: 'openai',
+      base: aiBase.replace(/\/+$/, ''),
+      key: aiKey,
+      model: process.env.AI_MODEL?.trim() || '',
+    };
+  }
+  const orKey = process.env.OPENROUTER_API_KEY?.trim();
+  if (orKey) {
+    return {
+      kind: 'openai',
+      base: 'https://openrouter.ai/api/v1',
+      key: orKey,
+      model: process.env.OPENROUTER_MODEL?.trim() || 'google/gemma-4-31b-it:free',
+    };
+  }
+  if (process.env.GEMINI_API_KEY?.trim()) return { kind: 'gemini' };
+  return null;
+}
+
+/**
+ * Любой OpenAI-совместимый API: POST {base}/chat/completions с контентом
+ * [{type:'text'},{type:'image_url'}]. dataURL передаётся как есть.
+ */
+async function scanWithOpenAICompat(provider, imageDataUrl) {
+  if (!provider.model) {
+    throw new Error(
+      'AI_MODEL не задан — укажи модель провайдера (например, llama-3.2-11b-vision-instruct для Groq, Qwen/Qwen2.5-VL-7B-Instruct для HuggingFace)',
+    );
+  }
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 50_000);
+  try {
+    const res = await fetch(`${provider.base}/chat/completions`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${provider.key}`,
+        'Content-Type': 'application/json',
+      },
+      signal: controller.signal,
+      body: JSON.stringify({
+        model: provider.model,
+        messages: [
+          {
+            role: 'user',
+            content: [
+              { type: 'text', text: SCAN_PROMPT },
+              { type: 'image_url', image_url: { url: imageDataUrl } },
+            ],
+          },
+        ],
+        max_tokens: 512,
+        temperature: 0.2,
+      }),
+    });
+    if (!res.ok) {
+      const detail = (await res.text()).slice(0, 200);
+      throw new Error(`openai-compat ${res.status}: ${detail}`);
+    }
+    const data = await res.json();
+    const text = data?.choices?.[0]?.message?.content ?? '';
+    return extractProducts(text);
+  } finally {
+    clearTimeout(timer);
+  }
 }
 
 async function scanWithGemini(imageDataUrl) {
@@ -291,8 +373,17 @@ const server = http.createServer(async (req, res) => {
         sendJson(res, 400, { error: 'bad_image' });
         return;
       }
+      // Без провайдера — 501: клиент понимает этот статус как «демо-режим»
+      const provider = visionProvider();
+      if (!provider) {
+        sendJson(res, 501, { error: 'no_provider' });
+        return;
+      }
       try {
-        const products = await scanWithGemini(image);
+        const products =
+          provider.kind === 'openai'
+            ? await scanWithOpenAICompat(provider, image)
+            : await scanWithGemini(image);
         if (products.length === 0) {
           sendJson(res, 502, { error: 'no_ingredients' });
           return;
