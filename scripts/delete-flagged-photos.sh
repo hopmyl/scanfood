@@ -1,5 +1,8 @@
 #!/bin/bash
-# Удаление 228 фото с дефектами (пластик/пар/руки/текст) после проверки нового промпта.
+# Удаление фото с дефектами (пластик/пар/руки/текст) после проверки контрольной партии.
+# Канонический список — regen-shortlist.txt (134, свежий VLM-аудит 259 фото, откалиброван
+# под жалобу пользователя на пар/воск). Старый regen-flags.txt (228) строже и удалил бы
+# 96 фото, которые свежий аудит признал годными — лишний расход квоты.
 # Git хранит историю — ничего не теряется. Дальше шард-режим догенерирует всё с новым REAL_STYLE.
 cd /home/z/my-project
 n=0
@@ -14,7 +17,7 @@ while read -r id; do
     rm -f "public/dishes/$id.jpg"
     n=$((n+1))
   fi
-done < scripts/regen-flags.txt
+done < scripts/regen-shortlist.txt
 echo "deleted: $n; remaining photos: $(ls public/dishes/*.jpg 2>/dev/null | wc -l)"
 date > scripts/flags-deleted.marker
 echo "marker created"
