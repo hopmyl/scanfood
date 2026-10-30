@@ -16,3 +16,5 @@ while read -r id; do
   fi
 done < scripts/regen-flags.txt
 echo "deleted: $n; remaining photos: $(ls public/dishes/*.jpg 2>/dev/null | wc -l)"
+date > scripts/flags-deleted.marker
+echo "marker created"
