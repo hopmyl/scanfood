@@ -21,3 +21,4 @@ next-env.d.ts
 bun.lock
 /*.log
 .agent-heartbeat
+upload/
