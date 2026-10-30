@@ -223,6 +223,7 @@ async function main() {
           .filter((id) => !doneIds.has(id));
   const zai = await ZAI.create();
   const failed = [];
+  let okCount = 0;
 
   const base = forceIds
     ? ALL_IDS.filter(([id]) => forceIds.includes(id))
@@ -274,16 +275,14 @@ async function main() {
       }
     }
 
-    if (!ok) failed.push(id);
+    if (ok) okCount++;
+    else failed.push(id);
     // Пауза между изображениями — бережём rate limit
     await new Promise((r) => setTimeout(r, 4000));
   }
 
-  console.log(`Целей: ${targets.length}, параллельных воркеров: ${jobs}`);
-  await Promise.all(Array.from({ length: Math.min(jobs, Math.max(targets.length, 1)) }, (_, w) => worker(w)));
-
   console.log('=== ИТОГ ===');
-  console.log(`Успешно: ${okCount} / ${targets.length}`);
+  console.log(`Успешно: ${okCount} / ${mySlice.length}`);
   if (failed.length) {
     console.log('Провалы:', failed.join(', '));
     process.exitCode = 2; // перезапуск докачает провалы
