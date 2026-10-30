@@ -1,24 +1,2 @@
-node_modules/
-dist/
-dev.log
-server.log
-scripts/photo-tmp/
-scripts/*.log
-scripts/*.png
-scripts/drive_list.html
-.zscripts/
-.vercel/
-.vercel
-tool-results/
-
-# Песочница-артефакты: не в репо, живут только локально
-Caddyfile
-mini-services/
-db/
-download/
 skills/
-next-env.d.ts
-bun.lock
-/*.log
-.agent-heartbeat
-upload/
+node_modules/
