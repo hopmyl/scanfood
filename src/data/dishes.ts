@@ -5,6 +5,7 @@
  *  • FRIDGE_PRODUCTS — канонические продукты: распознавание, запасы, подбор рецептов
  *  • isBaseIngredient — соль/специи/масло не учитываются при подборе «что приготовить»
  */
+import { DISH_META } from './dish-meta';
 
 export type DishCategory =
   | 'breakfast'
@@ -47,6 +48,10 @@ export interface Dish {
   cuisine?: import('./dishes').CuisineId;
   /** Тир доступа: free — классика (бесплатно), pro — авторская коллекция */
   tier?: 'free' | 'pro';
+  /** Оценка времени приготовления, минуты (dish-meta.ts, генерируется скриптом) */
+  timeMin?: number;
+  /** Сложность: easy/medium/hard (dish-meta.ts, генерируется скриптом) */
+  difficulty?: import('./dish-meta').Difficulty;
 }
 
 export const CATEGORY_META: Record<DishCategory, { labelRu: string; emoji: string }> = {
@@ -90,6 +95,29 @@ export const KCAL_RANGES: KcalRange[] = [
   { id: '300-500', labelRu: '300–500', min: 300, max: 500 },
   { id: '500-700', labelRu: '500–700', min: 500, max: 700 },
   { id: 'gt700', labelRu: '700+', min: 700 },
+];
+
+/** Чипы фильтра сложности */
+export const DIFFICULTY_META: Record<import('./dish-meta').Difficulty, {
+  labelRu: string;
+}> = {
+  easy: { labelRu: 'Лёгкая' },
+  medium: { labelRu: 'Средняя' },
+  hard: { labelRu: 'Сложная' },
+};
+
+/** Диапазоны фильтра времени приготовления (чипы) */
+export interface TimeRange {
+  id: string;
+  labelRu: string;
+  max?: number;
+}
+
+export const TIME_RANGES: TimeRange[] = [
+  { id: 'any', labelRu: 'Любое' },
+  { id: 'le15', labelRu: 'до 15 мин', max: 15 },
+  { id: 'le30', labelRu: 'до 30 мин', max: 30 },
+  { id: 'le60', labelRu: 'до 60 мин', max: 60 },
 ];
 
 // ============================================================================
@@ -1482,9 +1510,11 @@ export const PRO_DISH_IDS: ReadonlySet<string> = new Set([
 export const PRO_DISHES_COUNT = PRO_DISH_IDS.size;
 export const FREE_DISHES_COUNT = ALL_DISHES.length - PRO_DISH_IDS.size;
 
-/** Итоговый каталог: каждому блюду присвоены тир free/pro и кухня */
+/** Итоговый каталог: каждому блюду присвоены тир free/pro, кухня и мета времени/сложности */
 export const DISHES: Dish[] = ALL_DISHES.map((d) => ({
   ...d,
   cuisine: (d.cuisine ?? CUISINE_BY_ID.get(d.id) ?? 'russian') as Dish['cuisine'],
   tier: PRO_DISH_IDS.has(d.id) ? ('pro' as const) : undefined,
+  timeMin: DISH_META[d.id]?.timeMin,
+  difficulty: DISH_META[d.id]?.difficulty,
 }));

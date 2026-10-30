@@ -1,6 +1,15 @@
 import { useMemo, useState } from 'react';
-import { Crown, Flame, RotateCcw, Search } from 'lucide-react';
-import { CATEGORY_FILTERS, CUISINE_META, DISHES, KCAL_RANGES, type CuisineId, type DishCategory } from '../data/dishes';
+import { ChefHat, Clock, Crown, Flame, RotateCcw, Search } from 'lucide-react';
+import {
+  CATEGORY_FILTERS,
+  CUISINE_META,
+  DIFFICULTY_META,
+  DISHES,
+  KCAL_RANGES,
+  TIME_RANGES,
+  type CuisineId,
+  type DishCategory,
+} from '../data/dishes';
 import DishCard from '../components/DishCard';
 import { useAppStore } from '../store/useAppStore';
 import { cn, pluralRu } from '../lib/utils';
@@ -11,6 +20,10 @@ export default function CatalogScreen() {
   const [category, setCategory] = useState<DishCategory | 'all'>('all');
   const [kcalId, setKcalId] = useState('any');
   const [query, setQuery] = useState('');
+  /** Сложность: 'any' | 'easy' | 'medium' | 'hard' */
+  const [difficultyId, setDifficultyId] = useState('any');
+  /** Время: 'any' | 'le15' | 'le30' | 'le60' */
+  const [timeId, setTimeId] = useState('any');
   /** Выбранные кухни: пустой набор = все кухни; несколько = объединение */
   const [cuisines, setCuisines] = useState<Set<CuisineId>>(new Set());
 
@@ -25,6 +38,7 @@ export default function CatalogScreen() {
 
   const filtered = useMemo(() => {
     const range = KCAL_RANGES.find((r) => r.id === kcalId);
+    const timeRange = TIME_RANGES.find((r) => r.id === timeId);
     const q = query.trim().toLowerCase();
 
     return DISHES.filter((d) => {
@@ -32,21 +46,30 @@ export default function CatalogScreen() {
       if (cuisines.size > 0 && !cuisines.has(d.cuisine ?? 'russian')) return false;
       if (range?.min !== undefined && d.kcal < range.min) return false;
       if (range?.max !== undefined && d.kcal > range.max) return false;
+      if (difficultyId !== 'any' && d.difficulty !== difficultyId) return false;
+      if (timeRange?.max !== undefined && (d.timeMin ?? Infinity) > timeRange.max) return false;
       if (q && !d.nameEn.toLowerCase().includes(q) && !d.nameRu.toLowerCase().includes(q)) {
         return false;
       }
       return true;
     });
-  }, [category, kcalId, query, cuisines]);
+  }, [category, kcalId, query, cuisines, difficultyId, timeId]);
 
   const hasActiveFilters =
-    category !== 'all' || kcalId !== 'any' || query.trim() !== '' || cuisines.size > 0;
+    category !== 'all' ||
+    kcalId !== 'any' ||
+    query.trim() !== '' ||
+    cuisines.size > 0 ||
+    difficultyId !== 'any' ||
+    timeId !== 'any';
 
   const reset = () => {
     setCategory('all');
     setKcalId('any');
     setQuery('');
     setCuisines(new Set());
+    setDifficultyId('any');
+    setTimeId('any');
   };
 
   return (
@@ -125,7 +148,7 @@ export default function CatalogScreen() {
       </div>
 
       {/* Чипсы калорийности */}
-      <div className="no-scrollbar -mx-4 mb-4 flex gap-2 overflow-x-auto px-4 pb-1">
+      <div className="no-scrollbar -mx-4 mb-2 flex gap-2 overflow-x-auto px-4 pb-1">
         {KCAL_RANGES.map((r) => (
           <button
             key={r.id}
@@ -141,6 +164,55 @@ export default function CatalogScreen() {
             <span className="inline-flex items-center gap-1">
               <Flame size={13} aria-hidden />
               {r.id === 'any' ? r.labelRu : `${r.labelRu} ккал`}
+            </span>
+          </button>
+        ))}
+      </div>
+
+      {/* Чипсы сложности */}
+      <div className="no-scrollbar -mx-4 mb-2 flex gap-2 overflow-x-auto px-4 pb-1">
+        {(
+          [
+            { id: 'any', labelRu: 'Любая' },
+            ...Object.entries(DIFFICULTY_META).map(([id, m]) => ({ id, labelRu: m.labelRu })),
+          ] as Array<{ id: string; labelRu: string }>
+        ).map((r) => (
+          <button
+            key={r.id}
+            type="button"
+            onClick={() => setDifficultyId(r.id)}
+            className={cn(
+              'shrink-0 rounded-full border px-3.5 py-1.5 text-sm font-medium whitespace-nowrap transition-colors',
+              difficultyId === r.id
+                ? 'border-ink bg-ink text-app'
+                : 'border-line bg-card text-ink-2 hover:border-ink-3',
+            )}
+          >
+            <span className="inline-flex items-center gap-1">
+              <ChefHat size={13} aria-hidden />
+              {r.labelRu}
+            </span>
+          </button>
+        ))}
+      </div>
+
+      {/* Чипсы времени приготовления */}
+      <div className="no-scrollbar -mx-4 mb-4 flex gap-2 overflow-x-auto px-4 pb-1">
+        {TIME_RANGES.map((r) => (
+          <button
+            key={r.id}
+            type="button"
+            onClick={() => setTimeId(r.id)}
+            className={cn(
+              'shrink-0 rounded-full border px-3.5 py-1.5 text-sm font-medium whitespace-nowrap transition-colors',
+              timeId === r.id
+                ? 'border-ink bg-ink text-app'
+                : 'border-line bg-card text-ink-2 hover:border-ink-3',
+            )}
+          >
+            <span className="inline-flex items-center gap-1">
+              <Clock size={13} aria-hidden />
+              {r.labelRu}
             </span>
           </button>
         ))}
