@@ -10,3 +10,14 @@ scripts/drive_list.html
 .vercel/
 .vercel
 tool-results/
+
+# Песочница-артефакты: не в репо, живут только локально
+Caddyfile
+mini-services/
+db/
+download/
+skills/
+next-env.d.ts
+bun.lock
+/*.log
+.agent-heartbeat
