@@ -1,8 +1,14 @@
 {
  "cottage-cheese-pancakes": {
-  "score": -1,
-  "kind": "error",
-  "note": "ошибка проверки"
+  "score": 8,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Высококачественный фуд-фото, реалистичные текстуры сырников",
+  "mtime": 1793449163000,
+  "at": "2026-10-31T18:36:01.951Z"
  },
  "paella-seafood": {
   "score": -1,
@@ -48,15 +54,15 @@
   "at": "2026-10-31T16:38:42.784Z"
  },
  "apple-charlotte": {
-  "score": 7,
+  "score": 8,
   "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
-  "wrong": true,
-  "note": "Это тарт с грушами и карамелью, не чарлотка",
-  "mtime": 1793415103000,
-  "at": "2026-10-31T16:38:44.821Z"
+  "wrong": false,
+  "note": "Высококачественный снимок, возможно ИИ-генерация, но реалистичный",
+  "mtime": 1793471327699.3567,
+  "at": "2026-10-31T18:35:20.313Z"
  },
  "apple-pie": {
   "score": 8,
@@ -136,15 +142,15 @@
   "at": "2026-10-31T17:04:54.569Z"
  },
  "baked-feta-pasta": {
-  "score": 8,
+  "score": 9,
   "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
-  "wrong": true,
-  "note": "Это не фета, а запечённая рыба или тофу",
-  "mtime": 1793418399000,
-  "at": "2026-10-31T16:39:02.760Z"
+  "wrong": false,
+  "note": "Высококачественный фуд-фото, натуральные текстуры, правильное блюдо",
+  "mtime": 1793471434080.466,
+  "at": "2026-10-31T18:35:22.252Z"
  },
  "baked-mackerel": {
   "score": 9,
@@ -174,10 +180,10 @@
   "plastic": false,
   "text": false,
   "people": false,
-  "wrong": true,
-  "note": "Нет банана на тарелке по описанию",
-  "mtime": 1793415103000,
-  "at": "2026-10-31T16:39:08.402Z"
+  "wrong": false,
+  "note": "Высококачественный фуд-фото, возможно ИИ, но реалистичный",
+  "mtime": 1793471398257.4277,
+  "at": "2026-10-31T18:35:23.985Z"
  },
  "banana-pudding": {
   "score": 8,
@@ -202,15 +208,15 @@
   "at": "2026-10-31T16:39:11.993Z"
  },
  "bbq-chicken-wings": {
-  "score": 8,
+  "score": 9,
   "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
-  "wrong": true,
-  "note": "Нет кунжута, указанного в описании блюда",
-  "mtime": 1793418099000,
-  "at": "2026-10-31T16:39:13.467Z"
+  "wrong": false,
+  "note": "Высококачественный фуд-фото, естественная текстура, правильное блюдо",
+  "mtime": 1793471063536.0803,
+  "at": "2026-10-31T18:35:25.931Z"
  },
  "bbq-pork-ribs": {
   "score": 8,
@@ -268,15 +274,15 @@
   "at": "2026-10-31T16:39:21.814Z"
  },
  "beef-goulash": {
-  "score": 8,
+  "score": 9,
   "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
-  "wrong": true,
-  "note": "Целый стейк вместо кусков гуляша, картофель целиком вместо пюре",
-  "mtime": 1793418207000,
-  "at": "2026-10-31T16:39:23.861Z"
+  "wrong": false,
+  "note": "Отличный натуральный снимок, соответствует описанию",
+  "mtime": 1793471290776.321,
+  "at": "2026-10-31T18:35:27.522Z"
  },
  "beef-steak": {
   "score": 8,
@@ -284,21 +290,21 @@
   "plastic": false,
   "text": false,
   "people": false,
-  "wrong": true,
-  "note": "Стейк не разрезан, розовый центр не виден",
-  "mtime": 1793415077000,
-  "at": "2026-10-31T16:39:25.709Z"
+  "wrong": false,
+  "note": "Высококачественный рендер или отретушированное фото стейка",
+  "mtime": 1793471105876.1326,
+  "at": "2026-10-31T18:35:29.442Z"
  },
  "beef-stroganoff": {
-  "score": 8,
+  "score": 7,
   "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
-  "wrong": true,
-  "note": "Тушёное мясо с соусом, не бефстроганов",
-  "mtime": 1793418173000,
-  "at": "2026-10-31T17:05:00.840Z"
+  "wrong": false,
+  "note": "Реалистично, но лёгкий глянец соуса и идеальная текстура пюре",
+  "mtime": 1793471254477.2844,
+  "at": "2026-10-31T18:35:31.210Z"
  },
  "beef-tacos": {
   "score": 6,
@@ -554,37 +560,37 @@
   "at": "2026-10-31T18:05:02.313Z"
  },
  "chicken-mushroom-pasta": {
-  "score": 6,
+  "score": 7,
   "steam": false,
-  "plastic": true,
-  "text": false,
-  "people": false,
-  "wrong": false,
-  "note": "Паста и мясо выглядят восковыми, текстура однородная",
-  "mtime": 1793301649000,
-  "at": "2026-10-31T18:05:04.001Z"
- },
- "chicken-noodle-soup": {
-  "score": 3,
-  "steam": true,
-  "plastic": true,
-  "text": false,
-  "people": false,
-  "wrong": false,
-  "note": "Явно ИИ: нарисован пар, пластилиновая текстура курицы и моркови",
-  "mtime": 1793301700000,
-  "at": "2026-10-31T18:05:05.774Z"
- },
- "chicken-plov": {
-  "score": 4,
-  "steam": true,
   "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Явно нарисованный декоративный пар над блюдом",
-  "mtime": 1793302219000,
-  "at": "2026-10-31T18:05:07.420Z"
+  "note": "Реалистично, но текстура пасты и грибов слегка однородная",
+  "mtime": 1793470083575.0112,
+  "at": "2026-10-31T18:35:32.957Z"
+ },
+ "chicken-noodle-soup": {
+  "score": 7,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Куриный суп с лапшой и морковью, реалистично",
+  "mtime": 1793470126570.0508,
+  "at": "2026-10-31T18:35:34.628Z"
+ },
+ "chicken-plov": {
+  "score": 7,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Реалистично, но есть лёгкий ИИ-блеск на рисе",
+  "mtime": 1793470454917.3757,
+  "at": "2026-10-31T18:35:36.487Z"
  },
  "chicken-pot-pie": {
   "score": 3,
@@ -653,15 +659,15 @@
   "at": "2026-10-31T18:05:27.352Z"
  },
  "chicken-teriyaki": {
-  "score": 3,
-  "steam": true,
-  "plastic": true,
+  "score": 9,
+  "steam": false,
+  "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Искусственный пар и пластиковая текстура мяса",
-  "mtime": 1793300971000,
-  "at": "2026-10-31T18:05:29.224Z"
+  "note": "Отличный натуральный снимок, правильное блюдо и подача",
+  "mtime": 1793469995460.9058,
+  "at": "2026-10-31T18:35:38.155Z"
  },
  "chicken-thighs-potato": {
   "score": 3,
@@ -675,15 +681,15 @@
   "at": "2026-10-31T18:05:31.019Z"
  },
  "chicken-tikka-masala": {
-  "score": 4,
-  "steam": true,
+  "score": 8,
+  "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Нарисован декоративный пар, снижает реализм",
-  "mtime": 1793301762000,
-  "at": "2026-10-31T18:05:33.680Z"
+  "note": "Керамика вместо меди/стали, но блюдо верное",
+  "mtime": 1793470411944.3357,
+  "at": "2026-10-31T18:35:40.395Z"
  },
  "chili-con-carne": {
   "score": 3,
@@ -695,5 +701,137 @@
   "note": "Нарисованный пар, пластико-восковая текстура бобов и мяса",
   "mtime": 1793315509000,
   "at": "2026-10-31T18:05:35.503Z"
+ },
+ "chinese-egg-tarts": {
+  "score": 6,
+  "steam": true,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Нарисованный пар снижает реализм, текстура теста подозрительно однородна",
+  "mtime": 1793314503000,
+  "at": "2026-10-31T18:35:42.111Z"
+ },
+ "chocolate-chip-cookies": {
+  "score": 3,
+  "steam": true,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Явно нарисованный декоративный пар снижает реализм",
+  "mtime": 1793315616000,
+  "at": "2026-10-31T18:35:43.965Z"
+ },
+ "chow-mein-chicken": {
+  "score": 7,
+  "steam": true,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": true,
+  "note": "Нет ростков сои, есть только курица и лапша",
+  "mtime": 1793314411000,
+  "at": "2026-10-31T18:35:45.775Z"
+ },
+ "cinnamon-rolls": {
+  "score": 7,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Реалистично, но текстура теста слегка однородная",
+  "mtime": 1793415077000,
+  "at": "2026-10-31T18:35:47.644Z"
+ },
+ "clam-chowder": {
+  "score": 9,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Классический кремовый чаудер с моллюсками, натуральная подача",
+  "mtime": 1793425772000,
+  "at": "2026-10-31T18:35:49.349Z"
+ },
+ "club-sandwich": {
+  "score": 3,
+  "steam": true,
+  "plastic": true,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Явно ИИ: нарисован пар, пластик meat",
+  "mtime": 1793316085000,
+  "at": "2026-10-31T18:35:51.239Z"
+ },
+ "cobb-salad": {
+  "score": 8,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Качественный снимок, классическая подача кобб-салата",
+  "mtime": 1793415077000,
+  "at": "2026-10-31T18:35:53.021Z"
+ },
+ "coleslaw": {
+  "score": 7,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Слегка размыто, но выглядит как реальное блюдо",
+  "mtime": 1793425688000,
+  "at": "2026-10-31T18:35:54.827Z"
+ },
+ "corn-chicken-soup": {
+  "score": 7,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": true,
+  "note": "Нет палочек, есть вилка и ложка, европейская сервировка",
+  "mtime": 1793425566000,
+  "at": "2026-10-31T18:35:56.462Z"
+ },
+ "cornbread": {
+  "score": 9,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Естественная текстура корочки, реалистичное освещение, типичная подача.",
+  "mtime": 1793425600000,
+  "at": "2026-10-31T18:35:58.252Z"
+ },
+ "cottage-cheese-casserole": {
+  "score": 3,
+  "steam": true,
+  "plastic": true,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Явно ИИ: нарисован пар, восковая текстура, пластичная сметана",
+  "mtime": 1793302106000,
+  "at": "2026-10-31T18:36:00.192Z"
+ },
+ "couscous-vegetables": {
+  "score": 7,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Кускус с овощами и нутом, терракотовая тарелка, реалистично",
+  "mtime": 1793425444000,
+  "at": "2026-10-31T18:36:04.225Z"
  }
 }

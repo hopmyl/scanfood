@@ -52,10 +52,15 @@ chicken-teriyaki
 chicken-thighs-potato
 chicken-tikka-masala
 chili-con-carne
+chinese-egg-tarts
+chocolate-chip-cookies
+chow-mein-chicken
 clam-chowder
+club-sandwich
 coleslaw
 corn-chicken-soup
 cornbread
+cottage-cheese-casserole
 couscous-vegetables
 crispy-tofu
 croissant-salmon

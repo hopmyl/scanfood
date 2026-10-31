@@ -131,3 +131,8 @@ beef-goulash
 apple-charlotte
 banana-bread
 baked-feta-pasta
+cheese-ham-omelette
+beef-tacos
+cheese-soup
+blueberry-muffins
+caponata
