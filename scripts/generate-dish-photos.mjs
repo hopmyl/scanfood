@@ -1,4 +1,4 @@
-// Генерация 100 AI-фото блюд для СканРецепт — фотореалистичный стиль v3.
+// Генерация фото блюд для СканРецепт — стиль v4 «фото из отзыва о дорогом ресторане».
 // Использует z-ai-web-dev-sdk (только бэкенд). Результат: public/dishes/<id>.jpg
 // Запуск: node scripts/generate-dish-photos.mjs --force (перегенерировать всё)
 // Прогресс пишется в scripts/regen-progress.txt — после таймаута просто
@@ -19,23 +19,23 @@ const STYLE =
   'soft natural side lighting, appetizing, high-end restaurant plating, fresh herbs garnish, ' +
   'shallow depth of field, 45-degree angle, photorealistic, high detail, high quality';
 
-// Реалистичный «домашний» стиль для перегенерации — без нейронного глянца.
-// Уроки аудита: «gentle steam» давал рисованный пар, «ultra realistic» — восковой
-// глянцевый CGI (круассан-пластилин, мраморные помидоры). Лечится матовостью,
-// неоднородностью и явным запретом пара/пластика.
-const REAL_STYLE =
-  'candid amateur smartphone photo of real homemade food, casual snapshot for a home cooking blog, ' +
-  'strictly no steam, no smoke, no vapor, no fog, clean clear air, dry food surface, ' +
-  'photo taken a few minutes after serving when the dish has settled, ' +
-  'food with matte natural textures: visible crumb and grains, air pockets, uneven browning, ' +
-  'slightly irregular shapes, small dents and imperfections on baked goods, ' +
-  'simple ceramic plate on a lived-in wooden kitchen table, soft daylight from a window, ' +
-  'muted natural colors, mild shadows, a few crumbs on the table, imperfect messy plating, ' +
-  'no glossy plastic sheen, no waxy or marble-like surfaces, ' +
-  'no studio lighting, camera at a slight angle from above, static view of the table, ' +
-  'not a render, not CGI, not 3D, not illustration, ' +
-  'only the dish and simple tableware in the frame, clean empty tabletop around the plate, nothing else on the table, no text, no watermark, ' +
-  'absolutely no steam wisps and no smoke curls rising from the food';
+// Стиль v4: премиальная подача «как в отзывах дорогих ресторанов», но ЖИВОЕ фото
+// без нейронного глянца. Уроки аудита сохранены: «gentle steam» давал рисованный
+// пар, «ultra realistic» — восковой CGI, негативы вроде «no hands» заставляли
+// модель РИСОВАТЬ руки. Поэтому все запреты заменены позитивными формулировками:
+// пар исключён («dish has settled, clean clear air»), руки — («static view of
+// the table, clean tabletop»), воск — матовыми фактурами и несовершенствами.
+const RESTAURANT_STYLE =
+  'real photograph of an elegant dish served at an upscale restaurant, chef plating on a matte ceramic plate, ' +
+  'neat restaurant portion, natural sauce sheen, garnished appropriately for this dish, ' +
+  'natural daylight from a large restaurant window, soft side light, gentle shadows, muted natural colors, ' +
+  'real food textures: visible grains and crumb, uneven browning, slight natural imperfections in shape, ' +
+  'photo taken a few minutes after serving when the dish has settled, clean clear air, ' +
+  'shallow depth of field, softly blurred restaurant dining room in the background, 50mm lens look, ' +
+  'camera at a slight 45-degree angle, static view of the table, ' +
+  'elegant cutlery and a folded linen napkin beside the plate, clean tabletop around the plate, ' +
+  'appetizing, ' +
+  'not a render, not CGI, not 3D, not illustration, no text, no captions, no lettering, no watermark';
 
 const DISHES = [
   ['cottage-cheese-pancakes', 'Russian syrniki: five small thick fried cottage cheese pancakes with golden crust and visible curd texture, dollop of sour cream on top, powdered sugar, fresh raspberries aside'],
@@ -143,45 +143,13 @@ const DISHES = [
 
 const PROGRESS_FILE = 'scripts/regen-progress.txt';
 
-/** Сгенерировать одно фото с ретраями; прогресс — в файл, чтобы докачивать после таймаута */
-async function genOne(zai, id, subject) {
-  const outPath = path.join(OUT_DIR, `${id}.jpg`);
-  const prompt = `${subject}, ${REALISTIC_STYLE}`;
-  for (let attempt = 1; attempt <= 5; attempt++) {
-    try {
-      const response = await zai.images.generations.create({
-        prompt,
-        size: '1024x1024',
-      });
-      const base64 = response?.data?.[0]?.base64;
-      if (!base64) throw new Error('пустой ответ API');
-
-      const tmpPath = path.join(TMP_DIR, `${id}.png`);
-      fs.writeFileSync(tmpPath, Buffer.from(base64, 'base64'));
-      // Конвертация в JPG q82 — вес фото ~100-200 КБ вместо 1-2 МБ PNG
-      await sharp(tmpPath).jpeg({ quality: 82, mozjpeg: true }).toFile(outPath);
-      fs.unlinkSync(tmpPath);
-      fs.appendFileSync(PROGRESS_FILE, `${id}\n`);
-      return true;
-    } catch (err) {
-      const isRateLimit = String(err?.message).includes('429');
-      console.error(`  попытка ${attempt} failed ${id}: ${err.message}`);
-      // При 429 ждём дольше — даём API остыть
-      if (attempt < 5) {
-        await new Promise((r) => setTimeout(r, (isRateLimit ? 20000 : 3000) * attempt));
-      }
-    }
-  }
-  return false;
-}
-
 async function main() {
   // Параллельная генерация: node generate-dish-photos.mjs <shard> <total>
   // Каждый воркер обрабатывает свою долю списка (шард), файлы скипаются по наличию
   const shard = Number(process.argv[2] ?? 0);
   const total = Number(process.argv[3] ?? 1);
   // Точечная перегенерация: --only=id1,id2,... — только эти id, игнорируя наличие файла.
-  // Стиль «домашнее фото» вместо тёмного слейта + прогресс-файл, чтобы перезапуск
+  // Стиль «фото из ресторанного отзыва» + прогресс-файл, чтобы перезапуск
   // после таймаута не перегенерировал уже готовые фото заново.
   const onlyArg = process.argv.find((a) => a.startsWith('--only='));
   // Промпты из данных приложения (399 блюд) — у них приоритет, старый список — фолбэк
@@ -244,7 +212,7 @@ async function main() {
       continue; // без паузы — не тратим 4с на каждый пропуск
     }
 
-    const prompt = `${subject}, ${REAL_STYLE}`;
+    const prompt = `${subject}, ${RESTAURANT_STYLE}`;
     let ok = false;
 
     for (let attempt = 1; attempt <= 8 && !ok; attempt++) {
