@@ -43,15 +43,15 @@
   "at": "2026-10-31T17:04:49.491Z"
  },
  "american-pancakes": {
-  "score": 8,
+  "score": 9,
   "steam": false,
   "plastic": false,
   "text": false,
-  "people": true,
+  "people": false,
   "wrong": false,
-  "note": "Размытые фигуры на заднем плане, текстура теста слегка однородна",
-  "mtime": 1793422278000,
-  "at": "2026-10-31T16:38:42.784Z"
+  "note": "Отличный реалистичный снимок, естественная текстура и свет",
+  "mtime": 1793475712000,
+  "at": "2026-10-31T20:04:48.181Z"
  },
  "apple-charlotte": {
   "score": 8,
@@ -235,10 +235,10 @@
   "plastic": true,
   "text": false,
   "people": false,
-  "wrong": true,
-  "note": "Пластиковая текстура мяса, не pulled pork",
-  "mtime": 1793418593000,
-  "at": "2026-10-31T16:39:16.609Z"
+  "wrong": false,
+  "note": "Текстура мяса слишком однородная и пластиковая",
+  "mtime": 1793475649000,
+  "at": "2026-10-31T20:04:49.620Z"
  },
  "beef-broccoli": {
   "score": 8,
@@ -439,15 +439,15 @@
   "at": "2026-10-31T18:04:50.350Z"
  },
  "cajun-shrimp-pasta": {
-  "score": 6,
+  "score": 7,
   "steam": false,
-  "plastic": true,
+  "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Пластиковые креветки и паста, нейронная текстура",
-  "mtime": 1793434742000,
-  "at": "2026-10-31T17:05:26.843Z"
+  "note": "Паста с креветками выглядит реалистично, но свет слишком ровный",
+  "mtime": 1793475781000,
+  "at": "2026-10-31T20:04:51.379Z"
  },
  "caponata": {
   "score": 7,
@@ -527,15 +527,15 @@
   "at": "2026-10-31T18:04:56.914Z"
  },
  "chicken-congee": {
-  "score": 9,
+  "score": 8,
   "steam": false,
   "plastic": false,
   "text": false,
-  "people": true,
+  "people": false,
   "wrong": false,
-  "note": "Отличный реалистичный снимок конджи с курицей",
-  "mtime": 1793422139000,
-  "at": "2026-10-31T18:04:58.622Z"
+  "note": "Качественный снимок рисовой каши с курицей",
+  "mtime": 1793475483000,
+  "at": "2026-10-31T20:04:52.847Z"
  },
  "chicken-cutlets": {
   "score": 8,
@@ -543,10 +543,10 @@
   "plastic": false,
   "text": false,
   "people": false,
-  "wrong": true,
-  "note": "Нет пюре и солений, только котлета с луком",
-  "mtime": 1793421830000,
-  "at": "2026-10-31T18:05:00.517Z"
+  "wrong": false,
+  "note": "Высококачественный фуд-фото, реалистичные текстуры и свет",
+  "mtime": 1793475376000,
+  "at": "2026-10-31T20:04:54.770Z"
  },
  "chicken-fajitas": {
   "score": 8,
@@ -593,15 +593,15 @@
   "at": "2026-10-31T18:35:36.487Z"
  },
  "chicken-pot-pie": {
-  "score": 3,
-  "steam": true,
+  "score": 8,
+  "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Явно нарисованный декоративный пар, текстура коржа подозрительная",
-  "mtime": 1793315849000,
-  "at": "2026-10-31T18:05:09.381Z"
+  "note": "Высококачественный фуд-фото, возможно ИИ-генерация",
+  "mtime": 1793475847000,
+  "at": "2026-10-31T20:04:56.622Z"
  },
  "chicken-satay": {
   "score": 8,
@@ -615,26 +615,26 @@
   "at": "2026-10-31T18:05:11.207Z"
  },
  "chicken-shawarma": {
-  "score": 7,
-  "steam": false,
-  "plastic": false,
-  "text": false,
-  "people": false,
-  "wrong": true,
-  "note": "Тарелка серая, не терракотовая; соус не оливковое масло",
-  "mtime": 1793421949000,
-  "at": "2026-10-31T18:05:12.924Z"
- },
- "chicken-souvlaki": {
   "score": 8,
   "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
-  "wrong": true,
-  "note": "Курица не на шпажках, а кусочками, нет соуса-маринада",
-  "mtime": 1793425372000,
-  "at": "2026-10-31T18:05:14.870Z"
+  "wrong": false,
+  "note": "Курица шаурма в лаваше, терракотовая тарелка, перец горошком",
+  "mtime": 1793475448000,
+  "at": "2026-10-31T20:04:58.580Z"
+ },
+ "chicken-souvlaki": {
+  "score": 9,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Высококачественный фуд-фото, естественные текстуры, правильное блюдо",
+  "mtime": 1793475412000,
+  "at": "2026-10-31T20:05:00.393Z"
  },
  "chicken-stir-fry": {
   "score": 8,
@@ -1053,5 +1053,192 @@
   "note": "Хорошая текстура бобов, естественное масло и зелень",
   "mtime": 1793434470000,
   "at": "2026-10-31T19:35:24.887Z"
+ },
+ "gaeng-som-veg": {
+  "score": 3,
+  "steam": true,
+  "plastic": true,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Явно ИИ: нарисован пар, пластиковая текстура супа",
+  "mtime": 1793313722000,
+  "at": "2026-10-31T20:05:02.451Z"
+ },
+ "gai-pad-med-mamuang": {
+  "score": 3,
+  "steam": true,
+  "plastic": true,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Явный ИИ-рендер: нарисован пар, пластилиновая текстура курицы",
+  "mtime": 1793313606000,
+  "at": "2026-10-31T20:05:04.413Z"
+ },
+ "gai-yang": {
+  "score": 8,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Качественный снимок, естественная текстура курицы, верная подача",
+  "mtime": 1793434529000,
+  "at": "2026-10-31T20:05:06.394Z"
+ },
+ "garlic-bok-choy": {
+  "score": 8,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Естественное освещение, реалистичная текстура овощей",
+  "mtime": 1793434668000,
+  "at": "2026-10-31T20:05:07.997Z"
+ },
+ "garlic-shrimp": {
+  "score": 8,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Креветки в масле с зеленью на терракотовом блюде",
+  "mtime": 1793434291000,
+  "at": "2026-10-31T20:05:09.488Z"
+ },
+ "gazpacho": {
+  "score": 9,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Аутентичный газпачо в терракоте, натуральные текстуры",
+  "mtime": 1793449163000,
+  "at": "2026-10-31T20:05:11.214Z"
+ },
+ "general-tso-chicken": {
+  "score": 7,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": true,
+  "note": "Чёрная тарелка вместо белой, но блюдо верное",
+  "mtime": 1793434634000,
+  "at": "2026-10-31T20:05:12.932Z"
+ },
+ "glazed-donuts": {
+  "score": 7,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": true,
+  "wrong": false,
+  "note": "Размытая фигура на заднем плане, слегка глянцевая глазурь",
+  "mtime": 1793415077000,
+  "at": "2026-10-31T20:05:14.301Z"
+ },
+ "greek-lemon-chicken": {
+  "score": 8,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Качественный снимок, соответствует описанию блюда",
+  "mtime": 1793434403000,
+  "at": "2026-10-31T20:05:15.949Z"
+ },
+ "greek-moussaka": {
+  "score": 8,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": true,
+  "wrong": false,
+  "note": "Размытые фигуры на заднем плане, но блюдо реалистично",
+  "mtime": 1793437960000,
+  "at": "2026-10-31T20:05:17.568Z"
+ },
+ "greek-salad": {
+  "score": 9,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Отличный натуральный снимок греческого салата",
+  "mtime": 1793449163000,
+  "at": "2026-10-31T20:05:18.929Z"
+ },
+ "greek-yogurt-granola": {
+  "score": 8,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": true,
+  "note": "Нет оливкового масла, зелени и терракотовой тарелки",
+  "mtime": 1793300719000,
+  "at": "2026-10-31T20:05:20.744Z"
+ },
+ "green-curry-chicken": {
+  "score": 4,
+  "steam": true,
+  "plastic": true,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Нарисован пар и пластиковая текстура курицы",
+  "mtime": 1793313027000,
+  "at": "2026-10-31T20:05:22.208Z"
+ },
+ "grilled-cheese-soup": {
+  "score": 8,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Высокое качество, естественное освещение, аппетитная подача",
+  "mtime": 1793466781000,
+  "at": "2026-10-31T20:05:23.871Z"
+ },
+ "grilled-chicken-broccoli": {
+  "score": 8,
+  "steam": true,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Небольшой нарисованный пар над курицей, иначе реалистично",
+  "mtime": 1793301092000,
+  "at": "2026-10-31T20:05:25.776Z"
+ },
+ "grilled-vegetables-platter": {
+  "score": 8,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Высококачественный снимок, естественное освещение, реалистичные текстуры",
+  "mtime": 1793438078000,
+  "at": "2026-10-31T20:05:27.507Z"
+ },
+ "hand-torn-cabbage": {
+  "score": 9,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Отличный реалистичный снимок, капуста с чили на белой тарелке",
+  "mtime": 1793438285000,
+  "at": "2026-10-31T20:05:29.683Z"
  }
 }
