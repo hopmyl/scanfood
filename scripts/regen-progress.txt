@@ -94,3 +94,8 @@ menemen
 massaman-beef
 mapo-tofu
 jiaozi-pork
+oven-shashlik
+olivier
+pad-thai-shrimp
+pad-see-ew
+pad-kee-mao
