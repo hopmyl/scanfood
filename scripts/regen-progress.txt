@@ -133,3 +133,11 @@ adjarian-khachapuri
 ajvar
 beef-broccoli
 apple-pie
+caesar-salad
+beef-tacos
+bruschetta
+cabbage-pie
+brownies
+meatloaf
+grilled-cheese-soup
+deviled-eggs

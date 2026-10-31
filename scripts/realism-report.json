@@ -15,26 +15,26 @@
   "note": "ошибка проверки"
  },
  "adjarian-khachapuri": {
-  "score": 3,
-  "steam": true,
-  "plastic": true,
+  "score": 8,
+  "steam": false,
+  "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Нарисованный пар, восковая текстура теста и сыра",
-  "mtime": 1793303407000,
-  "at": "2026-10-31T16:38:38.674Z"
+  "note": "Высококачественный фотореалистичный кадр хачапури с яйцом",
+  "mtime": 1793465235000,
+  "at": "2026-10-31T17:04:47.678Z"
  },
  "ajvar": {
-  "score": 3,
-  "steam": true,
-  "plastic": true,
+  "score": 8,
+  "steam": false,
+  "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Нарисованный пар и пластичная текстура пюре",
-  "mtime": 1793313004000,
-  "at": "2026-10-31T16:38:40.599Z"
+  "note": "Качественный снимок ажвара, естественная текстура и свет",
+  "mtime": 1793465300000,
+  "at": "2026-10-31T17:04:49.491Z"
  },
  "american-pancakes": {
   "score": 8,
@@ -59,15 +59,15 @@
   "at": "2026-10-31T16:38:44.821Z"
  },
  "apple-pie": {
-  "score": 3,
-  "steam": true,
+  "score": 8,
+  "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Нарисованный декоративный пар — явный признак ИИ",
-  "mtime": 1793315566000,
-  "at": "2026-10-31T16:38:46.516Z"
+  "note": "Высококачественный ИИ-рендер с реалистичной текстурой теста",
+  "mtime": 1793465372000,
+  "at": "2026-10-31T17:04:51.224Z"
  },
  "arroz-con-pollo": {
   "score": 7,
@@ -92,15 +92,15 @@
   "at": "2026-10-31T16:38:54.070Z"
  },
  "avocado-toast": {
-  "score": 3,
-  "steam": true,
+  "score": 7,
+  "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Явно нарисован декоративный пар над яйцом",
-  "mtime": 1793300516000,
-  "at": "2026-10-31T16:38:55.917Z"
+  "note": "Реалистично, но есть лёгкий нейронный блеск на яйце",
+  "mtime": 1793465030000,
+  "at": "2026-10-31T17:04:52.547Z"
  },
  "baba-ganoush": {
   "score": 8,
@@ -125,15 +125,15 @@
   "at": "2026-10-31T16:38:59.034Z"
  },
  "baked-dorado": {
-  "score": 3,
-  "steam": true,
+  "score": 8,
+  "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
-  "wrong": true,
-  "note": "ИИ-рендер: нарисован пар, тарелка не терракотовая",
-  "mtime": 1793302074000,
-  "at": "2026-10-31T16:39:00.908Z"
+  "wrong": false,
+  "note": "Высококачественный снимок, естественная текстура рыбы и соуса",
+  "mtime": 1793465165000,
+  "at": "2026-10-31T17:04:54.569Z"
  },
  "baked-feta-pasta": {
   "score": 8,
@@ -158,15 +158,15 @@
   "at": "2026-10-31T16:39:04.481Z"
  },
  "baked-salmon-quinoa": {
-  "score": 3,
-  "steam": true,
+  "score": 8,
+  "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
-  "wrong": true,
-  "note": "Нарисован пар, тарелка не терракотовая, а светлая",
-  "mtime": 1793301495000,
-  "at": "2026-10-31T16:39:06.892Z"
+  "wrong": false,
+  "note": "Высококачественный рендер, почти неотличим от фото",
+  "mtime": 1793465109000,
+  "at": "2026-10-31T17:04:56.213Z"
  },
  "banana-bread": {
   "score": 8,
@@ -235,26 +235,26 @@
   "at": "2026-10-31T16:39:16.609Z"
  },
  "beef-broccoli": {
-  "score": 3,
-  "steam": true,
-  "plastic": true,
-  "text": false,
-  "people": false,
-  "wrong": false,
-  "note": "Пластиковая текстура мяса и нарисованный пар",
-  "mtime": 1793315108000,
-  "at": "2026-10-31T16:39:18.232Z"
- },
- "beef-burger": {
-  "score": 4,
-  "steam": true,
+  "score": 8,
+  "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Нарисованный пар снижает реализм, остальное хорошо",
-  "mtime": 1793301875000,
-  "at": "2026-10-31T16:39:19.994Z"
+  "note": "Высокое качество, естественная текстура мяса и брокколи",
+  "mtime": 1793465337000,
+  "at": "2026-10-31T17:04:57.733Z"
+ },
+ "beef-burger": {
+  "score": 7,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Хороший рендер, но котлета выглядит слишком однородной",
+  "mtime": 1793465065000,
+  "at": "2026-10-31T17:04:59.121Z"
  },
  "beef-chow-fun": {
   "score": 7,
@@ -288,5 +288,192 @@
   "note": "Стейк не разрезан, розовый центр не виден",
   "mtime": 1793415077000,
   "at": "2026-10-31T16:39:25.709Z"
+ },
+ "beef-stroganoff": {
+  "score": 8,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": true,
+  "note": "Тушёное мясо с соусом, не бефстроганов",
+  "mtime": 1793418173000,
+  "at": "2026-10-31T17:05:00.840Z"
+ },
+ "beef-tacos": {
+  "score": 3,
+  "steam": true,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Явно нарисованный пар, снижает реализм",
+  "mtime": 1793302020000,
+  "at": "2026-10-31T17:05:02.365Z"
+ },
+ "blt-sandwich": {
+  "score": 8,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Высококачественный снимок BLT-сэндвича, реалистичные текстуры",
+  "mtime": 1793415077000,
+  "at": "2026-10-31T17:05:04.020Z"
+ },
+ "blueberry-muffins": {
+  "score": 7,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": true,
+  "note": "На фото блины/панкейки, а не маффины в бумажных формочках",
+  "mtime": 1793415103000,
+  "at": "2026-10-31T17:05:05.848Z"
+ },
+ "borscht": {
+  "score": 9,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Отличный реалистичный кадр борща, естественная подача",
+  "mtime": 1793449163000,
+  "at": "2026-10-31T17:05:11.615Z"
+ },
+ "briam": {
+  "score": 7,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Реалистично, но есть лёгкий нейронный блеск на овощах",
+  "mtime": 1793418263000,
+  "at": "2026-10-31T17:05:13.033Z"
+ },
+ "brownies": {
+  "score": 3,
+  "steam": true,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Декоративный нарисованный пар снижает реализм до рендера",
+  "mtime": 1793304101000,
+  "at": "2026-10-31T17:05:15.025Z"
+ },
+ "bruschetta": {
+  "score": 3,
+  "steam": true,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Явно нарисованный декоративный пар над блюдом",
+  "mtime": 1793303834000,
+  "at": "2026-10-31T17:05:16.839Z"
+ },
+ "buddha-bowl": {
+  "score": 8,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Высококачественный снимок, все ингредиенты на месте",
+  "mtime": 1793302673000,
+  "at": "2026-10-31T17:05:18.637Z"
+ },
+ "buffalo-wings": {
+  "score": 8,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Крылышки с соусом и дипом, реалистично",
+  "mtime": 1793418523000,
+  "at": "2026-10-31T17:05:19.948Z"
+ },
+ "buttermilk-biscuits": {
+  "score": 8,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Высококачественный снимок, текстура бисквитов реалистична",
+  "mtime": 1793415077000,
+  "at": "2026-10-31T17:05:21.732Z"
+ },
+ "cabbage-pie": {
+  "score": 3,
+  "steam": true,
+  "plastic": true,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Нарисованный пар, пластичная текстура начинки и коржа",
+  "mtime": 1793304034000,
+  "at": "2026-10-31T17:05:23.527Z"
+ },
+ "caesar-salad": {
+  "score": 3,
+  "steam": true,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Нарисованный пар над холодным салатом — явный ИИ-артефакт",
+  "mtime": 1793301590000,
+  "at": "2026-10-31T17:05:25.406Z"
+ },
+ "cajun-shrimp-pasta": {
+  "score": 6,
+  "steam": false,
+  "plastic": true,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Пластиковые креветки и паста, нейронная текстура",
+  "mtime": 1793434742000,
+  "at": "2026-10-31T17:05:26.843Z"
+ },
+ "caponata": {
+  "score": 7,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": true,
+  "note": "На фото не капоната с баклажанами и сельдереем",
+  "mtime": 1793421982000,
+  "at": "2026-10-31T17:05:28.902Z"
+ },
+ "caprese-salad": {
+  "score": 8,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Тарелка бежевая, не белая. Остальное отлично.",
+  "mtime": 1793302621000,
+  "at": "2026-10-31T17:05:30.746Z"
+ },
+ "carrot-cake": {
+  "score": 3,
+  "steam": true,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Явно нарисован декоративный пар — признак ИИ-генерации",
+  "mtime": 1793316000000,
+  "at": "2026-10-31T17:05:32.547Z"
  }
 }
