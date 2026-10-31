@@ -41,3 +41,13 @@ caponata
 chicken-satay
 chicken-congee
 american-pancakes
+chicken-stir-fry
+crispy-tofu
+chicken-souvlaki
+couscous-vegetables
+chicken-tagine
+char-siu-pork
+corn-chicken-soup
+cornbread
+coleslaw
+clam-chowder
