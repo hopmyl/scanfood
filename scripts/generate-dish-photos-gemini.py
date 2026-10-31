@@ -84,6 +84,11 @@ def scene_for(dish_id: str) -> str:
 MODELS = ['imagen-3.0-generate-002', 'imagen-3.0-generate-001']
 API = 'https://generativelanguage.googleapis.com/v1beta/models/{model}:predict'
 
+# Nano banana (та модель, что делала референс-коллажи пользователя) через
+# generateContent — работает на том же ключе, если включён платный тариф.
+CHAT_MODEL = 'gemini-2.5-flash-image'
+API_CHAT = 'https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent'
+
 
 def load_key():
     key = os.environ.get('GEMINI_API_KEY', '')
@@ -135,6 +140,39 @@ def generate_one(key, model, prompt, timeout=90):
     return base64.b64decode(b64)
 
 
+def generate_one_chat(key, prompt, timeout=120):
+    """Nano banana через generateContent. Возвращает bytes или RuntimeError."""
+    resp = requests.post(
+        API_CHAT.format(model=CHAT_MODEL),
+        headers={'x-goog-api-key': key, 'Content-Type': 'application/json'},
+        json={
+            'contents': [{'parts': [{'text': prompt}]}],
+            'generationConfig': {
+                'responseModalities': ['IMAGE'],
+                'imageConfig': {'aspectRatio': '1:1'},
+            },
+        },
+        timeout=timeout,
+    )
+    if resp.status_code == 429:
+        msg = resp.text
+        # limit: 0 = модель закрыта на бесплатном тарифе (нужен биллинг)
+        if 'limit: 0' in msg:
+            raise RuntimeError('429 LIMIT0: бесплатный тариф — 0 запросов/день, нужен биллинг')
+        raise RuntimeError('429')
+    if resp.status_code == 403:
+        raise RuntimeError('403: ' + resp.text[:200])
+    if resp.status_code == 404:
+        raise RuntimeError('404: модель недоступна на этом ключе')
+    resp.raise_for_status()
+    data = resp.json()
+    parts = (data.get('candidates') or [{}])[0].get('content', {}).get('parts', [])
+    for p in parts:
+        if p.get('inlineData', {}).get('data'):
+            return base64.b64decode(p['inlineData']['data'])
+    raise RuntimeError('нет изображения: ' + json.dumps(data)[:200])
+
+
 def save_jpg(raw, out_path):
     img = Image.open(io.BytesIO(raw)).convert('RGB')
     img.save(out_path, 'JPEG', quality=85, optimize=True)
@@ -165,20 +203,28 @@ def main():
         print('QUEUE EMPTY')
         return
 
-    # Выбор рабочей модели: пробуем по списку, фиксируем первую живую
-    model = None
+    # Выбор движка: 1) Imagen predict; 2) nano banana generateContent.
+    engine = None
     for m in MODELS:
         try:
             generate_one(key, m, 'a cup of coffee on a table', timeout=30)
-            model = m
+            engine = ('predict', m)
             break
         except RuntimeError as e:
             print(f'модель {m}: {e}')
-    if not model:
-        print('FATAL: ни одна Imagen-модель не доступна на этом ключе '
-              '(вероятно нужен платный тариф). Конвейер z-ai продолжает работать.')
+    if not engine:
+        try:
+            generate_one_chat(key, 'a cup of coffee on a table')
+            engine = ('chat', CHAT_MODEL)
+        except RuntimeError as e:
+            print(f'модель {CHAT_MODEL}: {e}')
+    if not engine:
+        print('FATAL: ни Imagen, ни nano banana недоступны на этом ключе '
+              '(image-модели требуют платный тариф: включите биллинг в AI Studio '
+              'или остаёмся на конвейере z-ai).')
         sys.exit(2)
-    print(f'модель: {model}')
+    kind, model = engine
+    print(f'движок: {kind} ({model})')
 
     ok, fails = 0, []
     for i, dish_id in enumerate(todo, 1):
@@ -188,7 +234,8 @@ def main():
         while attempt < 4:
             attempt += 1
             try:
-                raw = generate_one(key, model, prompt)
+                raw = (generate_one(key, model, prompt) if kind == 'predict'
+                       else generate_one_chat(key, prompt))
                 save_jpg(raw, os.path.join(OUT_DIR, f'{dish_id}.jpg'))
                 with open(PROGRESS_FILE, 'a', encoding='utf-8') as f:
                     f.write(dish_id + '\n')
@@ -196,6 +243,10 @@ def main():
                 print(f'[{i}/{len(todo)}] OK {dish_id}')
                 break
             except RuntimeError as e:
+                if 'LIMIT0' in str(e):
+                    print(f'[{i}/{len(todo)}] {dish_id}: {e} — стоп, ключ без биллинга')
+                    fails.append(dish_id)
+                    break
                 wait = 60 if '429' in str(e) else 15
                 print(f'[{i}/{len(todo)}] {dish_id}: {e} — жду {wait}s (попытка {attempt})')
                 time.sleep(wait)
