@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import ProToggle from '../components/ProToggle';
 import { useAppStore, FREE_SCANS_LIMIT, type ThemeId } from '../store/useAppStore';
+import { FREE_DISHES_COUNT, PRO_DISHES_COUNT } from '../data/dishes';
 import { cn } from '../lib/utils';
 
 const THEMES: Array<{ id: ThemeId; labelRu: string; bg: string; accent: string; ring: string }> = [
@@ -57,8 +58,8 @@ export default function ProfileScreen() {
     },
     {
       icon: Sparkles,
-      title: 'Вся база — 399 рецептов',
-      text: '248 блюд бесплатно и 151 авторское с PRO',
+      title: `Вся база — ${FREE_DISHES_COUNT + PRO_DISHES_COUNT} рецептов`,
+      text: `${FREE_DISHES_COUNT} блюд бесплатно и ${PRO_DISHES_COUNT} авторских с PRO`,
     },
   ];
 

@@ -12,7 +12,7 @@ import {
   ShoppingBasket,
   Sparkles,
 } from 'lucide-react';
-import { CATEGORY_META, DISHES } from '../data/dishes';
+import { CATEGORY_META, DISHES, FREE_DISHES_COUNT, PRO_DISHES_COUNT } from '../data/dishes';
 import { coveredBy } from '../lib/match';
 import { DishImage } from '../components/DishCard';
 import { useAppStore } from '../store/useAppStore';
@@ -169,7 +169,8 @@ export default function DishScreen() {
           <ul className="mt-4 space-y-2 text-left">
             <li className="flex items-center gap-2.5 rounded-xl bg-soft px-3.5 py-2.5 text-sm text-ink">
               <InfinityIcon size={16} className="shrink-0 text-accent" />
-              Все 399 рецептов: 248 блюд бесплатно, 151 авторское — с PRO
+              Все {FREE_DISHES_COUNT + PRO_DISHES_COUNT} рецептов: {FREE_DISHES_COUNT} блюд
+              бесплатно, {PRO_DISHES_COUNT} авторских — с PRO
             </li>
             <li className="flex items-center gap-2.5 rounded-xl bg-soft px-3.5 py-2.5 text-sm text-ink">
               <Sparkles size={16} className="shrink-0 text-accent" />

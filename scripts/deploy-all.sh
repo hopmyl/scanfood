@@ -12,6 +12,7 @@ echo "[1/4] Корень hopmyl.github.io..."
 bash scripts/deploy-pages.sh "$MSG" || echo "WARN: root mirror failed (продолжаю)"
 
 echo "[2/4] Сборка сабпата base=/scanfood/..."
+node scripts/make-photo-manifest.mjs || echo "WARN: манифест фото не обновился"
 if ! GITHUB_ACTIONS=true npx vite build --outDir /tmp/mroot --emptyOutDir >/dev/null 2>&1; then
   echo "WARN: subpath build failed"; exit 0
 fi

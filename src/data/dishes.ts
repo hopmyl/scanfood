@@ -1507,11 +1507,22 @@ export const PRO_DISH_IDS: ReadonlySet<string> = new Set([
   ...WORLD_PRO_IDS,
 ]);
 
-export const PRO_DISHES_COUNT = PRO_DISH_IDS.size;
-export const FREE_DISHES_COUNT = ALL_DISHES.length - PRO_DISH_IDS.size;
+// Фото-манифест: карточки без фото скрыты (решение пользователя 2026-10-31),
+// появляются автоматически по мере добавления фото (манифест пересобирается prebuild'ом).
+import { PHOTO_IDS } from './photo-manifest';
 
-/** Итоговый каталог: каждому блюду присвоены тир free/pro, кухня и мета времени/сложности */
-export const DISHES: Dish[] = ALL_DISHES.map((d) => ({
+/** Блюда, фото которых ещё нет — ждут генерации, в каталоге не показываются */
+export const PENDING_PHOTO_IDS: ReadonlySet<string> = new Set(
+  ALL_DISHES.map((d) => d.id).filter((id) => !PHOTO_IDS.has(id)),
+);
+
+export const PRO_DISHES_COUNT = [...PRO_DISH_IDS].filter((id) => PHOTO_IDS.has(id)).length;
+export const FREE_DISHES_COUNT =
+  ALL_DISHES.filter((d) => !PRO_DISH_IDS.has(d.id) && PHOTO_IDS.has(d.id)).length;
+
+/** Итоговый каталог: каждому блюду присвоены тир free/pro, кухня и мета времени/сложности.
+ *  Без фото — скрыто (PHOTO_IDS собирает скрипт make-photo-manifest.mjs). */
+export const DISHES: Dish[] = ALL_DISHES.filter((d) => PHOTO_IDS.has(d.id)).map((d) => ({
   ...d,
   cuisine: (d.cuisine ?? CUISINE_BY_ID.get(d.id) ?? 'russian') as Dish['cuisine'],
   tier: PRO_DISH_IDS.has(d.id) ? ('pro' as const) : undefined,
