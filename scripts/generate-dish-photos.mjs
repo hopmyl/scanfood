@@ -5,10 +5,18 @@
 // Запуск: node scripts/generate-dish-photos.mjs --force (перегенерировать всё)
 // Прогресс пишется в scripts/regen-progress.txt — после таймаута просто
 // перезапусти ту же команду: готовое не тронется.
+//
+// QA-КОНТРОЛЬ (агент-критик, scripts/photo-critic.mjs): каждый свежий кадр
+// сразу оценивает glm-4.5v (пластик/рисованный пар/леттеринг/руки/не то блюдо).
+// Не прошёл => автореролл с ДРУГОЙ сценой (sceneFor по солёному хэшу), максимум
+// QA_ATTEMPTS попыток, в файл идёт лучший по score. Итоговый брак =>
+// scripts/qa-manual.txt (ручной просмотр), лог — scripts/qa-log.txt.
+// Отключить QA: QA_OFF=1. Сетевые ретраи внутри одного кадра: 4.
 import ZAI from 'z-ai-web-dev-sdk';
 import sharp from 'sharp';
 import fs from 'node:fs';
 import path from 'node:path';
+import { critiquePhoto, isPass, isBad, flagsStr } from './photo-critic.mjs';
 
 const OUT_DIR = 'public/dishes';
 const TMP_DIR = 'scripts/photo-tmp';
@@ -69,14 +77,17 @@ const BACKGROUNDS = [
 
 // Детерминированный выбор по id: перегенерация того же блюда даёт ту же сцену,
 // а соседние блюда получают разные комбинации (хэш распределяет неравномерно).
+// attempt > 0 — QA-реролл: соль «id::vN» даёт ДРУГУЮ сцену того же стиля,
+// иначе повторная генерация с тем же промптом упёрлась бы в тот же сид.
 function pickVariant(arr, id) {
   let h = 0;
   for (const c of id) h = (h * 31 + c.charCodeAt(0)) >>> 0;
   return arr[h % arr.length];
 }
 
-function sceneFor(id) {
-  return `${pickVariant(ANGLES, id)}, ${pickVariant(TABLES, id)}, ${pickVariant(BACKGROUNDS, id)}`;
+function sceneFor(id, attempt = 0) {
+  const salt = attempt === 0 ? id : `${id}::v${attempt}`;
+  return `${pickVariant(ANGLES, salt)}, ${pickVariant(TABLES, salt)}, ${pickVariant(BACKGROUNDS, salt)}`;
 }
 
 const DISHES = [
@@ -184,6 +195,34 @@ const DISHES = [
 ];
 
 const PROGRESS_FILE = 'scripts/regen-progress.txt';
+const QA_LOG = 'scripts/qa-log.txt';
+const QA_MANUAL = 'scripts/qa-manual.txt';
+const QA_ATTEMPTS = Math.max(1, Number(process.env.QA_ATTEMPTS ?? 3)); // рероллов на кадр
+const QA_OFF = process.env.QA_OFF === '1';
+const GEN_RETRIES = 4; // сетевые попытки на один кадр (429-окна + бэкофф)
+
+// Один кадр: генерация + конвертация в JPEG q82. null — квота/сеть исчерпаны.
+async function generateOnce(zai, prompt, id, shard) {
+  for (let attempt = 1; attempt <= GEN_RETRIES; attempt++) {
+    try {
+      const response = await zai.images.generations.create({ prompt, size: '1024x1024' });
+      const base64 = response?.data?.[0]?.base64;
+      if (!base64) throw new Error('пустой ответ API');
+      // Сразу в JPEG: вес ~100-200 КБ вместо 1-2 МБ PNG; в файл пойдёт
+      // лучший из QA-попыток, поэтому возвращаем буфер, а не пишем на диск.
+      return await sharp(Buffer.from(base64, 'base64'))
+        .jpeg({ quality: 82, mozjpeg: true })
+        .toBuffer();
+    } catch (err) {
+      const isRateLimit = String(err?.message).includes('429');
+      console.error(`[шард${shard}] попытка ${attempt} failed ${id}: ${err.message}`);
+      // При 429 ждём окно квоты (самохилящееся), прочее — короткий бэкофф
+      if (attempt < GEN_RETRIES)
+        await new Promise((r) => setTimeout(r, isRateLimit ? 75000 : 3000 * attempt));
+    }
+  }
+  return null;
+}
 
 async function main() {
   // Параллельная генерация: node generate-dish-photos.mjs <shard> <total>
@@ -243,6 +282,15 @@ async function main() {
       ];
   const mySlice = base.filter((_, i) => i % total === shard);
 
+    const manualSet = new Set(
+      fs.existsSync(QA_MANUAL)
+        ? fs.readFileSync(QA_MANUAL, 'utf8').split('\n').map((s) => s.trim()).filter(Boolean)
+        : [],
+    );
+    const limitArg = process.argv.find((a) => a.startsWith('--limit='));
+    const limit = limitArg ? Number(limitArg.slice('--limit='.length)) || null : null;
+    let processed = 0;
+
     for (let i = 0; i < mySlice.length; i++) {
     const [id, subject] = mySlice[i];
     const outPath = path.join(OUT_DIR, `${id}.jpg`);
@@ -253,40 +301,67 @@ async function main() {
       console.log(`[шард${shard} ${i + 1}/${mySlice.length}] SKIP ${id} (уже есть)`);
       continue; // без паузы — не тратим 4с на каждый пропуск
     }
+    if (limit !== null && processed >= limit) {
+      console.log(`--limit=${limit} исчерпан, остальные — в следующий прогон`);
+      break;
+    }
+    processed++;
 
-    const prompt = `${subject}, ${sceneFor(id)}, ${DISH_STYLE_BASE}`;
-    let ok = false;
+    // QA-цикл: попытка 0 — штатная сцена по хэшу id, рероллы 1..N-1 — солёные сцены.
+    // В файл идёт ЛУЧШИЙ по score кадр, а не последний.
+    let best = null; // {buf, qa}
+    let accepted = null; // {buf, qa} — прошёл критику
+    const attemptsLog = [];
 
-    for (let attempt = 1; attempt <= 8 && !ok; attempt++) {
-      try {
-        const response = await zai.images.generations.create({
-          prompt,
-          size: '1024x1024',
-        });
-        const base64 = response?.data?.[0]?.base64;
-        if (!base64) throw new Error('пустой ответ API');
+    for (let qaAttempt = 0; qaAttempt < (QA_OFF ? 1 : QA_ATTEMPTS); qaAttempt++) {
+      const prompt = `${subject}, ${sceneFor(id, qaAttempt)}, ${DISH_STYLE_BASE}`;
+      const buf = await generateOnce(zai, prompt, id, shard);
+      if (!buf) break; // квота/сеть исчерпаны — вернём best, докачает следующий прогон
 
-        const tmpPath = path.join(TMP_DIR, `${id}.png`);
-        fs.writeFileSync(tmpPath, Buffer.from(base64, 'base64'));
-
-        // Конвертация в JPG q82 — вес фото ~100-200 КБ вместо 1-2 МБ PNG
-        await sharp(tmpPath).jpeg({ quality: 82, mozjpeg: true }).toFile(outPath);
-        fs.unlinkSync(tmpPath);
-        ok = true;
-        if (forceIds || isAudit) fs.appendFileSync(PROGRESS_FILE, `${id}\n`);
-        console.log(`[шард${shard} ${i + 1}/${mySlice.length}] OK ${id}`);
-      } catch (err) {
-        const isRateLimit = String(err?.message).includes('429');
-        console.error(`[шард${shard}] попытка ${attempt} failed ${id}: ${err.message}`);
-        // При 429 ждём подольше — окно квоты может открыться в любой момент,
-        // терпеливый бэкофф позволяет «поймать» его внутри одного чанка
-        const backoff = isRateLimit ? 75000 : 3000 * attempt;
-        if (attempt < 8) await new Promise((r) => setTimeout(r, backoff));
+      const qa = QA_OFF
+        ? null
+        : await critiquePhoto(zai, buf, subject, { attempts: 3 });
+      if (!qa) {
+        accepted = { buf, qa: null }; // QA_OFF
+        break;
       }
+      if (qa.score < 0) {
+        // Критик недоступен — fail-open: принимаем кадр, аудит перепроверит позже
+        accepted = { buf, qa };
+        break;
+      }
+      attemptsLog.push(`${qaAttempt + 1}:${qa.score}${flagsStr(qa) !== 'чисто' ? '(' + flagsStr(qa) + ')' : ''}`);
+      if (!best || qa.score > best.qa.score) best = { buf, qa };
+      if (isPass(qa)) {
+        accepted = { buf, qa };
+        break;
+      }
+      await new Promise((r) => setTimeout(r, 4000)); // пауза перед рероллом
     }
 
-    if (ok) okCount++;
-    else failed.push(id);
+    const final = accepted ?? best;
+    if (final) {
+      fs.writeFileSync(outPath, final.buf);
+      if (forceIds || isAudit) fs.appendFileSync(PROGRESS_FILE, `${id}\n`);
+      const qa = final.qa;
+      const manual = !accepted && qa && isBad(qa);
+      const status = manual ? 'MANUAL' : 'OK';
+      if (manual && !manualSet.has(id)) {
+        manualSet.add(id);
+        fs.appendFileSync(QA_MANUAL, `${id}\n`);
+      }
+      fs.appendFileSync(
+        QA_LOG,
+        `${new Date().toISOString()} ${id} score=${qa ? qa.score : '-'} ` +
+          `flags=${flagsStr(qa)} попытки=[${attemptsLog.join(' ')}] ${status} ${qa ? qa.note : ''}\n`,
+      );
+      console.log(
+        `[шард${shard} ${i + 1}/${mySlice.length}] ${status} ${id} score=${qa ? qa.score : '-'} (${flagsStr(qa)})`,
+      );
+      okCount++;
+    } else {
+      failed.push(id);
+    }
     // Пауза между изображениями — бережём rate limit
     await new Promise((r) => setTimeout(r, 4000));
   }

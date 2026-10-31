@@ -1,109 +1,103 @@
-// Проверка фотореалистичности блюд через VLM (glm-4.5v).
-// Для каждого public/dishes/<id>.jpg — оценка 1-10 + вердикт.
-// Особое внимание: нарисованный пар/дым и восковой «пластиковый» глянец —
-// главные признаки ИИ-фото (уроки аудита: круассан-пластилин, марморные томаты).
-// Результат инкрементально пишется в scripts/realism-report.json,
-// повторный запуск пропускает уже проверенные (если нет --rerun).
-// Запуск: node scripts/check-photo-realism.mjs [--rerun] [--only=id1,id2]
+// Аудит фотореалистичности блюд через ЕДИНУЮ рубрику агента-критика
+// (scripts/photo-critic.mjs, glm-4.5v). Для каждого public/dishes/<id>.jpg —
+// score 1-10 + флаги (пар/пластик/текст/люди/не-то-блюдо) + сверка с subject'ом
+// блюда из photo-subjects.json (детектор дрейфа: сырники -> блины).
+// Результат инкрементально пишется в scripts/realism-report.json.
+// Правила переаудита:
+//   - новые фото проверяются всегда;
+//   - перегенерированные (mtime файла новее записи отчёта) — перепроверяются;
+//   - ошибочные записи (score -1) — перепроверяются;
+//   - остальное пропускается (без --rerun).
+// Брак (<6 или любой флаг) ДОБАЛЯЕТСЯ (слиянием, без затирания пендинга) в
+// scripts/regen-shortlist.txt — его первым подхватывает конвейер генерации.
+// Запуск: node scripts/check-photo-realism.mjs [--rerun] [--only=id1,id2] [--limit=N]
 import ZAI from 'z-ai-web-dev-sdk';
 import fs from 'node:fs';
 import path from 'node:path';
+import { critiquePhoto, isBad, flagsStr } from './photo-critic.mjs';
 
 const OUT_DIR = 'public/dishes';
 const REPORT = 'scripts/realism-report.json';
+const SHORTLIST = 'scripts/regen-shortlist.txt';
+const SUBJECTS = fs.existsSync('scripts/photo-subjects.json')
+  ? JSON.parse(fs.readFileSync('scripts/photo-subjects.json', 'utf8'))
+  : {};
+// Иммунитет: фото, утверждённые пользователем лично (qa-approve.txt) — аудит
+// фиксирует их score, но НЕ отправляет на перегенерацию.
+const APPROVED = new Set(
+  fs.existsSync('scripts/qa-approve.txt')
+    ? fs.readFileSync('scripts/qa-approve.txt', 'utf8').split('\n').map((s) => s.trim()).filter(Boolean)
+    : [],
+);
 
 const rerun = process.argv.includes('--rerun');
 const onlyArg = process.argv.find((a) => a.startsWith('--only='));
 const onlyIds = onlyArg
   ? onlyArg.slice('--only='.length).split(',').map((s) => s.trim()).filter(Boolean)
   : null;
+const limitArg = process.argv.find((a) => a.startsWith('--limit='));
+const limit = limitArg ? Number(limitArg.slice('--limit='.length)) || null : null;
 
 const report = fs.existsSync(REPORT) && !rerun
   ? JSON.parse(fs.readFileSync(REPORT, 'utf8'))
   : {};
 
-const PROMPT =
-  'Ты — эксперт по компьютерному зрению и food-фотографии. Оцени это изображение блюда как рецензент: ' +
-  'может ли это фото пройти за снимок, сделанный обычным человеком на телефон? ' +
-  'Особо проверь типичные ИИ-артефакты: 1) нарисованный пар или дымок над блюдом (витиеватые белые завитки) — ' +
-  'настоящий пар на фото почти не виден; 2) восковой или пластиковый глянец, пластилиновая или мраморная поверхность еды; ' +
-  '3) неестественно идеальные одинаковые элементы; 4) странные текстуры хлеба, сыра, соуса. ' +
-  'Нарисованный пар или восковая поверхность — максимум 4 балла. ' +
-  'Ответь ТОЛЬКО JSON без markdown: ' +
-  '{"score": 1-10, "kind": "photo|render|illustration|unclear", "steam": true/false, "note": "кратко по-русски, максимум 8 слов"}';
-
-async function checkOne(zai, id) {
-  const file = path.join(OUT_DIR, `${id}.jpg`);
-  const b64 = fs.readFileSync(file).toString('base64');
-  for (let attempt = 1; attempt <= 4; attempt++) {
-    try {
-      const res = await zai.chat.completions.createVision({
-        model: 'glm-4.5v',
-        messages: [
-          {
-            role: 'user',
-            content: [
-              { type: 'image_url', image_url: { url: `data:image/jpeg;base64,${b64}` } },
-              { type: 'text', text: PROMPT },
-            ],
-          },
-        ],
-        thinking: { type: 'disabled' },
-      });
-      const text = String(res?.choices?.[0]?.message?.content ?? '');
-      const m = text.match(/\{[\s\S]*\}/);
-      if (!m) throw new Error('нет JSON в ответе');
-      const parsed = JSON.parse(m[0]);
-      return {
-        score: Number(parsed.score) || 0,
-        kind: String(parsed.kind ?? 'unclear'),
-        steam: parsed.steam === true,
-        note: String(parsed.note ?? ''),
-      };
-    } catch (err) {
-      console.error(`[${id}] попытка ${attempt}: ${err.message}`);
-      // 429 — квота закрыта: терпеливо ждём окно (как в генераторе фото)
-      const isRate = String(err?.message).includes('429');
-      if (attempt < 4) await new Promise((r) => setTimeout(r, isRate ? 70000 : 5000 * attempt));
-    }
-  }
-  return { score: -1, kind: 'error', steam: false, note: 'ошибка проверки' };
-}
-
 async function main() {
   const zai = await ZAI.create();
-  const ids = fs
+  const allIds = fs
     .readdirSync(OUT_DIR)
     .filter((f) => f.endsWith('.jpg'))
     .map((f) => f.replace('.jpg', ''))
     .filter((id) => (onlyIds ? onlyIds.includes(id) : true))
-    .filter((id) => rerun || onlyIds || !(id in report))
     .sort();
 
-  console.log(`К проверке: ${ids.length}`);
+  const ids = [];
+  for (const id of allIds) {
+    const file = path.join(OUT_DIR, `${id}.jpg`);
+    const mtime = fs.statSync(file).mtimeMs;
+    const prev = report[id];
+    const stale =
+      !prev || prev.score < 0 || rerun || (prev.mtime !== undefined && mtime > prev.mtime + 1000);
+    // Старые записи без mtime считаем актуальными, если score > 0 (не тратим квоту)
+    const needsCheck = rerun || onlyIds || !prev || prev.score < 0 || prev.mtime !== undefined ? stale : false;
+    if (needsCheck) ids.push(id);
+    if (limit !== null && ids.length >= limit) break;
+  }
+
+  console.log(`К проверке: ${ids.length} (всего фото: ${allIds.length}, в отчёте: ${Object.keys(report).length})`);
   let done = 0;
   for (const id of ids) {
-    const r = await checkOne(zai, id);
+    const subject = SUBJECTS[id] ?? id;
+    const r = await critiquePhoto(zai, path.join(OUT_DIR, `${id}.jpg`), subject);
+    r.mtime = fs.statSync(path.join(OUT_DIR, `${id}.jpg`)).mtimeMs;
+    r.at = new Date().toISOString();
     report[id] = r;
     done++;
+    const verdict = r.score < 0 ? 'ошибка' : `${r.score} ${flagsStr(r)}`;
+    console.log(`[${done}/${ids.length}] ${id}: ${verdict}${r.note ? ' — ' + r.note : ''}`);
     if (done % 5 === 0 || done === ids.length) {
       fs.writeFileSync(REPORT, JSON.stringify(report, null, 1));
-      console.log(`[${done}/${ids.length}] ${id}: ${r.score} ${r.kind}${r.steam ? ' ПАР' : ''}`);
     }
   }
   fs.writeFileSync(REPORT, JSON.stringify(report, null, 1));
 
+  // Брак по ВСЕМУ отчёту (не только свежему слайсу) -> шортлист слиянием.
+  // Утверждённые пользователем (qa-approve.txt) не попадают — их не трогаем.
   const bad = Object.entries(report)
-    .filter(([, r]) => (r.score >= 0 && r.score < 6) || r.steam === true)
-    .map(([id, r]) => `${id}(${r.score}${r.steam ? ',пар' : ''})`);
-  console.log(`=== ИТОГ: проверено ${Object.keys(report).length}, на перегенерацию (<6 или пар): ${bad.length}`);
-  if (bad.length) {
-    console.log(bad.join(', '));
-    fs.writeFileSync(
-      'scripts/regen-shortlist.txt',
-      bad.map((b) => b.replace(/\(.*\)$/, '')).join('\n'),
-    );
-  }
+    .filter(([id, r]) => r.score >= 0 && isBad(r) && !APPROVED.has(id))
+    .map(([id]) => id);
+  const pending = new Set(
+    fs.existsSync(SHORTLIST)
+      ? fs.readFileSync(SHORTLIST, 'utf8').split('\n').map((s) => s.trim()).filter(Boolean)
+      : [],
+  );
+  for (const id of bad) pending.add(id);
+  fs.writeFileSync(SHORTLIST, [...pending].sort().join('\n'));
+
+  console.log(
+    `=== ИТОГ: в отчёте ${Object.keys(report).length}, брак по отчёту: ${bad.length}, шортлист итого: ${pending.size}`,
+  );
+  if (bad.length) console.log(bad.join(', '));
 }
 
 main().catch((e) => {
