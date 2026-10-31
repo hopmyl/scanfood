@@ -171,3 +171,7 @@ yangzhou-fried-rice
 yemista
 yu-xiang-eggplant
 yu-xiang-pork
+hummus-classic
+jambalaya
+kai-jeow
+kefir-pancakes

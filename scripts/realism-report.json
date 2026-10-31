@@ -235,10 +235,10 @@
   "plastic": true,
   "text": false,
   "people": false,
-  "wrong": false,
-  "note": "Текстура мяса слишком однородная и пластиковая",
-  "mtime": 1793475649000,
-  "at": "2026-10-31T20:04:49.620Z"
+  "wrong": true,
+  "note": "Это макароны с соусом, а не свинина",
+  "mtime": 1793477692000,
+  "at": "2026-10-31T20:34:55.841Z"
  },
  "beef-broccoli": {
   "score": 8,
@@ -637,26 +637,26 @@
   "at": "2026-10-31T20:05:00.393Z"
  },
  "chicken-stir-fry": {
-  "score": 8,
+  "score": 7,
   "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
-  "wrong": true,
-  "note": "Тёмная тарелка вместо белой, но блюдо верное",
-  "mtime": 1793425255000,
-  "at": "2026-10-31T18:05:25.346Z"
+  "wrong": false,
+  "note": "Курица с зелёным луком, слегка синтетичный вид текстур",
+  "mtime": 1793477176000,
+  "at": "2026-10-31T20:34:57.245Z"
  },
  "chicken-tagine": {
   "score": 8,
   "steam": false,
   "plastic": false,
   "text": false,
-  "people": true,
+  "people": false,
   "wrong": false,
-  "note": "Размытые фигуры на заднем плане, но блюдо выглядит реалистично",
-  "mtime": 1793425478000,
-  "at": "2026-10-31T18:05:27.352Z"
+  "note": "Куриный таджин с лимоном в глиняной посуде",
+  "mtime": 1793477280000,
+  "at": "2026-10-31T20:35:04.055Z"
  },
  "chicken-teriyaki": {
   "score": 9,
@@ -670,15 +670,15 @@
   "at": "2026-10-31T18:35:38.155Z"
  },
  "chicken-thighs-potato": {
-  "score": 3,
-  "steam": true,
+  "score": 9,
+  "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Явно нарисованный декоративный пар снижает реализм",
-  "mtime": 1793302945000,
-  "at": "2026-10-31T18:05:31.019Z"
+  "note": "Отличный фуд-фото: естественная текстура кожицы, реалистичные блики",
+  "mtime": 1793477242000,
+  "at": "2026-10-31T20:35:06.022Z"
  },
  "chicken-tikka-masala": {
   "score": 8,
@@ -703,15 +703,15 @@
   "at": "2026-10-31T18:05:35.503Z"
  },
  "chinese-egg-tarts": {
-  "score": 6,
-  "steam": true,
+  "score": 9,
+  "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Нарисованный пар снижает реализм, текстура теста подозрительно однородна",
-  "mtime": 1793314503000,
-  "at": "2026-10-31T18:35:42.111Z"
+  "note": "Отличный снимок дан тата, естественное освещение",
+  "mtime": 1793477534000,
+  "at": "2026-10-31T20:35:07.987Z"
  },
  "chocolate-chip-cookies": {
   "score": 3,
@@ -725,15 +725,15 @@
   "at": "2026-10-31T18:35:43.965Z"
  },
  "chow-mein-chicken": {
-  "score": 7,
-  "steam": true,
+  "score": 8,
+  "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
   "wrong": true,
-  "note": "Нет ростков сои, есть только курица и лапша",
-  "mtime": 1793314411000,
-  "at": "2026-10-31T18:35:45.775Z"
+  "note": "Нет ростков сои, тарелка не белая круглая",
+  "mtime": 1793477434000,
+  "at": "2026-10-31T20:35:09.368Z"
  },
  "cinnamon-rolls": {
   "score": 7,
@@ -1240,5 +1240,159 @@
   "note": "Отличный реалистичный снимок, капуста с чили на белой тарелке",
   "mtime": 1793438285000,
   "at": "2026-10-31T20:05:29.683Z"
+ },
+ "harira": {
+  "score": 3,
+  "steam": true,
+  "plastic": true,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Явный ИИ-рендер: нарисован пар, пластичная текстура супа",
+  "mtime": 1793438012000,
+  "at": "2026-10-31T20:35:10.993Z"
+ },
+ "hash-browns": {
+  "score": 6,
+  "steam": false,
+  "plastic": true,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Текстура картофеля однородная, края слишком ровные",
+  "mtime": 1793438356000,
+  "at": "2026-10-31T20:35:12.920Z"
+ },
+ "herring-shuba": {
+  "score": 7,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": true,
+  "wrong": false,
+  "note": "Размытые люди на заднем плане, текстура слоёв однородная",
+  "mtime": 1793437888000,
+  "at": "2026-10-31T20:35:14.335Z"
+ },
+ "homestyle-tofu": {
+  "score": 8,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Реалистичное фото жареного тофу с перцем на белой тарелке",
+  "mtime": 1793438252000,
+  "at": "2026-10-31T20:35:16.070Z"
+ },
+ "hong-shao-rou": {
+  "score": 7,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Реалистично, но есть лёгкий глянец текстуры",
+  "mtime": 1793438148000,
+  "at": "2026-10-31T20:35:17.721Z"
+ },
+ "hot-sour-soup": {
+  "score": 8,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Качественный снимок, похоже на острую суп-гуляш с грибами",
+  "mtime": 1793438180000,
+  "at": "2026-10-31T20:35:19.646Z"
+ },
+ "huang-men-ji": {
+  "score": 8,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Качественный снимок, соответствует описанию блюда",
+  "mtime": 1793415077000,
+  "at": "2026-10-31T20:35:21.006Z"
+ },
+ "hummus-classic": {
+  "score": 6,
+  "steam": true,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Нарисован декоративный пар над блюдом",
+  "mtime": 1793312448000,
+  "at": "2026-10-31T20:35:23.202Z"
+ },
+ "imam-bayildi": {
+  "score": 7,
+  "steam": false,
+  "plastic": false,
+  "text": true,
+  "people": false,
+  "wrong": false,
+  "note": "Реалистично, но текст на фото и лёгкий ИИ-глянец",
+  "mtime": 1793441504000,
+  "at": "2026-10-31T20:35:24.596Z"
+ },
+ "jambalaya": {
+  "score": 4,
+  "steam": true,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": true,
+  "note": "Это суп/рагу, а не джамбалая; нарисован пар",
+  "mtime": 1793315733000,
+  "at": "2026-10-31T20:35:26.512Z"
+ },
+ "jiaozi-pork": {
+  "score": 9,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": true,
+  "wrong": false,
+  "note": "Отличный кадр, размытые люди на заднем плане",
+  "mtime": 1793449163000,
+  "at": "2026-10-31T20:35:29.510Z"
+ },
+ "julienne": {
+  "score": 8,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": true,
+  "note": "Жареные грибы в соусе вместо жюльена с сыром",
+  "mtime": 1793441469000,
+  "at": "2026-10-31T20:35:31.166Z"
+ },
+ "kai-jeow": {
+  "score": 3,
+  "steam": true,
+  "plastic": true,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Нарисованный пар и пластилиновая текстура омлета",
+  "mtime": 1793313501000,
+  "at": "2026-10-31T20:35:35.178Z"
+ },
+ "kefir-pancakes": {
+  "score": 3,
+  "steam": true,
+  "plastic": true,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Нарисован пар, пластиковая текстура оладий и сливок",
+  "mtime": 1793302154000,
+  "at": "2026-10-31T20:35:36.908Z"
  }
 }
