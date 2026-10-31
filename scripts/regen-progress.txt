@@ -136,3 +136,11 @@ beef-tacos
 cheese-soup
 blueberry-muffins
 caponata
+chicken-cutlets
+chicken-souvlaki
+chicken-shawarma
+chicken-congee
+bbq-pulled-pork
+american-pancakes
+cajun-shrimp-pasta
+chicken-pot-pie

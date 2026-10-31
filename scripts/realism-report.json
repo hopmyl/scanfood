@@ -307,15 +307,15 @@
   "at": "2026-10-31T18:35:31.210Z"
  },
  "beef-tacos": {
-  "score": 6,
+  "score": 7,
   "steam": false,
-  "plastic": true,
+  "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Мясо выглядит восковым и однородным, типичный ИИ-рендер",
-  "mtime": 1793466496000,
-  "at": "2026-10-31T18:04:42.963Z"
+  "note": "Реалистично, но есть лёгкий AI-отблеск на мясе",
+  "mtime": 1793471843000,
+  "at": "2026-10-31T19:34:42.815Z"
  },
  "blt-sandwich": {
   "score": 8,
@@ -329,15 +329,15 @@
   "at": "2026-10-31T17:05:04.020Z"
  },
  "blueberry-muffins": {
-  "score": 7,
+  "score": 8,
   "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
-  "wrong": true,
-  "note": "На фото блины/панкейки, а не маффины в бумажных формочках",
-  "mtime": 1793415103000,
-  "at": "2026-10-31T17:05:05.848Z"
+  "wrong": false,
+  "note": "Высококачественный ИИ-рендер, реалистичные текстуры кексов",
+  "mtime": 1793472104000,
+  "at": "2026-10-31T19:34:44.164Z"
  },
  "borscht": {
   "score": 9,
@@ -455,10 +455,10 @@
   "plastic": false,
   "text": false,
   "people": false,
-  "wrong": true,
-  "note": "На фото не капоната с баклажанами и сельдереем",
-  "mtime": 1793421982000,
-  "at": "2026-10-31T17:05:28.902Z"
+  "wrong": false,
+  "note": "Сицилийская капоната с баклажанами в терракотовой тарелке",
+  "mtime": 1793472138000,
+  "at": "2026-10-31T19:34:46.009Z"
  },
  "caprese-salad": {
   "score": 8,
@@ -499,21 +499,21 @@
   "plastic": false,
   "text": false,
   "people": false,
-  "wrong": true,
-  "note": "Нет свежей зелени, сыр не расплавлен",
-  "mtime": 1793421679000,
-  "at": "2026-10-31T18:04:53.606Z"
+  "wrong": false,
+  "note": "Высокое качество, естественная текстура, соответствие описанию",
+  "mtime": 1793471808000,
+  "at": "2026-10-31T19:34:47.591Z"
  },
  "cheese-soup": {
-  "score": 7,
+  "score": 8,
   "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
-  "wrong": true,
-  "note": "Тарелка плоская, не миска; суп густой, без картофеля",
-  "mtime": 1793449163000,
-  "at": "2026-10-31T18:04:55.047Z"
+  "wrong": false,
+  "note": "Качественный фуд-фото, еда выглядит натурально и аппетитно",
+  "mtime": 1793472045000,
+  "at": "2026-10-31T19:34:49.678Z"
  },
  "chicago-hot-dog": {
   "score": 8,
@@ -833,5 +833,225 @@
   "note": "Кускус с овощами и нутом, терракотовая тарелка, реалистично",
   "mtime": 1793425444000,
   "at": "2026-10-31T18:36:04.225Z"
+ },
+ "crab-corn-salad": {
+  "score": 3,
+  "steam": true,
+  "plastic": true,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Явно ИИ: нарисован пар, восковая текстура продуктов",
+  "mtime": 1793303043000,
+  "at": "2026-10-31T19:34:51.708Z"
+ },
+ "crispy-tofu": {
+  "score": 9,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": true,
+  "note": "На фото рыба (лосось/тунец), а не тофу",
+  "mtime": 1793425296000,
+  "at": "2026-10-31T19:34:53.371Z"
+ },
+ "croissant-salmon": {
+  "score": 7,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": true,
+  "wrong": true,
+  "note": "Не круассан, а цельнозерновой хлеб; размытые люди на фоне",
+  "mtime": 1793415103000,
+  "at": "2026-10-31T19:34:55.149Z"
+ },
+ "cumin-lamb": {
+  "score": 8,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": true,
+  "wrong": true,
+  "note": "Говяжье рагу в соусе вместо ягнёнка с тмином",
+  "mtime": 1793429284000,
+  "at": "2026-10-31T19:34:56.692Z"
+ },
+ "dakos": {
+  "score": 4,
+  "steam": true,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Нарисован декоративный пар над холодным блюдом",
+  "mtime": 1793312770000,
+  "at": "2026-10-31T19:34:58.057Z"
+ },
+ "dan-dan-noodles": {
+  "score": 9,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Отличный реалистичный снимок дан-дан мянь в ресторане",
+  "mtime": 1793429217000,
+  "at": "2026-10-31T19:35:00.311Z"
+ },
+ "deviled-eggs": {
+  "score": 9,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Отличный натуральный снимок, реалистичные текстуры яиц и паприки",
+  "mtime": 1793466852000,
+  "at": "2026-10-31T19:35:02.136Z"
+ },
+ "di-san-xian": {
+  "score": 8,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": true,
+  "wrong": false,
+  "note": "Реалистичное фото, на заднем плане видны люди",
+  "mtime": 1793429149000,
+  "at": "2026-10-31T19:35:03.939Z"
+ },
+ "dolma-grape-leaves": {
+  "score": 8,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Реалистичное фото долмы, естественное освещение, лёгкий глянец масла",
+  "mtime": 1793429109000,
+  "at": "2026-10-31T19:35:05.962Z"
+ },
+ "draniki": {
+  "score": 8,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": true,
+  "note": "Это не драники, а овсяные или рисовые лепёшки",
+  "mtime": 1793428995000,
+  "at": "2026-10-31T19:35:07.774Z"
+ },
+ "eggplant-parmesan": {
+  "score": 7,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Баклажаны выглядят слишком тёмными и глянцевыми, почти как смола",
+  "mtime": 1793428852000,
+  "at": "2026-10-31T19:35:09.975Z"
+ },
+ "eggs-benedict": {
+  "score": 8,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Высококачественный снимок, возможно с лёгкой обработкой ИИ",
+  "mtime": 1793429321000,
+  "at": "2026-10-31T19:35:11.335Z"
+ },
+ "falafel-bowl": {
+  "score": 8,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Фалафель с киноа и нутом, соус вместо хумуса",
+  "mtime": 1793429070000,
+  "at": "2026-10-31T19:35:13.371Z"
+ },
+ "falafel-wrap": {
+  "score": 6,
+  "steam": true,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": true,
+  "note": "Тарелка серая, не терракотовая; нарисован пар",
+  "mtime": 1793301936000,
+  "at": "2026-10-31T19:35:15.197Z"
+ },
+ "fattoush": {
+  "score": 3,
+  "steam": true,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Явно нарисован декоративный пар над холодным салатом",
+  "mtime": 1793312121000,
+  "at": "2026-10-31T19:35:16.936Z"
+ },
+ "fish-and-chips": {
+  "score": 4,
+  "steam": true,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Нарисован декоративный пар — признак ИИ-генерации",
+  "mtime": 1793302344000,
+  "at": "2026-10-31T19:35:18.344Z"
+ },
+ "fish-cutlets": {
+  "score": 8,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": true,
+  "note": "Филе рыбы в панировке, а не котлеты из фарша",
+  "mtime": 1793428927000,
+  "at": "2026-10-31T19:35:20.226Z"
+ },
+ "fresh-spring-rolls": {
+  "score": 8,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Качественный снимок, соответствует описанию блюда",
+  "mtime": 1793434564000,
+  "at": "2026-10-31T19:35:21.521Z"
+ },
+ "fried-calamari": {
+  "score": 8,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Качественный фуд-фото, естественное освещение, аппетитная подача",
+  "mtime": 1793434257000,
+  "at": "2026-10-31T19:35:23.547Z"
+ },
+ "ful-medames": {
+  "score": 8,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Хорошая текстура бобов, естественное масло и зелень",
+  "mtime": 1793434470000,
+  "at": "2026-10-31T19:35:24.887Z"
  }
 }
