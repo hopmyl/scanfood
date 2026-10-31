@@ -1,4 +1,6 @@
-// Генерация фото блюд для СканРецепт — стиль v4 «фото из отзыва о дорогом ресторане».
+// Генерация фото блюд для СканРецепт — стиль v6 «тёплая домашняя рустик-подача»
+// (по референсам пользователя от 2026-10-31: плов, окрошка, шашлык, пельмени,
+// оливье, шарлотка — тёмное дерево, лён, керамика, тёплый боковой свет).
 // Использует z-ai-web-dev-sdk (только бэкенд). Результат: public/dishes/<id>.jpg
 // Запуск: node scripts/generate-dish-photos.mjs --force (перегенерировать всё)
 // Прогресс пишется в scripts/regen-progress.txt — после таймаута просто
@@ -19,23 +21,63 @@ const STYLE =
   'soft natural side lighting, appetizing, high-end restaurant plating, fresh herbs garnish, ' +
   'shallow depth of field, 45-degree angle, photorealistic, high detail, high quality';
 
-// Стиль v4: премиальная подача «как в отзывах дорогих ресторанов», но ЖИВОЕ фото
-// без нейронного глянца. Уроки аудита сохранены: «gentle steam» давал рисованный
-// пар, «ultra realistic» — восковой CGI, негативы вроде «no hands» заставляли
-// модель РИСОВАТЬ руки. Поэтому все запреты заменены позитивными формулировками:
-// пар исключён («dish has settled, clean clear air»), руки — («static view of
-// the table, clean tabletop»), воск — матовыми фактурами и несовершенствами.
-const RESTAURANT_STYLE =
-  'real photograph of an elegant dish served at an upscale restaurant, chef plating on a matte ceramic plate, ' +
-  'neat restaurant portion, natural sauce sheen, garnished appropriately for this dish, ' +
-  'natural daylight from a large restaurant window, soft side light, gentle shadows, muted natural colors, ' +
-  'real food textures: visible grains and crumb, uneven browning, slight natural imperfections in shape, ' +
-  'photo taken a few minutes after serving when the dish has settled, clean clear air, ' +
-  'shallow depth of field, softly blurred restaurant dining room in the background, 50mm lens look, ' +
-  'camera at a slight 45-degree angle, static view of the table, ' +
-  'elegant cutlery and a folded linen napkin beside the plate, clean tabletop around the plate, ' +
-  'appetizing, ' +
+// Стиль v6: тёплая домашняя рустик-подача по референсам пользователя, но ЖИВОЕ
+// фото без нейронного глянца. Уроки аудита сохранены: «gentle steam» давал
+// рисованный пар, «ultra realistic» — восковой CGI, негативы вроде «no hands»
+// заставляли модель РИСОВАТЬ руки, а «restaurant review» провоцировал
+// леттеринг («Fine Dining» на пельменях). Поэтому все запреты заменены
+// позитивными формулировками; «no text…» оставлен (текст не физический
+// объект — эта негативная пара работает). Бокалы/напитки исключены через
+// формулировку стола (урок v5: «upscale restaurant» рисовал кривые бокалы).
+// Разброс ракурс/стол/фон по хэшу id остался с v5 — чтобы однотипные блюда
+// (два супа подряд) не были близнецами.
+const DISH_STYLE_BASE =
+  'real photograph of appetizing homemade comfort food, cozy rustic homestyle cooking, ' +
+  'served on handmade glazed ceramic tableware, ' +
+  'simple cutlery and a folded beige linen napkin beside the dish, ' +
+  'a few raw ingredients and spices scattered around that naturally match this dish, ' +
+  'warm natural side light, golden warm tone, soft gentle shadows, rich but natural colors, ' +
+  'real food textures: visible grains and crumb, uneven browning, natural imperfect shapes, glossy natural sauces, ' +
+  'shallow depth of field, 50mm lens look, static view of the table, ' +
+  'appetizing, mouth-watering, ' +
   'not a render, not CGI, not 3D, not illustration, no text, no captions, no lettering, no watermark';
+
+// Вариации сцены: только позитивные формулировки, ничего противоречащего
+// subject'у (сосуд и блюдо описывает subject, тут — ракурс, стол, фон).
+const ANGLES = [
+  'camera at a slight 45-degree angle above the table',
+  'straight-on eye-level camera angle',
+  'top-down overhead camera angle looking straight down at the dish',
+  'low camera angle close to the table surface',
+  'camera at a gentle 30-degree angle close to the dish',
+];
+const TABLES = [
+  'on a dark walnut wooden table',
+  'on a rustic oak wooden table',
+  'on a weathered dark wooden table',
+  'on a beige linen cloth over a wooden table',
+  'on a warm terracotta tiled table',
+  'on a light pine wooden table',
+];
+const BACKGROUNDS = [
+  'softly blurred cozy rustic kitchen in the background',
+  'softly blurred dark wooden wall with linen textiles in the background',
+  'warmly blurred kitchen shelves with jars and herbs in the background',
+  'softly blurred bright window with sheer curtains in the background',
+  'gently blurred dark dining room corner in the background',
+];
+
+// Детерминированный выбор по id: перегенерация того же блюда даёт ту же сцену,
+// а соседние блюда получают разные комбинации (хэш распределяет неравномерно).
+function pickVariant(arr, id) {
+  let h = 0;
+  for (const c of id) h = (h * 31 + c.charCodeAt(0)) >>> 0;
+  return arr[h % arr.length];
+}
+
+function sceneFor(id) {
+  return `${pickVariant(ANGLES, id)}, ${pickVariant(TABLES, id)}, ${pickVariant(BACKGROUNDS, id)}`;
+}
 
 const DISHES = [
   ['cottage-cheese-pancakes', 'Russian syrniki: five small thick fried cottage cheese pancakes with golden crust and visible curd texture, dollop of sour cream on top, powdered sugar, fresh raspberries aside'],
@@ -212,7 +254,7 @@ async function main() {
       continue; // без паузы — не тратим 4с на каждый пропуск
     }
 
-    const prompt = `${subject}, ${RESTAURANT_STYLE}`;
+    const prompt = `${subject}, ${sceneFor(id)}, ${DISH_STYLE_BASE}`;
     let ok = false;
 
     for (let attempt = 1; attempt <= 8 && !ok; attempt++) {

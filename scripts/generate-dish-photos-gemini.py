@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # Генерация фото блюд через Gemini API (Imagen 3) — альтернативный/ускоряющий
-# конвейер параллельно с z-ai. Тот же стиль v4 «дорогой ресторан», та же
-# очередь и прогресс-файл, что и у Node-скрипта — pipelines совместимы.
+# конвейер параллельно с z-ai. Тот же стиль v6 «тёплая домашняя рустик-подача»,
+# та же очередь и прогресс-файл, что и у Node-скрипта — pipelines совместимы.
 #
 # Ключ: файл scripts/.env со строкой GEMINI_API_KEY=...  (в .gitignore!)
 # Запуск: python3 scripts/generate-dish-photos-gemini.py --limit 30
@@ -26,18 +26,60 @@ PROGRESS_FILE = os.path.join(ROOT, 'scripts', 'regen-progress.txt')
 OUT_DIR = os.path.join(ROOT, 'public', 'dishes')
 ENV_FILE = os.path.join(BASE, '.env')
 
-# Тот же стиль v4, что в scripts/generate-dish-photos.mjs — держать синхронно!
-RESTAURANT_STYLE = (
-    'real photograph of an elegant dish served at an upscale restaurant, chef plating on a matte ceramic plate, '
-    'neat restaurant portion, natural sauce sheen, garnished appropriately for this dish, '
-    'natural daylight from a large restaurant window, soft side light, gentle shadows, muted natural colors, '
-    'real food textures: visible grains and crumb, uneven browning, slight natural imperfections in shape, '
-    'photo taken a few minutes after serving when the dish has settled, clean clear air, '
-    'shallow depth of field, softly blurred restaurant dining room in the background, 50mm lens look, '
-    'camera at a slight 45-degree angle, static view of the table, '
-    'elegant cutlery and a folded linen napkin beside the plate, clean tabletop around the plate, '
-    'appetizing, not a render, not CGI, not 3D, not illustration, no text, no captions, no lettering, no watermark'
+# Тот же стиль v6, что в scripts/generate-dish-photos.mjs — держать синхронно!
+# v6: тёплая домашняя рустик-подача (по референсам пользователя от 2026-10-31):
+# тёмное дерево, лён, керамика ручной работы, тёплый боковой свет, вокруг блюда
+# — родственные сырые ингредиенты. Пустой стол больше не нужен — «rustic» не
+# провоцирует бокалы. Разброс ракурс/стол/фон по хэшу id — с v5.
+DISH_STYLE_BASE = (
+    'real photograph of appetizing homemade comfort food, cozy rustic homestyle cooking, '
+    'served on handmade glazed ceramic tableware, '
+    'simple cutlery and a folded beige linen napkin beside the dish, '
+    'a few raw ingredients and spices scattered around that naturally match this dish, '
+    'warm natural side light, golden warm tone, soft gentle shadows, rich but natural colors, '
+    'real food textures: visible grains and crumb, uneven browning, natural imperfect shapes, glossy natural sauces, '
+    'shallow depth of field, 50mm lens look, static view of the table, '
+    'appetizing, mouth-watering, '
+    'not a render, not CGI, not 3D, not illustration, no text, no captions, no lettering, no watermark'
 )
+
+ANGLES = [
+    'camera at a slight 45-degree angle above the table',
+    'straight-on eye-level camera angle',
+    'top-down overhead camera angle looking straight down at the dish',
+    'low camera angle close to the table surface',
+    'camera at a gentle 30-degree angle close to the dish',
+]
+TABLES = [
+    'on a dark walnut wooden table',
+    'on a rustic oak wooden table',
+    'on a weathered dark wooden table',
+    'on a beige linen cloth over a wooden table',
+    'on a warm terracotta tiled table',
+    'on a light pine wooden table',
+]
+BACKGROUNDS = [
+    'softly blurred cozy rustic kitchen in the background',
+    'softly blurred dark wooden wall with linen textiles in the background',
+    'warmly blurred kitchen shelves with jars and herbs in the background',
+    'softly blurred bright window with sheer curtains in the background',
+    'gently blurred dark dining room corner in the background',
+]
+
+
+def pick_variant(arr: list, dish_id: str) -> str:
+    h = 0
+    for c in dish_id:
+        h = (h * 31 + ord(c)) & 0xFFFFFFFF
+    return arr[h % len(arr)]
+
+
+def scene_for(dish_id: str) -> str:
+    return ', '.join([
+        pick_variant(ANGLES, dish_id),
+        pick_variant(TABLES, dish_id),
+        pick_variant(BACKGROUNDS, dish_id),
+    ])
 
 MODELS = ['imagen-3.0-generate-002', 'imagen-3.0-generate-001']
 API = 'https://generativelanguage.googleapis.com/v1beta/models/{model}:predict'
@@ -68,7 +110,14 @@ def generate_one(key, model, prompt, timeout=90):
         params={'key': key},
         json={
             'instances': [{'prompt': prompt}],
-            'parameters': {'sampleCount': 1, 'aspectRatio': '1:1'},
+            'parameters': {
+                'sampleCount': 1,
+                'aspectRatio': '1:1',
+                # Из скрипта, присланного пользователем 2026-10-31: страховка
+                # от людей в кадре на уровне API (не в тексте промпта — там
+                # негативы вредят, модель начинает рисовать запретное).
+                'personGeneration': 'dont_allow',
+            },
         },
         timeout=timeout,
     )
@@ -134,7 +183,7 @@ def main():
     ok, fails = 0, []
     for i, dish_id in enumerate(todo, 1):
         subject = subjects.get(dish_id, dish_id)
-        prompt = f'{subject}, {RESTAURANT_STYLE}'
+        prompt = f'{subject}, {scene_for(dish_id)}, {DISH_STYLE_BASE}'
         attempt = 0
         while attempt < 4:
             attempt += 1
