@@ -1,3 +1,5 @@
 skills/
 node_modules/
 .mirror/
+scripts/.env
+.env
