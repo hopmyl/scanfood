@@ -32,3 +32,12 @@ baked-feta-pasta
 beef-chow-fun
 buffalo-wings
 bbq-pulled-pork
+cheese-ham-omelette
+chicken-fajitas
+chicken-cutlets
+cheese-soup
+chicken-shawarma
+caponata
+chicken-satay
+chicken-congee
+american-pancakes
