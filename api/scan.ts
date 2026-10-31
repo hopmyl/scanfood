@@ -102,19 +102,24 @@ interface VisionProvider {
 
 /**
  * Выбор провайдера по env (первый заданный побеждает):
- * 1) универсальный OpenAI-совместимый: AI_BASE_URL + AI_API_KEY, модель в AI_MODEL
+ * 1) универсальный OpenAI-совместимый: VISION_BASE_URL + VISION_API_KEY, модель в VISION_MODEL
+ *    (алиасы AI_BASE_URL/AI_API_KEY/AI_MODEL тоже принимаются — старое имя слота)
  * 2) OpenRouter: OPENROUTER_API_KEY (бесплатные vision-модели с суффиксом :free)
  * 3) Gemini: GEMINI_API_KEY (резерв)
+ * Урок 2026-10-31: README учил ставить VISION_*, а код читал только AI_* —
+ * из-за этого провайдер «не настраивался» и фото-скан всегда падал в демо.
+ * Теперь слот один, имена взаимозаменяемы (VISION_* приоритетнее).
  */
 function visionProvider(): VisionProvider | null {
-  const aiBase = process.env.AI_BASE_URL?.trim();
-  const aiKey = process.env.AI_API_KEY?.trim();
+  const aiBase = process.env.VISION_BASE_URL?.trim() || process.env.AI_BASE_URL?.trim();
+  const aiKey = process.env.VISION_API_KEY?.trim() || process.env.AI_API_KEY?.trim();
   if (aiBase && aiKey) {
     return {
       kind: 'openai',
       base: aiBase.replace(/\/+$/, ''),
       key: aiKey,
-      model: process.env.AI_MODEL?.trim() || '',
+      model:
+        process.env.VISION_MODEL?.trim() || process.env.AI_MODEL?.trim() || '',
     };
   }
   const orKey = process.env.OPENROUTER_API_KEY?.trim();
@@ -140,7 +145,7 @@ async function scanWithOpenAICompat(
 ): Promise<DetectedProduct[]> {
   if (!provider.model) {
     throw new Error(
-      'AI_MODEL не задан — укажи модель провайдера (например, llama-3.2-11b-vision-instruct для Groq, Qwen/Qwen2.5-VL-7B-Instruct для HuggingFace)',
+      'VISION_MODEL (или AI_MODEL) не задан — укажи модель провайдера (например, glm-4.5v для z.ai, llama-3.2-11b-vision-instruct для Groq, Qwen/Qwen2.5-VL-7B-Instruct для HuggingFace)',
     );
   }
   const controller = new AbortController();
