@@ -301,15 +301,15 @@
   "at": "2026-10-31T17:05:00.840Z"
  },
  "beef-tacos": {
-  "score": 3,
-  "steam": true,
-  "plastic": false,
+  "score": 6,
+  "steam": false,
+  "plastic": true,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Явно нарисованный пар, снижает реализм",
-  "mtime": 1793302020000,
-  "at": "2026-10-31T17:05:02.365Z"
+  "note": "Мясо выглядит восковым и однородным, типичный ИИ-рендер",
+  "mtime": 1793466496000,
+  "at": "2026-10-31T18:04:42.963Z"
  },
  "blt-sandwich": {
   "score": 8,
@@ -356,26 +356,26 @@
   "at": "2026-10-31T17:05:13.033Z"
  },
  "brownies": {
-  "score": 3,
-  "steam": true,
+  "score": 8,
+  "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Декоративный нарисованный пар снижает реализм до рендера",
-  "mtime": 1793304101000,
-  "at": "2026-10-31T17:05:15.025Z"
+  "note": "Высококачественный ИИ-рендер, очень реалистичный, но с лёгкой «слишком идеальной",
+  "mtime": 1793466708000,
+  "at": "2026-10-31T18:04:45.088Z"
  },
  "bruschetta": {
-  "score": 3,
-  "steam": true,
+  "score": 8,
+  "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Явно нарисованный декоративный пар над блюдом",
-  "mtime": 1793303834000,
-  "at": "2026-10-31T17:05:16.839Z"
+  "note": "Качественный снимок брускетты с томатами и базиликом",
+  "mtime": 1793466572000,
+  "at": "2026-10-31T18:04:46.812Z"
  },
  "buddha-bowl": {
   "score": 8,
@@ -411,26 +411,26 @@
   "at": "2026-10-31T17:05:21.732Z"
  },
  "cabbage-pie": {
-  "score": 3,
-  "steam": true,
-  "plastic": true,
-  "text": false,
-  "people": false,
-  "wrong": false,
-  "note": "Нарисованный пар, пластичная текстура начинки и коржа",
-  "mtime": 1793304034000,
-  "at": "2026-10-31T17:05:23.527Z"
- },
- "caesar-salad": {
-  "score": 3,
-  "steam": true,
+  "score": 8,
+  "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Нарисованный пар над холодным салатом — явный ИИ-артефакт",
-  "mtime": 1793301590000,
-  "at": "2026-10-31T17:05:25.406Z"
+  "note": "Высококачественный снимок, реалистичная текстура теста и начинки",
+  "mtime": 1793466671000,
+  "at": "2026-10-31T18:04:48.609Z"
+ },
+ "caesar-salad": {
+  "score": 8,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Высококачественный фуд-фото, возможно с лёгкой ИИ-обработкой",
+  "mtime": 1793466460000,
+  "at": "2026-10-31T18:04:50.350Z"
  },
  "cajun-shrimp-pasta": {
   "score": 6,
@@ -475,5 +475,225 @@
   "note": "Явно нарисован декоративный пар — признак ИИ-генерации",
   "mtime": 1793316000000,
   "at": "2026-10-31T17:05:32.547Z"
+ },
+ "char-siu-pork": {
+  "score": 9,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Отличный реалистичный снимок чар-сью, естественное освещение",
+  "mtime": 1793425514000,
+  "at": "2026-10-31T18:04:52.063Z"
+ },
+ "cheese-ham-omelette": {
+  "score": 8,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": true,
+  "note": "Нет свежей зелени, сыр не расплавлен",
+  "mtime": 1793421679000,
+  "at": "2026-10-31T18:04:53.606Z"
+ },
+ "cheese-soup": {
+  "score": 7,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": true,
+  "note": "Тарелка плоская, не миска; суп густой, без картофеля",
+  "mtime": 1793449163000,
+  "at": "2026-10-31T18:04:55.047Z"
+ },
+ "chicago-hot-dog": {
+  "score": 8,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Реалистичное фото чикагского хот-дога с классическими топпингами",
+  "mtime": 1793378866000,
+  "at": "2026-10-31T18:04:56.914Z"
+ },
+ "chicken-congee": {
+  "score": 9,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": true,
+  "wrong": false,
+  "note": "Отличный реалистичный снимок конджи с курицей",
+  "mtime": 1793422139000,
+  "at": "2026-10-31T18:04:58.622Z"
+ },
+ "chicken-cutlets": {
+  "score": 8,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": true,
+  "note": "Нет пюре и солений, только котлета с луком",
+  "mtime": 1793421830000,
+  "at": "2026-10-31T18:05:00.517Z"
+ },
+ "chicken-fajitas": {
+  "score": 8,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Качественный фуд-фото, еда выглядит натурально",
+  "mtime": 1793421756000,
+  "at": "2026-10-31T18:05:02.313Z"
+ },
+ "chicken-mushroom-pasta": {
+  "score": 6,
+  "steam": false,
+  "plastic": true,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Паста и мясо выглядят восковыми, текстура однородная",
+  "mtime": 1793301649000,
+  "at": "2026-10-31T18:05:04.001Z"
+ },
+ "chicken-noodle-soup": {
+  "score": 3,
+  "steam": true,
+  "plastic": true,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Явно ИИ: нарисован пар, пластилиновая текстура курицы и моркови",
+  "mtime": 1793301700000,
+  "at": "2026-10-31T18:05:05.774Z"
+ },
+ "chicken-plov": {
+  "score": 4,
+  "steam": true,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Явно нарисованный декоративный пар над блюдом",
+  "mtime": 1793302219000,
+  "at": "2026-10-31T18:05:07.420Z"
+ },
+ "chicken-pot-pie": {
+  "score": 3,
+  "steam": true,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Явно нарисованный декоративный пар, текстура коржа подозрительная",
+  "mtime": 1793315849000,
+  "at": "2026-10-31T18:05:09.381Z"
+ },
+ "chicken-satay": {
+  "score": 8,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Качественный фуд-фото, еда выглядит натурально и аппетитно",
+  "mtime": 1793422075000,
+  "at": "2026-10-31T18:05:11.207Z"
+ },
+ "chicken-shawarma": {
+  "score": 7,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": true,
+  "note": "Тарелка серая, не терракотовая; соус не оливковое масло",
+  "mtime": 1793421949000,
+  "at": "2026-10-31T18:05:12.924Z"
+ },
+ "chicken-souvlaki": {
+  "score": 8,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": true,
+  "note": "Курица не на шпажках, а кусочками, нет соуса-маринада",
+  "mtime": 1793425372000,
+  "at": "2026-10-31T18:05:14.870Z"
+ },
+ "chicken-stir-fry": {
+  "score": 8,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": true,
+  "note": "Тёмная тарелка вместо белой, но блюдо верное",
+  "mtime": 1793425255000,
+  "at": "2026-10-31T18:05:25.346Z"
+ },
+ "chicken-tagine": {
+  "score": 8,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": true,
+  "wrong": false,
+  "note": "Размытые фигуры на заднем плане, но блюдо выглядит реалистично",
+  "mtime": 1793425478000,
+  "at": "2026-10-31T18:05:27.352Z"
+ },
+ "chicken-teriyaki": {
+  "score": 3,
+  "steam": true,
+  "plastic": true,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Искусственный пар и пластиковая текстура мяса",
+  "mtime": 1793300971000,
+  "at": "2026-10-31T18:05:29.224Z"
+ },
+ "chicken-thighs-potato": {
+  "score": 3,
+  "steam": true,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Явно нарисованный декоративный пар снижает реализм",
+  "mtime": 1793302945000,
+  "at": "2026-10-31T18:05:31.019Z"
+ },
+ "chicken-tikka-masala": {
+  "score": 4,
+  "steam": true,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Нарисован декоративный пар, снижает реализм",
+  "mtime": 1793301762000,
+  "at": "2026-10-31T18:05:33.680Z"
+ },
+ "chili-con-carne": {
+  "score": 3,
+  "steam": true,
+  "plastic": true,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Нарисованный пар, пластико-восковая текстура бобов и мяса",
+  "mtime": 1793315509000,
+  "at": "2026-10-31T18:05:35.503Z"
  }
 }
