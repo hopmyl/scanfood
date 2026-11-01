@@ -1394,5 +1394,29 @@
   "note": "Нарисован пар, пластиковая текстура оладий и сливок",
   "mtime": 1793302154000,
   "at": "2026-10-31T20:35:36.908Z"
+ },
+ "key-lime-pie": {
+  "score": -1,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "ошибка критика",
+  "error": true,
+  "mtime": 1793316032000,
+  "at": "2026-11-01T12:09:25.433Z"
+ },
+ "khao-man-gai": {
+  "score": -1,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "ошибка критика",
+  "error": true,
+  "mtime": 1793441752000,
+  "at": "2026-11-01T12:12:55.693Z"
  }
 }

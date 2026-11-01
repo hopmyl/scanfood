@@ -92,25 +92,56 @@ export function resolveScanProvider(): ScanProvider {
   return process.env.GEMINI_API_KEY ? 'gemini' : 'zai';
 }
 
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+/** Ошибка 429/rate-limit (квота ИИ общая с фото-конвейером проекта) */
+function isRateLimit(e: unknown): boolean {
+  return /\b429\b|Too many requests|rate.?limit/i.test(errMsg(e));
+}
+
+/**
+ * Ретраи на 429: окно перегрузки квоты обычно короткое (секунды), поэтому
+ * 2 повторных попытки (6с и 14с) часто спасают скан без действий пользователя.
+ * Прочие ошибки пробрасываются сразу. Итоговый 429 превращается в
+ * человекочитаемое сообщение — сырой JSON SDK больше не доходит до UI.
+ */
+async function with429Retry<T>(fn: () => Promise<T>, attempts = 3): Promise<T> {
+  for (let i = 1; ; i++) {
+    try {
+      return await fn();
+    } catch (e) {
+      if (!isRateLimit(e)) throw e;
+      if (i >= attempts) {
+        throw new Error(
+          'Сервис распознавания перегружен (лимит запросов ИИ) — попробуйте ещё раз через минуту',
+        );
+      }
+      await sleep(i === 1 ? 6_000 : 14_000);
+    }
+  }
+}
+
 /** z-ai-web-dev-sdk — vision через createVision */
 async function scanWithZai(imageDataUrl: string): Promise<DetectedProduct[]> {
   const { default: ZAI } = await import('z-ai-web-dev-sdk');
   const zai = await ZAI.create();
 
   const completion = await Promise.race([
-    zai.chat.completions.createVision({
-      model: 'glm-4.5v',
-      messages: [
-        {
-          role: 'user',
-          content: [
-            { type: 'text', text: SCAN_PROMPT },
-            { type: 'image_url', image_url: { url: imageDataUrl } },
-          ],
-        },
-      ],
-      thinking: { type: 'disabled' },
-    }),
+    with429Retry(() =>
+      zai.chat.completions.createVision({
+        model: 'glm-4.5v',
+        messages: [
+          {
+            role: 'user',
+            content: [
+              { type: 'text', text: SCAN_PROMPT },
+              { type: 'image_url', image_url: { url: imageDataUrl } },
+            ],
+          },
+        ],
+        thinking: { type: 'disabled' },
+      }),
+    ),
     new Promise((_resolve, reject) =>
       setTimeout(() => reject(new Error('scan timeout')), 55_000),
     ),
