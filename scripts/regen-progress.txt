@@ -139,3 +139,11 @@ chicken-tagine
 chow-mein-chicken
 chinese-egg-tarts
 bbq-pulled-pork
+croissant-salmon
+crispy-tofu
+cottage-cheese-casserole
+crab-corn-salad
+corn-chicken-soup
+chili-con-carne
+chocolate-chip-cookies
+carrot-cake
