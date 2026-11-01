@@ -147,3 +147,10 @@ corn-chicken-soup
 chili-con-carne
 chocolate-chip-cookies
 carrot-cake
+club-sandwich
+fish-and-chips
+falafel-wrap
+fish-cutlets
+draniki
+fattoush
+dakos
