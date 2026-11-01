@@ -1589,15 +1589,16 @@
   "at": "2026-11-01T18:38:55.184Z"
  },
  "mango-sticky-rice": {
-  "score": 3,
-  "steam": true,
-  "plastic": true,
+  "score": -1,
+  "steam": false,
+  "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Нарисованный пар, пластиковая текстура риса и манго",
-  "mtime": 1793313321000,
-  "at": "2026-11-01T17:06:51.537Z"
+  "note": "ошибка критика",
+  "error": true,
+  "mtime": 1793559156900.469,
+  "at": "2026-11-01T19:12:00.161Z"
  },
  "mapo-tofu": {
   "score": 8,
@@ -1611,15 +1612,16 @@
   "at": "2026-11-01T17:06:53.250Z"
  },
  "margherita-pizza": {
-  "score": 3,
-  "steam": true,
+  "score": -1,
+  "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Явно нарисованный декоративный пар, снижает реализм",
-  "mtime": 1793312289000,
-  "at": "2026-11-01T17:06:55.051Z"
+  "note": "ошибка критика",
+  "error": true,
+  "mtime": 1793558869149.672,
+  "at": "2026-11-01T19:15:30.299Z"
  },
  "massaman-beef": {
   "score": 8,
