@@ -7,6 +7,10 @@
 # Каждый кадр генератора проходит контроль агента-критика (photo-critic.mjs):
 # пластик/пар/леттеринг/руки/не-то-блюдо => автореролл (до 3 попыток, лучший в файл).
 # Партии сами докатываются: готовое пишется в regen-progress.txt и скипается.
+# После партии — срез АГЕНТА-ПОВАРА (chef-critic.mjs, glm-4.6, дёшево):
+# проверка рецептов и порядка шагов; пишет chef-report.json, брак — в
+# chef-fixlist.txt (запрос пользователя 2026-11-02: проверки и переделка
+# «с учётом критика и повара»).
 # Запуск: bash scripts/qa-runner.sh [N] [nonew]   (N блюд за прогон, по умолчанию 12)
 set -u
 cd /home/z/my-project
@@ -32,20 +36,24 @@ NEED=$(node -e "
 if [ -z "$NEED" ]; then
   echo "=== QUEUE EMPTY $(date) ===" >> "$LOG"
   echo "QUEUE EMPTY"
-  exit 0
+else
+  echo "=== партия: $NEED ===" >> "$LOG"
+  for i in 1 2; do
+    # остаток = партия минус уже записанное в прогресс (докат после таймаута)
+    REMAIN=$(printf '%s' "$NEED" | tr ',' '\n' | while read -r id; do
+      grep -qx "$id" scripts/regen-progress.txt 2>/dev/null || echo "$id"
+    done | paste -sd, -)
+    [ -z "$REMAIN" ] && break
+    echo "=== attempt $i: $REMAIN ===" >> "$LOG"
+    timeout 550 node scripts/generate-dish-photos.mjs 0 1 --only="$REMAIN" >> "$LOG" 2>&1
+    sleep 20
+  done
 fi
 
-echo "=== партия: $NEED ===" >> "$LOG"
-for i in 1 2; do
-  # остаток = партия минус уже записанное в прогресс (докат после таймаута)
-  REMAIN=$(printf '%s' "$NEED" | tr ',' '\n' | while read -r id; do
-    grep -qx "$id" scripts/regen-progress.txt 2>/dev/null || echo "$id"
-  done | paste -sd, -)
-  [ -z "$REMAIN" ] && break
-  echo "=== attempt $i: $REMAIN ===" >> "$LOG"
-  timeout 550 node scripts/generate-dish-photos.mjs 0 1 --only="$REMAIN" >> "$LOG" 2>&1
-  sleep 20
-done
+# --- Срез агента-повара: рецепты и порядок шагов (инкрементально) ---
+echo "=== chef-slice START $(date) ===" >> "$LOG"
+timeout 240 node scripts/chef-critic.mjs --limit=10 >> "$LOG" 2>&1
+echo "=== chef-slice EXIT $(date) ===" >> "$LOG"
 
 DONE=$(grep -c . scripts/regen-progress.txt 2>/dev/null || echo 0)
 echo "=== qa-runner EXIT $(date): прогресс $DONE строк ===" >> "$LOG"
