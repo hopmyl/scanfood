@@ -105,9 +105,13 @@ homestyle-tofu
 hong-shao-rou
 hot-sour-soup
 huang-men-ji
+hummus-classic
 imam-bayildi
+jambalaya
 jiaozi-pork
 julienne
+kai-jeow
+kefir-pancakes
 khao-man-gai
 khao-soi
 kibbeh
@@ -171,7 +175,3 @@ yangzhou-fried-rice
 yemista
 yu-xiang-eggplant
 yu-xiang-pork
-hummus-classic
-jambalaya
-kai-jeow
-kefir-pancakes
