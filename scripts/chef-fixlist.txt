@@ -1,5 +1,7 @@
 avocado-toast
 bbq-chicken-wings
+bbq-pork-ribs
+beef-burger
 beef-steak
 caesar-salad
 cheese-ham-omelette
@@ -18,6 +20,7 @@ pasta-carbonara
 shakshuka
 smoothie-bowl
 soba-beef
+spaghetti-bolognese
 spinach-cheese-pancake
 sweet-sour-chicken
 tuna-sandwich
