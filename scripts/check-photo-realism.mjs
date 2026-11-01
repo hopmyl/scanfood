@@ -75,14 +75,31 @@ async function main() {
     done++;
     const verdict = r.score < 0 ? 'ошибка' : `${r.score} ${flagsStr(r)}`;
     console.log(`[${done}/${ids.length}] ${id}: ${verdict}${r.note ? ' — ' + r.note : ''}`);
-    if (done % 5 === 0 || done === ids.length) {
-      fs.writeFileSync(REPORT, JSON.stringify(report, null, 1));
-    }
+    // Пишем ПОСЛЕ КАЖДОГО фото: при 429-ретраях 5 фото могут не уложиться в
+    // таймаут прогона — прежние записи терялись. Шортлист тоже мерджим сразу.
+    fs.writeFileSync(REPORT, JSON.stringify(report, null, 1));
+    mergeShortlist(report);
   }
   fs.writeFileSync(REPORT, JSON.stringify(report, null, 1));
 
   // Брак по ВСЕМУ отчёту (не только свежему слайсу) -> шортлист слиянием.
   // Утверждённые пользователем (qa-approve.txt) не попадают — их не трогаем.
+  mergeShortlist(report);
+
+  const bad = Object.entries(report)
+    .filter(([id, r]) => r.score >= 0 && isBad(r) && !APPROVED.has(id))
+    .map(([id]) => id);
+  const shortlistSize = fs.existsSync(SHORTLIST)
+    ? fs.readFileSync(SHORTLIST, 'utf8').split('\n').filter(Boolean).length
+    : 0;
+  console.log(
+    `=== ИТОГ: в отчёте ${Object.keys(report).length}, брак по отчёту: ${bad.length}, шортлист итого: ${shortlistSize}`,
+  );
+  if (bad.length) console.log(bad.join(', '));
+}
+
+/** Брак по отчёту -> шортлист слиянием (утверждённые не попадают) */
+function mergeShortlist(report) {
   const bad = Object.entries(report)
     .filter(([id, r]) => r.score >= 0 && isBad(r) && !APPROVED.has(id))
     .map(([id]) => id);
@@ -93,11 +110,6 @@ async function main() {
   );
   for (const id of bad) pending.add(id);
   fs.writeFileSync(SHORTLIST, [...pending].sort().join('\n'));
-
-  console.log(
-    `=== ИТОГ: в отчёте ${Object.keys(report).length}, брак по отчёту: ${bad.length}, шортлист итого: ${pending.size}`,
-  );
-  if (bad.length) console.log(bad.join(', '));
 }
 
 main().catch((e) => {

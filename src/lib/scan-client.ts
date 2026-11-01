@@ -157,6 +157,10 @@ async function tryScanEndpoint(
       } catch {
         /* тело не JSON (например, html-заглушка хостинга) — остаётся статус */
       }
+      // 429 — лимит запросов ИИ: понятный текст вместо сырого ответа провайдера
+      if (r.status === 429 || /429|Too many requests|rate.?limit/i.test(detail)) {
+        detail = 'сервис распознавания перегружен — попробуйте ещё раз через минуту';
+      }
       return { ok: false, reason: 'failed', detail };
     }
     const products = productsFromEndpoint(await r.json());
@@ -205,6 +209,10 @@ async function tryDirectOpenRouter(
         detail = `openrouter ${r.status}: ${(await r.text()).slice(0, 140)}`;
       } catch {
         /* без тела */
+      }
+      // 429 — лимит запросов: понятный текст вместо сырого ответа провайдера
+      if (r.status === 429 || /429|Too many requests|rate.?limit/i.test(detail)) {
+        detail = 'сервис распознавания перегружен — попробуйте ещё раз через минуту';
       }
       // неверный/исчерпанный ключ — это «недоступно» (демо), а не «ошибка»
       return { ok: false, reason: r.status === 401 || r.status === 402 || r.status === 403 ? 'unavailable' : 'failed', detail };

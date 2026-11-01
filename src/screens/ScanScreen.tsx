@@ -48,6 +48,20 @@ interface ScanItem {
 }
 /** Причина неудачи распознавания: null — нет ошибки */
 type ScanFail = null | 'generic' | 'noprovider';
+
+/**
+ * Заголовок ошибки распознавания. Отдельный текст для перегрузки сервиса
+ * (429/лимит квоты ИИ): совет «при другом освещении» тут вводил бы в заблуждение.
+ */
+function failHeadline(fail: ScanFail, detail: string | null): string {
+  if (fail === 'noprovider') {
+    return 'Сейчас распознавание фото недоступно — нет сервера с ИИ. Работают демо-скан и штрих-код.';
+  }
+  if (detail && detail.includes('перегружен')) {
+    return 'Сервис распознавания сейчас занят — попробуй ещё раз через минуту.';
+  }
+  return 'Не получилось распознать фото. Попробуй ещё раз при другом освещении.';
+}
 type ProductState =
   | { kind: 'idle' }
   | { kind: 'loading'; code: string }
@@ -1229,11 +1243,9 @@ export default function ScanScreen() {
               {scanFailed && (
                 <div className="mt-3 rounded-2xl border border-accent/30 bg-accent-soft px-4 py-3 text-center">
                   <p className="text-xs font-medium text-accent-ink">
-                    {scanFailed === 'noprovider'
-                      ? 'Сейчас распознавание фото недоступно — нет сервера с ИИ. Работают демо-скан и штрих-код.'
-                      : 'Не получилось распознать фото. Попробуй ещё раз при другом освещении.'}
+                    {failHeadline(scanFailed, scanDetail)}
                   </p>
-                  {scanFailed === 'generic' && scanDetail && (
+                  {scanFailed === 'generic' && scanDetail && !scanDetail.includes('перегружен') && (
                     <p className="mt-1 text-[11px] text-accent-ink/80">Причина: {scanDetail}</p>
                   )}
                   {scanFailed === 'generic' && lastShotRef.current && (
