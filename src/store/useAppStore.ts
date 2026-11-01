@@ -50,6 +50,9 @@ interface AppState {
   /** Списать один скан. Возвращает результат: 'ok' | 'pro' | 'limit' */
   performScan: () => 'ok' | 'pro' | 'limit';
 
+  /** Вернуть скан, списанный за неудавшееся распознавание (ошибка сети/нет сервера) */
+  refundScan: () => void;
+
   toggleFavorite: (dishId: string) => void;
 
   /** Добавить ингредиенты в список покупок (с количеством и рецептом-источником) */
@@ -119,6 +122,16 @@ export const useAppStore = create<AppState>()(
           },
         });
         return 'ok';
+      },
+
+      refundScan: () => {
+        const { userProfile } = get();
+        // PRO — безлимит, возвращать нечего; выше лимита не поднимаем
+        if (userProfile.isPro) return;
+        if (userProfile.scansLeft >= FREE_SCANS_LIMIT) return;
+        set({
+          userProfile: { ...userProfile, scansLeft: userProfile.scansLeft + 1 },
+        });
       },
 
       toggleFavorite: (dishId) =>

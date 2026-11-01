@@ -9,6 +9,14 @@ MSG="${1:-deploy: $(date -u '+%Y-%m-%d %H:%M UTC')}"
 TOKEN=$(git remote get-url origin | sed -E 's#https://([^@]+)@.*#\1#')
 REMOTE="https://${TOKEN}@github.com/hopmyl/hopmyl.github.io.git"
 
+# Настройки распознавания для статического зеркала (пробрасываются в бандл, см.
+# src/lib/scan-client.ts). Передаются при запуске, значения НЕ печатаются:
+#   SCAN_API_URL=https://scanrecipe.vercel.app bash scripts/deploy-pages.sh   — внешний API с CORS;
+#   OPENROUTER_KEY=ror_... bash scripts/deploy-pages.sh                       — ⚠️ ключ попадёт в публичный бандл.
+export VITE_SCAN_API_URL="${SCAN_API_URL:-${VITE_SCAN_API_URL:-}}"
+export VITE_OPENROUTER_KEY="${OPENROUTER_KEY:-${VITE_OPENROUTER_KEY:-}}"
+export VITE_OPENROUTER_MODEL="${OPENROUTER_MODEL:-${VITE_OPENROUTER_MODEL:-}}"
+
 echo "[1/3] Сборка..."
 npm run build >/dev/null 2>&1
 cp dist/index.html dist/404.html

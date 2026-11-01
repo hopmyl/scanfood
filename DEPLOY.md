@@ -47,6 +47,42 @@ AI_MODEL=Qwen/Qwen2.5-VL-7B-Instruct
 «View active rate limits». Ориентир: даже 250 сканов/день хватает на ~50 пользователей
 при лимите Лайт 5 сканов/день.
 
+## Распознавание фото на статических зеркалах (GitHub Pages)
+
+GitHub Pages — чистая статика: POST на `/api/scan` там физически невозможен
+(Nginx отдаёт `405 Method Not Allowed`). Клиент (`src/lib/scan-client.ts`)
+это знает и действует цепочкой:
+
+1. `POST /api/scan` с того же origin — работает на Vercel/Netlify, где есть функции;
+2. `VITE_SCAN_API_URL` — адрес внешнего деплоя этого же API (CORS уже включён
+   в `api/scan.ts` и `netlify/functions/scan.ts`, OPTIONS отвечает 204);
+3. `VITE_OPENROUTER_KEY` — OpenRouter прямо из браузера (CORS у OpenRouter
+   открыт). ⚠️ Ключ попадает в публичный бандл — годится только ключ с
+   нулевым кредитным лимитом и бесплатными моделями;
+4. ничего не задано → честный демо-скан (никаких «scan api 405» на экране).
+
+### Как включить реальное распознавание на зеркалах
+
+Вариант А (рекомендуется): поднять API рядом и указать его адрес.
+
+```bash
+# 1. Импортируй репозиторий в Vercel (или Netlify) и задай там env:
+#    OPENROUTER_API_KEY=...   (или GEMINI_API_KEY=...)
+# 2. Пересобери зеркала с адресом деплоя:
+SCAN_API_URL=https://<проект>.vercel.app bash scripts/deploy-all.sh "scan api для зеркал"
+```
+
+Вариант Б (без сервера): ключ с нулевым лимитом прямо в бандл зеркал.
+
+```bash
+OPENROUTER_KEY=ror_nnnnnnnn OPENROUTER_MODEL=google/gemma-4-31b-it:free \
+  bash scripts/deploy-all.sh "браузерное распознавание на зеркалах"
+# ⚠️ ключ увидит любой, кто откроет бандл — держи лимит кредитов на нуле
+```
+
+Проверка: `curl -X OPTIONS -D - -o /dev/null https://<проект>.vercel.app/api/scan`
+должна вернуть `204` и `access-control-allow-origin: *`.
+
 ## Шаги деплоя
 
 0. Если проект уже импортирован в Vercel — опубликовать новую версию просто:

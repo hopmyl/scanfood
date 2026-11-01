@@ -12,6 +12,10 @@
  * 2) OPENROUTER_API_KEY — OpenRouter (открыт из РФ, есть бесплатные vision-модели);
  * 3) GEMINI_API_KEY — Gemini (резерв).
  * Путь z-ai-web-dev-sdk остался только в dev-плагине scan-api.ts.
+ *
+ * CORS: ответы всегда с Access-Control-Allow-Origin: *, OPTIONS отвечает 204 —
+ * поэтому статические зеркала (GitHub Pages) могут вызывать этот API напрямую,
+ * передав адрес деплоя в VITE_SCAN_API_URL при сборке зеркала.
  */
 
 import type { IncomingMessage, ServerResponse } from 'node:http';
@@ -243,13 +247,30 @@ async function scanWithGemini(imageDataUrl: string): Promise<DetectedProduct[]> 
 
 type Req = IncomingMessage & { method?: string; body?: unknown };
 
+/** CORS для статических зеркал (GitHub Pages): клиент зовёт этот API напрямую */
+const CORS_HEADERS: Record<string, string> = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type',
+  'Access-Control-Max-Age': '86400',
+};
+
 export default async function handler(req: Req, res: ServerResponse): Promise<void> {
   const sendJson = (status: number, data: unknown) => {
     res.statusCode = status;
     res.setHeader('Content-Type', 'application/json; charset=utf-8');
     res.setHeader('Cache-Control', 'no-store');
+    for (const [k, v] of Object.entries(CORS_HEADERS)) res.setHeader(k, v);
     res.end(JSON.stringify(data));
   };
+
+  // Preflight для кросс-доменных запросов с зеркал (должен отвечать 2xx)
+  if (req.method === 'OPTIONS') {
+    res.statusCode = 204;
+    for (const [k, v] of Object.entries(CORS_HEADERS)) res.setHeader(k, v);
+    res.end();
+    return;
+  }
 
   if (req.method !== 'POST') {
     sendJson(405, { error: 'method_not_allowed' });

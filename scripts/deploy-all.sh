@@ -8,6 +8,12 @@ cd "$(dirname "$0")/.."
 
 MSG="${1:-deploy: $(date -u '+%Y-%m-%d %H:%M UTC')}"
 
+# Настройки распознавания для статических зеркал — пробрасываются в обе сборки
+# (подробности в scripts/deploy-pages.sh). Значения НЕ печатаются.
+export VITE_SCAN_API_URL="${SCAN_API_URL:-${VITE_SCAN_API_URL:-}}"
+export VITE_OPENROUTER_KEY="${OPENROUTER_KEY:-${VITE_OPENROUTER_KEY:-}}"
+export VITE_OPENROUTER_MODEL="${OPENROUTER_MODEL:-${VITE_OPENROUTER_MODEL:-}}"
+
 echo "[1/4] Корень hopmyl.github.io..."
 bash scripts/deploy-pages.sh "$MSG" || echo "WARN: root mirror failed (продолжаю)"
 

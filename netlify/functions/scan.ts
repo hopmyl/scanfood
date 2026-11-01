@@ -172,14 +172,25 @@ async function scanWithGemini(imageDataUrl: string): Promise<DetectedProduct[]> 
 }
 
 export default async function handler(req: Request): Promise<Response> {
+  // CORS для статических зеркал (GitHub Pages): клиент зовёт этот API напрямую
+  const CORS: Record<string, string> = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Max-Age': '86400',
+  };
   const sendJson = (status: number, data: unknown) =>
     new Response(JSON.stringify(data), {
       status,
       headers: {
+        ...CORS,
         'Content-Type': 'application/json; charset=utf-8',
         'Cache-Control': 'no-store',
       },
     });
+
+  // Preflight для кросс-доменных запросов с зеркал (должен отвечать 2xx)
+  if (req.method === 'OPTIONS') return new Response(null, { status: 204, headers: CORS });
 
   if (req.method !== 'POST') return sendJson(405, { error: 'method_not_allowed' });
 

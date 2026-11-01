@@ -19,12 +19,14 @@ import {
   ScanLine,
   Sparkles,
   Store,
+  X,
 } from 'lucide-react';
 import { FRIDGE_PRODUCTS, SCAN_POOL } from '../data/dishes';
 import { emojiFor, matchDishes, type MatchResult } from '../lib/match';
 import DishCard from '../components/DishCard';
 import { useAppStore } from '../store/useAppStore';
 import { cn, pluralRu } from '../lib/utils';
+import { scanProducts } from '../lib/scan-client';
 
 type Phase = 'idle' | 'scanning' | 'result' | 'paywall';
 type ScanMode = 'products' | 'barcode';
@@ -296,6 +298,13 @@ export default function ScanScreen() {
   const [scanDetail, setScanDetail] = useState<string | null>(null);
   /** Реальный аспект потока камеры — видоискатель подстраивается, ничего не обрезая */
   const [streamAR, setStreamAR] = useState<number | null>(null);
+  /**
+   * Способ съёмки. По умолчанию — системная камера (input capture=environment):
+   * нативное приложение камеры с честным зумом 1×, автофокусом и вспышкой.
+   * Живой видоискатель getUserMedia — опциональный режим по кнопке:
+   * у ряда телефонов браузерный поток стартует «приближённым» независимо от правок.
+   */
+  const [liveCam, setLiveCam] = useState(false);
 
   // --- штрих-код ---
   const [productState, setProductState] = useState<ProductState>({ kind: 'idle' });
@@ -304,6 +313,8 @@ export default function ScanScreen() {
 
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  /** Скрытый input с capture=environment — открывает системную камеру телефона */
+  const sysCamRef = useRef<HTMLInputElement | null>(null);
   const zxingRef = useRef<IScannerControls | null>(null);
   /** Последний снимок — для кнопки «Повторить» после ошибки */
   const lastShotRef = useRef<string | null>(null);
@@ -349,6 +360,9 @@ export default function ScanScreen() {
   // ================= Камера (продукты) =================
   useEffect(() => {
     if (mode !== 'products') return;
+    // Живой видоискатель включается только по кнопке; по умолчанию снимаем
+    // системной камерой (см. liveCam) — там зум/фокус управляются ОС
+    if (!liveCam) return;
     let stream: MediaStream | null = null;
     let cancelled = false;
 
@@ -559,7 +573,7 @@ export default function ScanScreen() {
       setStreamAR(null);
       stream?.getTracks().forEach((t) => t.stop());
     };
-  }, [mode]);
+  }, [mode, liveCam]);
 
   // ================= Сканер штрих-кода =================
   useEffect(() => {
@@ -618,43 +632,28 @@ export default function ScanScreen() {
     setIsDemo(false);
     lastShotRef.current = dataUrl;
     try {
-      const r = await fetch('/api/scan', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ image: dataUrl }),
-      });
-      // 501 — сервер без vision-провайдера; 404 — статический хостинг без /api
-      // (например, зеркало на GitHub Pages): в обоих случаях честно предлагаем демо
-      if (r.status === 501 || r.status === 404) {
-        // на сервере не настроен vision-провайдер — честно предлагаем демо
+      // Цепочка: /api/scan этого origin → внешний API (VITE_SCAN_API_URL) →
+      // OpenRouter из браузера (VITE_OPENROUTER_KEY) → «недоступно» (демо-скан).
+      // Статусы 404/405/501 означают «распознавание недоступно», а не ошибку:
+      // GitHub Pages отвечает 405 на любой POST — раньше это выглядело как «scan api 405».
+      const outcome = await scanProducts(dataUrl);
+      if (!outcome.ok) {
+        // распознавание не дало результата — возвращаем списанный Лайт-скан
+        useAppStore.getState().refundScan();
         setPhase('idle');
-        setScanFailed('noprovider');
+        if (outcome.reason === 'unavailable') {
+          setScanFailed('noprovider');
+        } else {
+          setScanFailed('generic');
+          setScanDetail(outcome.detail ? outcome.detail.slice(0, 160) : null);
+        }
         return;
       }
-      if (!r.ok) {
-        // достаём детали ошибки сервера, чтобы показать пользователю причину
-        let detail = '';
-        try {
-          const j = (await r.json()) as { detail?: unknown; error?: unknown };
-          if (j.error === 'no_ingredients') detail = 'на фото не удалось найти продукты';
-          else if (typeof j.detail === 'string') detail = j.detail.slice(0, 160);
-        } catch {
-          /* тела нет — обойдёмся без деталей */
-        }
-        throw new Error(detail || `scan api ${r.status}`);
-      }
-      const data = (await r.json()) as {
-        ingredients?: string[];
-        products?: Array<{ name: string; confidence?: string }>;
-      };
-      // продукты с уверенностью; если сервер вернул старый формат (строки) — считаем их точными
-      const raw: Array<{ name: string; confidence?: string }> =
-        data.products ?? (data.ingredients ?? []).map((name) => ({ name }));
       const byName = new Map<string, Confidence>();
-      for (const p of raw) {
-        const name = mapToCanonical(String(p.name ?? '')).trim();
+      for (const p of outcome.products) {
+        const name = mapToCanonical(p.name).trim();
         if (name.length < 2) continue;
-        const conf: Confidence = p.confidence === 'medium' || p.confidence === 'low' ? 'medium' : 'high';
+        const conf: Confidence = p.confidence === 'medium' ? 'medium' : 'high';
         byName.set(name, byName.get(name) === 'high' ? 'high' : conf);
       }
       if (byName.size === 0) throw new Error('на фото не удалось найти продукты');
@@ -984,14 +983,14 @@ export default function ScanScreen() {
               <div
                 className={cn(
                   'relative mx-auto flex w-full items-center justify-center overflow-hidden rounded-3xl',
-                  camState === 'on'
+                  liveCam && camState === 'on'
                     ? 'bg-stone-900'
                     : 'aspect-[3/4] border-2 border-dashed border-accent/40 bg-card',
                 )}
                 // Видоискатель повторяет аспект потока: виден ВЕСЬ кадр,
                 // поэтому «1x» — честный угол обзора без скрытого кропа
                 style={
-                  camState === 'on' && streamAR
+                  liveCam && camState === 'on' && streamAR
                     ? { aspectRatio: String(streamAR), maxHeight: '58vh' }
                     : undefined
                 }
@@ -1007,13 +1006,13 @@ export default function ScanScreen() {
                   }}
                   className={cn(
                     'absolute inset-0 h-full w-full object-contain',
-                    camState === 'on' ? 'block' : 'hidden',
+                    liveCam && camState === 'on' ? 'block' : 'hidden',
                   )}
                 />
 
                 {/* Ступени зума как в системной камере — честные множители,
                     минимальный = настоящий минимум объектива (может быть 0,6×) */}
-                {camState === 'on' && phase !== 'scanning' && (
+                {liveCam && camState === 'on' && phase !== 'scanning' && (
                   <div className="absolute bottom-24 left-1/2 z-10 flex -translate-x-1/2 items-center gap-1 rounded-full bg-black/40 p-1 backdrop-blur-sm">
                     {zoomChips.map((f) => (
                       <button
@@ -1035,7 +1034,7 @@ export default function ScanScreen() {
                 )}
 
                 {/* Панель съёмки внутри видоискателя — затвор всегда виден */}
-                {camState === 'on' && phase !== 'scanning' && (
+                {liveCam && camState === 'on' && phase !== 'scanning' && (
                   <div className="absolute bottom-4 left-0 right-0 z-10 flex items-center justify-center gap-6">
                     <button
                       type="button"
@@ -1067,7 +1066,7 @@ export default function ScanScreen() {
                 )}
 
                 {/* Рамка видоискателя */}
-                {camState === 'on' && phase !== 'scanning' && (
+                {liveCam && camState === 'on' && phase !== 'scanning' && (
                   <>
                     <span className="pointer-events-none absolute top-6 left-6 h-10 w-10 rounded-tl-2xl border-t-2 border-l-2 border-white/80" />
                     <span className="pointer-events-none absolute top-6 right-6 h-10 w-10 rounded-tr-2xl border-t-2 border-r-2 border-white/80" />
@@ -1092,8 +1091,67 @@ export default function ScanScreen() {
                   </div>
                 )}
 
-                {/* Нет камеры / стартуем */}
-                {camState !== 'on' && phase !== 'scanning' && (
+                {/* Системная камера: основной способ — снимок через нативное приложение камеры */}
+                {!liveCam && phase !== 'scanning' && (
+                  <div className="flex w-full flex-col items-center gap-3 px-6 py-6 text-center">
+                    <span className="flex h-16 w-16 items-center justify-center rounded-full bg-accent-soft text-accent">
+                      <Camera size={28} />
+                    </span>
+                    <p className="text-sm font-semibold text-ink">Сфотографируй продукты</p>
+                    <p className="text-xs text-ink-2">
+                      Откроется системная камера — честный зум 1×, автофокус и вспышка,
+                      как в штатном приложении камеры
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() => sysCamRef.current?.click()}
+                      className="mt-1 flex w-full items-center justify-center gap-2 rounded-2xl bg-accent py-3.5 text-sm font-semibold text-on-accent transition-colors hover:bg-accent-strong"
+                    >
+                      <Camera size={17} />
+                      Сделать фото
+                    </button>
+                    <div className="grid w-full grid-cols-2 gap-2">
+                      <button
+                        type="button"
+                        onClick={() => fileInputRef.current?.click()}
+                        className="flex items-center justify-center gap-1.5 rounded-2xl border border-line bg-card py-2.5 text-xs font-semibold text-ink-2 transition-colors hover:text-ink"
+                      >
+                        <ImagePlus size={14} />
+                        Из галереи
+                      </button>
+                      <button
+                        type="button"
+                        onClick={demoScan}
+                        className="flex items-center justify-center gap-1.5 rounded-2xl border border-line bg-card py-2.5 text-xs font-semibold text-ink-2 transition-colors hover:text-ink"
+                      >
+                        <RefreshCw size={14} />
+                        Демо-скан
+                      </button>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setLiveCam(true)}
+                      className="mt-0.5 text-xs font-semibold text-accent underline-offset-2 hover:underline"
+                    >
+                      Открыть живой видоискатель
+                    </button>
+                  </div>
+                )}
+
+                {/* Закрыть живой видоискатель */}
+                {liveCam && phase !== 'scanning' && (
+                  <button
+                    type="button"
+                    onClick={() => setLiveCam(false)}
+                    aria-label="Закрыть живой видоискатель"
+                    className="absolute top-3 right-3 z-20 flex h-9 w-9 items-center justify-center rounded-full bg-black/45 text-white backdrop-blur-sm transition-colors hover:bg-black/60"
+                  >
+                    <X size={16} />
+                  </button>
+                )}
+
+                {/* Нет камеры / стартуем (только в живом видоискателе) */}
+                {liveCam && camState !== 'on' && phase !== 'scanning' && (
                   <div className="flex flex-col items-center gap-3 px-8 text-center">
                     <span
                       className={cn(
@@ -1122,7 +1180,7 @@ export default function ScanScreen() {
                 )}
               </div>
 
-              {camState !== 'on' && (
+              {liveCam && camState !== 'on' && (
                 <div className="mt-4 space-y-2">
                   <button
                     type="button"
@@ -1155,11 +1213,24 @@ export default function ScanScreen() {
                 }}
               />
 
+              {/* Системная камера: нативное приложение камеры с честным зумом и фокусом */}
+              <input
+                ref={sysCamRef}
+                type="file"
+                accept="image/*"
+                capture="environment"
+                className="hidden"
+                onChange={(e) => {
+                  onFilePicked(e.target.files?.[0]);
+                  e.target.value = '';
+                }}
+              />
+
               {scanFailed && (
                 <div className="mt-3 rounded-2xl border border-accent/30 bg-accent-soft px-4 py-3 text-center">
                   <p className="text-xs font-medium text-accent-ink">
                     {scanFailed === 'noprovider'
-                      ? 'Распознавание по фото на сервере не настроено. Попробуй демо-скан или штрих-код.'
+                      ? 'Сейчас распознавание фото недоступно — нет сервера с ИИ. Работают демо-скан и штрих-код.'
                       : 'Не получилось распознать фото. Попробуй ещё раз при другом освещении.'}
                   </p>
                   {scanFailed === 'generic' && scanDetail && (
