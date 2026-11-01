@@ -11,9 +11,15 @@
   "at": "2026-10-31T18:36:01.951Z"
  },
  "paella-seafood": {
-  "score": -1,
-  "kind": "error",
-  "note": "ошибка проверки"
+  "score": 8,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Естественная текстура риса и морепродуктов, реалистичное освещение",
+  "mtime": 1793449163000,
+  "at": "2026-11-01T17:38:16.131Z"
  },
  "spanakopita": {
   "score": -1,
@@ -879,15 +885,15 @@
   "at": "2026-10-31T19:34:56.692Z"
  },
  "dakos": {
-  "score": 4,
-  "steam": true,
+  "score": 7,
+  "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Нарисован декоративный пар над холодным блюдом",
-  "mtime": 1793312770000,
-  "at": "2026-10-31T19:34:58.057Z"
+  "note": "Томаты слегка «нейронные», но в целом реалистично",
+  "mtime": 1793554252529.9119,
+  "at": "2026-11-01T17:37:55.289Z"
  },
  "dan-dan-noodles": {
   "score": 9,
@@ -934,15 +940,15 @@
   "at": "2026-10-31T19:35:05.962Z"
  },
  "draniki": {
-  "score": 8,
+  "score": 7,
   "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
-  "wrong": true,
-  "note": "Это не драники, а овсяные или рисовые лепёшки",
-  "mtime": 1793428995000,
-  "at": "2026-10-31T19:35:07.774Z"
+  "wrong": false,
+  "note": "Реалистично, но текстура драников слегка однородная",
+  "mtime": 1793554013814.4302,
+  "at": "2026-11-01T17:37:57.167Z"
  },
  "eggplant-parmesan": {
   "score": 7,
@@ -978,48 +984,48 @@
   "at": "2026-10-31T19:35:13.371Z"
  },
  "falafel-wrap": {
-  "score": 6,
-  "steam": true,
+  "score": 7,
+  "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
-  "wrong": true,
-  "note": "Тарелка серая, не терракотовая; нарисован пар",
-  "mtime": 1793301936000,
-  "at": "2026-10-31T19:35:15.197Z"
+  "wrong": false,
+  "note": "Реалистично, но фалафель слегка «нейронный», нет свежих овощей",
+  "mtime": 1793553926673.2566,
+  "at": "2026-11-01T17:37:59.116Z"
  },
  "fattoush": {
-  "score": 3,
-  "steam": true,
+  "score": 7,
+  "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Явно нарисован декоративный пар над холодным салатом",
-  "mtime": 1793312121000,
-  "at": "2026-10-31T19:35:16.936Z"
+  "note": "Реалистично, но есть лёгкий нейронный глянец на овощах",
+  "mtime": 1793554050236.5034,
+  "at": "2026-11-01T17:38:01.127Z"
  },
  "fish-and-chips": {
-  "score": 4,
-  "steam": true,
-  "plastic": false,
-  "text": false,
-  "people": false,
-  "wrong": false,
-  "note": "Нарисован декоративный пар — признак ИИ-генерации",
-  "mtime": 1793302344000,
-  "at": "2026-10-31T19:35:18.344Z"
- },
- "fish-cutlets": {
   "score": 8,
   "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
-  "wrong": true,
-  "note": "Филе рыбы в панировке, а не котлеты из фарша",
-  "mtime": 1793428927000,
-  "at": "2026-10-31T19:35:20.226Z"
+  "wrong": false,
+  "note": "Качественный фуд-фото, слегка AI-оттенок текстуры панировки",
+  "mtime": 1793553854264.1104,
+  "at": "2026-11-01T17:38:02.997Z"
+ },
+ "fish-cutlets": {
+  "score": 7,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Реалистично, но текстура котлет слегка однородная",
+  "mtime": 1793553976151.3542,
+  "at": "2026-11-01T17:38:04.857Z"
  },
  "fresh-spring-rolls": {
   "score": 8,
@@ -1845,5 +1851,192 @@
   "note": "Качественный снимок, естественная текстура еды и света",
   "mtime": 1793313167000,
   "at": "2026-11-01T17:23:08.271Z"
+ },
+ "pad-see-ew": {
+  "score": 7,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": true,
+  "note": "Лапша узкая, а не широкая (wide noodles)",
+  "mtime": 1793449163000,
+  "at": "2026-11-01T17:38:06.886Z"
+ },
+ "pad-thai-shrimp": {
+  "score": 8,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Качественный снимок, естественная подача, соответствует описанию",
+  "mtime": 1793449163000,
+  "at": "2026-11-01T17:38:10.689Z"
+ },
+ "pad-woo-sen": {
+  "score": 7,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Лапша похожа на пшеничную, не стеклянную",
+  "mtime": 1793398554000,
+  "at": "2026-11-01T17:38:12.826Z"
+ },
+ "pan-con-tomate": {
+  "score": 3,
+  "steam": true,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Явно нарисован декоративный пар над холодным блюдом",
+  "mtime": 1793312804000,
+  "at": "2026-11-01T17:38:18.003Z"
+ },
+ "pasta-carbonara": {
+  "score": 7,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Реалистично, но слегка «гладкая» текстура пасты",
+  "mtime": 1793452696000,
+  "at": "2026-11-01T17:38:20.269Z"
+ },
+ "patatas-bravas": {
+  "score": 8,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Качественная съёмка, естественные текстуры, верное блюдо",
+  "mtime": 1793452790000,
+  "at": "2026-11-01T17:38:22.209Z"
+ },
+ "pea-soup": {
+  "score": 7,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Гороховый суп с копчёными рёбрышками и сухариками",
+  "mtime": 1793302816000,
+  "at": "2026-11-01T17:38:24.331Z"
+ },
+ "peanut-butter-cookies": {
+  "score": 9,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Отличный натуральный снимок арахисового печенья с характерным узором",
+  "mtime": 1793315634000,
+  "at": "2026-11-01T17:38:26.476Z"
+ },
+ "pelmeni": {
+  "score": 7,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": true,
+  "note": "Плоская тарелка вместо глубокой миски, нет сметаны, масла и укропа",
+  "mtime": 1793449163000,
+  "at": "2026-11-01T17:38:29.096Z"
+ },
+ "pepperoni-pizza": {
+  "score": 3,
+  "steam": true,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Нарисован декоративный пар, пепперони плоские без чашечек",
+  "mtime": 1793304225000,
+  "at": "2026-11-01T17:38:30.889Z"
+ },
+ "philly-cheesesteak": {
+  "score": 7,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Нет сыра в филадельфийском стейке, но мясо и перец верны",
+  "mtime": 1793398731000,
+  "at": "2026-11-01T17:38:33.007Z"
+ },
+ "pineapple-fried-rice": {
+  "score": 6,
+  "steam": true,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Рисованный пар над рисом, текстура крупы однородная",
+  "mtime": 1793398653000,
+  "at": "2026-11-01T17:38:34.773Z"
+ },
+ "pissaladiere": {
+  "score": 8,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Реалистичное фото pissaladière на терракотовой тарелке",
+  "mtime": 1793398520000,
+  "at": "2026-11-01T17:38:36.877Z"
+ },
+ "pisto-manchego": {
+  "score": 7,
+  "steam": true,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Лёгкий пар над блюдом, иначе реалистично",
+  "mtime": 1793398483000,
+  "at": "2026-11-01T17:38:38.675Z"
+ },
+ "pla-neung-manao": {
+  "score": 9,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Отличный реалистичный кадр, соответствует описанию",
+  "mtime": 1793400343000,
+  "at": "2026-11-01T17:38:40.423Z"
+ },
+ "poke-bowl": {
+  "score": 3,
+  "steam": true,
+  "plastic": true,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Рисованный пар, пластиковая текстура лосося и авокадо",
+  "mtime": 1793301683000,
+  "at": "2026-11-01T17:38:42.421Z"
+ },
+ "pollo-al-ajillo": {
+  "score": 8,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Курица в чесночном соусе на терракотовом блюде",
+  "mtime": 1793400231000,
+  "at": "2026-11-01T17:38:44.206Z"
  }
 }
