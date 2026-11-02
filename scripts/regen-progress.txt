@@ -205,3 +205,9 @@ rassolnik
 salade-nicoise
 satay-veg-tofu
 pad-gratiem-garlic-veg
+shakshuka
+shrimp-pasta
+shchi
+red-curry-pumpkin
+scallion-pancakes
+salt-pepper-shrimp
