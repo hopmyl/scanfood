@@ -200,3 +200,8 @@ pork-french
 provence-chicken
 pollo-al-ajillo
 pla-neung-manao
+ratatouille
+rassolnik
+salade-nicoise
+satay-veg-tofu
+pad-gratiem-garlic-veg
