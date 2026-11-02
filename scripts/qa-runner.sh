@@ -51,9 +51,16 @@ else
 fi
 
 # --- Срез агента-повара: рецепты и порядок шагов (инкрементально) ---
-echo "=== chef-slice START $(date) ===" >> "$LOG"
-timeout 240 node scripts/chef-critic.mjs --limit=10 >> "$LOG" 2>&1
-echo "=== chef-slice EXIT $(date) ===" >> "$LOG"
+# ПАУЗА ПОВАРА (запрос пользователя 2026-11-02 ~13:40: «повара на паузу,
+# сначала делаем фото»): пока существует scripts/chef-paused.flag, срез
+# пропускается. Вернуть повара: удалить файл scripts/chef-paused.flag.
+if [ -f scripts/chef-paused.flag ]; then
+  echo "=== chef-slice SKIPPED (пауза по запросу пользователя) $(date) ===" >> "$LOG"
+else
+  echo "=== chef-slice START $(date) ===" >> "$LOG"
+  timeout 240 node scripts/chef-critic.mjs --limit=10 >> "$LOG" 2>&1
+  echo "=== chef-slice EXIT $(date) ===" >> "$LOG"
+fi
 
 DONE=$(grep -c . scripts/regen-progress.txt 2>/dev/null || echo 0)
 echo "=== qa-runner EXIT $(date): прогресс $DONE строк ===" >> "$LOG"
