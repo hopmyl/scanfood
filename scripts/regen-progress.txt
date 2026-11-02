@@ -187,3 +187,9 @@ mushroom-risotto
 okroshka
 oat-cookies
 mango-sticky-rice
+pepperoni-pizza
+pisto-manchego
+pissaladiere
+pan-con-tomate
+pad-woo-sen
+pineapple-fried-rice
