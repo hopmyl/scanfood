@@ -211,3 +211,7 @@ shchi
 red-curry-pumpkin
 scallion-pancakes
 salt-pepper-shrimp
+soba-beef
+shrimp-saganaki
+shrimp-prik-king
+smashed-cucumber-salad
