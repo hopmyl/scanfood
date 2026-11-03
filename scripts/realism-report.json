@@ -1248,15 +1248,16 @@
   "at": "2026-11-03T21:09:32.359Z"
  },
  "harira": {
-  "score": 4,
-  "steam": true,
+  "score": -1,
+  "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Харира похожа, но пар нарисован",
-  "mtime": 1793684382000,
-  "at": "2026-11-03T21:09:35.079Z"
+  "note": "ошибка критика",
+  "error": true,
+  "mtime": 1793740528417.5845,
+  "at": "2026-11-03T21:43:01.511Z"
  },
  "hash-browns": {
   "score": 7,
@@ -1325,15 +1326,16 @@
   "at": "2026-11-03T21:09:48.787Z"
  },
  "hummus-classic": {
-  "score": 6,
+  "score": -1,
   "steam": false,
-  "plastic": true,
+  "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Хумус узнаваем, но текстура восковая, слегка ИИ",
-  "mtime": 1793684382000,
-  "at": "2026-11-03T21:09:51.137Z"
+  "note": "ошибка критика",
+  "error": true,
+  "mtime": 1793740488889.4607,
+  "at": "2026-11-03T21:46:31.680Z"
  },
  "imam-bayildi": {
   "score": 8,
