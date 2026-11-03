@@ -12,7 +12,6 @@ cinnamon-rolls
 banana-pudding
 kuay-teow-beef-soup
 huang-men-ji
-tuna-sandwich
 smoothie-bowl
 baked-apples
 baba-ganoush
@@ -76,7 +75,6 @@ lentil-soup
 paella-seafood
 gazpacho
 cottage-cheese-pancakes
-spaghetti-bolognese
 greek-salad
 milk-blini
 pelmeni
@@ -90,7 +88,6 @@ borscht
 cottage-cheese-pancakes
 milk-blini
 borscht
-spaghetti-bolognese
 sweet-potato-fries
 pasta-carbonara
 patatas-bravas
@@ -102,7 +99,6 @@ adjarian-khachapuri
 ajvar
 beef-broccoli
 apple-pie
-caesar-salad
 bruschetta
 cabbage-pie
 brownies

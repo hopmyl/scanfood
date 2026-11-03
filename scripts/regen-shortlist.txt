@@ -1,3 +1,6 @@
+tuna-sandwich
+caesar-salad
+spaghetti-bolognese
 adjarian-khachapuri
 ajvar
 american-pancakes
@@ -29,7 +32,6 @@ bruschetta
 buffalo-wings
 buttermilk-biscuits
 cabbage-pie
-caesar-salad
 cajun-shrimp-pasta
 caponata
 carrot-cake
@@ -203,11 +205,10 @@ tom-kha-gai
 tom-kha-mushroom
 tomato-egg-stirfry
 tuna-melt
-tuna-sandwich
 turkish-pide
 twice-cooked-pork
 wedge-salad
 yangzhou-fried-rice
 yemista
 yu-xiang-eggplant
-yu-xiang-pork
+yu-xiang-porkspaghetti-bolognese
