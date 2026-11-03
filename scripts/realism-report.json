@@ -1,14 +1,14 @@
 {
  "cottage-cheese-pancakes": {
-  "score": 8,
+  "score": 7,
   "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Высококачественный фуд-фото, реалистичные текстуры сырников",
-  "mtime": 1793449163000,
-  "at": "2026-10-31T18:36:01.951Z"
+  "note": "Сырники реалистичны, сметана и малина на месте",
+  "mtime": 1793684382000,
+  "at": "2026-11-03T19:40:28.897Z"
  },
  "paella-seafood": {
   "score": 8,
@@ -489,15 +489,15 @@
   "at": "2026-11-03T17:43:51.928Z"
  },
  "char-siu-pork": {
-  "score": 5,
+  "score": 7,
   "steam": false,
-  "plastic": true,
+  "plastic": false,
   "text": false,
   "people": false,
-  "wrong": true,
-  "note": "Похоже на свинину дунпо, не чар сиу; глянцево-пластиковая текстура",
-  "mtime": 1793728226000,
-  "at": "2026-11-03T18:40:08.418Z"
+  "wrong": false,
+  "note": "Глянцевая свинина с глазурью, реалистично, тарелка и палочки на месте",
+  "mtime": 1793731409000,
+  "at": "2026-11-03T19:39:57.362Z"
  },
  "cheese-ham-omelette": {
   "score": 8,
@@ -544,15 +544,15 @@
   "at": "2026-11-03T18:40:13.893Z"
  },
  "chicken-cutlets": {
-  "score": 6,
+  "score": 8,
   "steam": false,
-  "plastic": true,
+  "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Котлета с пюре и огурцами, но текстура панировки слегка «нейронная»",
-  "mtime": 1793684382000,
-  "at": "2026-11-03T18:40:17.400Z"
+  "note": "Котлеты в панировке реалистичны, но пюре слегка восковое",
+  "mtime": 1793731355000,
+  "at": "2026-11-03T19:39:59.608Z"
  },
  "chicken-fajitas": {
   "score": 8,
@@ -753,26 +753,26 @@
   "at": "2026-11-03T18:40:58.297Z"
  },
  "clam-chowder": {
-  "score": 9,
+  "score": 8,
   "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Классический кремовый чаудер с моллюсками, натуральная подача",
-  "mtime": 1793425772000,
-  "at": "2026-10-31T18:35:49.349Z"
+  "note": "Реалистичный крем-суп с моллюсками, подача верная",
+  "mtime": 1793684382000,
+  "at": "2026-11-03T19:40:02.188Z"
  },
  "club-sandwich": {
-  "score": 7,
+  "score": 8,
   "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Реалистично, но текстура мяса слегка однородная",
-  "mtime": 1793553580005.557,
-  "at": "2026-11-01T17:22:16.683Z"
+  "note": "Реалистичный triple decker с курицей, беконом, томатами",
+  "mtime": 1793684382000,
+  "at": "2026-11-03T19:40:06.234Z"
  },
  "cobb-salad": {
   "score": 8,
@@ -781,42 +781,42 @@
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Качественный снимок, классическая подача кобб-салата",
-  "mtime": 1793415077000,
-  "at": "2026-10-31T18:35:53.021Z"
+  "note": "Реалистичный кобб-салат, компоненты соответствуют описанию",
+  "mtime": 1793684382000,
+  "at": "2026-11-03T19:40:13.480Z"
  },
  "coleslaw": {
+  "score": 8,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Реалистичный коул-слоу с морковью, выглядит естественно",
+  "mtime": 1793684382000,
+  "at": "2026-11-03T19:40:15.592Z"
+ },
+ "corn-chicken-soup": {
+  "score": 4,
+  "steam": false,
+  "plastic": true,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Кукуруза выглядит восковой, пластиковой, ИИ-текстуры",
+  "mtime": 1793684382000,
+  "at": "2026-11-03T19:40:18.133Z"
+ },
+ "cornbread": {
   "score": 7,
   "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Слегка размыто, но выглядит как реальное блюдо",
-  "mtime": 1793425688000,
-  "at": "2026-10-31T18:35:54.827Z"
- },
- "corn-chicken-soup": {
-  "score": 9,
-  "steam": false,
-  "plastic": false,
-  "text": false,
-  "people": false,
-  "wrong": true,
-  "note": "На фото свинина, а не курица, как в описании",
-  "mtime": 1793553346236.0852,
-  "at": "2026-11-01T17:22:19.015Z"
- },
- "cornbread": {
-  "score": 9,
-  "steam": false,
-  "plastic": false,
-  "text": false,
-  "people": false,
-  "wrong": false,
-  "note": "Естественная текстура корочки, реалистичное освещение, типичная подача.",
-  "mtime": 1793425600000,
-  "at": "2026-10-31T18:35:58.252Z"
+  "note": "Реалистичный корнбред, но текстура слегка однородна",
+  "mtime": 1793684382000,
+  "at": "2026-11-03T19:40:21.054Z"
  },
  "cottage-cheese-casserole": {
   "score": 8,
@@ -825,64 +825,64 @@
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Высококачественный ИИ-рендер, реалистичная текстура запеканки",
-  "mtime": 1793553029615.463,
-  "at": "2026-11-01T17:22:21.257Z"
+  "note": "Запеканка с изюмом и сметаной выглядит реалистично",
+  "mtime": 1793684382000,
+  "at": "2026-11-03T19:40:23.073Z"
  },
  "couscous-vegetables": {
-  "score": 7,
-  "steam": false,
-  "plastic": false,
-  "text": false,
-  "people": false,
-  "wrong": false,
-  "note": "Кускус с овощами и нутом, терракотовая тарелка, реалистично",
-  "mtime": 1793425444000,
-  "at": "2026-10-31T18:36:04.225Z"
- },
- "crab-corn-salad": {
-  "score": 7,
-  "steam": false,
-  "plastic": false,
-  "text": false,
-  "people": false,
-  "wrong": false,
-  "note": "Реалистично, но есть лёгкий глянец ИИ на кукурузе",
-  "mtime": 1793553166806.7263,
-  "at": "2026-11-01T17:22:24.102Z"
- },
- "crispy-tofu": {
-  "score": 7,
-  "steam": false,
-  "plastic": false,
-  "text": false,
-  "people": false,
-  "wrong": false,
-  "note": "Тофу в соусе, рис, кунжут, зелень — соответствует описанию",
-  "mtime": 1793552992467.3887,
-  "at": "2026-11-01T17:22:25.994Z"
- },
- "croissant-salmon": {
-  "score": 7,
-  "steam": false,
-  "plastic": false,
-  "text": false,
-  "people": false,
-  "wrong": false,
-  "note": "Слегка «нейронная» текстура крошек и огурцов",
-  "mtime": 1793552925488.2544,
-  "at": "2026-11-01T17:22:29.761Z"
- },
- "cumin-lamb": {
   "score": 8,
   "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Выглядит как жареная говядина с кумином, не баранина",
-  "mtime": 1793555607000,
-  "at": "2026-11-01T18:10:04.305Z"
+  "note": "Кускус с овощами и нутом, реалистично",
+  "mtime": 1793684382000,
+  "at": "2026-11-03T19:40:32.239Z"
+ },
+ "crab-corn-salad": {
+  "score": 7,
+  "steam": false,
+  "plastic": true,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Все ингредиенты на месте, но текстура чуть восковая",
+  "mtime": 1793684382000,
+  "at": "2026-11-03T19:40:33.919Z"
+ },
+ "crispy-tofu": {
+  "score": 7,
+  "steam": false,
+  "plastic": true,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Соус слишком глянцевый, текстура слегка восковая",
+  "mtime": 1793684382000,
+  "at": "2026-11-03T19:40:36.073Z"
+ },
+ "croissant-salmon": {
+  "score": 8,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Реалистичный круассан-сэндвич, слои и текстура хороши",
+  "mtime": 1793684382000,
+  "at": "2026-11-03T19:40:38.276Z"
+ },
+ "cumin-lamb": {
+  "score": 7,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Похоже на приправленную баранину, подача верная, реалистично",
+  "mtime": 1793684382000,
+  "at": "2026-11-03T19:40:41.668Z"
  },
  "dakos": {
   "score": 7,
@@ -891,64 +891,64 @@
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Томаты слегка «нейронные», но в целом реалистично",
-  "mtime": 1793554252529.9119,
-  "at": "2026-11-01T17:37:55.289Z"
+  "note": "Похоже на дакос, реалистично, лёгкая ИИ-гладкость",
+  "mtime": 1793684382000,
+  "at": "2026-11-03T19:40:44.486Z"
  },
  "dan-dan-noodles": {
-  "score": 9,
-  "steam": false,
-  "plastic": false,
-  "text": false,
-  "people": false,
-  "wrong": false,
-  "note": "Отличный реалистичный снимок дан-дан мянь в ресторане",
-  "mtime": 1793429217000,
-  "at": "2026-10-31T19:35:00.311Z"
- },
- "deviled-eggs": {
-  "score": 9,
-  "steam": false,
-  "plastic": false,
-  "text": false,
-  "people": false,
-  "wrong": false,
-  "note": "Отличный натуральный снимок, реалистичные текстуры яиц и паприки",
-  "mtime": 1793466852000,
-  "at": "2026-10-31T19:35:02.136Z"
- },
- "di-san-xian": {
   "score": 8,
   "steam": false,
   "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Реалистичная подача дан-дан лапши, соответствует описанию",
+  "mtime": 1793684382000,
+  "at": "2026-11-03T19:40:47.148Z"
+ },
+ "deviled-eggs": {
+  "score": 8,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Реалистичные фаршированные яйца с паприкой, good",
+  "mtime": 1793684382000,
+  "at": "2026-11-03T19:40:49.217Z"
+ },
+ "di-san-xian": {
+  "score": 4,
+  "steam": false,
+  "plastic": true,
   "text": false,
   "people": false,
   "wrong": true,
-  "note": "Это мясной фарш с перцем, а не ди сянь сян",
-  "mtime": 1793555297000,
-  "at": "2026-11-01T18:10:06.191Z"
+  "note": "Фаршевидное рагу с глянцевой текстурой, не ди сань сянь",
+  "mtime": 1793684382000,
+  "at": "2026-11-03T19:40:51.600Z"
  },
  "dolma-grape-leaves": {
+  "score": 7,
+  "steam": false,
+  "plastic": true,
+  "text": false,
+  "people": false,
+  "wrong": true,
+  "note": "Похоже на тёмные сардельки/пеппони, не долма; восковая текстура",
+  "mtime": 1793684382000,
+  "at": "2026-11-03T19:40:54.059Z"
+ },
+ "draniki": {
   "score": 8,
   "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Реалистичное фото долмы, естественное освещение, лёгкий глянец масла",
-  "mtime": 1793429109000,
-  "at": "2026-10-31T19:35:05.962Z"
- },
- "draniki": {
-  "score": 7,
-  "steam": false,
-  "plastic": false,
-  "text": false,
-  "people": false,
-  "wrong": false,
-  "note": "Реалистично, но текстура драников слегка однородная",
-  "mtime": 1793554013814.4302,
-  "at": "2026-11-01T17:37:57.167Z"
+  "note": "Реалистичные драники, сметана и зелень есть",
+  "mtime": 1793684382000,
+  "at": "2026-11-03T19:40:55.803Z"
  },
  "eggplant-parmesan": {
   "score": 7,
@@ -957,9 +957,9 @@
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Баклажаны выглядят слишком тёмными и глянцевыми, почти как смола",
-  "mtime": 1793428852000,
-  "at": "2026-10-31T19:35:09.975Z"
+  "note": "Похоже на запечённые баклажаны с пармезаном, реалистично, базилик есть",
+  "mtime": 1793684382000,
+  "at": "2026-11-03T19:40:58.311Z"
  },
  "eggs-benedict": {
   "score": 8,
@@ -968,20 +968,20 @@
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Высококачественный снимок, возможно с лёгкой обработкой ИИ",
-  "mtime": 1793429321000,
-  "at": "2026-10-31T19:35:11.335Z"
+  "note": "Реалистичные яйца бенедикт, голландез вытекает естественно",
+  "mtime": 1793684382000,
+  "at": "2026-11-03T19:41:00.322Z"
  },
  "falafel-bowl": {
-  "score": 8,
+  "score": 7,
   "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Фалафель с киноа и нутом, соус вместо хумуса",
-  "mtime": 1793429070000,
-  "at": "2026-10-31T19:35:13.371Z"
+  "note": "Фалафель с киноа и хумусом, реалистично; хумус условен",
+  "mtime": 1793684382000,
+  "at": "2026-11-03T19:41:02.550Z"
  },
  "falafel-wrap": {
   "score": 7,
@@ -990,9 +990,9 @@
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Реалистично, но фалафель слегка «нейронный», нет свежих овощей",
-  "mtime": 1793553926673.2566,
-  "at": "2026-11-01T17:37:59.116Z"
+  "note": "Реалистичный фалафель в лаваше, овощей маловато",
+  "mtime": 1793684382000,
+  "at": "2026-11-03T19:41:04.973Z"
  },
  "fattoush": {
   "score": 7,
