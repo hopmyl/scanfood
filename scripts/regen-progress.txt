@@ -81,7 +81,6 @@ fish-cutlets
 fresh-spring-rolls
 fried-calamari
 ful-medames
-gaeng-som-veg
 gai-pad-med-mamuang
 gai-yang
 garlic-bok-choy
@@ -222,3 +221,4 @@ char-siu-pork
 crispy-tofu
 crab-corn-salad
 dolma-grape-leaves
+gaeng-som-veg
