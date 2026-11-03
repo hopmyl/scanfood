@@ -1063,13 +1063,13 @@
  "gaeng-som-veg": {
   "score": 7,
   "steam": false,
-  "plastic": true,
+  "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Похоже на гэнг сом, но текстура слегка восковая",
-  "mtime": 1793684382000,
-  "at": "2026-11-03T20:39:56.965Z"
+  "note": "Реалистичный овощной карри-суп, лайм и чили есть",
+  "mtime": 1793738642444.294,
+  "at": "2026-11-03T21:09:30.040Z"
  },
  "gai-pad-med-mamuang": {
   "score": 7,
@@ -1237,81 +1237,81 @@
   "at": "2026-11-03T20:40:35.181Z"
  },
  "hand-torn-cabbage": {
+  "score": 8,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Реалистичная рваная капуста с чили, верная подача",
+  "mtime": 1793684382000,
+  "at": "2026-11-03T21:09:32.359Z"
+ },
+ "harira": {
+  "score": 4,
+  "steam": true,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Харира похожа, но пар нарисован",
+  "mtime": 1793684382000,
+  "at": "2026-11-03T21:09:35.079Z"
+ },
+ "hash-browns": {
+  "score": 7,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Хрустящие картофельные оладьи, реалистично, но лёгкая ИИ-гладкость",
+  "mtime": 1793684382000,
+  "at": "2026-11-03T21:09:36.961Z"
+ },
+ "herring-shuba": {
   "score": 9,
   "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Отличный реалистичный снимок, капуста с чили на белой тарелке",
-  "mtime": 1793438285000,
-  "at": "2026-10-31T20:05:29.683Z"
- },
- "harira": {
-  "score": 3,
-  "steam": true,
-  "plastic": true,
-  "text": false,
-  "people": false,
-  "wrong": false,
-  "note": "Явный ИИ-рендер: нарисован пар, пластичная текстура супа",
-  "mtime": 1793438012000,
-  "at": "2026-10-31T20:35:10.993Z"
- },
- "hash-browns": {
-  "score": 6,
-  "steam": false,
-  "plastic": true,
-  "text": false,
-  "people": false,
-  "wrong": false,
-  "note": "Текстура картофеля однородная, края слишком ровные",
-  "mtime": 1793438356000,
-  "at": "2026-10-31T20:35:12.920Z"
- },
- "herring-shuba": {
-  "score": 7,
-  "steam": false,
-  "plastic": false,
-  "text": false,
-  "people": true,
-  "wrong": false,
-  "note": "Размытые люди на заднем плане, текстура слоёв однородная",
-  "mtime": 1793437888000,
-  "at": "2026-10-31T20:35:14.335Z"
+  "note": "Слои шубы читаются, кадр реалистичный, естественно",
+  "mtime": 1793684382000,
+  "at": "2026-11-03T21:09:40.292Z"
  },
  "homestyle-tofu": {
-  "score": 8,
+  "score": 4,
   "steam": false,
-  "plastic": false,
+  "plastic": true,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Реалистичное фото жареного тофу с перцем на белой тарелке",
-  "mtime": 1793438252000,
-  "at": "2026-10-31T20:35:16.070Z"
+  "note": "Тофу выглядит восковым, неестественно однородные рёбра",
+  "mtime": 1793684382000,
+  "at": "2026-11-03T21:09:42.511Z"
  },
  "hong-shao-rou": {
-  "score": 7,
-  "steam": false,
-  "plastic": false,
-  "text": false,
-  "people": false,
-  "wrong": false,
-  "note": "Реалистично, но есть лёгкий глянец текстуры",
-  "mtime": 1793438148000,
-  "at": "2026-10-31T20:35:17.721Z"
- },
- "hot-sour-soup": {
   "score": 8,
   "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Качественный снимок, похоже на острую суп-гуляш с грибами",
-  "mtime": 1793438180000,
-  "at": "2026-10-31T20:35:19.646Z"
+  "note": "Реалистичная свинина, лёгкая ИИ-гладкость соуса",
+  "mtime": 1793684382000,
+  "at": "2026-11-03T21:09:44.729Z"
+ },
+ "hot-sour-soup": {
+  "score": 6,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Похоже на острокислый суп с грибами, лёгкие ИИ-артефакты текстуры",
+  "mtime": 1793684382000,
+  "at": "2026-11-03T21:09:47.021Z"
  },
  "huang-men-ji": {
   "score": 8,
@@ -1320,64 +1320,64 @@
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Качественный снимок, соответствует описанию блюда",
-  "mtime": 1793415077000,
-  "at": "2026-10-31T20:35:21.006Z"
+  "note": "Блюдо соответствует, выглядит реалистично, фон размыт.",
+  "mtime": 1793684382000,
+  "at": "2026-11-03T21:09:48.787Z"
  },
  "hummus-classic": {
-  "score": 8,
+  "score": 6,
   "steam": false,
-  "plastic": false,
+  "plastic": true,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Качественный снимок хумуса с характерной спиралью",
-  "mtime": 1793557499078.459,
-  "at": "2026-11-01T18:38:37.358Z"
+  "note": "Хумус узнаваем, но текстура восковая, слегка ИИ",
+  "mtime": 1793684382000,
+  "at": "2026-11-03T21:09:51.137Z"
  },
  "imam-bayildi": {
-  "score": 7,
+  "score": 8,
   "steam": false,
   "plastic": false,
   "text": true,
   "people": false,
   "wrong": false,
-  "note": "Реалистично, но текст на фото и лёгкий ИИ-глянец",
-  "mtime": 1793441504000,
-  "at": "2026-10-31T20:35:24.596Z"
+  "note": "Реалистичный имам баилди, зелень и масло на месте",
+  "mtime": 1793684382000,
+  "at": "2026-11-03T21:09:53.435Z"
  },
  "jambalaya": {
-  "score": 8,
+  "score": 7,
   "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Высококачественный снимок, возможно ИИ-генерация с лёгкой пластичностью креветок",
-  "mtime": 1793557678304.597,
-  "at": "2026-11-01T18:38:39.194Z"
+  "note": "Реалистичная джамбалайя, креветки и колбаса читаются, лёгкая ИИ-глянцевость риса",
+  "mtime": 1793684382000,
+  "at": "2026-11-03T21:09:56.567Z"
  },
  "jiaozi-pork": {
-  "score": 9,
+  "score": 6,
   "steam": false,
-  "plastic": false,
+  "plastic": true,
   "text": false,
   "people": true,
   "wrong": false,
-  "note": "Отличный кадр, размытые люди на заднем плане",
-  "mtime": 1793449163000,
-  "at": "2026-10-31T20:35:29.510Z"
+  "note": "Пельмени выглядят слегка восковыми, тарелка тёмная, а не белая",
+  "mtime": 1793684382000,
+  "at": "2026-11-03T21:09:58.890Z"
  },
  "julienne": {
-  "score": 8,
+  "score": 6,
   "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
   "wrong": true,
-  "note": "Жареные грибы в соусе вместо жюльена с сыром",
-  "mtime": 1793441469000,
-  "at": "2026-10-31T20:35:31.166Z"
+  "note": "Жареные грибы без сырной корочки и кокотницы",
+  "mtime": 1793684382000,
+  "at": "2026-11-03T21:10:02.195Z"
  },
  "kai-jeow": {
   "score": 7,
@@ -1386,9 +1386,9 @@
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Текстура яичницы однородная, края подозрительно ровные",
-  "mtime": 1793557698158.724,
-  "at": "2026-11-01T18:38:40.519Z"
+  "note": "Реалистичный кай джао с лаймом и чили",
+  "mtime": 1793684382000,
+  "at": "2026-11-03T21:10:04.312Z"
  },
  "kefir-pancakes": {
   "score": 8,
@@ -1397,75 +1397,75 @@
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Высококачественный ИИ-рендер, но очень реалистичный",
-  "mtime": 1793556928434.89,
-  "at": "2026-11-01T18:38:42.219Z"
+  "note": "Похоже на сырники, реалистично, края ровноваты",
+  "mtime": 1793684382000,
+  "at": "2026-11-03T21:10:06.397Z"
  },
  "key-lime-pie": {
-  "score": 9,
+  "score": 8,
   "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Высококачественный фуд-фото, реалистичные текстуры и свет",
-  "mtime": 1793557909558.9604,
-  "at": "2026-11-01T18:38:44.085Z"
+  "note": "Реалистичный key lime pie с меренгой, лаймом",
+  "mtime": 1793684382000,
+  "at": "2026-11-03T21:10:08.460Z"
  },
  "khao-man-gai": {
-  "score": 7,
+  "score": 8,
   "steam": false,
-  "plastic": false,
+  "plastic": true,
   "text": false,
   "people": false,
-  "wrong": true,
-  "note": "Это не khao man gai, а курица в красном соусе/карри",
-  "mtime": 1793441752000,
-  "at": "2026-11-01T17:06:22.724Z"
+  "wrong": false,
+  "note": "Курица с рисом и лаймом соответствует, но текстура восковая",
+  "mtime": 1793684382000,
+  "at": "2026-11-03T21:10:10.488Z"
  },
  "khao-soi": {
   "score": 7,
   "steam": false,
+  "plastic": true,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Khao soi узнаваем, но текстуры слегка «нейронные», хрустящая лапша неестественна",
+  "mtime": 1793684382000,
+  "at": "2026-11-03T21:10:12.618Z"
+ },
+ "kibbeh": {
+  "score": 5,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": true,
+  "note": "Круглые тефтели в соусе, а не жареные киббе",
+  "mtime": 1793684382000,
+  "at": "2026-11-03T21:10:14.842Z"
+ },
+ "kluay-buat-chi": {
+  "score": 8,
+  "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Реалистично, но текстура лапши слегка однородная",
-  "mtime": 1793441831000,
-  "at": "2026-11-01T17:06:24.505Z"
- },
- "kibbeh": {
-  "score": 6,
-  "steam": false,
-  "plastic": true,
-  "text": false,
-  "people": false,
-  "wrong": false,
-  "note": "Пластиковая текстура котлет, тарелка не терракотовая",
-  "mtime": 1793441670000,
-  "at": "2026-11-01T17:06:26.341Z"
- },
- "kluay-buat-chi": {
-  "score": 3,
-  "steam": false,
-  "plastic": true,
-  "text": false,
-  "people": false,
-  "wrong": false,
-  "note": "Пластиковая текстура бананов, однородная нейронная поверхность",
-  "mtime": 1793441988000,
-  "at": "2026-11-01T17:06:28.119Z"
+  "note": "Бананы в кокосовом молоке, реалистично, чили и лайм есть",
+  "mtime": 1793684382000,
+  "at": "2026-11-03T21:10:17.545Z"
  },
  "kluay-tod": {
-  "score": 6,
+  "score": 7,
   "steam": false,
-  "plastic": true,
+  "plastic": false,
   "text": false,
   "people": false,
   "wrong": true,
-  "note": "Это курица/мясо, а не банановые фриттеры. Текстура пластилиновая.",
-  "mtime": 1793441912000,
-  "at": "2026-11-01T17:06:30.258Z"
+  "note": "Похоже на жареную курицу, а не банановые фриттеры",
+  "mtime": 1793684382000,
+  "at": "2026-11-03T21:10:19.716Z"
  },
  "kofte-turkish": {
   "score": 8,
@@ -1474,20 +1474,20 @@
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Реалистичный кадр, соответствует описанию, лёгкая цифровая обработка",
-  "mtime": 1793557463076.2324,
-  "at": "2026-11-01T18:38:45.860Z"
+  "note": "Реалистичные кёфте с рисом, сервировка соответствует описанию",
+  "mtime": 1793684382000,
+  "at": "2026-11-03T21:10:21.864Z"
  },
  "korean-carrot": {
-  "score": 8,
+  "score": 7,
   "steam": false,
-  "plastic": false,
+  "plastic": true,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Высококачественный фуд-фото, еда выглядит натурально",
-  "mtime": 1793557160676.3687,
-  "at": "2026-11-01T18:38:48.071Z"
+  "note": "Морковча в каменной чаше, но текстура слегка восковая",
+  "mtime": 1793684382000,
+  "at": "2026-11-03T21:10:24.226Z"
  },
  "kuay-teow-beef-soup": {
   "score": 8,
@@ -1496,9 +1496,9 @@
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Качественный реалистичный кадр тайского супа с говядиной",
-  "mtime": 1793415077000,
-  "at": "2026-11-01T17:06:35.518Z"
+  "note": "Реалистичный суп с говядиной, лаймом и чили на месте",
+  "mtime": 1793684382000,
+  "at": "2026-11-03T21:10:26.412Z"
  },
  "kung-pao-chicken": {
   "score": 8,
