@@ -76,3 +76,7 @@
 8:45:34 PM [vite] (client) page reload .mirror/index.html
 8:45:34 PM [vite] (client) page reload .mirror/404.html
 8:45:34 PM [vite] (client) page reload .mirror/index.html
+9:30:31 PM [vite] (client) hmr update /src/index.css, /src/App.tsx, /src/components/BottomNav.tsx, /src/screens/FavoritesScreen.tsx, /src/screens/ProfileScreen.tsx, /src/screens/ScanScreen.tsx, /src/screens/DishScreen.tsx, /src/screens/PantryScreen.tsx, /src/screens/ShoppingScreen.tsx, /src/screens/CatalogScreen.tsx, /src/components/DishCard.tsx, /src/components/ProToggle.tsx
+9:30:40 PM [vite] (client) hmr update /src/index.css, /src/App.tsx, /src/components/BottomNav.tsx, /src/screens/FavoritesScreen.tsx, /src/screens/ProfileScreen.tsx, /src/screens/ScanScreen.tsx, /src/screens/DishScreen.tsx, /src/screens/PantryScreen.tsx, /src/screens/ShoppingScreen.tsx, /src/screens/CatalogScreen.tsx, /src/components/DishCard.tsx, /src/components/ProToggle.tsx
+9:30:47 PM [vite] (client) page reload .mirror/404.html
+9:30:47 PM [vite] (client) page reload .mirror/index.html
