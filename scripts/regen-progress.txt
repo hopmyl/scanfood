@@ -37,7 +37,6 @@ carrot-cake
 cheese-ham-omelette
 cheese-soup
 chicken-congee
-chicken-cutlets
 chicken-fajitas
 chicken-mushroom-pasta
 chicken-noodle-soup
@@ -221,4 +220,5 @@ yu-xiang-pork
 baked-mackerel
 bruschetta
 beef-broccoli
+chicken-cutlets
 char-siu-pork
