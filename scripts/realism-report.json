@@ -33,26 +33,28 @@
   "at": "2026-11-04T18:51:24.299Z"
  },
  "adjarian-khachapuri": {
-  "score": 9,
+  "score": -1,
   "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Реалистичный аджарский хачапури, всё соответствует",
-  "mtime": 1793684381000,
-  "at": "2026-11-03T16:09:50.104Z"
+  "note": "ошибка критика",
+  "error": true,
+  "mtime": 1793823017552.9402,
+  "at": "2026-11-04T20:13:56.390Z"
  },
  "ajvar": {
-  "score": 7,
+  "score": -1,
   "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Реалистичный аджвар на терракотовой тарелке, соответствует описанию",
-  "mtime": 1793684381000,
-  "at": "2026-11-03T16:10:09.160Z"
+  "note": "ошибка критика",
+  "error": true,
+  "mtime": 1793823017552.9402,
+  "at": "2026-11-04T20:17:26.551Z"
  },
  "american-pancakes": {
   "score": 8,
