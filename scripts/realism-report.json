@@ -2464,26 +2464,26 @@
   "at": "2026-11-04T19:11:02.040Z"
  },
  "tabbouleh": {
-  "score": 3,
-  "steam": true,
-  "plastic": true,
+  "score": 8,
+  "steam": false,
+  "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Рисованный пар и восковая текстура крупы",
-  "mtime": 1793684382000,
-  "at": "2026-11-04T19:11:04.508Z"
+  "note": "Реалистичный табуле с булгуром и зеленью, терракота",
+  "mtime": 1793819871256.6072,
+  "at": "2026-11-04T19:39:54.230Z"
  },
  "tea-eggs": {
-  "score": 3,
-  "steam": true,
-  "plastic": true,
+  "score": 9,
+  "steam": false,
+  "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Слишком глянцевые восковые яйца, нарисован декоративный пар",
-  "mtime": 1793684382000,
-  "at": "2026-11-04T19:11:06.439Z"
+  "note": "Реалистичные чайные яйца, мраморный узор, бадьян",
+  "mtime": 1793820450726.8538,
+  "at": "2026-11-04T19:39:55.968Z"
  },
  "thai-congee-jok": {
   "score": 7,
@@ -2508,26 +2508,26 @@
   "at": "2026-11-04T19:11:12.288Z"
  },
  "thai-spring-rolls": {
-  "score": 8,
-  "steam": true,
+  "score": 7,
+  "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Реалистичные спринг-роллы, но пар нарисован",
-  "mtime": 1793684382000,
-  "at": "2026-11-04T19:11:14.400Z"
+  "note": "Реалистичные спринг-роллы, переизбыток роллов, чуть ИИ-текстура",
+  "mtime": 1793820053798.6274,
+  "at": "2026-11-04T19:39:57.573Z"
  },
  "thai-sticky-wings": {
-  "score": 6,
-  "steam": true,
-  "plastic": true,
+  "score": 8,
+  "steam": false,
+  "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Крылья выглядят восковыми, пар нарисован, но блюдо верное",
-  "mtime": 1793684382000,
-  "at": "2026-11-04T19:11:16.561Z"
+  "note": "Реалистичные крылья в соусе, лайм и чили на месте",
+  "mtime": 1793820161780.2275,
+  "at": "2026-11-04T19:39:59.003Z"
  },
  "tod-mun-pla": {
   "score": 7,
@@ -2541,15 +2541,15 @@
   "at": "2026-11-04T19:11:18.634Z"
  },
  "tofu-larb": {
-  "score": 4,
-  "steam": true,
-  "plastic": false,
+  "score": 5,
+  "steam": false,
+  "plastic": true,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Блюдо верное, но пар явно нарисован",
-  "mtime": 1793684382000,
-  "at": "2026-11-04T19:11:24.080Z"
+  "note": "Похоже на тофу ларб, но текстура чуть пластиковая, ИИ-подозрения",
+  "mtime": 1793820099868.8826,
+  "at": "2026-11-04T19:40:01.103Z"
  },
  "tom-kha-gai": {
   "score": 7,
@@ -2574,15 +2574,15 @@
   "at": "2026-11-04T19:11:29.580Z"
  },
  "tom-yum": {
-  "score": 4,
-  "steam": true,
+  "score": 7,
+  "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Рисованный декоративный пар над супом",
-  "mtime": 1793684382000,
-  "at": "2026-11-04T19:11:32.857Z"
+  "note": "Реалистичный суп-том ям, креветки видны, лайм и чили есть",
+  "mtime": 1793819630953.2583,
+  "at": "2026-11-04T19:40:03.242Z"
  },
  "tomato-egg-stirfry": {
   "score": 8,
@@ -2596,37 +2596,38 @@
   "at": "2026-11-04T19:11:35.096Z"
  },
  "trout-foil": {
-  "score": 4,
-  "steam": true,
+  "score": 9,
+  "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
-  "wrong": true,
-  "note": "Нарисованный дым; похоже на лосось-филе, а не стейк форели",
-  "mtime": 1793684382000,
-  "at": "2026-11-04T19:11:38.671Z"
+  "wrong": false,
+  "note": "Реалистичный снимок форели с лимоном и тимьяном в фольге",
+  "mtime": 1793819722465.771,
+  "at": "2026-11-04T19:40:05.380Z"
  },
  "tu-dou-si": {
-  "score": 4,
-  "steam": true,
+  "score": 7,
+  "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Блюдо верное, но пар нарисован искусственно",
-  "mtime": 1793684382000,
-  "at": "2026-11-04T19:11:41.354Z"
+  "note": "Реалистичная съёмка, похоже на соломку, но текстура сомнительна",
+  "mtime": 1793820347997.2683,
+  "at": "2026-11-04T19:40:10.081Z"
  },
  "tuna-egg-salad": {
-  "score": 5,
-  "steam": true,
+  "score": -1,
+  "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Блюдо верное, но заметен нарисованный пар над едой",
-  "mtime": 1793684382000,
-  "at": "2026-11-04T19:11:44.425Z"
+  "note": "ошибка критика",
+  "error": true,
+  "mtime": 1793819775544.0627,
+  "at": "2026-11-04T19:43:40.237Z"
  },
  "tuna-melt": {
   "score": 7,
@@ -2682,5 +2683,17 @@
   "note": "Похоже на пирог с фаршем, реалистично, посуда не терракота",
   "mtime": 1793724164000,
   "at": "2026-11-04T19:12:00.929Z"
+ },
+ "twice-cooked-pork": {
+  "score": -1,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "ошибка критика",
+  "error": true,
+  "mtime": 1793724972000,
+  "at": "2026-11-04T19:47:10.585Z"
  }
 }
