@@ -22,9 +22,15 @@
   "at": "2026-11-04T18:27:04.872Z"
  },
  "spanakopita": {
-  "score": -1,
-  "kind": "error",
-  "note": "ошибка проверки"
+  "score": 8,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Реалистичная spanakopita, тесто детализировано, чуть ИИ-гладкость трав",
+  "mtime": 1793684382000,
+  "at": "2026-11-04T18:51:24.299Z"
  },
  "adjarian-khachapuri": {
   "score": 9,
@@ -1281,15 +1287,15 @@
   "at": "2026-11-03T21:09:40.292Z"
  },
  "homestyle-tofu": {
-  "score": 6,
+  "score": 7,
   "steam": false,
   "plastic": true,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Тофу с перцем, но текстура восковая, ИИ-рендер",
-  "mtime": 1793816685670.9011,
-  "at": "2026-11-04T18:26:35.782Z"
+  "note": "Тофу с луком реалистичен, но текстура слегка восковая",
+  "mtime": 1793817481448.3494,
+  "at": "2026-11-04T18:41:37.188Z"
  },
  "hong-shao-rou": {
   "score": 8,
@@ -1457,15 +1463,15 @@
   "at": "2026-11-03T21:10:17.545Z"
  },
  "kluay-tod": {
-  "score": 6,
+  "score": 7,
   "steam": false,
   "plastic": true,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Жареные кусочки выглядят восковыми, слишком однородная текстура",
-  "mtime": 1793816481163.757,
-  "at": "2026-11-04T18:26:42.862Z"
+  "note": "Похоже на банановые фриттеры, текстура слегка восковая",
+  "mtime": 1793817441658.1294,
+  "at": "2026-11-04T18:41:41.885Z"
  },
  "kofte-turkish": {
   "score": 8,
@@ -1534,15 +1540,15 @@
   "at": "2026-11-04T17:41:12.981Z"
  },
  "lazy-vareniki": {
-  "score": 7,
+  "score": 3,
   "steam": false,
   "plastic": true,
   "text": false,
   "people": false,
-  "wrong": false,
-  "note": "Похоже на ленивые вареники, но текстура слегка восковая",
-  "mtime": 1793816077451.51,
-  "at": "2026-11-04T18:26:44.746Z"
+  "wrong": true,
+  "note": "Пельмени в бульоне, не ленивые вареники; восковая текстура",
+  "mtime": 1793817259177.1113,
+  "at": "2026-11-04T18:41:43.814Z"
  },
  "lentil-soup": {
   "score": 8,
@@ -1798,15 +1804,15 @@
   "at": "2026-11-04T18:26:48.549Z"
  },
  "olivier": {
-  "score": 6,
+  "score": 8,
   "steam": false,
-  "plastic": true,
+  "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Похоже на оливье, но текстура слегка восковая, ИИ-подозрения",
-  "mtime": 1793816222005.315,
-  "at": "2026-11-04T18:26:50.381Z"
+  "note": "Реалистичный оливье, состав верный, мелкие артефакты",
+  "mtime": 1793817308519.3892,
+  "at": "2026-11-04T18:41:45.752Z"
  },
  "oven-shashlik": {
   "score": 7,
@@ -1853,15 +1859,15 @@
   "at": "2026-11-04T18:26:55.041Z"
  },
  "pad-see-ew": {
-  "score": 5,
+  "score": 7,
   "steam": false,
-  "plastic": true,
+  "plastic": false,
   "text": false,
   "people": false,
-  "wrong": true,
-  "note": "Лапша тонкая, не широкая; текстура восковая",
-  "mtime": 1793684382000,
-  "at": "2026-11-04T18:26:58.313Z"
+  "wrong": false,
+  "note": "Лапша тонковата для pad see ew, но блюдо реалистично",
+  "mtime": 1793817396093.8784,
+  "at": "2026-11-04T18:41:48.282Z"
  },
  "pad-thai-shrimp": {
   "score": 8,
@@ -1996,15 +2002,15 @@
   "at": "2026-11-04T18:27:28.840Z"
  },
  "pisto-manchego": {
-  "score": 6,
+  "score": 8,
   "steam": false,
-  "plastic": true,
+  "plastic": false,
   "text": false,
   "people": false,
-  "wrong": true,
-  "note": "Похоже на мясное рагу с яйцом, не овощное; восковая текстура",
-  "mtime": 1793684382000,
-  "at": "2026-11-04T18:31:01.104Z"
+  "wrong": false,
+  "note": "Писто с яйцом на тарракотовой тарелке, реалистично",
+  "mtime": 1793817353840.6445,
+  "at": "2026-11-04T18:41:50.179Z"
  },
  "pla-neung-manao": {
   "score": 6,
@@ -2018,15 +2024,15 @@
   "at": "2026-11-04T18:31:04.428Z"
  },
  "poke-bowl": {
-  "score": 3,
-  "steam": true,
-  "plastic": true,
+  "score": 7,
+  "steam": false,
+  "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Рисованный пар, пластиковая текстура лосося и авокадо",
-  "mtime": 1793301683000,
-  "at": "2026-11-01T17:38:42.421Z"
+  "note": "Реалистичная поке с лососем, но текстура риса слегка неестественна",
+  "mtime": 1793684382000,
+  "at": "2026-11-04T18:41:52.538Z"
  },
  "pollo-al-ajillo": {
   "score": 8,
@@ -2035,338 +2041,426 @@
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Курица в чесночном соусе на терракотовом блюде",
-  "mtime": 1793400231000,
-  "at": "2026-11-01T17:38:44.206Z"
+  "note": "Реалистичная курица, терракотовая тарелка, зелень на месте",
+  "mtime": 1793684382000,
+  "at": "2026-11-04T18:41:54.819Z"
  },
  "pork-chops": {
-  "score": 3,
-  "steam": true,
-  "plastic": true,
-  "text": false,
-  "people": false,
-  "wrong": false,
-  "note": "Явно ИИ: нарисован пар, восковая текстура мяса",
-  "mtime": 1793301956000,
-  "at": "2026-11-01T17:41:06.218Z"
- },
- "pork-french": {
-  "score": 3,
-  "steam": true,
-  "plastic": false,
-  "text": false,
-  "people": false,
-  "wrong": true,
-  "note": "Нарисован пар, другое блюдо — свинина без сыра",
-  "mtime": 1793312382000,
-  "at": "2026-11-01T18:10:19.919Z"
- },
- "potato-skins": {
-  "score": 7,
-  "steam": false,
-  "plastic": false,
-  "text": false,
-  "people": false,
-  "wrong": true,
-  "note": "Это не картофельная шкурка, а целая запечённая картофелина",
-  "mtime": 1793415077000,
-  "at": "2026-11-01T18:10:21.736Z"
- },
- "provence-chicken": {
-  "score": 3,
-  "steam": true,
-  "plastic": true,
-  "text": false,
-  "people": false,
-  "wrong": false,
-  "note": "Нарисованный пар, восковая текстура курицы, ИИ-генерация",
-  "mtime": 1793312550000,
-  "at": "2026-11-01T18:10:24.119Z"
- },
- "pumpkin-soup": {
-  "score": 9,
-  "steam": false,
-  "plastic": false,
-  "text": false,
-  "people": false,
-  "wrong": false,
-  "note": "Отличный натуральный кадр, текстура супа реалистична",
-  "mtime": 1793400093000,
-  "at": "2026-11-01T18:10:26.267Z"
- },
- "qing-zheng-fish": {
-  "score": 3,
-  "steam": true,
-  "plastic": true,
-  "text": false,
-  "people": false,
-  "wrong": false,
-  "note": "Нарисованный пар и пластиковая текстура рыбы",
-  "mtime": 1793314856000,
-  "at": "2026-11-01T18:10:27.989Z"
- },
- "rassolnik": {
-  "score": 6,
-  "steam": true,
-  "plastic": false,
-  "text": false,
-  "people": false,
-  "wrong": false,
-  "note": "Рисованный пар снижает реалистичность, текстура крупы однородная",
-  "mtime": 1793303495000,
-  "at": "2026-11-01T18:10:29.363Z"
- },
- "ratatouille": {
-  "score": 3,
-  "steam": true,
-  "plastic": true,
-  "text": false,
-  "people": false,
-  "wrong": false,
-  "note": "Нарисованный пар и пластиковая текстура овощей",
-  "mtime": 1793302570000,
-  "at": "2026-11-01T18:10:31.367Z"
- },
- "red-curry-pumpkin": {
-  "score": 9,
-  "steam": false,
-  "plastic": false,
-  "text": false,
-  "people": false,
-  "wrong": false,
-  "note": "Отличный реалистичный кадр тайского карри с тыквой",
-  "mtime": 1793400500000,
-  "at": "2026-11-01T18:10:33.071Z"
- },
- "roasted-roots": {
-  "score": 9,
-  "steam": false,
-  "plastic": false,
-  "text": false,
-  "people": false,
-  "wrong": false,
-  "note": "Отличный натуральный снимок с карамелизированными краями",
-  "mtime": 1793301969000,
-  "at": "2026-11-01T18:10:34.744Z"
- },
- "salade-nicoise": {
-  "score": 3,
-  "steam": true,
-  "plastic": true,
-  "text": false,
-  "people": false,
-  "wrong": false,
-  "note": "Нарисован пар, восковая текстура тунца и яиц",
-  "mtime": 1793311721000,
-  "at": "2026-11-01T18:10:37.450Z"
- },
- "salt-pepper-shrimp": {
-  "score": 3,
-  "steam": true,
-  "plastic": true,
-  "text": false,
-  "people": false,
-  "wrong": false,
-  "note": "Явно ИИ: нарисован пар, пластилиновая текстура креветок",
-  "mtime": 1793314803000,
-  "at": "2026-11-01T18:10:39.377Z"
- },
- "satay-veg-tofu": {
-  "score": 6,
-  "steam": false,
-  "plastic": true,
-  "text": false,
-  "people": false,
-  "wrong": false,
-  "note": "Текстура тофу слишком однородная и пластиковая",
-  "mtime": 1793400424000,
-  "at": "2026-11-01T18:10:41.263Z"
- },
- "scallion-pancakes": {
-  "score": 6,
-  "steam": false,
-  "plastic": true,
-  "text": false,
-  "people": false,
-  "wrong": false,
-  "note": "Слишком однородная текстура, похожа на пластилин или воск",
-  "mtime": 1793400570000,
-  "at": "2026-11-01T18:10:43.448Z"
- },
- "sesame-noodles-cold": {
-  "score": 4,
-  "steam": true,
-  "plastic": false,
-  "text": false,
-  "people": false,
-  "wrong": false,
-  "note": "Нарисованный пар снижает реалистичность, остальное хорошо",
-  "mtime": 1793314903000,
-  "at": "2026-11-01T18:10:45.030Z"
- },
- "shakshuka": {
-  "score": 3,
-  "steam": true,
-  "plastic": false,
-  "text": false,
-  "people": false,
-  "wrong": true,
-  "note": "Нарисован пар, сковорода вместо терракотовой тарелки",
-  "mtime": 1793300459000,
-  "at": "2026-11-01T18:10:46.409Z"
- },
- "shchi": {
-  "score": 9,
-  "steam": false,
-  "plastic": false,
-  "text": false,
-  "people": false,
-  "wrong": true,
-  "note": "Томатный суп/соус вместо щей с капустой и мясом",
-  "mtime": 1793400151000,
-  "at": "2026-11-01T18:10:48.084Z"
- },
- "shrimp-pasta": {
-  "score": 3,
-  "steam": true,
-  "plastic": false,
-  "text": false,
-  "people": false,
-  "wrong": false,
-  "note": "Явно нарисованный декоративный пар снижает реализм",
-  "mtime": 1793301633000,
-  "at": "2026-11-01T18:38:57.103Z"
- },
- "shrimp-prik-king": {
-  "score": 3,
-  "steam": true,
-  "plastic": true,
-  "text": false,
-  "people": false,
-  "wrong": false,
-  "note": "Явно ИИ: нарисован пар, восковая текстура креветок",
-  "mtime": 1793313920000,
-  "at": "2026-11-01T18:38:59.722Z"
- },
- "shrimp-saganaki": {
-  "score": 9,
-  "steam": false,
-  "plastic": false,
-  "text": false,
-  "people": false,
-  "wrong": false,
-  "note": "Отличное фото: текстура креветок реалистична, фета и томаты натуральные",
-  "mtime": 1793400311000,
-  "at": "2026-11-01T18:39:01.399Z"
- },
- "shui-zhu-beef": {
-  "score": 4,
-  "steam": true,
-  "plastic": false,
-  "text": false,
-  "people": false,
-  "wrong": false,
-  "note": "Декоративный нарисованный пар снижает реализм",
-  "mtime": 1793315070000,
-  "at": "2026-11-01T18:39:02.781Z"
- },
- "sloppy-joes": {
-  "score": 4,
-  "steam": true,
-  "plastic": false,
-  "text": false,
-  "people": false,
-  "wrong": false,
-  "note": "Нарисованный пар снижает реалистичность, мясо выглядит нормально",
-  "mtime": 1793315362000,
-  "at": "2026-11-01T18:39:04.556Z"
- },
- "smashed-cucumber-salad": {
-  "score": 6,
-  "steam": true,
-  "plastic": false,
-  "text": false,
-  "people": false,
-  "wrong": false,
-  "note": "Нарисованный пар снижает оценку, остальное адекватно",
-  "mtime": 1793314700000,
-  "at": "2026-11-01T18:39:06.276Z"
- },
- "smoothie-bowl": {
   "score": 8,
   "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
+  "wrong": false,
+  "note": "Реалистичная отбивная с дольками и розмарином",
+  "mtime": 1793684382000,
+  "at": "2026-11-04T18:41:58.101Z"
+ },
+ "pork-french": {
+  "score": 8,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Мясо под сыром с томатами и луком, выглядит реально",
+  "mtime": 1793684382000,
+  "at": "2026-11-04T18:42:01.979Z"
+ },
+ "potato-skins": {
+  "score": 8,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Реалистичные запечённые картофельные шкурки с сыром, хорошая подача",
+  "mtime": 1793818047566.504,
+  "at": "2026-11-04T18:48:14.555Z"
+ },
+ "provence-chicken": {
+  "score": 8,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Реалистичная запечённая курица с томатами, терракота есть",
+  "mtime": 1793684382000,
+  "at": "2026-11-04T18:42:06.892Z"
+ },
+ "pumpkin-soup": {
+  "score": 8,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Реалистичный тыквенный суп в терракотовой посуде",
+  "mtime": 1793684382000,
+  "at": "2026-11-04T18:42:09.053Z"
+ },
+ "qing-zheng-fish": {
+  "score": 8,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Реалистичный кадр: паровая рыба, имбирь, зелёный лук, палочки",
+  "mtime": 1793722529000,
+  "at": "2026-11-04T18:42:10.749Z"
+ },
+ "rassolnik": {
+  "score": 8,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Рассольник с перловкой, огурцами и укропом — соответствует, выглядит реалистично",
+  "mtime": 1793684382000,
+  "at": "2026-11-04T18:42:14.098Z"
+ },
+ "ratatouille": {
+  "score": 8,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Реалистичный рататуй, красивая укладка, лёгкий ИИ-глянец",
+  "mtime": 1793684382000,
+  "at": "2026-11-04T18:42:17.068Z"
+ },
+ "red-curry-pumpkin": {
+  "score": 8,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Реалистичный кадр, керамическая миска, чили и лайм есть",
+  "mtime": 1793818004327.264,
+  "at": "2026-11-04T18:50:36.704Z"
+ },
+ "roasted-roots": {
+  "score": 8,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Реалистичные запечённые овощи с тимьяном",
+  "mtime": 1793684382000,
+  "at": "2026-11-04T18:42:21.199Z"
+ },
+ "salade-nicoise": {
+  "score": 7,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Реалистичный нисуаз: тунец, яйцо, томаты, оливки",
+  "mtime": 1793684382000,
+  "at": "2026-11-04T18:42:23.260Z"
+ },
+ "salt-pepper-shrimp": {
+  "score": 7,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Креветки реалистичны, но текстура слегка однородная, ИИ-подозрения",
+  "mtime": 1793684382000,
+  "at": "2026-11-04T18:42:25.462Z"
+ },
+ "satay-veg-tofu": {
+  "score": 7,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Курица вместо тофу, нет арахисового соуса, но реалистично",
+  "mtime": 1793817931411.8665,
+  "at": "2026-11-04T18:50:38.734Z"
+ },
+ "scallion-pancakes": {
+  "score": 8,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Реалистичные луковые оладьи, текстура и блин почти натуральные",
+  "mtime": 1793684382000,
+  "at": "2026-11-04T18:42:35.023Z"
+ },
+ "sesame-noodles-cold": {
+  "score": 6,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Похоже на лапшу с огурцом, слегка ИИ-текстура",
+  "mtime": 1793722574000,
+  "at": "2026-11-04T18:42:37.303Z"
+ },
+ "shakshuka": {
+  "score": 8,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Реалистичная шакшука с яйцами и фетой, верная подача",
+  "mtime": 1793684382000,
+  "at": "2026-11-04T18:42:40.296Z"
+ },
+ "shchi": {
+  "score": 8,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Реалистичные щи, всё соответствует описанию",
+  "mtime": 1793684382000,
+  "at": "2026-11-04T18:42:42.086Z"
+ },
+ "shrimp-pasta": {
+  "score": 7,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Реалистичная креветочная паста с базиликом, но слегка гладкая текстура",
+  "mtime": 1793684382000,
+  "at": "2026-11-04T18:50:41.573Z"
+ },
+ "shrimp-prik-king": {
+  "score": 9,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Реалистичные креветки в соусе, лайм, чили, кинза",
+  "mtime": 1793684382000,
+  "at": "2026-11-04T18:50:44.842Z"
+ },
+ "shrimp-saganaki": {
+  "score": 8,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Реалистичные креветки с фетой и томатами, верное блюдо",
+  "mtime": 1793684382000,
+  "at": "2026-11-04T18:50:47.102Z"
+ },
+ "shui-zhu-beef": {
+  "score": 8,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Реалистичный шуй чжу ниу, всё соответствует",
+  "mtime": 1793722754000,
+  "at": "2026-11-04T18:50:50.103Z"
+ },
+ "sloppy-joes": {
+  "score": 8,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Реалистичный sloppy joe, текстура мяса хорошая",
+  "mtime": 1793723051000,
+  "at": "2026-11-04T18:50:52.238Z"
+ },
+ "smashed-cucumber-salad": {
+  "score": 7,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Огуречный салат с чесноком, реалистично, чуть глянцево",
+  "mtime": 1793684382000,
+  "at": "2026-11-04T18:50:56.542Z"
+ },
+ "smoothie-bowl": {
+  "score": 6,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
   "wrong": true,
-  "note": "Овсяная каша с орехами и сиропом, не смузи-боул",
-  "mtime": 1793415103000,
-  "at": "2026-11-01T18:40:18.027Z"
+  "note": "Овсяная каша вместо смузи-боула, без ягод",
+  "mtime": 1793684382000,
+  "at": "2026-11-04T18:50:58.689Z"
  },
  "soba-beef": {
-  "score": 3,
+  "score": 7,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Гречневая лапша с говядиной и овощами, реалистично",
+  "mtime": 1793684382000,
+  "at": "2026-11-04T18:51:00.905Z"
+ },
+ "solyanka": {
+  "score": 9,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Реалистичная солянка: бульон, салями, оливки, лимон, сметана",
+  "mtime": 1793684382000,
+  "at": "2026-11-04T18:51:03.652Z"
+ },
+ "som-tam": {
+  "score": 8,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Похоже на som tam, реалистично, лайм и перец есть",
+  "mtime": 1793684382000,
+  "at": "2026-11-04T18:51:06.389Z"
+ },
+ "son-in-law-eggs": {
+  "score": 7,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Яйца в соусе с лаймом и чили, реалистично",
+  "mtime": 1793684382000,
+  "at": "2026-11-04T18:51:10.003Z"
+ },
+ "southern-fried-chicken": {
+  "score": 8,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Реалистичная хрустящая корочка, believable кадр",
+  "mtime": 1793723138000,
+  "at": "2026-11-04T18:51:16.883Z"
+ },
+ "soy-braised-wings": {
+  "score": 7,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Реалистичные крылья, лёгкая ИИ-глянцевость соуса",
+  "mtime": 1793684382000,
+  "at": "2026-11-04T18:51:19.461Z"
+ },
+ "spaghetti-bolognese": {
+  "score": 7,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Реалистичная болоньезе с пармезаном и базиликом",
+  "mtime": 1793684382000,
+  "at": "2026-11-04T18:51:21.270Z"
+ },
+ "spanish-tortilla": {
+  "score": 5,
   "steam": true,
   "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Явно нарисованный декоративный пар, снижающий реализм",
-  "mtime": 1793301244000,
-  "at": "2026-11-01T18:40:19.888Z"
+  "note": "Похоже на тортилью, но пар нарисован, текстура слегка ИИ",
+  "mtime": 1793684382000,
+  "at": "2026-11-04T18:51:28.754Z"
  },
- "solyanka": {
-  "score": 3,
+ "spinach-artichoke-dip": {
+  "score": 4,
   "steam": true,
-  "plastic": true,
+  "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Явно ИИ: нарисован пар, пластик-текстура, глянцевый суп",
-  "mtime": 1793302693000,
-  "at": "2026-11-01T18:40:21.724Z"
+  "note": "Блюдо верное, но пар явно нарисован",
+  "mtime": 1793684382000,
+  "at": "2026-11-04T18:51:30.962Z"
  },
- "som-tam": {
-  "score": 6,
+ "spinach-cheese-pancake": {
+  "score": 7,
   "steam": false,
-  "plastic": true,
+  "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Папайя похожа на пластик, текстура однородная",
-  "mtime": 1793313090000,
-  "at": "2026-11-01T18:40:23.510Z"
+  "note": "Реалистичный блинчик со шпинатом, сомнений мало",
+  "mtime": 1793684382000,
+  "at": "2026-11-04T18:51:33.415Z"
  },
- "son-in-law-eggs": {
-  "score": 3,
+ "spring-cabbage-salad": {
+  "score": 7,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Салат с капустой, огурцом, укропом и яйцом реалистичен",
+  "mtime": 1793684382000,
+  "at": "2026-11-04T18:51:35.624Z"
+ },
+ "sushi-set": {
+  "score": 6,
   "steam": true,
   "plastic": true,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Явно ИИ: нарисован пар, восковая текстура яиц и соуса",
-  "mtime": 1793314249000,
-  "at": "2026-11-01T18:40:25.524Z"
+  "note": "Рис слишком однородный, нарисован пар — похоже на ИИ",
+  "mtime": 1793684382000,
+  "at": "2026-11-04T18:51:38.583Z"
  },
- "southern-fried-chicken": {
-  "score": 3,
-  "steam": true,
-  "plastic": true,
+ "sweet-potato-fries": {
+  "score": 8,
+  "steam": false,
+  "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Нарисованный пар и пластичная текстура корочки",
-  "mtime": 1793315685000,
-  "at": "2026-11-01T18:40:26.900Z"
+  "note": "Реалистичная румяная корочка, но текстура слегка однородна",
+  "mtime": 1793684382000,
+  "at": "2026-11-04T18:51:40.796Z"
  },
- "soy-braised-wings": {
-  "score": 3,
+ "sweet-sour-chicken": {
+  "score": 4,
   "steam": true,
-  "plastic": true,
+  "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Явно ИИ: нарисован пар, восковая текстура курицы",
-  "mtime": 1793314723000,
-  "at": "2026-11-01T18:40:28.609Z"
+  "note": "Курица и перец верны, но пар явно нарисован",
+  "mtime": 1793684382000,
+  "at": "2026-11-04T18:51:44.071Z"
  }
 }

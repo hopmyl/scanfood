@@ -143,16 +143,13 @@ poke-bowl
 pollo-al-ajillo
 pork-chops
 pork-french
-potato-skins
 provence-chicken
 pumpkin-soup
 qing-zheng-fish
 rassolnik
 ratatouille
-red-curry-pumpkin
 salade-nicoise
 salt-pepper-shrimp
-satay-veg-tofu
 scallion-pancakes
 sesame-noodles-cold
 shakshuka
@@ -163,7 +160,6 @@ shrimp-saganaki
 shui-zhu-beef
 sloppy-joes
 smashed-cucumber-salad
-smoothie-bowl
 soba-beef
 solyanka
 som-tam
@@ -222,3 +218,11 @@ pisto-manchego
 pad-see-ew
 kluay-tod
 homestyle-tofu
+satay-veg-tofu
+red-curry-pumpkin
+potato-skins
+smoothie-bowl
+sweet-sour-chicken
+sushi-set
+spanish-tortilla
+spinach-artichoke-dip

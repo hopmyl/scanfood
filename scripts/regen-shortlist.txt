@@ -196,7 +196,11 @@ son-in-law-eggs
 southern-fried-chicken
 soy-braised-wings
 spanakopita
+spanish-tortilla
+spinach-artichoke-dip
 spinach-cheese-pancake
+sushi-set
+sweet-sour-chicken
 thai-congee-jok
 thai-fried-rice
 tod-mun-pla
@@ -209,4 +213,4 @@ turkish-pide
 twice-cooked-pork
 wedge-salad
 yangzhou-fried-rice
-yemista
+yemistasatay-veg-tofusweet-sour-chicken
