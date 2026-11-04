@@ -2299,15 +2299,15 @@
   "at": "2026-11-04T18:50:56.542Z"
  },
  "smoothie-bowl": {
-  "score": 6,
+  "score": 8,
   "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
-  "wrong": true,
-  "note": "Овсяная каша вместо смузи-боула, без ягод",
-  "mtime": 1793684382000,
-  "at": "2026-11-04T18:50:58.689Z"
+  "wrong": false,
+  "note": "Реалистичная смузи-боул, все топпинги на месте",
+  "mtime": 1793818360748.1543,
+  "at": "2026-11-04T19:10:51.033Z"
  },
  "soba-beef": {
   "score": 7,
@@ -2387,26 +2387,26 @@
   "at": "2026-11-04T18:51:21.270Z"
  },
  "spanish-tortilla": {
-  "score": 5,
-  "steam": true,
+  "score": 8,
+  "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Похоже на тортилью, но пар нарисован, текстура слегка ИИ",
-  "mtime": 1793684382000,
-  "at": "2026-11-04T18:51:28.754Z"
+  "note": "Реалистичная тортилья эспаньола, соответствие описанию хорошее",
+  "mtime": 1793818672615.85,
+  "at": "2026-11-04T19:10:52.956Z"
  },
  "spinach-artichoke-dip": {
-  "score": 4,
-  "steam": true,
+  "score": 8,
+  "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Блюдо верное, но пар явно нарисован",
-  "mtime": 1793684382000,
-  "at": "2026-11-04T18:51:30.962Z"
+  "note": "Запечённый дип со шпинатом, реалистичная текстура",
+  "mtime": 1793818870020.9468,
+  "at": "2026-11-04T19:10:55.398Z"
  },
  "spinach-cheese-pancake": {
   "score": 7,
@@ -2432,14 +2432,14 @@
  },
  "sushi-set": {
   "score": 6,
-  "steam": true,
+  "steam": false,
   "plastic": true,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Рис слишком однородный, нарисован пар — похоже на ИИ",
-  "mtime": 1793684382000,
-  "at": "2026-11-04T18:51:38.583Z"
+  "note": "Роллы выглядят слегка восковыми, текстура однородная",
+  "mtime": 1793818600113.45,
+  "at": "2026-11-04T19:10:59.981Z"
  },
  "sweet-potato-fries": {
   "score": 8,
@@ -2453,14 +2453,234 @@
   "at": "2026-11-04T18:51:40.796Z"
  },
  "sweet-sour-chicken": {
+  "score": 6,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Реалистично, но лёгкая глянцевая однородность вызывает сомнения",
+  "mtime": 1793818558072.2185,
+  "at": "2026-11-04T19:11:02.040Z"
+ },
+ "tabbouleh": {
+  "score": 3,
+  "steam": true,
+  "plastic": true,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Рисованный пар и восковая текстура крупы",
+  "mtime": 1793684382000,
+  "at": "2026-11-04T19:11:04.508Z"
+ },
+ "tea-eggs": {
+  "score": 3,
+  "steam": true,
+  "plastic": true,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Слишком глянцевые восковые яйца, нарисован декоративный пар",
+  "mtime": 1793684382000,
+  "at": "2026-11-04T19:11:06.439Z"
+ },
+ "thai-congee-jok": {
+  "score": 7,
+  "steam": false,
+  "plastic": true,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Рисовая каша с мясом похожа, но текстура восковая",
+  "mtime": 1793722487000,
+  "at": "2026-11-04T19:11:09.782Z"
+ },
+ "thai-fried-rice": {
+  "score": 8,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Реалистичный кадр: кхао пад с креветками, лайм, чили, банановый лист",
+  "mtime": 1793724461000,
+  "at": "2026-11-04T19:11:12.288Z"
+ },
+ "thai-spring-rolls": {
+  "score": 8,
+  "steam": true,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Реалистичные спринг-роллы, но пар нарисован",
+  "mtime": 1793684382000,
+  "at": "2026-11-04T19:11:14.400Z"
+ },
+ "thai-sticky-wings": {
+  "score": 6,
+  "steam": true,
+  "plastic": true,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Крылья выглядят восковыми, пар нарисован, но блюдо верное",
+  "mtime": 1793684382000,
+  "at": "2026-11-04T19:11:16.561Z"
+ },
+ "tod-mun-pla": {
+  "score": 7,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Реалистичные рыбные котлеты, лайм и чили на месте",
+  "mtime": 1793724504000,
+  "at": "2026-11-04T19:11:18.634Z"
+ },
+ "tofu-larb": {
   "score": 4,
   "steam": true,
   "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Курица и перец верны, но пар явно нарисован",
+  "note": "Блюдо верное, но пар явно нарисован",
   "mtime": 1793684382000,
-  "at": "2026-11-04T18:51:44.071Z"
+  "at": "2026-11-04T19:11:24.080Z"
+ },
+ "tom-kha-gai": {
+  "score": 7,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Реалистичный том кха гай, но текстура супа слегка однородна",
+  "mtime": 1793724381000,
+  "at": "2026-11-04T19:11:26.574Z"
+ },
+ "tom-kha-mushroom": {
+  "score": 7,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Том кха с грибами, лаймом и чили; реализм хороший, грибы чуть отретушированы",
+  "mtime": 1793724626000,
+  "at": "2026-11-04T19:11:29.580Z"
+ },
+ "tom-yum": {
+  "score": 4,
+  "steam": true,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Рисованный декоративный пар над супом",
+  "mtime": 1793684382000,
+  "at": "2026-11-04T19:11:32.857Z"
+ },
+ "tomato-egg-stirfry": {
+  "score": 8,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Реалистичное томатное яйцо, всё соответствует описанию",
+  "mtime": 1793724868000,
+  "at": "2026-11-04T19:11:35.096Z"
+ },
+ "trout-foil": {
+  "score": 4,
+  "steam": true,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": true,
+  "note": "Нарисованный дым; похоже на лосось-филе, а не стейк форели",
+  "mtime": 1793684382000,
+  "at": "2026-11-04T19:11:38.671Z"
+ },
+ "tu-dou-si": {
+  "score": 4,
+  "steam": true,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Блюдо верное, но пар нарисован искусственно",
+  "mtime": 1793684382000,
+  "at": "2026-11-04T19:11:41.354Z"
+ },
+ "tuna-egg-salad": {
+  "score": 5,
+  "steam": true,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Блюдо верное, но заметен нарисованный пар над едой",
+  "mtime": 1793684382000,
+  "at": "2026-11-04T19:11:44.425Z"
+ },
+ "tuna-melt": {
+  "score": 7,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Реалистичный тунец melt с чеддером, начинка слегка неестественна",
+  "mtime": 1793725074000,
+  "at": "2026-11-04T19:11:46.537Z"
+ },
+ "tuna-sandwich": {
+  "score": 7,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Реалистично; начинка скорее мясо, чем тунец; половинки лежат",
+  "mtime": 1793724121000,
+  "at": "2026-11-04T19:11:50.354Z"
+ },
+ "tuna-steak-sesame": {
+  "score": 4,
+  "steam": true,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": true,
+  "note": "Нарисованный пар, мясо похоже на говядину, не тунец",
+  "mtime": 1793684382000,
+  "at": "2026-11-04T19:11:54.374Z"
+ },
+ "turkish-lentil-soup": {
+  "score": 4,
+  "steam": true,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Рисованный декоративный пар над супом",
+  "mtime": 1793684382000,
+  "at": "2026-11-04T19:11:56.655Z"
+ },
+ "turkish-pide": {
+  "score": 8,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "note": "Похоже на пирог с фаршем, реалистично, посуда не терракота",
+  "mtime": 1793724164000,
+  "at": "2026-11-04T19:12:00.929Z"
  }
 }
