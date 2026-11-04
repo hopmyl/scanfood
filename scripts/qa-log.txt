@@ -176,3 +176,5 @@
 2026-11-03T21:14:48.890Z hummus-classic score=8 flags=чисто попытки=[1:8] OK Хумус реалистичен, подача и свет соответствуют
 2026-11-03T21:15:28.419Z harira score=8 flags=чисто попытки=[1:8] OK Реалистичный суп, нут и зелень видны, пар отсутствует
 2026-11-03T21:16:38.448Z kibbeh score=7 flags=чисто попытки=[1:7] OK Реалистичные киббе, текстура слегка однородная, но правдоподобно
+2026-11-04T10:31:14.427497 MANUAL-РЕШЕНИЕ (полномочия делегированы пользователем): approve=bbq-pulled-pork,chow-mein-chicken,mussels-cream,pork-french,som-tam,korean-carrot
+2026-11-04T10:31:14.427497 MANUAL-РЕШЕНИЕ: regen=corn-chicken-soup,di-san-xian (убраны из progress, в shortlist остаются)

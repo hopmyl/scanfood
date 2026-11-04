@@ -59,7 +59,6 @@ clam-chowder
 club-sandwich
 cobb-salad
 coleslaw
-corn-chicken-soup
 cornbread
 cottage-cheese-casserole
 cottage-cheese-pancakes
@@ -69,7 +68,6 @@ cumin-lamb
 dakos
 dan-dan-noodles
 deviled-eggs
-di-san-xian
 draniki
 eggplant-parmesan
 eggs-benedict
