@@ -245,3 +245,5 @@ walnut-shrimp
 yam-woon-sen
 yam-nuea
 wonton-soup
+beef-burger
+spaghetti-bolognese
