@@ -805,16 +805,16 @@
   "at": "2026-11-03T19:40:15.592Z"
  },
  "corn-chicken-soup": {
-  "score": 6,
+  "score": 7,
   "steam": false,
-  "plastic": true,
+  "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "glamor": true,
-  "note": "Кукуруза выглядит пластиковой, нейронная текстура мяса",
-  "mtime": 1793884650000,
-  "at": "2026-11-05T16:41:01.942Z"
+  "glamor": false,
+  "note": "Кукурузный суп с мясом реалистичен, слегка идеальная кукуруза",
+  "mtime": 1793897662000,
+  "at": "2026-11-05T19:10:42.629Z"
  },
  "cornbread": {
   "score": 7,
@@ -2713,52 +2713,52 @@
   "at": "2026-11-05T16:42:09.462Z"
  },
  "ukha": {
-  "score": 7,
+  "score": 6,
   "steam": false,
   "plastic": true,
   "text": false,
   "people": false,
   "wrong": false,
   "glamor": false,
-  "note": "Лосось слегка восковой, но сцена реалистична",
-  "mtime": 1793862632000,
-  "at": "2026-11-05T16:42:13.330Z"
+  "note": "Лосось выглядит восково-пластиковым, текстура слишком гладкая",
+  "mtime": 1793897148000,
+  "at": "2026-11-05T19:10:44.853Z"
  },
  "vegetable-stew": {
-  "score": 4,
-  "steam": true,
+  "score": 7,
+  "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
   "glamor": false,
-  "note": "Блюдо соответствует, но пар явно нарисован",
-  "mtime": 1793862632000,
-  "at": "2026-11-05T16:42:18.117Z"
+  "note": "Реалистичное овощное рагу в томатном соусе, соответствует описанию",
+  "mtime": 1793897103000,
+  "at": "2026-11-05T19:10:47.601Z"
  },
  "vinaigrette": {
-  "score": 4,
-  "steam": true,
+  "score": 8,
+  "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
   "glamor": false,
-  "note": "Блюдо похоже, но пар нарисован и текстура слишком гладкая",
-  "mtime": 1793862632000,
-  "at": "2026-11-05T16:42:44.286Z"
+  "note": "Реалистичный винегрет, домашняя подача, светлый фон",
+  "mtime": 1793897205000,
+  "at": "2026-11-05T19:10:50.059Z"
  },
  "walnut-shrimp": {
-  "score": 3,
-  "steam": true,
-  "plastic": true,
+  "score": 6,
+  "steam": false,
+  "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
   "glamor": false,
-  "note": "Восковая текстура, нарисован декоративный пар",
-  "mtime": 1793862632000,
-  "at": "2026-11-05T16:42:46.621Z"
+  "note": "Креветки с орехами и соусом верны, слегка ИИ-текстура",
+  "mtime": 1793897454000,
+  "at": "2026-11-05T19:10:53.747Z"
  },
  "wedge-salad": {
   "score": 6,
@@ -2774,15 +2774,15 @@
  },
  "white-bean-tuna-salad": {
   "score": 6,
-  "steam": true,
-  "plastic": false,
+  "steam": false,
+  "plastic": true,
   "text": false,
   "people": false,
-  "wrong": true,
+  "wrong": false,
   "glamor": false,
-  "note": "Тунец выглядит как фарш, пар нарисован",
-  "mtime": 1793862632000,
-  "at": "2026-11-05T16:42:57.920Z"
+  "note": "Блюдо верное, но бобы восково-пластиковые, текстура ИИ",
+  "mtime": 1793897249000,
+  "at": "2026-11-05T19:10:56.251Z"
  },
  "wonton-soup": {
   "score": 4,
@@ -2795,5 +2795,101 @@
   "note": "Вонтон-суп верный, но пар нарисован, зелень пластиковая",
   "mtime": 1793862632000,
   "at": "2026-11-05T16:43:01.180Z"
+ },
+ "yam-nuea": {
+  "score": 3,
+  "steam": true,
+  "plastic": true,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "glamor": false,
+  "note": "Нарисованный пар, пластилиновое мясо, ИИ-текстуры",
+  "mtime": 1793862632000,
+  "at": "2026-11-05T19:10:59.313Z"
+ },
+ "yam-woon-sen": {
+  "score": 7,
+  "steam": true,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "glamor": false,
+  "note": "Похоже на стеклянную салатную лапшу с морепродуктами, но пар нарисован",
+  "mtime": 1793862632000,
+  "at": "2026-11-05T19:11:01.022Z"
+ },
+ "yangzhou-fried-rice": {
+  "score": 6,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "glamor": true,
+  "note": "Рис с креветкой и яйцом верный, но глянцевый рекламный стиль",
+  "mtime": 1793862632000,
+  "at": "2026-11-05T19:11:03.813Z"
+ },
+ "yemista": {
+  "score": 6,
+  "steam": false,
+  "plastic": true,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "glamor": false,
+  "note": "Блюдо верное, но текстура помидоров восковая, подозрительно гладкая",
+  "mtime": 1793862632000,
+  "at": "2026-11-05T19:11:06.272Z"
+ },
+ "yogurt-honey-walnuts": {
+  "score": 5,
+  "steam": true,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "glamor": false,
+  "note": "Йогурт с мёдом и орехами есть, но пар нарисован",
+  "mtime": 1793862632000,
+  "at": "2026-11-05T19:11:08.705Z"
+ },
+ "yu-xiang-eggplant": {
+  "score": 7,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "glamor": true,
+  "note": "Баклажаны в соусе верны, но стиль гламурно-студийный",
+  "mtime": 1793862632000,
+  "at": "2026-11-05T19:11:10.627Z"
+ },
+ "yu-xiang-pork": {
+  "score": 6,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "glamor": true,
+  "note": "Дисгармоничная текстура свинины, слишком гладкая, стилизованная съёмка",
+  "mtime": 1793862632000,
+  "at": "2026-11-05T19:11:13.274Z"
+ },
+ "zucchini-ikra": {
+  "score": 8,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "glamor": false,
+  "note": "Реалистичное домашнее фото, блюдо соответствует описанию",
+  "mtime": 1793862632000,
+  "at": "2026-11-05T19:11:16.412Z"
  }
 }
