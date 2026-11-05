@@ -233,3 +233,7 @@ tu-dou-si
 tea-eggs
 pasta-carbonara
 beef-steak
+soba-beef
+bbq-pork-ribs
+tuna-steak-sesame
+turkish-lentil-soup

@@ -24,7 +24,8 @@ export function isPass(qa) {
     !qa.plastic &&
     !qa.text &&
     !qa.people &&
-    !qa.wrong
+    !qa.wrong &&
+    !qa.glamor
   );
 }
 
@@ -37,7 +38,8 @@ export function isBad(qa) {
     qa.plastic ||
     qa.text ||
     qa.people ||
-    qa.wrong
+    qa.wrong ||
+    qa.glamor
   );
 }
 
@@ -49,6 +51,7 @@ export function flagsStr(qa) {
   if (qa.text) f.push('текст');
   if (qa.people) f.push('люди');
   if (qa.wrong) f.push('не-то-блюдо');
+  if (qa.glamor) f.push('нейро-глянец');
   return f.length ? f.join('+') : 'чисто';
 }
 
@@ -60,7 +63,7 @@ export function criticPrompt(subject) {
     '»\n' +
     'Проверь фото по всем пунктам и ответь ТОЛЬКО JSON без markdown:\n' +
     '{"score": 1-10, "steam": true/false, "plastic": true/false, "text": true/false, ' +
-    '"people": true/false, "wrong": true/false, "note": "кратко по-русски, максимум 8 слов"}\n' +
+    '"people": true/false, "wrong": true/false, "glamor": true/false, "note": "кратко по-русски, максимум 8 слов"}\n' +
     'Правила:\n' +
     '- score — выглядит ли кадр НАСТОЯЩИМ снимком на камеру, а не рендером: 9-10 неотличим от реального, ' +
     '7-8 реалистичен, 5-6 есть сомнения, 1-4 явно ИИ/рендер.\n' +
@@ -71,6 +74,11 @@ export function criticPrompt(subject) {
     '- text=true, если на фото есть читаемые буквы, надписи, леттеринг, водяные знаки, логотипы ' +
     '(нечитаемые размытые этикетки на заднем плане в сильном расфокусе — не считаются).\n' +
     '- people=true, если видны руки, пальцы, лица или любые части тела.\n' +
+    '- glamor=true, если кадр в стиле «нейро-рекламы», а не домашнего фото: тёмный гламурный студийный ' +
+    'фон с драматическим контровым светом, чрезмерный рекламный глянец (блестит как 3D-рендер/пластик), ' +
+    'салатные листья и помидоры как из мультика, идеальная композиция как с постера. ' +
+    'Настоящая домашняя еда снята при обычном дневном/кухонном свете на обычном столе. ' +
+    'glamor=true — score не выше 5.\n' +
     '- wrong=true, если в кадре ДРУГАЯ ключевая еда, чем в описании: просили сырники — на фото блины, ' +
     'просили борщ — на фото коричневое рагу, просили пасту — на фото рис. ' +
     'ДРУГОЕ БЛЮДО, но та же еда — НЕ wrong: форма подачи (плоская тарелка вместо глубокой миски), ' +
@@ -116,6 +124,7 @@ export async function critiquePhoto(zai, image, subject, { attempts = 4 } = {}) 
         text: p.text === true,
         people: p.people === true,
         wrong: p.wrong === true,
+        glamor: p.glamor === true,
         note: String(p.note ?? '').slice(0, 80),
       };
     } catch (err) {
@@ -125,5 +134,5 @@ export async function critiquePhoto(zai, image, subject, { attempts = 4 } = {}) 
         await new Promise((r) => setTimeout(r, isRate ? 70000 : 5000 * attempt));
     }
   }
-  return { score: -1, steam: false, plastic: false, text: false, people: false, wrong: false, note: 'ошибка критика', error: true };
+  return { score: -1, steam: false, plastic: false, text: false, people: false, wrong: false, glamor: false, note: 'ошибка критика', error: true };
 }
