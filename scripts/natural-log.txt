@@ -76,3 +76,11 @@
 2026-11-05T16:54:22.846Z --- ajvar: «Balkan roasted pepper ajvar spread. Mediterranean dish, olive oil, fre…»
 2026-11-05T16:55:10.414Z OK+ЗАМОК ajvar score=7 (чисто) каналов=1
 2026-11-05T16:55:10.414Z --- crispy-tofu: «Crispy golden fried tofu cubes glazed in soy sauce with sesame seeds a…»
+2026-11-05T19:16:49.759Z === НАТУРАЛ v7 старт: 3 блюд (кандидатов на блюдо: 2) ===
+2026-11-05T19:16:51.949Z Критик z-ai: жив
+2026-11-05T19:17:25.040Z Генератор z-ai: жив
+2026-11-05T19:17:25.040Z --- khao-man-gai: «Khao man gai chicken rice with ginger sauce. Thai street food, banana …»
+2026-11-05T19:19:11.037Z OK+ЗАМОК khao-man-gai score=8 (чисто) каналов=2
+2026-11-05T19:19:11.037Z --- crispy-tofu: «Crispy golden fried tofu cubes glazed in soy sauce with sesame seeds a…»
+2026-11-05T19:20:33.530Z KEEP crispy-tofu: лучший кандидат 6 хуже текущего 7 — файл не трогаю
+2026-11-05T19:20:33.530Z --- imam-bayildi: «Turkish stuffed eggplants imam bayildi. Mediterranean dish, olive oil,…»

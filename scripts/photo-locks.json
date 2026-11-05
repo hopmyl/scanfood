@@ -1366,5 +1366,11 @@
   "at": "2026-11-05T16:55:10.414Z",
   "score": 7,
   "src": "natural-v7"
+ },
+ "khao-man-gai": {
+  "sha256": "a265823646f101b653ce4537e2372c5e7d9dacdcf4ba43f4348fd132d3698e1a",
+  "at": "2026-11-05T19:19:11.037Z",
+  "score": 8,
+  "src": "natural-v7"
  }
 }
