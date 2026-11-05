@@ -102,6 +102,9 @@ interface VisionProvider {
   base?: string;
   key?: string;
   model?: string;
+  /** Дополнительные модели для фейловера OpenRouter (поле body.models) —
+   *  если основная перегружена (429), роутер сам попробует следующую. */
+  fallbackModels?: string[];
 }
 
 /**
@@ -128,11 +131,16 @@ function visionProvider(): VisionProvider | null {
   }
   const orKey = process.env.OPENROUTER_API_KEY?.trim();
   if (orKey) {
+    // Дефолт — nvidia/nemotron-3.5-super-vl:free: единственная быстрая
+    // не-reasoning бесплатная vision-модель без гео-блока Google AI Studio
+    // («User location is not supported» — 2026-11-05). gemma-*:free оставлены
+    // только фолбэками: из РФ Google их режет.
     return {
       kind: 'openai',
       base: 'https://openrouter.ai/api/v1',
       key: orKey,
-      model: process.env.OPENROUTER_MODEL?.trim() || 'google/gemma-4-31b-it:free',
+      model: process.env.OPENROUTER_MODEL?.trim() || 'nvidia/nemotron-3.5-super-vl:free',
+      fallbackModels: ['google/gemma-4-26b-a4b-it:free'],
     };
   }
   if (process.env.GEMINI_API_KEY?.trim()) return { kind: 'gemini' };
@@ -164,6 +172,11 @@ async function scanWithOpenAICompat(
       signal: controller.signal,
       body: JSON.stringify({
         model: provider.model,
+        // Фейловер OpenRouter: при 429/недоступности основной модели роутер
+        // сам повторит запрос со следующей из списка
+        ...(provider.fallbackModels?.length
+          ? { models: [provider.model, ...provider.fallbackModels] }
+          : {}),
         messages: [
           {
             role: 'user',
@@ -173,7 +186,9 @@ async function scanWithOpenAICompat(
             ],
           },
         ],
-        max_tokens: 512,
+        // 2000, а не 512: reasoning-модели (nemotron, dots) пишут рассуждение
+        // в те же токены — на 512 контент пуст (finish_reason=length, 0 продуктов)
+        max_tokens: 2000,
         temperature: 0.2,
       }),
     });
@@ -224,7 +239,8 @@ async function scanWithGemini(imageDataUrl: string): Promise<DetectedProduct[]> 
               parts: [{ text: SCAN_PROMPT }, { inline_data: { mime_type: mime, data: base64 } }],
             },
           ],
-          generationConfig: { temperature: 0.2, maxOutputTokens: 512 },
+          // запас на thinking-токены: на 512 у reasoning-моделей контент не влезает
+          generationConfig: { temperature: 0.2, maxOutputTokens: 2000 },
         }),
       },
     );

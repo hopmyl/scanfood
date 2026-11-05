@@ -81,7 +81,10 @@ function extractProducts(raw: string): DetectedProduct[] {
  */
 async function scanWithOpenRouter(imageDataUrl: string): Promise<DetectedProduct[]> {
   const key = process.env.OPENROUTER_API_KEY!.trim();
-  const model = process.env.OPENROUTER_MODEL?.trim() || 'google/gemma-4-31b-it:free';
+  // Дефолт — nemotron: единственная быстрая бесплатная vision-модель без
+  // гео-блока Google AI Studio (gemma-*:free из РФ режутся, 2026-11-05)
+  const model = process.env.OPENROUTER_MODEL?.trim() || 'nvidia/nemotron-3.5-super-vl:free';
+  const fallbackModels = ['google/gemma-4-26b-a4b-it:free'];
 
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), 50_000);
@@ -96,6 +99,8 @@ async function scanWithOpenRouter(imageDataUrl: string): Promise<DetectedProduct
       signal: controller.signal,
       body: JSON.stringify({
         model,
+        // Фейловер: при 429/недоступности основной модели роутер сам попробует следующую
+        models: [model, ...fallbackModels],
         messages: [
           {
             role: 'user',
@@ -105,7 +110,9 @@ async function scanWithOpenRouter(imageDataUrl: string): Promise<DetectedProduct
             ],
           },
         ],
-        max_tokens: 512,
+        // 2000, а не 512: reasoning-модели пишут рассуждение в те же токены —
+        // на 512 контент пуст (finish_reason=length, 0 продуктов)
+        max_tokens: 2000,
         temperature: 0.2,
       }),
     });
@@ -150,7 +157,8 @@ async function scanWithGemini(imageDataUrl: string): Promise<DetectedProduct[]> 
               parts: [{ text: SCAN_PROMPT }, { inline_data: { mime_type: mime, data: base64 } }],
             },
           ],
-          generationConfig: { temperature: 0.2, maxOutputTokens: 512 },
+          // запас на thinking-токены
+          generationConfig: { temperature: 0.2, maxOutputTokens: 2000 },
         }),
       },
     );

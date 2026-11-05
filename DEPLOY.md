@@ -18,7 +18,7 @@
 | Приоритет | Переменные | Сервис | Доступность из РФ |
 |---|---|---|---|
 | 1 | `AI_BASE_URL` + `AI_API_KEY` + `AI_MODEL` | Любой OpenAI-совместимый (Groq, HuggingFace router, VseGPT, ProxyAPI…) | зависит от сервиса |
-| 2 | `OPENROUTER_API_KEY` (+ `OPENROUTER_MODEL`) | OpenRouter, модель по умолчанию `google/gemma-4-31b-it:free` | сайт/API открыт без VPN |
+| 2 | `OPENROUTER_API_KEY` (+ `OPENROUTER_MODEL`) | OpenRouter, модель по умолчанию `nvidia/nemotron-3.5-super-vl:free` (gemma-*:free из РФ режет гео-блок Google) | сайт/API открыт без VPN |
 | 3 | `GEMINI_API_KEY` (+ `GEMINI_MODEL`) | Gemini, модель по умолчанию `gemini-3.5-flash-lite` | только ключ из-за рубежа |
 
 Примеры универсального слота:
@@ -75,7 +75,7 @@ SCAN_API_URL=https://<проект>.vercel.app bash scripts/deploy-all.sh "scan 
 Вариант Б (без сервера): ключ с нулевым лимитом прямо в бандл зеркал.
 
 ```bash
-OPENROUTER_KEY=ror_nnnnnnnn OPENROUTER_MODEL=google/gemma-4-31b-it:free \
+OPENROUTER_KEY=ror_nnnnnnnn OPENROUTER_MODEL=nvidia/nemotron-3.5-super-vl:free \
   bash scripts/deploy-all.sh "браузерное распознавание на зеркалах"
 # ⚠️ ключ увидит любой, кто откроет бандл — держи лимит кредитов на нуле
 ```

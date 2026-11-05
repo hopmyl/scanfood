@@ -49,10 +49,12 @@ const ENDPOINT_TIMEOUT = 45_000;
 const DIRECT_TIMEOUT = 60_000;
 
 /** Бесплатные vision-модели OpenRouter — цепочка фолбэков для тестового периода:
- *  если первая модель перегружена или недоступна, роутер сам попробует следующую. */
+ *  если первая модель перегружена или недоступна, роутер сам попробует следующую.
+ *  Основная — nvidia/nemotron (см. scanProducts): без гео-блока Google и быстрая;
+ *  gemma-*:free из РФ режется Google AI Studio, оставлена запасной. dots-*:free
+ *  исключён — reasoning-модель, съедает весь бюджет токенов на рассуждение. */
 const FREE_VISION_FALLBACKS = [
   'google/gemma-4-26b-a4b-it:free',
-  'nvidia/nemotron-3.5-super-vl:free',
 ] as const;
 
 /**
@@ -209,7 +211,8 @@ async function tryDirectOpenRouter(
             ],
           },
         ],
-        max_tokens: 512,
+        // 2000, а не 512: у reasoning-моделей рассуждение идёт в те же токены
+        max_tokens: 2000,
         temperature: 0.2,
       },
       DIRECT_TIMEOUT,
@@ -278,7 +281,8 @@ export async function scanProducts(dataUrl: string): Promise<ScanOutcome> {
   const key = (import.meta.env.VITE_OPENROUTER_KEY as string | undefined)?.trim();
   if (key) {
     const configured = (import.meta.env.VITE_OPENROUTER_MODEL as string | undefined)?.trim();
-    const model = configured || 'google/gemma-4-31b-it:free';
+    // Дефолт — nemotron: без гео-блока Google AI Studio (gemma-*:free из РФ режутся)
+    const model = configured || 'nvidia/nemotron-3.5-super-vl:free';
     const out = await tryDirectOpenRouter(key, model, dataUrl, configured ? undefined : FREE_VISION_FALLBACKS);
     if (out.ok) return out;
     attempts.push(out);
