@@ -138,3 +138,11 @@
 2026-11-05T23:14:11.565Z --- sesame-noodles-cold: «Cold sesame noodles with cucumber. Chinese dish, round white plate or …»
 2026-11-05T23:14:46.825Z OK+ЗАМОК sesame-noodles-cold score=7 (чисто) каналов=1
 2026-11-05T23:14:46.825Z === НАТУРАЛ v7 итог: заморожено 2, на просмотр 1, критик OR used=0 ===
+2026-11-05T23:40:46.197Z === НАТУРАЛ v7 старт: 3 блюд (кандидатов на блюдо: 2) ===
+2026-11-05T23:40:47.791Z Критик z-ai: жив
+2026-11-05T23:41:18.465Z Генератор z-ai: жив
+2026-11-05T23:41:18.465Z --- lazy-vareniki: «Lazy vareniki: boiled diamond-shaped cottage cheese dough pieces with …»
+2026-11-05T23:42:43.489Z MANUAL lazy-vareniki score=6 (пластик+не-то-блюдо+нейро-глянец) — лучший из 2 записан, на ваш просмотр
+2026-11-05T23:42:43.489Z --- tofu-larb: «Tofu larb vegetarian salad. Thai street food, banana leaf or ceramic b…»
+2026-11-05T23:43:18.983Z KEEP tofu-larb: лучший кандидат 8 хуже текущего 9 — файл не трогаю
+2026-11-05T23:43:18.983Z --- thai-congee-jok: «Thai rice congee jok with pork. Thai street food, banana leaf or ceram…»
