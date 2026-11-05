@@ -1360,5 +1360,11 @@
   "at": "2026-11-05T13:03:01.887Z",
   "score": 8,
   "src": "audit-v7"
+ },
+ "ajvar": {
+  "sha256": "715a432cfaeeae272c71351c973db57467fb2d7f87e3ffdf7c1223bc6b9f3057",
+  "at": "2026-11-05T16:55:10.414Z",
+  "score": 7,
+  "src": "natural-v7"
  }
 }
