@@ -12,6 +12,7 @@ export default async function handler(_req: IncomingMessage, res: ServerResponse
     JSON.stringify({
       ok: true,
       node: process.version,
+      hasOpenRouterKey: Boolean(process.env.OPENROUTER_API_KEY),
       hasGeminiKey: Boolean(process.env.GEMINI_API_KEY),
       scanProvider: process.env.SCAN_PROVIDER ?? '(auto)',
     }),
