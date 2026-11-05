@@ -1372,5 +1372,17 @@
   "at": "2026-11-05T19:19:11.037Z",
   "score": 8,
   "src": "natural-v7"
+ },
+ "crispy-tofu": {
+  "sha256": "773e7af709c701a8813b18f60ed550f0def5616f6c8d35ad98ac804a391a9b95",
+  "at": "2026-11-05T19:47:43.979Z",
+  "score": 7,
+  "src": "natural-v7"
+ },
+ "imam-bayildi": {
+  "sha256": "ab38ddc6e3cd703a961b749db6f7d6dd137661d5d1bdf15df264b9132521f04d",
+  "at": "2026-11-05T19:49:00.821Z",
+  "score": 8,
+  "src": "natural-v7"
  }
 }

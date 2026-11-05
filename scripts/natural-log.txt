@@ -84,3 +84,21 @@
 2026-11-05T19:19:11.037Z --- crispy-tofu: «Crispy golden fried tofu cubes glazed in soy sauce with sesame seeds a…»
 2026-11-05T19:20:33.530Z KEEP crispy-tofu: лучший кандидат 6 хуже текущего 7 — файл не трогаю
 2026-11-05T19:20:33.530Z --- imam-bayildi: «Turkish stuffed eggplants imam bayildi. Mediterranean dish, olive oil,…»
+2026-11-05T19:41:01.372Z === НАТУРАЛ v7 старт: 3 блюд (кандидатов на блюдо: 2) ===
+2026-11-05T19:41:03.473Z Критик z-ai: жив
+2026-11-05T19:41:36.046Z Генератор z-ai: жив
+2026-11-05T19:41:36.047Z --- lazy-vareniki: «Lazy vareniki: boiled diamond-shaped cottage cheese dough pieces with …»
+2026-11-05T19:43:05.104Z MANUAL lazy-vareniki score=5 (пластик+не-то-блюдо+нейро-глянец) — лучший из 2 записан, на ваш просмотр
+2026-11-05T19:43:05.105Z --- crispy-tofu: «Crispy golden fried tofu cubes glazed in soy sauce with sesame seeds a…»
+2026-11-05T19:44:32.612Z KEEP crispy-tofu: лучший кандидат 5 хуже текущего 7 — файл не трогаю
+2026-11-05T19:44:32.612Z --- imam-bayildi: «Turkish stuffed eggplants imam bayildi. Mediterranean dish, olive oil,…»
+2026-11-05T19:45:07.958Z === НАТУРАЛ v7 старт: 3 блюд (кандидатов на блюдо: 2) ===
+2026-11-05T19:45:10.339Z Критик z-ai: жив
+2026-11-05T19:45:42.090Z Генератор z-ai: жив
+2026-11-05T19:45:42.090Z --- lazy-vareniki: «Lazy vareniki: boiled diamond-shaped cottage cheese dough pieces with …»
+2026-11-05T19:47:08.312Z KEEP lazy-vareniki: лучший кандидат 3 хуже текущего 5 — файл не трогаю
+2026-11-05T19:47:08.312Z --- crispy-tofu: «Crispy golden fried tofu cubes glazed in soy sauce with sesame seeds a…»
+2026-11-05T19:47:43.980Z OK+ЗАМОК crispy-tofu score=7 (чисто) каналов=1
+2026-11-05T19:47:43.980Z --- imam-bayildi: «Turkish stuffed eggplants imam bayildi. Mediterranean dish, olive oil,…»
+2026-11-05T19:49:00.822Z OK+ЗАМОК imam-bayildi score=8 (чисто) каналов=2
+2026-11-05T19:49:00.822Z === НАТУРАЛ v7 итог: заморожено 2, на просмотр 1, критик OR used=0 ===
