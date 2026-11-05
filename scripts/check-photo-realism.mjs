@@ -12,9 +12,19 @@
 // scripts/regen-shortlist.txt — его первым подхватывает конвейер генерации.
 // Запуск: node scripts/check-photo-realism.mjs [--rerun] [--only=id1,id2] [--limit=N]
 import ZAI from 'z-ai-web-dev-sdk';
+import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 import { critiquePhoto, isBad, flagsStr } from './photo-critic.mjs';
+
+// ФИНАЛЬНЫЕ ЗАМКИ (scripts/photo-locks.json, запрос пользователя 2026-11-05
+// «чтобы потом не переделывать»): фото, чей sha256 совпадает с замком,
+// аудит НЕ проверяет и в шортлист не добавляет. Если файл перегенерирован
+// вручную (хэш другой) — замок «оттаивает», фото проверяется как новое.
+const LOCKS = fs.existsSync('scripts/photo-locks.json')
+  ? JSON.parse(fs.readFileSync('scripts/photo-locks.json', 'utf8'))
+  : {};
+const fileSha = (file) => crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex');
 
 const OUT_DIR = 'public/dishes';
 const REPORT = 'scripts/realism-report.json';
@@ -54,6 +64,18 @@ async function main() {
   const ids = [];
   for (const id of allIds) {
     const file = path.join(OUT_DIR, `${id}.jpg`);
+    const lock = LOCKS[id];
+    if (lock && !rerun && !onlyIds) {
+      // Заморожено: проверяем только факт неизменности файла (дёшево, без квоты)
+      let unchanged = false;
+      try {
+        unchanged = fileSha(file) === lock.sha256;
+      } catch {}
+      if (unchanged) continue;
+      console.log(`${id}: файл изменился под замком — замок оттаивает, проверяю заново`);
+      delete LOCKS[id];
+      fs.writeFileSync('scripts/photo-locks.json', JSON.stringify(LOCKS, null, 1));
+    }
     const mtime = fs.statSync(file).mtimeMs;
     const prev = report[id];
     const stale =
@@ -98,10 +120,20 @@ async function main() {
   if (bad.length) console.log(bad.join(', '));
 }
 
-/** Брак по отчёту -> шортлист слиянием (утверждённые не попадают) */
+/** Брак по отчёту -> шортлист слиянием (утверждённые и замороженные не попадают) */
 function mergeShortlist(report) {
   const bad = Object.entries(report)
-    .filter(([id, r]) => r.score >= 0 && isBad(r) && !APPROVED.has(id))
+    .filter(([id, r]) => {
+      if (r.score < 0 || APPROVED.has(id)) return false;
+      const lock = LOCKS[id];
+      if (lock) {
+        // Замороженное фото браком не считаем, пока файл совпадает с замком
+        try {
+          if (fileSha(path.join(OUT_DIR, `${id}.jpg`)) === lock.sha256) return false;
+        } catch {}
+      }
+      return isBad(r);
+    })
     .map(([id]) => id);
   const pending = new Set(
     fs.existsSync(SHORTLIST)

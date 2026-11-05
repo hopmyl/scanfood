@@ -20,14 +20,20 @@ LOG=/tmp/qa-runner.log
 echo "=== qa-runner START $(date) N=$N mode=$MODE ===" >> "$LOG"
 
 NEED=$(node -e "
-  const fs=require('fs');
+  const fs=require('fs'), crypto=require('crypto');
   const mode=process.argv[1]||'';
   const rd=f=>{try{return fs.readFileSync(f,'utf8').split('\n').map(s=>s.trim()).filter(Boolean)}catch(e){return[]}};
   const prog=new Set(rd('scripts/regen-progress.txt'));
   const appr=new Set(rd('scripts/qa-approve.txt')); // утверждены пользователем — не трогать
-  const short=rd('scripts/regen-shortlist.txt').filter(id=>!prog.has(id)&&!appr.has(id));
+  // ФИНАЛЬНЫЕ ЗАМКИ (natural-regen v7, 2026-11-05): замороженные фото (sha256
+  // совпадает с photo-locks.json) конвейеру запрещены — «чтобы не переделывать»
+  let LOCKS={};try{LOCKS=JSON.parse(fs.readFileSync('scripts/photo-locks.json','utf8'))}catch(e){}
+  const isLocked=id=>{try{const l=LOCKS[id];if(!l)return false;
+    const h=crypto.createHash('sha256').update(fs.readFileSync('public/dishes/'+id+'.jpg')).digest('hex');
+    return h===l.sha256}catch(e){return false}};
+  const short=rd('scripts/regen-shortlist.txt').filter(id=>!prog.has(id)&&!appr.has(id)&&!isLocked(id));
   const photos=new Set(fs.readdirSync('public/dishes').filter(f=>f.endsWith('.jpg')).map(f=>f.slice(0,-4)));
-  const queue=mode==='nonew'?[]:rd('scripts/regen-queue.txt').filter(id=>!photos.has(id)&&!short.includes(id)&&!appr.has(id));
+  const queue=mode==='nonew'?[]:rd('scripts/regen-queue.txt').filter(id=>!photos.has(id)&&!short.includes(id)&&!appr.has(id)&&!isLocked(id));
   const need=[...short,...queue].slice(0,${N});
   console.log(need.join(','));
   console.error('статистика: шортлист-пендинг='+short.length+' очередь-без-фото='+queue.length);
@@ -49,6 +55,16 @@ else
     sleep 20
   done
 fi
+
+# --- НАТУРАЛ v7: финальная перегенерация брака с замками (2026-11-05) ---
+# Очередь сама: брак отчёта + qa-manual + пендинг шортлиста (без approved/locked).
+# Каналы: платный OR (если есть кредиты) → z-ai → turbo; критик z-ai → OR-фолбэк
+# (стойкий суточный кап, квота сканера не трогается). Гейт score>=8 без флагов
+# => ЗАМОК (photo-locks.json) — больше никогда не переделывается. До 3 блюд
+# за прогон: 15 бракованных докатываются за ~3 часа крона.
+echo "=== natural-regen START $(date) ===" >> "$LOG"
+timeout 240 node scripts/natural-regen.mjs --limit=3 >> "$LOG" 2>&1 || true
+echo "=== natural-regen EXIT $(date) ===" >> "$LOG"
 
 # --- Срез агента-повара: рецепты и порядок шагов (инкрементально) ---
 # ПАУЗА ПОВАРА (запрос пользователя 2026-11-02 ~13:40: «повара на паузу,

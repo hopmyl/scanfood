@@ -1,0 +1,1364 @@
+{
+ "cottage-cheese-pancakes": {
+  "sha256": "2ea16bf7b83e229005c94ac418c75f7f6aaeeb620b494fa639986a736104d94f",
+  "at": "2026-11-05T13:03:01.852Z",
+  "score": 7,
+  "src": "user-approved"
+ },
+ "paella-seafood": {
+  "sha256": "fabdd7afcb1d6f67fd4fefbe899b564905d17ea54d46c7e3d1f94e8f4e23964c",
+  "at": "2026-11-05T13:03:01.853Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "spanakopita": {
+  "sha256": "f7ce11c4c000b9a75294e923251b1919cdf9eb70901d9ab4b00826de34819bfe",
+  "at": "2026-11-05T13:03:01.853Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "american-pancakes": {
+  "sha256": "d91bbd64a303b4b525e8f6170149e459ff3eb19938b33c3d22a5d27491695734",
+  "at": "2026-11-05T13:03:01.853Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "apple-charlotte": {
+  "sha256": "cc20f6cd59443188d636a75efcbb9e83acc2ed3a62e70f674859b3e53c39cb0b",
+  "at": "2026-11-05T13:03:01.853Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "apple-pie": {
+  "sha256": "ab3faa32ce451f163141f543097c182619312495f446f70819bec5a58a9d3e5e",
+  "at": "2026-11-05T13:03:01.853Z",
+  "score": 9,
+  "src": "audit-v7"
+ },
+ "arroz-con-pollo": {
+  "sha256": "b330d431f4eaa6fad8a599c8b2a752a5283133072a199f6e9d81f5d9a80cf0a5",
+  "at": "2026-11-05T13:03:01.854Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "avgolemono": {
+  "sha256": "53313c0022fa17c1c0027eb0d72d49b3cc2e06120e5e69a121720dcc0e3a0ec4",
+  "at": "2026-11-05T13:03:01.854Z",
+  "score": 7,
+  "src": "audit-v7"
+ },
+ "avocado-toast": {
+  "sha256": "2576ab9e96628a1576003d13ddbe7d919443124e6a3f85120389cfcd4fdc075d",
+  "at": "2026-11-05T13:03:01.854Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "baba-ganoush": {
+  "sha256": "5452d8e52930ea0c309ab7df60847d0fe25be1741efbfe0389d485d68c4a9f9d",
+  "at": "2026-11-05T13:03:01.854Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "baked-apples": {
+  "sha256": "5fe72e7384781846c35bbbd2cc96f5f52c9d7f3128a1eecfa7faeaf45b19dc7d",
+  "at": "2026-11-05T13:03:01.854Z",
+  "score": 9,
+  "src": "audit-v7"
+ },
+ "baked-dorado": {
+  "sha256": "2e7732c660f0d202463f8654c3434d69b39ad8848dbf8e5401084a3e18134951",
+  "at": "2026-11-05T13:03:01.854Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "baked-feta-pasta": {
+  "sha256": "41dd5ce0abc8279fa4b36fc9c5f78fc11cb84fe4c76627c4d0d01513b089afab",
+  "at": "2026-11-05T13:03:01.855Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "baked-mackerel": {
+  "sha256": "7795d8c909f2284314c28f1917fcf393de52dd1487ab2289ad6d7acf92582ebd",
+  "at": "2026-11-05T13:03:01.855Z",
+  "score": 7,
+  "src": "audit-v7"
+ },
+ "baked-salmon-quinoa": {
+  "sha256": "32322440cfef193969c6190683749c6d24b98330e6a1e5b8ba22a81fb7e41bc9",
+  "at": "2026-11-05T13:03:01.855Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "banana-bread": {
+  "sha256": "0c19426ad7482039e132fc862989ce78323cfc7f18918d322da73e3d3584c63c",
+  "at": "2026-11-05T13:03:01.855Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "banana-pudding": {
+  "sha256": "794aa6e43bdcc4d9afb7088cdad4754c630a88ddf3d4a2583bf7dbe27547b391",
+  "at": "2026-11-05T13:03:01.855Z",
+  "score": 7,
+  "src": "audit-v7"
+ },
+ "baozi-steamed-buns": {
+  "sha256": "63e861c457ee9228386167060a2f67a24e645b0f1f410542a1ec9f82020d3544",
+  "at": "2026-11-05T13:03:01.855Z",
+  "score": 7,
+  "src": "audit-v7"
+ },
+ "bbq-chicken-wings": {
+  "sha256": "2cc139b1666cc7f7f6922ff281c9fa83d7e7f0a9a00c82598b074c481a8c8e6e",
+  "at": "2026-11-05T13:03:01.856Z",
+  "score": 7,
+  "src": "audit-v7"
+ },
+ "bbq-pork-ribs": {
+  "sha256": "b1fd37c6b44692f2d5e9a9b6e60baca13530d27ba89ed01fad56412cf7c4aa48",
+  "at": "2026-11-05T13:03:01.856Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "bbq-pulled-pork": {
+  "sha256": "5199380bd6b041e7b3e36b447a1ffd7b666f135738fcb45ecb613bf506ca7039",
+  "at": "2026-11-05T13:03:01.856Z",
+  "score": 8,
+  "src": "user-approved"
+ },
+ "beef-broccoli": {
+  "sha256": "6dfd2d87d6ff682d1512b3c68a0d961645f07f3ec8a480093f13ea493163769e",
+  "at": "2026-11-05T13:03:01.856Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "beef-burger": {
+  "sha256": "76328aec689bf2e8ee57dee91c01905baa6cfaa572ab7c2a18a8796551e67bd4",
+  "at": "2026-11-05T13:03:01.856Z",
+  "score": 7,
+  "src": "audit-v7"
+ },
+ "beef-chow-fun": {
+  "sha256": "77360efa79e4a2c7902ddde4a37cde06dee5205dd514a73399266334d0cc4be8",
+  "at": "2026-11-05T13:03:01.856Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "beef-goulash": {
+  "sha256": "7ef73fe3cd57c3fde4bd0b72003b8b32894f829d96b4c4875e5a06875b6768d0",
+  "at": "2026-11-05T13:03:01.857Z",
+  "score": 9,
+  "src": "audit-v7"
+ },
+ "beef-steak": {
+  "sha256": "c5e45e7e13a5ea61d9bb1eb0ba2ddfda53ce7aaa88bba7c80b482fd73f37ef55",
+  "at": "2026-11-05T13:03:01.857Z",
+  "score": 9,
+  "src": "audit-v7"
+ },
+ "beef-stroganoff": {
+  "sha256": "c9b60efdf3f3687c4e1e5bcbbd0ca3343f99d8c7a9711ab1719a545bb091b0b0",
+  "at": "2026-11-05T13:03:01.857Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "beef-tacos": {
+  "sha256": "2b49de54a8a4d8050e9f963768c8fbb8d4a00cba168765980d2899201ddaf74c",
+  "at": "2026-11-05T13:03:01.857Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "blt-sandwich": {
+  "sha256": "c40dbde7dd7ab68e0a5ebe215602296290e5ede68ab1b81654151c2d34343d8c",
+  "at": "2026-11-05T13:03:01.857Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "blueberry-muffins": {
+  "sha256": "9a140da2fc7fd15728cb44f038229b1e43b5a3d6801e43d83fa0d6f5ba37ddde",
+  "at": "2026-11-05T13:03:01.857Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "borscht": {
+  "sha256": "76c10731c5ab3239b42b0ca3031cffb53fcdf7ee1ca6c5a4a1fe23c4cbd2410b",
+  "at": "2026-11-05T13:03:01.858Z",
+  "score": 8,
+  "src": "user-approved"
+ },
+ "briam": {
+  "sha256": "82853628b9564f217d22b4f0175b4341fa4cf9c1a4cb9dcc02d41783e02cc6dd",
+  "at": "2026-11-05T13:03:01.858Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "brownies": {
+  "sha256": "27368efe8a040ec78f50801bf92a5b9377b0389a4d3a33557e51eb335e06bd94",
+  "at": "2026-11-05T13:03:01.858Z",
+  "score": 9,
+  "src": "audit-v7"
+ },
+ "bruschetta": {
+  "sha256": "26129f8706c9cdbf91c180749282eeedaaa003a54714468cf2b61902e9b39e33",
+  "at": "2026-11-05T13:03:01.858Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "buddha-bowl": {
+  "sha256": "126bc86006dedd3107c30629214c8ad095a96846897e7ca5be47aecee84f742e",
+  "at": "2026-11-05T13:03:01.858Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "buffalo-wings": {
+  "sha256": "d1d72e17befcef8e9711106899f43d6360f03f9a48da5d1c7e1a193534cd306c",
+  "at": "2026-11-05T13:03:01.858Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "buttermilk-biscuits": {
+  "sha256": "fbe70e0934849498915f26a8912aa9667c830d46b313589d011a4b54a5260ee9",
+  "at": "2026-11-05T13:03:01.859Z",
+  "score": 7,
+  "src": "audit-v7"
+ },
+ "cabbage-pie": {
+  "sha256": "87f6348fff1a3e022eb75b514d009eff755837c8091aecaea324963ca5cc1a9d",
+  "at": "2026-11-05T13:03:01.859Z",
+  "score": 7,
+  "src": "audit-v7"
+ },
+ "caesar-salad": {
+  "sha256": "4e11b4f909ad528c090f31eb9d526516e8794e3aa87482e4d47bb42b2e84a8c0",
+  "at": "2026-11-05T13:03:01.859Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "cajun-shrimp-pasta": {
+  "sha256": "8042fc0bd1dbb9f948d78c795ce3a311e49f0f5877d65db1ee475d8126d83e36",
+  "at": "2026-11-05T13:03:01.859Z",
+  "score": 7,
+  "src": "audit-v7"
+ },
+ "caponata": {
+  "sha256": "f9a56129c2d336ce4cb9d5b33cac548c99de09563976b1273215debf7b264099",
+  "at": "2026-11-05T13:03:01.859Z",
+  "score": 7,
+  "src": "audit-v7"
+ },
+ "caprese-salad": {
+  "sha256": "1db65f23dc193f868e0f2c2fe41b604c6b6c2f5341ada9459cd5039b491c25f8",
+  "at": "2026-11-05T13:03:01.859Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "carrot-cake": {
+  "sha256": "53d5743bb34100a27b9f0bd6a5aeb0923feb1319249beb197a9779440c9f1b07",
+  "at": "2026-11-05T13:03:01.860Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "char-siu-pork": {
+  "sha256": "e9b28ad3671e0db271b0b77ea7b2082abee819bdfa5c02147f4d79cf3e80765b",
+  "at": "2026-11-05T13:03:01.860Z",
+  "score": 7,
+  "src": "audit-v7"
+ },
+ "cheese-ham-omelette": {
+  "sha256": "2d303dce5da742d2b1ff732c67182512633664f58a757ccaa162cd0249a28124",
+  "at": "2026-11-05T13:03:01.860Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "cheese-soup": {
+  "sha256": "9176cd72d9938095ca8b79acfa49c48db5cf54610afdcae36f6c72e0073e18a9",
+  "at": "2026-11-05T13:03:01.860Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "chicago-hot-dog": {
+  "sha256": "02ae4328f4ec84173672e2287e4da5c397561de97a92461b197bb8a6737e1f40",
+  "at": "2026-11-05T13:03:01.860Z",
+  "score": 7,
+  "src": "audit-v7"
+ },
+ "chicken-congee": {
+  "sha256": "86400d2118a28a09fc48f9295e1e6c707e63a988d83fbc0dd63dc8044a739550",
+  "at": "2026-11-05T13:03:01.860Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "chicken-cutlets": {
+  "sha256": "578c95fc3d01dfdbefed66e4a602046ee0373fc6d87caaf08b991e98fc3590d2",
+  "at": "2026-11-05T13:03:01.860Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "chicken-fajitas": {
+  "sha256": "01b9e24b84d5da72c50b09be5739de09e912c8719afe1b89082b0213c5dc5753",
+  "at": "2026-11-05T13:03:01.861Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "chicken-mushroom-pasta": {
+  "sha256": "0a758849358df7c658a0efc31d67db3df1f3408a386eb177c17cd9ae5b16367e",
+  "at": "2026-11-05T13:03:01.861Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "chicken-noodle-soup": {
+  "sha256": "e7bcdac5295d414ce6a824942c3ec7855d7fde9b341ec001a4cce441c49e44db",
+  "at": "2026-11-05T13:03:01.861Z",
+  "score": 7,
+  "src": "audit-v7"
+ },
+ "chicken-plov": {
+  "sha256": "808d632f204ad702496e3f215f469895bc37e944754097895f71769bfd6e3cfc",
+  "at": "2026-11-05T13:03:01.861Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "chicken-pot-pie": {
+  "sha256": "3846aeba5ba7375851bf127b1664cf3845ddc8a5434163b87f6c0929bca0ad08",
+  "at": "2026-11-05T13:03:01.861Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "chicken-satay": {
+  "sha256": "7ab5fd72a640c0a4321004dc5671663d95eea8c4a2421f88774e0cb0249ec403",
+  "at": "2026-11-05T13:03:01.861Z",
+  "score": 7,
+  "src": "audit-v7"
+ },
+ "chicken-shawarma": {
+  "sha256": "9140cbb8d58b81b020d8a619ce8d10c1d4ab9cf98e10a48fe5550fdf8158c8b8",
+  "at": "2026-11-05T13:03:01.862Z",
+  "score": 7,
+  "src": "audit-v7"
+ },
+ "chicken-souvlaki": {
+  "sha256": "f631492f49dff3ca6d9fdb405f04a22b00d974aef1741510a4966533eeee637c",
+  "at": "2026-11-05T13:03:01.862Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "chicken-stir-fry": {
+  "sha256": "c08cb820154dbaefaefdf85aef5f0623ef1c36573eb73619e56a6a688674d458",
+  "at": "2026-11-05T13:03:01.862Z",
+  "score": 7,
+  "src": "audit-v7"
+ },
+ "chicken-tagine": {
+  "sha256": "21bb58541bd25d674375fb5585fc8d8eecb97db67ebc47cd6899e290d1b8b6fd",
+  "at": "2026-11-05T13:03:01.862Z",
+  "score": 7,
+  "src": "audit-v7"
+ },
+ "chicken-teriyaki": {
+  "sha256": "abacf77cff1e4010410b6d053c320754e8db9e6a35dcbf9c894e661e88e3f33f",
+  "at": "2026-11-05T13:03:01.862Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "chicken-thighs-potato": {
+  "sha256": "97230ba5fe10565d91169f09b68791d6c1be1bb472d7f37fbbddded038edf846",
+  "at": "2026-11-05T13:03:01.862Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "chicken-tikka-masala": {
+  "sha256": "c1339682f4cfc2d500bf22b3c004705168de2ae1e12989e890558adeefdbb6df",
+  "at": "2026-11-05T13:03:01.863Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "chili-con-carne": {
+  "sha256": "e129ca0a1fe0dec5e8217a2174484957a5758d003070ab288e749c6b0458639d",
+  "at": "2026-11-05T13:03:01.863Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "chinese-egg-tarts": {
+  "sha256": "e2a46045553debf2d273b7c7ad46a60b95292a03028c61ac98e819a06b991d8e",
+  "at": "2026-11-05T13:03:01.863Z",
+  "score": 7,
+  "src": "audit-v7"
+ },
+ "chocolate-chip-cookies": {
+  "sha256": "69373d6dd42453856fc2358215e163498b4197b2dcf556c6b0c259172d951f9b",
+  "at": "2026-11-05T13:03:01.863Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "chow-mein-chicken": {
+  "sha256": "374bb165f8a868a182c0a1893ea4d1bd3f353a9e8e1fb4a0e52784d698c52fae",
+  "at": "2026-11-05T13:03:01.863Z",
+  "score": 7,
+  "src": "user-approved"
+ },
+ "cinnamon-rolls": {
+  "sha256": "afb3bf95cf0d18779b2ce7d53562ac394dd7f6e5e2188e79e1366f334d374e94",
+  "at": "2026-11-05T13:03:01.863Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "clam-chowder": {
+  "sha256": "e010e53fa14a73e12f2562168a3d2bb84330c9d001b30ca0a699938083967bc8",
+  "at": "2026-11-05T13:03:01.864Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "club-sandwich": {
+  "sha256": "1121feca5e39e19b27592b63804c497adc330184acdfc63c4b7db6a22b79c296",
+  "at": "2026-11-05T13:03:01.864Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "cobb-salad": {
+  "sha256": "5eeff313e9db7a4ebcbb547d198444cbc6e642193e1ad1e876b86016c0c1a051",
+  "at": "2026-11-05T13:03:01.864Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "coleslaw": {
+  "sha256": "d0940d2e78fc9e33e0739b9e2e5ddda564da037f7104d25f4aae0c910b46b98b",
+  "at": "2026-11-05T13:03:01.864Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "cornbread": {
+  "sha256": "ac081bb907f1030dd53c36e38b33565906d80acc79fc2e7f5e68e8ea30548049",
+  "at": "2026-11-05T13:03:01.864Z",
+  "score": 7,
+  "src": "audit-v7"
+ },
+ "cottage-cheese-casserole": {
+  "sha256": "9502642fc5f1c51b2468071ad47a3ab9672e68c8c6bdb8f511be7f561e3e0ad4",
+  "at": "2026-11-05T13:03:01.864Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "couscous-vegetables": {
+  "sha256": "78bff43fdb803da894fb46a84129034f6c6b0fa7ebc09a62fa9ffd342a7af231",
+  "at": "2026-11-05T13:03:01.864Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "crab-corn-salad": {
+  "sha256": "343cad6281d72614d2076584c2e043996be51a30ce946fd3fe2d0268d8dea05d",
+  "at": "2026-11-05T13:03:01.865Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "croissant-salmon": {
+  "sha256": "047c783d7888efeaeaf9e963324ed9e135e2b87b166f775958559ce1f13b20db",
+  "at": "2026-11-05T13:03:01.865Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "cumin-lamb": {
+  "sha256": "0f8bb07f2683c0dd2d8c3caa7478c833cbe0260614ee3852b8bac59f65cceab7",
+  "at": "2026-11-05T13:03:01.865Z",
+  "score": 7,
+  "src": "audit-v7"
+ },
+ "dakos": {
+  "sha256": "c7204311833a1563d5a2ac9f9b66a77b7cfffff22da7aed8e3397564ad3335f3",
+  "at": "2026-11-05T13:03:01.865Z",
+  "score": 7,
+  "src": "audit-v7"
+ },
+ "dan-dan-noodles": {
+  "sha256": "cf7ea14aae931c5899da6d05c84ab9df89f0e8129a6ee9ee0dd29f4cde2b53ce",
+  "at": "2026-11-05T13:03:01.865Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "deviled-eggs": {
+  "sha256": "e5662a7e960365c9906a3baecd9ecf59fe043661098bbff8ceaf6f40e57d2806",
+  "at": "2026-11-05T13:03:01.865Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "di-san-xian": {
+  "sha256": "4559459db681605cfafa8f5b7c53aa69788bd56bf6ad331708ff2ec867cc4820",
+  "at": "2026-11-05T13:03:01.866Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "dolma-grape-leaves": {
+  "sha256": "1f501a026cec47ec0857bcf717808181b6136b9479f61e62d773affeef0094ef",
+  "at": "2026-11-05T13:03:01.866Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "draniki": {
+  "sha256": "95c607af9e712d3c041f576158a0e60fda969ebdf727aee8d688582bd45abaa2",
+  "at": "2026-11-05T13:03:01.866Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "eggplant-parmesan": {
+  "sha256": "df0260b18b0082a3d2ed4d0afdbe575f42bf3eb64f69d9d02163d8b1f8766201",
+  "at": "2026-11-05T13:03:01.866Z",
+  "score": 7,
+  "src": "audit-v7"
+ },
+ "eggs-benedict": {
+  "sha256": "dcf239db686567e072946f1df050567dd8d2f190617df5f3c231cdd98a372e7b",
+  "at": "2026-11-05T13:03:01.866Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "falafel-bowl": {
+  "sha256": "a8d7c44b0759a1bc50ecdb0df3796014094fcd23df7205331a73435825c45dbf",
+  "at": "2026-11-05T13:03:01.866Z",
+  "score": 7,
+  "src": "audit-v7"
+ },
+ "falafel-wrap": {
+  "sha256": "0a89a79d40c7f634ba4530c3f0d4f1235276e54637db463cb8b578901f790108",
+  "at": "2026-11-05T13:03:01.866Z",
+  "score": 7,
+  "src": "audit-v7"
+ },
+ "fattoush": {
+  "sha256": "a161f715559c557de81fec26b171704a7ebb4e71e618f6d266d951770cc781e9",
+  "at": "2026-11-05T13:03:01.867Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "fish-and-chips": {
+  "sha256": "50f60365969a887b9d4bbbde08a07b873fd65c964de8c2ade44940e2e3f35f63",
+  "at": "2026-11-05T13:03:01.867Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "fish-cutlets": {
+  "sha256": "b3421a70b3b0c25436d9f0f59573fd6a632f89bfa46313984a354830d29f61aa",
+  "at": "2026-11-05T13:03:01.867Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "fresh-spring-rolls": {
+  "sha256": "42608189fd727d642520c069c819a184909f99ebf1d2d9703be814de49bdf87d",
+  "at": "2026-11-05T13:03:01.867Z",
+  "score": 7,
+  "src": "audit-v7"
+ },
+ "fried-calamari": {
+  "sha256": "9d3bfd68b932182925c821aa26534bc2df23201ebc5b4f78318ed58396936c6e",
+  "at": "2026-11-05T13:03:01.867Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "ful-medames": {
+  "sha256": "aca60049fb6f5449b29112bdca8558e192de00b4fcbabae8845c5f5c95e74c72",
+  "at": "2026-11-05T13:03:01.867Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "gaeng-som-veg": {
+  "sha256": "6ff1f1055604dee8208e2bec0ddcc33a6649cd9e65404b4285208e7675493848",
+  "at": "2026-11-05T13:03:01.868Z",
+  "score": 7,
+  "src": "audit-v7"
+ },
+ "gai-pad-med-mamuang": {
+  "sha256": "16167a9f3c6a3fbe9e0d0ef7853f2729b325a0e6f746ec1080f1a437f442cfb0",
+  "at": "2026-11-05T13:03:01.868Z",
+  "score": 7,
+  "src": "audit-v7"
+ },
+ "gai-yang": {
+  "sha256": "21b18d0644ae9f3829268cea194fc7b8726a12518c635b128eea09cc790994fa",
+  "at": "2026-11-05T13:03:01.868Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "garlic-bok-choy": {
+  "sha256": "28aef923fe7addb53e63fa175782aa47ac33536aa9c627cada69866de844188e",
+  "at": "2026-11-05T13:03:01.868Z",
+  "score": 7,
+  "src": "audit-v7"
+ },
+ "garlic-shrimp": {
+  "sha256": "62a876b55bb1ac4a08ff045dd970b9f2bfbb88d022d9779da7145100ebaa43ce",
+  "at": "2026-11-05T13:03:01.868Z",
+  "score": 7,
+  "src": "audit-v7"
+ },
+ "gazpacho": {
+  "sha256": "56f0956e640c38608f1c67e6ff20f3bd4908ef2ea9bc0003e8a598b12ad861a2",
+  "at": "2026-11-05T13:03:01.868Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "general-tso-chicken": {
+  "sha256": "0ffae8db452646f21b5e225d14b78c9daee12a04b7a49f1ac25fbcb51fa14b5a",
+  "at": "2026-11-05T13:03:01.868Z",
+  "score": 7,
+  "src": "audit-v7"
+ },
+ "glazed-donuts": {
+  "sha256": "e188197b1a775f09ee788e1ca5cdf6880d28f49fc16ce17a03e7b77b1f168fa6",
+  "at": "2026-11-05T13:03:01.868Z",
+  "score": 7,
+  "src": "audit-v7"
+ },
+ "greek-lemon-chicken": {
+  "sha256": "979918516f1dc8190f50f85d06a6c890145af64ed533fd14364076a5f4174b67",
+  "at": "2026-11-05T13:03:01.869Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "greek-moussaka": {
+  "sha256": "30040954255cd86387e1533a2259580e38645aec421ccbbb4a7d07341e36ff69",
+  "at": "2026-11-05T13:03:01.869Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "greek-salad": {
+  "sha256": "9738d013e0c14a3b6034ff7707006e24a6f5eb51474cc92508e79a008437b5bb",
+  "at": "2026-11-05T13:03:01.869Z",
+  "score": 8,
+  "src": "user-approved"
+ },
+ "greek-yogurt-granola": {
+  "sha256": "5aa5e9828875fa8195223e9bf96f371bea3d4b515246ab9fbba6df48282696cf",
+  "at": "2026-11-05T13:03:01.869Z",
+  "score": 7,
+  "src": "audit-v7"
+ },
+ "green-curry-chicken": {
+  "sha256": "cbcf3df738b6761aa7227559756fea81b21092c8ccd9b799dbcd889c40ffb3ec",
+  "at": "2026-11-05T13:03:01.869Z",
+  "score": 7,
+  "src": "audit-v7"
+ },
+ "grilled-cheese-soup": {
+  "sha256": "ff71c8d56f0cc432d5165be1e55aca83aa2e660d4018a7308a2e8145973383cb",
+  "at": "2026-11-05T13:03:01.869Z",
+  "score": 7,
+  "src": "audit-v7"
+ },
+ "grilled-chicken-broccoli": {
+  "sha256": "3f6fa3fc1010c6d2e002028d262521580a75f5cd2dca5d4c69293f436f569f0c",
+  "at": "2026-11-05T13:03:01.870Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "grilled-vegetables-platter": {
+  "sha256": "b503fb5eea4ef3312816b16003119945bf493ddcb0daa04640eb5b54167ae095",
+  "at": "2026-11-05T13:03:01.870Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "hand-torn-cabbage": {
+  "sha256": "133de18ff1ccc933d89edcbe023e6d6792853dfe7b9de77700a81906e19f1b34",
+  "at": "2026-11-05T13:03:01.870Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "harira": {
+  "sha256": "9f02d118f88310b85ec8f8079961aa36d465870ce606da67035d03e17035a570",
+  "at": "2026-11-05T13:03:01.870Z",
+  "score": 7,
+  "src": "audit-v7"
+ },
+ "hash-browns": {
+  "sha256": "b49ab498a40e3faaf0d7bbf23a93f976e44de42de53a20530baaacffafdb2c06",
+  "at": "2026-11-05T13:03:01.870Z",
+  "score": 7,
+  "src": "audit-v7"
+ },
+ "herring-shuba": {
+  "sha256": "01386f11ff63d4d28608347e112071d3d96af7f16ff4106182a7399372fe8a08",
+  "at": "2026-11-05T13:03:01.870Z",
+  "score": 9,
+  "src": "audit-v7"
+ },
+ "homestyle-tofu": {
+  "sha256": "554c4dd0d8772f96ad3b1ee4c1fa389e757415a85b739af23ebc144d5e4f0178",
+  "at": "2026-11-05T13:03:01.870Z",
+  "score": 7,
+  "src": "user-approved"
+ },
+ "hong-shao-rou": {
+  "sha256": "be6b10e4df497b4798f688f6df26e46b4fc495db5457a6291df677f333a30507",
+  "at": "2026-11-05T13:03:01.871Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "huang-men-ji": {
+  "sha256": "0cf34d8947876bea4906d9cf4f2afc73ed775dba47e35eac4683f05d18589eda",
+  "at": "2026-11-05T13:03:01.871Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "hummus-classic": {
+  "sha256": "2742f6174904f8398170fbc13bf37d2a601ef4c08eeb63e45c2c85ad62345998",
+  "at": "2026-11-05T13:03:01.871Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "jambalaya": {
+  "sha256": "a1b35ea460299489c9c011113db79231ee1aa1edaca932706b3942c078b443b9",
+  "at": "2026-11-05T13:03:01.871Z",
+  "score": 7,
+  "src": "audit-v7"
+ },
+ "jiaozi-pork": {
+  "sha256": "6739c7831a99f28eb5d166787545285a8320e7b45b8037a98bbfe6395737bcae",
+  "at": "2026-11-05T13:03:01.871Z",
+  "score": 6,
+  "src": "user-approved"
+ },
+ "julienne": {
+  "sha256": "b57fe527bb0ae7cbf9ea2a860e332ce71480555cc98f52fa05a7038e736ae164",
+  "at": "2026-11-05T13:03:01.871Z",
+  "score": 7,
+  "src": "audit-v7"
+ },
+ "kai-jeow": {
+  "sha256": "2c3886cf193c14833a68b67f1bccbc440dd5f23875f64ea9ea12f3a29ba082fa",
+  "at": "2026-11-05T13:03:01.871Z",
+  "score": 7,
+  "src": "audit-v7"
+ },
+ "kefir-pancakes": {
+  "sha256": "aff817b9d8334e633a15035bd0cced161542a54b1efdd2a8663bdec2f499b742",
+  "at": "2026-11-05T13:03:01.872Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "key-lime-pie": {
+  "sha256": "3ec90616b9b51e0c6c538f873b6bf992a620d3d5a5f51c93eff1482d395a2aa3",
+  "at": "2026-11-05T13:03:01.872Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "khao-soi": {
+  "sha256": "708bdd1e5e657d843cb30e76fb1bf062b8485d10f173d634cc68b3739c89b1a3",
+  "at": "2026-11-05T13:03:01.872Z",
+  "score": 7,
+  "src": "audit-v7"
+ },
+ "kibbeh": {
+  "sha256": "2c6acec9e19f37f870d0929ef6d5adef161419c27761236d693a49f6118fd71c",
+  "at": "2026-11-05T13:03:01.872Z",
+  "score": 7,
+  "src": "audit-v7"
+ },
+ "kluay-buat-chi": {
+  "sha256": "007d9712a1629dca2875818cbf82796950a36a34e287934c69eea07aa92fd60e",
+  "at": "2026-11-05T13:03:01.872Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "kluay-tod": {
+  "sha256": "c1cf4b55a1d4c214132da8af7e05f2bbfa5193f4ee49eb55a2471f15e4ad282d",
+  "at": "2026-11-05T13:03:01.872Z",
+  "score": 7,
+  "src": "user-approved"
+ },
+ "kofte-turkish": {
+  "sha256": "d076bd12b20d9a93b40dc72bf730ce6524fb56c2da49dae29fc4ede0c8726f95",
+  "at": "2026-11-05T13:03:01.872Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "korean-carrot": {
+  "sha256": "010307858a53b80a84eec9fd0086e0c0f101f7a0b72cc06b8a303401c26ced15",
+  "at": "2026-11-05T13:03:01.873Z",
+  "score": 7,
+  "src": "user-approved"
+ },
+ "kuay-teow-beef-soup": {
+  "sha256": "dd7644aea62af2b6ead725e2bfe9bf2bf73aedef62bdb7479793f4d31d3668af",
+  "at": "2026-11-05T13:03:01.873Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "kung-pao-chicken": {
+  "sha256": "01614bc39e98fd4fe87ca757142f8661c07e35c3f5803a681df535e0bad508b0",
+  "at": "2026-11-05T13:03:01.873Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "lahmacun": {
+  "sha256": "1e3f29c71cd2927381fae22b3b8e353047e458ae8c876ddf577f70c8ec972d84",
+  "at": "2026-11-05T13:03:01.873Z",
+  "score": 7,
+  "src": "audit-v7"
+ },
+ "larb-chicken": {
+  "sha256": "e02902bba2fce9a4dd09d1c6ead9c68e2763da21507deef92d461fd9523f897c",
+  "at": "2026-11-05T13:03:01.873Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "lentil-soup": {
+  "sha256": "c5817fd45f4670752432cd9e0ea6ee9c83e14a31748afe7bae93032b498fdd5b",
+  "at": "2026-11-05T13:03:01.873Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "liang-ban-tofu": {
+  "sha256": "de6e99339f7c91e1482290ef4cbf0ce9b5fcc068d132950da196cc15f91cd091",
+  "at": "2026-11-05T13:03:01.873Z",
+  "score": 7,
+  "src": "audit-v7"
+ },
+ "lyulya-kebab": {
+  "sha256": "fcef530d24b09bf02c76844d8e675d1817fa466f7222621d4b20df9cb1f8007f",
+  "at": "2026-11-05T13:03:01.874Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "mac-and-cheese": {
+  "sha256": "4d54c10c0b937fef576aba0c1593cab10d225882ff964f3abc967a14013c17b2",
+  "at": "2026-11-05T13:03:01.874Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "mango-sticky-rice": {
+  "sha256": "6f966048889d269ab95a9e5303ee80bbbdab38ff673798f03d7c10e2d059f09b",
+  "at": "2026-11-05T13:03:01.874Z",
+  "score": 9,
+  "src": "audit-v7"
+ },
+ "mapo-tofu": {
+  "sha256": "01402855888c6409701bc46e2b665a77cda55445fd1c3547f2f8494b7532deff",
+  "at": "2026-11-05T13:03:01.874Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "margherita-pizza": {
+  "sha256": "6040d799efca06ce05d9a8e35a03a5780c0c1698ed64c13082f121614bbd1daa",
+  "at": "2026-11-05T13:03:01.874Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "massaman-beef": {
+  "sha256": "814a3f31ace490dfa807c196ba42f67ebf218ef4c2474d86708f0b40cdf51319",
+  "at": "2026-11-05T13:03:01.874Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "meatballs-tomato": {
+  "sha256": "61fe2ab41b6aaf46ad0ff1a41f621cd61c94d967e5b6daae493a72d1e110f2f5",
+  "at": "2026-11-05T13:03:01.875Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "meatloaf": {
+  "sha256": "04df5742d5ef44eab9ba900a85bb6c5da0653d42fbf0d1f146bad4026ba43498",
+  "at": "2026-11-05T13:03:01.875Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "mediterranean-lentil-salad": {
+  "sha256": "3eb300bb37402ff6089c0d613b5c5042f9a9607853262c9a4101133f1f81010f",
+  "at": "2026-11-05T13:03:01.875Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "menemen": {
+  "sha256": "4e98aa71464c668e974e50c7c957e66154b527a87675325764a249370e4eecf8",
+  "at": "2026-11-05T13:03:01.875Z",
+  "score": 7,
+  "src": "audit-v7"
+ },
+ "milk-blini": {
+  "sha256": "3a0d2d2f0446d27288a6862736b3b48324694f839c82057ab8f81c075f23bc96",
+  "at": "2026-11-05T13:03:01.875Z",
+  "score": 8,
+  "src": "user-approved"
+ },
+ "mimosa": {
+  "sha256": "eb4d68d35c7d0cd3cc5b43ad4a9f41ea85993353b8c56afc33d5bd980e61dcfb",
+  "at": "2026-11-05T13:03:01.875Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "moo-yang": {
+  "sha256": "adc73a1a13febaad0f974f4ee732b525fc0a5000192877f9da94014f0c7260d6",
+  "at": "2026-11-05T13:03:01.876Z",
+  "score": 7,
+  "src": "audit-v7"
+ },
+ "mushroom-cream-soup": {
+  "sha256": "e42902a1a0e63b462c65bdde6dc740f096de37e39eb2a133b9230c9a8d9428c9",
+  "at": "2026-11-05T13:03:01.876Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "mushroom-risotto": {
+  "sha256": "21e8877f1c71539e5834a7fb03ecc48309d16688cdee3b57c42d0bb28b59e753",
+  "at": "2026-11-05T13:03:01.876Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "mussels-cream": {
+  "sha256": "de60394b06d74463ab2ea9bf6878b557ffa97b5321d1dfad1ef8794d98bf9760",
+  "at": "2026-11-05T13:03:01.876Z",
+  "score": 7,
+  "src": "user-approved"
+ },
+ "napa-tofu-soup": {
+  "sha256": "1fd990e87d969eb412780d0f49c106c6b93bf04404a76dd76774f4077d22abca",
+  "at": "2026-11-05T13:03:01.876Z",
+  "score": 7,
+  "src": "audit-v7"
+ },
+ "ny-cheesecake": {
+  "sha256": "dc90a13c4e5cd5d4dba58878e5f1e1a689376f7d957b582893e2a3b7832c1a2b",
+  "at": "2026-11-05T13:03:01.876Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "oat-cookies": {
+  "sha256": "d7c57912350acb1f30e17a6c72c9f71b80dcf34fc06730635d130c7e42c819b3",
+  "at": "2026-11-05T13:03:01.876Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "oatmeal-bowl": {
+  "sha256": "0e7f12d33822a6a8ad3e3dd519a9f93ec493acdeeb4fabf4e462e59743337079",
+  "at": "2026-11-05T13:03:01.877Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "okroshka": {
+  "sha256": "f3a469cb837732891a4c2f77c6c3eb2f69e6a6bf6620d44df3ca5a887d7a5257",
+  "at": "2026-11-05T13:03:01.877Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "olivier": {
+  "sha256": "b31c527706db6999e4f427f3ecbc3b841c61e6e04f859454b191ee3efc1f79d7",
+  "at": "2026-11-05T13:03:01.877Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "oven-shashlik": {
+  "sha256": "bea2c044932cef544955c4b9b67e395758bd5c4ea2fb91fce2b2cfb99d9b5dbd",
+  "at": "2026-11-05T13:03:01.877Z",
+  "score": 7,
+  "src": "audit-v7"
+ },
+ "pad-gratiem-garlic-veg": {
+  "sha256": "b046dfa16704937233f2116f2b95120f139bdd3ca4fbd4a4668632f22e6f031a",
+  "at": "2026-11-05T13:03:01.877Z",
+  "score": 7,
+  "src": "audit-v7"
+ },
+ "pad-kee-mao": {
+  "sha256": "09c9691dfed1743bbb1965567f0d752238570d9fb47d03df167356b5ba2a1a24",
+  "at": "2026-11-05T13:03:01.877Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "pad-krapow-chicken": {
+  "sha256": "32489160d4aa921be6659a55ddf6d88f3798ae1c335c9fd0a0b59bde6b8894e4",
+  "at": "2026-11-05T13:03:01.878Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "pad-see-ew": {
+  "sha256": "3833442541767b75874f55a2d12fe1f44fce1372ef7bee01396e271fc68258fe",
+  "at": "2026-11-05T13:03:01.878Z",
+  "score": 7,
+  "src": "audit-v7"
+ },
+ "pad-thai-shrimp": {
+  "sha256": "b579a923101ef912fdf81d33b7c66f67b57d4c0ff83ede620eb81bb6e3538246",
+  "at": "2026-11-05T13:03:01.878Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "pad-woo-sen": {
+  "sha256": "e979d85bc86e5ac5a4da97bb7ca1cc3fc92dd3ab40c8a422a0b50cb679b739b6",
+  "at": "2026-11-05T13:03:01.878Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "pan-con-tomate": {
+  "sha256": "6c0570fb830e7775b41d8ee9a56f78c8bae5583d04fd94fb726043eb5fd3d015",
+  "at": "2026-11-05T13:03:01.878Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "pasta-carbonara": {
+  "sha256": "f874b716770e7e2401b312ec78a19619b3be410f74cbfbffc9d404f8f064a3cd",
+  "at": "2026-11-05T13:03:01.878Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "patatas-bravas": {
+  "sha256": "07543f4d6f009815ad8f742a65c819f541fc2a0326259647fc25a7972787c87c",
+  "at": "2026-11-05T13:03:01.878Z",
+  "score": 7,
+  "src": "audit-v7"
+ },
+ "pea-soup": {
+  "sha256": "48179d0a237a3466f86db8b4ec0b377c97dc789db6501d21c751adb92085772a",
+  "at": "2026-11-05T13:03:01.879Z",
+  "score": 7,
+  "src": "audit-v7"
+ },
+ "peanut-butter-cookies": {
+  "sha256": "65a0a05d64bf841d5a25e8a914b7916fd69dde72a31c280896a1bcbb33019671",
+  "at": "2026-11-05T13:03:01.879Z",
+  "score": 9,
+  "src": "audit-v7"
+ },
+ "pelmeni": {
+  "sha256": "bbc21646a1b797dacdffcc96ff212437e7d428432412840456edeb86b2b80aa3",
+  "at": "2026-11-05T13:03:01.879Z",
+  "score": 6,
+  "src": "user-approved"
+ },
+ "pepperoni-pizza": {
+  "sha256": "7d4b95e6cff93140e0fae5f8504925338ec2e64e367e8f94ec7ef09a1a9a4cd3",
+  "at": "2026-11-05T13:03:01.879Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "philly-cheesesteak": {
+  "sha256": "86fe13f86d66053844e9d01f877ddede5100fea08c4513dc2c85f3e7b9c2fb6e",
+  "at": "2026-11-05T13:03:01.879Z",
+  "score": 7,
+  "src": "audit-v7"
+ },
+ "pineapple-fried-rice": {
+  "sha256": "2e45feb3a64c12bd7be6532950d73e1169092bde7e25889df631937bdbbf75b0",
+  "at": "2026-11-05T13:03:01.880Z",
+  "score": 7,
+  "src": "audit-v7"
+ },
+ "pissaladiere": {
+  "sha256": "36800649e22ca355ee725e5b556fdc4b167e3e74019439f1ffa0f8a519b70d3d",
+  "at": "2026-11-05T13:03:01.880Z",
+  "score": 7,
+  "src": "audit-v7"
+ },
+ "pisto-manchego": {
+  "sha256": "0a307e65a2a7154ef7c3911d7e3e383abfc6c067d8f7e95ee4fd659575808238",
+  "at": "2026-11-05T13:03:01.881Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "poke-bowl": {
+  "sha256": "92dd766d9dc94a5ffdc63202e0f10f3dffb6189578f0843a38ae5ac82421507c",
+  "at": "2026-11-05T13:03:01.881Z",
+  "score": 7,
+  "src": "audit-v7"
+ },
+ "pollo-al-ajillo": {
+  "sha256": "2c69bdc7b5d970bbba67f49e0879964cec90de915441d761055f9e44047e3935",
+  "at": "2026-11-05T13:03:01.881Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "pork-chops": {
+  "sha256": "c4fddbe8ae5a84f39d542bab73200bf277a34b93241cb1ba1bd62b5d0d69e479",
+  "at": "2026-11-05T13:03:01.881Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "pork-french": {
+  "sha256": "25dd9913a9fa9141d6b1106057f023b2015a5590c935d4d77c600daa423f10c4",
+  "at": "2026-11-05T13:03:01.881Z",
+  "score": 8,
+  "src": "user-approved"
+ },
+ "potato-skins": {
+  "sha256": "c0f9c5faed9d7c0f402c37b09b4f90caa9646144155a51ab3eedc9ed489c7380",
+  "at": "2026-11-05T13:03:01.881Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "provence-chicken": {
+  "sha256": "cf514a17b450cffa4deafd1ac0d5b4cd76a50cd1c4d3723886af7d9f7717fa2a",
+  "at": "2026-11-05T13:03:01.881Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "pumpkin-soup": {
+  "sha256": "61d2aa2237c6a541b8d2d3a3648eb15d6fb5e09852eb00107ce59904a197a518",
+  "at": "2026-11-05T13:03:01.881Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "qing-zheng-fish": {
+  "sha256": "c2f8ca51580ca7cf986a9b772e52658221ba3ac1c42e1b0e0b5809df43552bb1",
+  "at": "2026-11-05T13:03:01.881Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "rassolnik": {
+  "sha256": "805a33f49e6bb9516da01fbfc51bc78022111138e99a0a9fb8f0daf3f4d24d46",
+  "at": "2026-11-05T13:03:01.882Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "ratatouille": {
+  "sha256": "d4e1dcdbe81cbbdbc8a958537112328645666d34d645bab241596f88dd99ce07",
+  "at": "2026-11-05T13:03:01.882Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "red-curry-pumpkin": {
+  "sha256": "422e55ed7150234c4eeec109702fecbef10c4fa7a8a2031759d8d4f89d5f304e",
+  "at": "2026-11-05T13:03:01.882Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "roasted-roots": {
+  "sha256": "27fc144360c2befb367dad62aa8be3992d224ed44bbcae48707fbb655cc6b6c4",
+  "at": "2026-11-05T13:03:01.882Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "salade-nicoise": {
+  "sha256": "609b52d0d7f8fb2cc228964ab66c880634a218b84d96d00a5dded0435e41e5c1",
+  "at": "2026-11-05T13:03:01.882Z",
+  "score": 7,
+  "src": "audit-v7"
+ },
+ "salt-pepper-shrimp": {
+  "sha256": "ec34b4d94b7de8fdb65a1c482503371d1f33fcf056b9d74999017c0a1387718c",
+  "at": "2026-11-05T13:03:01.882Z",
+  "score": 7,
+  "src": "audit-v7"
+ },
+ "satay-veg-tofu": {
+  "sha256": "ab1aafdb632300bc7986d735334b5cc2533dcfb25efe53cc0c300b39b2609a17",
+  "at": "2026-11-05T13:03:01.882Z",
+  "score": 7,
+  "src": "audit-v7"
+ },
+ "scallion-pancakes": {
+  "sha256": "e6e95144e2a0594f7e970fcff0be348450a0ce7363704ea73d01c781253e5080",
+  "at": "2026-11-05T13:03:01.882Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "shakshuka": {
+  "sha256": "86b5bde5cee5391e833dad613f0de96156d823a2ed48d03919d1854c70c1e578",
+  "at": "2026-11-05T13:03:01.882Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "shchi": {
+  "sha256": "5bb4458051c4bae97901b6013c7be18fd071bdea24c04a1f1218d661bd379b49",
+  "at": "2026-11-05T13:03:01.883Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "shrimp-pasta": {
+  "sha256": "46014a19084356e40dc8c30d7856d1cd9720d3a8944f3f85e44ea23817e940cf",
+  "at": "2026-11-05T13:03:01.883Z",
+  "score": 7,
+  "src": "audit-v7"
+ },
+ "shrimp-prik-king": {
+  "sha256": "37c3d3febd7796177d1d732bab3f5edc6cbb211f7c51982054ad8e752544f1b3",
+  "at": "2026-11-05T13:03:01.883Z",
+  "score": 9,
+  "src": "audit-v7"
+ },
+ "shrimp-saganaki": {
+  "sha256": "6295eaff4e32a611c7eba923107197d6cfa79c55d6afd7b62cfb95fc22b9aea5",
+  "at": "2026-11-05T13:03:01.883Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "shui-zhu-beef": {
+  "sha256": "6d548e9e54a23b55693771de9c28f8bee097835c8e42e384c82c15986fdc4715",
+  "at": "2026-11-05T13:03:01.883Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "sloppy-joes": {
+  "sha256": "c0354909f06947a9e50d31983a1222f4e4a48b5f08ee050f8f1e7e5b048122f4",
+  "at": "2026-11-05T13:03:01.883Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "smashed-cucumber-salad": {
+  "sha256": "dec25f1f5ae159bec7e88713a17e62707048151d6d511f3a80e010eb9e5209e5",
+  "at": "2026-11-05T13:03:01.883Z",
+  "score": 7,
+  "src": "audit-v7"
+ },
+ "smoothie-bowl": {
+  "sha256": "f948c9a4341e013237c3b6b0957aaf7b43afc0f80b42d766df1682b3372fccf0",
+  "at": "2026-11-05T13:03:01.883Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "soba-beef": {
+  "sha256": "b62d466b26e2b8830ab4ed886b2afc20a9addaa7a04b4aa28158bdb4c83a4c0a",
+  "at": "2026-11-05T13:03:01.884Z",
+  "score": 7,
+  "src": "audit-v7"
+ },
+ "solyanka": {
+  "sha256": "8ae596f8e316d798f4b993d7a8f9a0ee98dc1db11947292a6849a657681dc2b2",
+  "at": "2026-11-05T13:03:01.884Z",
+  "score": 9,
+  "src": "audit-v7"
+ },
+ "som-tam": {
+  "sha256": "badf52667433ee672f795c9801a9f7abb32a4ff0a4b96ca85003938f30fa0d8e",
+  "at": "2026-11-05T13:03:01.884Z",
+  "score": 8,
+  "src": "user-approved"
+ },
+ "son-in-law-eggs": {
+  "sha256": "cab27b664acf4d1b4478a7a01c473855af6007ae0f87bdeeacbe2f96f464cb75",
+  "at": "2026-11-05T13:03:01.884Z",
+  "score": 7,
+  "src": "audit-v7"
+ },
+ "southern-fried-chicken": {
+  "sha256": "9e4fa578cc62a7d4497e71173d07052f005f53eabaa2974096c194b16d589c4f",
+  "at": "2026-11-05T13:03:01.884Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "soy-braised-wings": {
+  "sha256": "af4705f4b1bc9b857d09e752eae193d3ba9d6e9fb4c1310e0aed6f9aff23d252",
+  "at": "2026-11-05T13:03:01.884Z",
+  "score": 7,
+  "src": "audit-v7"
+ },
+ "spaghetti-bolognese": {
+  "sha256": "619e37c2fdc1eedcec74f911e5953a63fb01d93264954be3e31fd01cc0100ff9",
+  "at": "2026-11-05T13:03:01.884Z",
+  "score": 7,
+  "src": "audit-v7"
+ },
+ "spanish-tortilla": {
+  "sha256": "3269de3b351b7abe24a34e8edda0561cb8b04ee27de51f4a3f8f9c725944e65c",
+  "at": "2026-11-05T13:03:01.884Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "spinach-artichoke-dip": {
+  "sha256": "8f536cdd4d25db7e2371b315698ca5a0a1b677698413a1a18e0e2cfff2d7f97e",
+  "at": "2026-11-05T13:03:01.885Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "spinach-cheese-pancake": {
+  "sha256": "dd8a976d9c38e58f4396ed520db8e8976c1c5c79a481492e703f301249c44642",
+  "at": "2026-11-05T13:03:01.885Z",
+  "score": 7,
+  "src": "audit-v7"
+ },
+ "spring-cabbage-salad": {
+  "sha256": "13310887bebe5b4d8c0719851b93677a114df6e62a85c281c7186ada45e22b9f",
+  "at": "2026-11-05T13:03:01.885Z",
+  "score": 7,
+  "src": "audit-v7"
+ },
+ "sweet-potato-fries": {
+  "sha256": "0f729b77c3d5fce310c57fd2ee10318c420fd5cb990953e65bc4538deefe2f93",
+  "at": "2026-11-05T13:03:01.885Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "tabbouleh": {
+  "sha256": "83df56bb6ff0580f5c12d3517f573880f2251ded2eae00d28f768488a98c256d",
+  "at": "2026-11-05T13:03:01.885Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "tea-eggs": {
+  "sha256": "458a2680614ef3c2f8f2a857c5df26743db144f93ad7d11f957a28514ba3e533",
+  "at": "2026-11-05T13:03:01.885Z",
+  "score": 9,
+  "src": "audit-v7"
+ },
+ "thai-fried-rice": {
+  "sha256": "79f6f31d55fd7db06d0a5cc62b4f237e3c46db3185c1da6e7f5cbd3e50e4c495",
+  "at": "2026-11-05T13:03:01.885Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "thai-spring-rolls": {
+  "sha256": "fb76e8d2f0dcc0c0fe024c5bd038b68a0c0b2113ad2109ce07805c029ae5d7cc",
+  "at": "2026-11-05T13:03:01.885Z",
+  "score": 7,
+  "src": "audit-v7"
+ },
+ "thai-sticky-wings": {
+  "sha256": "d77febdb95005f12f3617ceb982b67cb4a1118ec3c288db631ee192e1d3a52f8",
+  "at": "2026-11-05T13:03:01.885Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "tod-mun-pla": {
+  "sha256": "e78b4de0b7fefdbc351b4cd9a7f9fffff03d575de0f628c842585b95b398776a",
+  "at": "2026-11-05T13:03:01.886Z",
+  "score": 7,
+  "src": "audit-v7"
+ },
+ "tom-kha-gai": {
+  "sha256": "aac57e47a465b754a666ed1cb8350a635f9b9433af9326d20b8103ee39a1ceb9",
+  "at": "2026-11-05T13:03:01.886Z",
+  "score": 7,
+  "src": "audit-v7"
+ },
+ "tom-kha-mushroom": {
+  "sha256": "e018fd915e98c07f841e289cc56911798ea2e1c33da085ad1007e820bfe1fce7",
+  "at": "2026-11-05T13:03:01.886Z",
+  "score": 7,
+  "src": "audit-v7"
+ },
+ "tom-yum": {
+  "sha256": "183c267efe1a3e07514ba0bdd206c572dca30ed81c0b04f2c9ed5140c704943a",
+  "at": "2026-11-05T13:03:01.886Z",
+  "score": 7,
+  "src": "audit-v7"
+ },
+ "tomato-egg-stirfry": {
+  "sha256": "f0c20dc2bb74a044e24b7fdce12da4f9f1d1f3538a569cb7a20397fd768de6d0",
+  "at": "2026-11-05T13:03:01.886Z",
+  "score": 8,
+  "src": "audit-v7"
+ },
+ "trout-foil": {
+  "sha256": "29d0dbdd78b249d33d6a7830ea7bb9e86e77b44f6aa0550569a12e3a33b0b463",
+  "at": "2026-11-05T13:03:01.886Z",
+  "score": 9,
+  "src": "audit-v7"
+ },
+ "tu-dou-si": {
+  "sha256": "a0a2d92216517f25354c5cc32926b3482c558576cbc0c549e61d0d74cff1684d",
+  "at": "2026-11-05T13:03:01.886Z",
+  "score": 7,
+  "src": "audit-v7"
+ },
+ "tuna-melt": {
+  "sha256": "6b65976b932d86cdf0c76d056af9dff022351ced7c1d317035a4ca1d06bb8c22",
+  "at": "2026-11-05T13:03:01.886Z",
+  "score": 7,
+  "src": "audit-v7"
+ },
+ "tuna-sandwich": {
+  "sha256": "5607639c471c8831d5fdfe1259f8aa4fd8be4246bec698daf817ce7033ee6d1e",
+  "at": "2026-11-05T13:03:01.886Z",
+  "score": 7,
+  "src": "audit-v7"
+ },
+ "turkish-pide": {
+  "sha256": "9fb5da64ac1d73d3373bd1e635bc934e2e90b57f85e77da7e58e21823c73e400",
+  "at": "2026-11-05T13:03:01.887Z",
+  "score": 8,
+  "src": "audit-v7"
+ }
+}
