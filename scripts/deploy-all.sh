@@ -10,7 +10,10 @@ MSG="${1:-deploy: $(date -u '+%Y-%m-%d %H:%M UTC')}"
 
 # Настройки распознавания для статических зеркал — пробрасываются в обе сборки
 # (подробности в scripts/deploy-pages.sh). Значения НЕ печатаются.
-export VITE_SCAN_API_URL="${SCAN_API_URL:-${VITE_SCAN_API_URL:-}}"
+# С 2026-11-05 адрес скан-API зашит дефолтом (Vercel-деплой владельца), чтобы
+# плановые деплои не теряли сканер: фото-скан работает через сервер, ключ
+# живёт в Environment Variables Vercel и в бандл не попадает.
+export VITE_SCAN_API_URL="${SCAN_API_URL:-${VITE_SCAN_API_URL:-https://scanfood-lac.vercel.app}}"
 export VITE_OPENROUTER_KEY="${OPENROUTER_KEY:-${VITE_OPENROUTER_KEY:-}}"
 export VITE_OPENROUTER_MODEL="${OPENROUTER_MODEL:-${VITE_OPENROUTER_MODEL:-}}"
 

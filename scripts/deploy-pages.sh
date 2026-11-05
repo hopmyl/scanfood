@@ -13,7 +13,9 @@ REMOTE="https://${TOKEN}@github.com/hopmyl/hopmyl.github.io.git"
 # src/lib/scan-client.ts). Передаются при запуске, значения НЕ печатаются:
 #   SCAN_API_URL=https://scanrecipe.vercel.app bash scripts/deploy-pages.sh   — внешний API с CORS;
 #   OPENROUTER_KEY=ror_... bash scripts/deploy-pages.sh                       — ⚠️ ключ попадёт в публичный бандл.
-export VITE_SCAN_API_URL="${SCAN_API_URL:-${VITE_SCAN_API_URL:-}}"
+# С 2026-11-05 адрес скан-API зашит дефолтом (Vercel-деплой владельца) —
+# плановые деплои не теряют сканер. Переопределить: SCAN_API_URL=... .
+export VITE_SCAN_API_URL="${SCAN_API_URL:-${VITE_SCAN_API_URL:-https://scanfood-lac.vercel.app}}"
 export VITE_OPENROUTER_KEY="${OPENROUTER_KEY:-${VITE_OPENROUTER_KEY:-}}"
 export VITE_OPENROUTER_MODEL="${OPENROUTER_MODEL:-${VITE_OPENROUTER_MODEL:-}}"
 
