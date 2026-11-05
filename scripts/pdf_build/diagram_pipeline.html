@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<style>
+  :root{
+    --bg:#ffffff; --card:#e4ecf5; --card2:#edf2f9; --border:#c0d0e2;
+    --deep:#1a4a7a; --accent:#2d7ab3; --text:#142840; --muted:#5a7a96;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html,body{background:var(--bg); font-family:'Liberation Sans','DejaVu Sans',sans-serif;}
+  .canvas{width:1000px; padding:18px 20px 24px; background:var(--bg); position:relative;}
+  .badge-cron{
+    display:block; width:fit-content; margin:0 auto 4px;
+    font-size:18px; font-weight:bold; color:#ffffff;
+    background:var(--deep); border-radius:999px; padding:7px 26px;
+  }
+  .step{
+    width:520px; margin:0 auto; background:var(--card);
+    border:1.5px solid var(--border); border-radius:10px;
+    padding:12px 20px; text-align:center; position:relative; z-index:2;
+  }
+  .step h4{font-size:23px; font-weight:bold; color:var(--deep); margin-bottom:3px;}
+  .step p{font-size:17px; color:var(--muted); line-height:1.35;}
+  .step.decision{
+    background:#ffffff; border:2px solid var(--accent); width:420px;
+  }
+  .step.approve{background:#e9f1ec; border-color:#7fae94; width:620px;}
+  .step.approve h4{color:#2d5a3d;}
+  .step.reject{
+    position:absolute; right:24px; top:416px; width:230px;
+    background:#f6ecec; border-color:#c99090; z-index:2;
+  }
+  .step.reject h4{color:#8a3a3a; font-size:21px;}
+  .vgap{display:flex; flex-direction:column; align-items:center;}
+  .vgap svg{display:block;}
+  .alabel{font-size:17px; font-weight:bold; color:var(--accent);}
+</style>
+</head>
+<body>
+<div class="canvas">
+
+  <div class="badge-cron">Запускается автоматически: каждые 30 минут (cron)</div>
+
+  <div class="step">
+    <h4>1. Очередь блюд на проверку</h4>
+    <p>список regen-shortlist.txt: какие фото проверить или переделать</p>
+  </div>
+  <div class="vgap"><svg width="20" height="30"><line x1="10" y1="0" x2="10" y2="22" stroke="#2d7ab3" stroke-width="2"/><polygon points="4,20 16,20 10,30" fill="#2d7ab3"/></svg></div>
+
+  <div class="step">
+    <h4>2. Генерация фотографии</h4>
+    <p>нейросеть рисует блюдо заново по рецепту</p>
+  </div>
+  <div class="vgap"><svg width="20" height="30"><line x1="10" y1="0" x2="10" y2="22" stroke="#2d7ab3" stroke-width="2"/><polygon points="4,20 16,20 10,30" fill="#2d7ab3"/></svg></div>
+
+  <div class="step">
+    <h4>3. «Критик»: оценка 1–10</h4>
+    <p>вторая нейросеть проверяет фото на реалистичность, вердикт пишется в realism-report.json</p>
+  </div>
+  <div class="vgap"><svg width="20" height="30"><line x1="10" y1="0" x2="10" y2="22" stroke="#2d7ab3" stroke-width="2"/><polygon points="4,20 16,20 10,30" fill="#2d7ab3"/></svg></div>
+
+  <div class="step decision">
+    <h4>4. Оценка 7 баллов и выше?</h4>
+  </div>
+
+  <!-- yes branch -->
+  <div class="vgap">
+    <svg width="20" height="30"><line x1="10" y1="0" x2="10" y2="22" stroke="#2d7ab3" stroke-width="2"/><polygon points="4,20 16,20 10,30" fill="#2d7ab3"/></svg>
+    <span class="alabel">да — фото хорошее</span>
+  </div>
+
+  <div class="step approve">
+    <h4>5. Публикация</h4>
+    <p>фото попадает в манифест → коммит в git (только фото и служебные списки) →
+       деплой на оба зеркала → автопроверка «сайт отвечает 200»</p>
+  </div>
+
+  <!-- no branch: elbow from decision right edge to reject box, then loop back up to step 1 -->
+  <svg style="position:absolute; inset:0; z-index:1;" width="1000" height="760" viewBox="0 0 1000 760" fill="none">
+    <path d="M 710 512 L 780 512 L 780 470" stroke="#c99090" stroke-width="2" stroke-dasharray="6 4"/>
+    <polygon points="774,476 786,476 780,464" fill="#c99090"/>
+    <path d="M 896 470 L 896 96 L 770 96" stroke="#c99090" stroke-width="2" stroke-dasharray="6 4"/>
+    <polygon points="776,90 776,102 764,96" fill="#c99090"/>
+  </svg>
+
+  <div class="step reject">
+    <h4>нет — брак</h4>
+    <p>фото возвращается<br>в очередь на переделку</p>
+  </div>
+
+</div>
+</body>
+</html>
