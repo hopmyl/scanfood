@@ -102,3 +102,9 @@
 2026-11-05T19:47:43.980Z --- imam-bayildi: «Turkish stuffed eggplants imam bayildi. Mediterranean dish, olive oil,…»
 2026-11-05T19:49:00.822Z OK+ЗАМОК imam-bayildi score=8 (чисто) каналов=2
 2026-11-05T19:49:00.822Z === НАТУРАЛ v7 итог: заморожено 2, на просмотр 1, критик OR used=0 ===
+2026-11-05T20:40:55.231Z === НАТУРАЛ v7 старт: 3 блюд (кандидатов на блюдо: 2) ===
+2026-11-05T20:40:57.826Z Критик z-ai: жив
+2026-11-05T20:41:32.241Z Генератор z-ai: жив
+2026-11-05T20:41:32.241Z --- sushi-set: «Sushi rolls set on a dark slate. Japanese dish, minimal plating, black…»
+2026-11-05T20:42:54.235Z MANUAL sushi-set score=6 (пластик) — лучший из 2 записан, на ваш просмотр
+2026-11-05T20:42:54.235Z --- lazy-vareniki: «Lazy vareniki: boiled diamond-shaped cottage cheese dough pieces with …»
