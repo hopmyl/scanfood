@@ -33,30 +33,28 @@
   "at": "2026-11-04T18:51:24.299Z"
  },
  "adjarian-khachapuri": {
-  "score": -1,
+  "score": 7,
   "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
   "glamor": false,
-  "note": "ошибка критика",
-  "error": true,
+  "note": "Аджарский хачапури с желтком и маслом, реалистично",
   "mtime": 1793862632000,
-  "at": "2026-11-05T15:44:23.026Z"
+  "at": "2026-11-05T16:40:56.152Z"
  },
  "ajvar": {
-  "score": -1,
+  "score": 7,
   "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "glamor": false,
-  "note": "ошибка критика",
-  "error": true,
+  "glamor": true,
+  "note": "Похоже на айвар, но тёмный рекламный стиль и рендер-глянец",
   "mtime": 1793862632000,
-  "at": "2026-11-05T15:47:53.231Z"
+  "at": "2026-11-05T16:40:59.695Z"
  },
  "american-pancakes": {
   "score": 8,
@@ -807,15 +805,16 @@
   "at": "2026-11-03T19:40:15.592Z"
  },
  "corn-chicken-soup": {
-  "score": 5,
+  "score": 6,
   "steam": false,
   "plastic": true,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Кукуруза глянцево-пластиковая, текстура однородная, но блюдо верное",
-  "mtime": 1793815413852.812,
-  "at": "2026-11-04T18:09:42.629Z"
+  "glamor": true,
+  "note": "Кукуруза выглядит пластиковой, нейронная текстура мяса",
+  "mtime": 1793884650000,
+  "at": "2026-11-05T16:41:01.942Z"
  },
  "cornbread": {
   "score": 7,
@@ -862,15 +861,16 @@
   "at": "2026-11-03T20:39:36.621Z"
  },
  "crispy-tofu": {
-  "score": 8,
+  "score": 7,
   "steam": false,
-  "plastic": true,
+  "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Глазурь слегка восковая, но в целом реалистично",
-  "mtime": 1793735011000,
-  "at": "2026-11-03T20:39:38.657Z"
+  "glamor": true,
+  "note": "Тофу в соусе с рисом верно, но глянцевый рекламный стиль",
+  "mtime": 1793862632000,
+  "at": "2026-11-05T16:41:05.370Z"
  },
  "croissant-salmon": {
   "score": 8,
@@ -1319,9 +1319,10 @@
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Похоже на острокислый суп с грибами, лёгкие ИИ-артефакты текстуры",
-  "mtime": 1793684382000,
-  "at": "2026-11-03T21:09:47.021Z"
+  "glamor": false,
+  "note": "Похоже на острокислый суп с грибами, слегка ИИ-текстура",
+  "mtime": 1793862632000,
+  "at": "2026-11-05T16:41:07.959Z"
  },
  "huang-men-ji": {
   "score": 8,
@@ -1346,15 +1347,16 @@
   "at": "2026-11-04T17:40:55.857Z"
  },
  "imam-bayildi": {
-  "score": 8,
+  "score": 7,
   "steam": false,
   "plastic": false,
   "text": true,
   "people": false,
   "wrong": false,
-  "note": "Реалистичный имам баилди, зелень и масло на месте",
-  "mtime": 1793684382000,
-  "at": "2026-11-03T21:09:53.435Z"
+  "glamor": false,
+  "note": "Блюдо соответствует, надпись на фото снижает балл",
+  "mtime": 1793862632000,
+  "at": "2026-11-05T16:41:09.957Z"
  },
  "jambalaya": {
   "score": 7,
@@ -1423,15 +1425,16 @@
   "at": "2026-11-03T21:10:08.460Z"
  },
  "khao-man-gai": {
-  "score": 8,
+  "score": 5,
   "steam": false,
   "plastic": true,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Курица с рисом и лаймом соответствует, но текстура восковая",
-  "mtime": 1793684382000,
-  "at": "2026-11-03T21:10:10.488Z"
+  "glamor": false,
+  "note": "Курица выглядит восково-глянцевой, тесто похоже на рендер",
+  "mtime": 1793862632000,
+  "at": "2026-11-05T16:41:13.640Z"
  },
  "khao-soi": {
   "score": 7,
@@ -1550,9 +1553,10 @@
   "text": false,
   "people": false,
   "wrong": true,
-  "note": "Пельмени в бульоне, не ленивые вареники; восковая текстура",
-  "mtime": 1793817259177.1113,
-  "at": "2026-11-04T18:41:43.814Z"
+  "glamor": true,
+  "note": "Пельмени вместо ромбов ленивых вареников, восковая текстура",
+  "mtime": 1793884965000,
+  "at": "2026-11-05T16:41:20.612Z"
  },
  "lentil-soup": {
   "score": 8,
@@ -2017,15 +2021,16 @@
   "at": "2026-11-04T18:41:50.179Z"
  },
  "pla-neung-manao": {
-  "score": 6,
+  "score": 7,
   "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Похоже на паровую рыбу с лаймом, лёгкая ИИ-гладкость текстуры",
-  "mtime": 1793684382000,
-  "at": "2026-11-04T18:31:04.428Z"
+  "glamor": false,
+  "note": "Ппаренное филе с лаймом и чили, но текстура слегка ИИ",
+  "mtime": 1793862632000,
+  "at": "2026-11-05T16:41:25.216Z"
  },
  "poke-bowl": {
   "score": 7,
@@ -2204,15 +2209,16 @@
   "at": "2026-11-04T18:42:35.023Z"
  },
  "sesame-noodles-cold": {
-  "score": 6,
+  "score": 7,
   "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Похоже на лапшу с огурцом, слегка ИИ-текстура",
-  "mtime": 1793722574000,
-  "at": "2026-11-04T18:42:37.303Z"
+  "glamor": true,
+  "note": "Лапша с огурцом и палочками верны, но фон гламурно-студийный",
+  "mtime": 1793862632000,
+  "at": "2026-11-05T16:41:27.328Z"
  },
  "shakshuka": {
   "score": 8,
@@ -2435,15 +2441,16 @@
   "at": "2026-11-04T18:51:35.624Z"
  },
  "sushi-set": {
-  "score": 6,
+  "score": 5,
   "steam": false,
   "plastic": true,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Роллы выглядят слегка восковыми, текстура однородная",
-  "mtime": 1793818600113.45,
-  "at": "2026-11-04T19:10:59.981Z"
+  "glamor": false,
+  "note": "Роллы выглядят восковыми, слишком гладкая нейронная текстура",
+  "mtime": 1793862632000,
+  "at": "2026-11-05T16:41:29.281Z"
  },
  "sweet-potato-fries": {
   "score": 8,
@@ -2457,15 +2464,16 @@
   "at": "2026-11-04T18:51:40.796Z"
  },
  "sweet-sour-chicken": {
-  "score": 6,
+  "score": 5,
   "steam": false,
-  "plastic": false,
+  "plastic": true,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Реалистично, но лёгкая глянцевая однородность вызывает сомнения",
-  "mtime": 1793818558072.2185,
-  "at": "2026-11-04T19:11:02.040Z"
+  "glamor": false,
+  "note": "Курица восковая, глянцевая текстура похожа на ИИ",
+  "mtime": 1793862632000,
+  "at": "2026-11-05T16:41:34.201Z"
  },
  "tabbouleh": {
   "score": 8,
@@ -2490,15 +2498,16 @@
   "at": "2026-11-04T19:39:55.968Z"
  },
  "thai-congee-jok": {
-  "score": 7,
+  "score": 6,
   "steam": false,
-  "plastic": true,
+  "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Рисовая каша с мясом похожа, но текстура восковая",
-  "mtime": 1793722487000,
-  "at": "2026-11-04T19:11:09.782Z"
+  "glamor": true,
+  "note": "Похоже на джок, мясо крупновато; тёмная студийная подача",
+  "mtime": 1793862632000,
+  "at": "2026-11-05T16:41:40.310Z"
  },
  "thai-fried-rice": {
   "score": 8,
@@ -2551,9 +2560,10 @@
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Похоже на тофу ларб, но текстура чуть пластиковая, ИИ-подозрения",
-  "mtime": 1793820099868.8826,
-  "at": "2026-11-04T19:40:01.103Z"
+  "glamor": true,
+  "note": "Похоже на larb, но текстура восковая, ИИ-глянец",
+  "mtime": 1793885057000,
+  "at": "2026-11-05T16:41:43.442Z"
  },
  "tom-kha-gai": {
   "score": 7,
@@ -2622,16 +2632,16 @@
   "at": "2026-11-04T19:40:10.081Z"
  },
  "tuna-egg-salad": {
-  "score": -1,
+  "score": 4,
   "steam": false,
-  "plastic": false,
+  "plastic": true,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "ошибка критика",
-  "error": true,
-  "mtime": 1793819775544.0627,
-  "at": "2026-11-04T19:43:40.237Z"
+  "glamor": false,
+  "note": "Тунец пластилиновый, текстура неестественно гладкая",
+  "mtime": 1793862632000,
+  "at": "2026-11-05T16:41:48.969Z"
  },
  "tuna-melt": {
   "score": 7,
@@ -2656,26 +2666,28 @@
   "at": "2026-11-04T19:11:50.354Z"
  },
  "tuna-steak-sesame": {
-  "score": 4,
-  "steam": true,
-  "plastic": false,
+  "score": 3,
+  "steam": false,
+  "plastic": true,
   "text": false,
   "people": false,
   "wrong": true,
-  "note": "Нарисованный пар, мясо похоже на говядину, не тунец",
-  "mtime": 1793684382000,
-  "at": "2026-11-04T19:11:54.374Z"
+  "glamor": false,
+  "note": "Похоже на лосось, не тунец; восковая текстура",
+  "mtime": 1793885014000,
+  "at": "2026-11-05T16:41:55.651Z"
  },
  "turkish-lentil-soup": {
   "score": 4,
   "steam": true,
-  "plastic": false,
+  "plastic": true,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Рисованный декоративный пар над супом",
-  "mtime": 1793684382000,
-  "at": "2026-11-04T19:11:56.655Z"
+  "glamor": false,
+  "note": "Рисованный пар и однородная текстура супа",
+  "mtime": 1793884650000,
+  "at": "2026-11-05T16:42:06.169Z"
  },
  "turkish-pide": {
   "score": 8,
@@ -2689,15 +2701,99 @@
   "at": "2026-11-04T19:12:00.929Z"
  },
  "twice-cooked-pork": {
-  "score": -1,
+  "score": 7,
   "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "ошибка критика",
-  "error": true,
-  "mtime": 1793724972000,
-  "at": "2026-11-04T19:47:10.585Z"
+  "glamor": false,
+  "note": "Реалистичная свинина дважды жареная с луком, всё верно",
+  "mtime": 1793862632000,
+  "at": "2026-11-05T16:42:09.462Z"
+ },
+ "ukha": {
+  "score": 7,
+  "steam": false,
+  "plastic": true,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "glamor": false,
+  "note": "Лосось слегка восковой, но сцена реалистична",
+  "mtime": 1793862632000,
+  "at": "2026-11-05T16:42:13.330Z"
+ },
+ "vegetable-stew": {
+  "score": 4,
+  "steam": true,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "glamor": false,
+  "note": "Блюдо соответствует, но пар явно нарисован",
+  "mtime": 1793862632000,
+  "at": "2026-11-05T16:42:18.117Z"
+ },
+ "vinaigrette": {
+  "score": 4,
+  "steam": true,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "glamor": false,
+  "note": "Блюдо похоже, но пар нарисован и текстура слишком гладкая",
+  "mtime": 1793862632000,
+  "at": "2026-11-05T16:42:44.286Z"
+ },
+ "walnut-shrimp": {
+  "score": 3,
+  "steam": true,
+  "plastic": true,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "glamor": false,
+  "note": "Восковая текстура, нарисован декоративный пар",
+  "mtime": 1793862632000,
+  "at": "2026-11-05T16:42:46.621Z"
+ },
+ "wedge-salad": {
+  "score": 6,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "glamor": true,
+  "note": "Рекламная подача; капуста скорее свежая, не классический wedge",
+  "mtime": 1793862632000,
+  "at": "2026-11-05T16:42:49.726Z"
+ },
+ "white-bean-tuna-salad": {
+  "score": 6,
+  "steam": true,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": true,
+  "glamor": false,
+  "note": "Тунец выглядит как фарш, пар нарисован",
+  "mtime": 1793862632000,
+  "at": "2026-11-05T16:42:57.920Z"
+ },
+ "wonton-soup": {
+  "score": 4,
+  "steam": true,
+  "plastic": true,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "glamor": false,
+  "note": "Вонтон-суп верный, но пар нарисован, зелень пластиковая",
+  "mtime": 1793862632000,
+  "at": "2026-11-05T16:43:01.180Z"
  }
 }

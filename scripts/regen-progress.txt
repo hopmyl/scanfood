@@ -237,3 +237,8 @@ soba-beef
 bbq-pork-ribs
 tuna-steak-sesame
 turkish-lentil-soup
+vegetable-stew
+ukha
+vinaigrette
+white-bean-tuna-salad
+walnut-shrimp
