@@ -2785,40 +2785,40 @@
   "at": "2026-11-05T19:10:56.251Z"
  },
  "wonton-soup": {
-  "score": 4,
-  "steam": true,
-  "plastic": true,
-  "text": false,
-  "people": false,
-  "wrong": false,
-  "glamor": false,
-  "note": "Вонтон-суп верный, но пар нарисован, зелень пластиковая",
-  "mtime": 1793862632000,
-  "at": "2026-11-05T16:43:01.180Z"
- },
- "yam-nuea": {
-  "score": 3,
-  "steam": true,
-  "plastic": true,
-  "text": false,
-  "people": false,
-  "wrong": false,
-  "glamor": false,
-  "note": "Нарисованный пар, пластилиновое мясо, ИИ-текстуры",
-  "mtime": 1793862632000,
-  "at": "2026-11-05T19:10:59.313Z"
- },
- "yam-woon-sen": {
   "score": 7,
-  "steam": true,
+  "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
   "glamor": false,
-  "note": "Похоже на стеклянную салатную лапшу с морепродуктами, но пар нарисован",
-  "mtime": 1793862632000,
-  "at": "2026-11-05T19:11:01.022Z"
+  "note": "Реалистичный вонтон-суп, соответствует описанию",
+  "mtime": 1793906185000,
+  "at": "2026-11-05T19:40:44.273Z"
+ },
+ "yam-nuea": {
+  "score": 7,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "glamor": false,
+  "note": "Говядина с чили похожа, но мало зелени",
+  "mtime": 1793906147000,
+  "at": "2026-11-05T19:40:48.301Z"
+ },
+ "yam-woon-sen": {
+  "score": 6,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "glamor": false,
+  "note": "Похоже на стеклянную лапшу с креветками, но текстура слегка нейронная, лайм наре",
+  "mtime": 1793906004000,
+  "at": "2026-11-05T19:40:51.669Z"
  },
  "yangzhou-fried-rice": {
   "score": 6,
