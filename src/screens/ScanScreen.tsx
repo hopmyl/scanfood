@@ -55,7 +55,7 @@ type ScanFail = null | 'generic' | 'noprovider';
  */
 function failHeadline(fail: ScanFail, detail: string | null): string {
   if (fail === 'noprovider') {
-    return 'Сейчас распознавание фото недоступно — нет сервера с ИИ. Работают демо-скан и штрих-код.';
+    return 'Распознавание фото ещё не включено: нужен бесплатный ключ OpenRouter (сервис открыт без VPN). Штрих-коды и демо-скан работают уже сейчас.';
   }
   if (detail && detail.includes('перегружен')) {
     return 'Сервис распознавания сейчас занят — попробуй ещё раз через минуту.';
@@ -296,6 +296,11 @@ export default function ScanScreen() {
   const pantry = useAppStore((s) => s.pantry);
 
   const [mode, setMode] = useState<ScanMode>('products');
+  /** Сессия barcode-сканера: инкремент = перезапуск чтения кода
+   *  (после «Сканировать другой» или автоперезапуска после ошибки) */
+  const [barcodeSession, setBarcodeSession] = useState(0);
+  /** Последний прочитанный код + время — защита от повторного чтения того же кода */
+  const lastCodeRef = useRef<{ code: string; at: number }>({ code: '', at: 0 });
   const [phase, setPhase] = useState<Phase>('idle');
   const [camState, setCamState] = useState<CamState>('starting');
   /** Распознанные продукты с уверенностью и отметками */
@@ -603,7 +608,12 @@ export default function ScanScreen() {
           videoRef.current ?? undefined,
           (result) => {
             if (result && !cancelled) {
-              void handleBarcode(result.getText());
+              const code = result.getText();
+              // тот же код в течение 5 с игнорируем — после автоперезапуска
+              // он ещё висит перед камерой и не должен зациклить запрос
+              if (code === lastCodeRef.current.code && Date.now() - lastCodeRef.current.at < 5000) return;
+              lastCodeRef.current = { code, at: Date.now() };
+              void handleBarcode(code);
             }
           },
         );
@@ -624,7 +634,7 @@ export default function ScanScreen() {
       zxingRef.current = null;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mode]);
+  }, [mode, barcodeSession]);
 
   /** Пересчитать подборку рецептов из отмеченных продуктов + запасов */
   const recomputeMatch = (list: ScanItem[]) => {
@@ -729,14 +739,23 @@ export default function ScanScreen() {
   };
 
   // ================= Штрих-код =================
-  /** Прямой запрос в Open Food Facts из браузера — фолбэк, когда /api недоступен (статический хостинг) */
+  /** Прямой запрос в Open Food Facts из браузера — фолбэк, когда /api недоступен (статический хостинг).
+   *  Таймаут 9 с: база отвечает быстро, долгий ответ = плохая сеть, лучше сразу честная ошибка. */
   const fetchOffDirect = async (code: string): Promise<BarcodeProduct | null> => {
     const fields =
       'product_name,product_name_ru,brands,image_front_small_url,image_url,' +
       'nutriments,ingredients_text,ingredients_text_ru';
-    const r = await fetch(
-      `https://world.openfoodfacts.org/api/v2/product/${code}.json?fields=${fields}`,
-    );
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), 9000);
+    let r: Response;
+    try {
+      r = await fetch(
+        `https://world.openfoodfacts.org/api/v2/product/${code}.json?fields=${fields}`,
+        { signal: ctrl.signal },
+      );
+    } finally {
+      clearTimeout(timer);
+    }
     const data = await r.json();
     if (data?.status !== 1) return null;
     const p = data.product;
@@ -770,6 +789,9 @@ export default function ScanScreen() {
     zxingRef.current?.stop();
     setProductState({ kind: 'loading', code });
     setProductInList(false);
+    // Если карточка товара не открылась (notfound/error) — сами перезапускаем
+    // сканер через 2,5 с; при found перезапуск делает кнопка «Сканировать другой»
+    const autoRestart = setTimeout(() => setBarcodeSession((s) => s + 1), 2500);
     try {
       const r = await fetch(`/api/barcode?code=${encodeURIComponent(code)}`);
       const data = (await r.json()) as
@@ -777,22 +799,29 @@ export default function ScanScreen() {
         | { found: false }
         | { error: string };
       if ('found' in data && data.found) {
+        clearTimeout(autoRestart);
         setProductState({ kind: 'found', code, product: data.product });
       } else if ('found' in data) {
         setProductState({ kind: 'notfound', code });
       } else {
         // сервер вернул ошибку — пробуем напрямую из браузера
         const direct = await fetchOffDirect(code).catch(() => null);
-        setProductState(
-          direct ? { kind: 'found', code, product: direct } : { kind: 'error', code },
-        );
+        if (direct) {
+          clearTimeout(autoRestart);
+          setProductState({ kind: 'found', code, product: direct });
+        } else {
+          setProductState({ kind: 'error', code });
+        }
       }
     } catch {
       // например, статический хостинг без /api — Open Food Facts отвечает и из браузера (CORS разрешён)
       const direct = await fetchOffDirect(code).catch(() => null);
-      setProductState(
-        direct ? { kind: 'found', code, product: direct } : { kind: 'error', code },
-      );
+      if (direct) {
+        clearTimeout(autoRestart);
+        setProductState({ kind: 'found', code, product: direct });
+      } else {
+        setProductState({ kind: 'error', code });
+      }
     }
   };
 
@@ -1372,6 +1401,7 @@ export default function ScanScreen() {
                     onClick={() => {
                       setProductState({ kind: 'idle' });
                       setManualCode('');
+                      setBarcodeSession((s) => s + 1); // перезапуск чтения кода
                     }}
                     className="flex items-center justify-center gap-1.5 rounded-2xl bg-soft py-2.5 text-xs font-semibold text-ink-2 transition-colors hover:text-ink"
                   >

@@ -42,9 +42,18 @@ const SCAN_PROMPT =
   'Ответ — СТРОГО валидный JSON без markdown-обёрток: ' +
   '{"ingredients": [{"name": "сыр", "confidence": "high"}, {"name": "сметана", "confidence": "medium"}]}';
 
-/** Таймауты: серверные функции отвечают до ~50 с (внутренний лимит 50 с), браузер-провайдер дольше */
-const ENDPOINT_TIMEOUT = 55_000;
-const DIRECT_TIMEOUT = 70_000;
+/** Таймауты: серверные функции отвечают до ~45 с, браузер-провайдер — до 60 с.
+ *  Суммарное ожидание цепочки не растёт бесконечно: на статическом хостинге
+ *  /api/scan отвечает 405 мгновенно, дальше максимум 45 + 60 с. */
+const ENDPOINT_TIMEOUT = 45_000;
+const DIRECT_TIMEOUT = 60_000;
+
+/** Бесплатные vision-модели OpenRouter — цепочка фолбэков для тестового периода:
+ *  если первая модель перегружена или недоступна, роутер сам попробует следующую. */
+const FREE_VISION_FALLBACKS = [
+  'google/gemma-4-26b-a4b-it:free',
+  'nvidia/nemotron-3.5-super-vl:free',
+] as const;
 
 /**
  * Парсит ответ модели. Терпим к формату: принимает и объекты {name, confidence},
@@ -172,22 +181,25 @@ async function tryScanEndpoint(
     return {
       ok: false,
       reason: 'failed',
-      detail: e instanceof Error ? (e.name === 'AbortError' ? 'сервер не ответил за 55 с' : e.message) : String(e),
+      detail: e instanceof Error ? (e.name === 'AbortError' ? 'сервер не ответил за 45 с' : e.message) : String(e),
     };
   }
 }
 
-/** Одна попытка: OpenRouter напрямую из браузера (CORS открыт, ключ зашит при сборке) */
+/** Одна попытка: OpenRouter напрямую из браузера (CORS открыт, ключ зашит при сборке).
+ *  fallbacks — дополнительные бесплатные модели, если основная недоступна. */
 async function tryDirectOpenRouter(
   key: string,
   model: string,
   dataUrl: string,
+  fallbacks?: readonly string[],
 ): Promise<ScanOutcome> {
   try {
     const r = await postJson(
       'https://openrouter.ai/api/v1/chat/completions',
       {
         model,
+        ...(fallbacks && fallbacks.length > 0 ? { models: [model, ...fallbacks] } : {}),
         messages: [
           {
             role: 'user',
@@ -230,7 +242,7 @@ async function tryDirectOpenRouter(
       detail:
         e instanceof Error
           ? e.name === 'AbortError'
-            ? 'openrouter не ответил за 70 с'
+            ? 'openrouter не ответил за 60 с'
             : e.message
           : String(e),
     };
@@ -258,13 +270,16 @@ export async function scanProducts(dataUrl: string): Promise<ScanOutcome> {
     attempts.push(out);
   }
 
-  // 3) OpenRouter из браузера — только если ключ зашит при сборке
+  // 3) OpenRouter из браузера — только если ключ зашит при сборке.
+  // Бесплатный тариф OpenRouter открыт из РФ без VPN, без карты:
+  // ~50 сканов/сутки на бесплатных моделях — хватает на время тестирования.
+  // Передаём массив моделей: если первая занята/недоступна, OpenRouter сам
+  // попробует следующую бесплатную vision-модель.
   const key = (import.meta.env.VITE_OPENROUTER_KEY as string | undefined)?.trim();
   if (key) {
-    const model =
-      (import.meta.env.VITE_OPENROUTER_MODEL as string | undefined)?.trim() ||
-      'google/gemma-4-31b-it:free';
-    const out = await tryDirectOpenRouter(key, model, dataUrl);
+    const configured = (import.meta.env.VITE_OPENROUTER_MODEL as string | undefined)?.trim();
+    const model = configured || 'google/gemma-4-31b-it:free';
+    const out = await tryDirectOpenRouter(key, model, dataUrl, configured ? undefined : FREE_VISION_FALLBACKS);
     if (out.ok) return out;
     attempts.push(out);
   }

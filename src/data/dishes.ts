@@ -1456,22 +1456,59 @@ const CUISINE_BY_ID: Map<string, CuisineId> = new Map(
   ),
 );
 
-// ==================== Free / PRO: 60 классических бесплатно, 40 авторских с PRO ====================
+// ============ Free (ЛАЙТ) / PRO: домашняя классика бесплатно, ресторанная коллекция + кухни мира — PRO ============
 
 /**
  * Авторская коллекция PRO: блюда видны в каталоге (фото, название, ккал),
  * но ингредиенты и шаги открываются по подписке PRO.
+ *
+ * Разделение ЛАЙТ/PRO по категориям и количеству (решение пользователя 2026-11-05):
+ *   ЛАЙТ (бесплатно) — повседневная домашняя кухня, ~60% каталога;
+ *   PRO — ресторанные хиты базовой коллекции по квотам ниже + КУХНИ МИРА ЦЕЛИКОМ
+ *   (WORLD_PRO_IDS), ~40% каталога. Квота на базовую коллекцию:
+ *     Завтраки 4 · Салаты/закуски 3 · Овощи 8 · Курица 6 · Мясо/гриль 7 ·
+ *     Рыба/морепродукты 14 · Выпечка/десерты 3  =  45 базовых + 54 мира.
+ * Правило отбора: PRO — «как в ресторане» (стейки, морепродукты, десерты кафе),
+ * ЛАЙТ — домашняя классика (пельмени, драники, супы, паста, котлеты).
  */
 export const PRO_DISH_IDS: ReadonlySet<string> = new Set([
-  'tom-yum',
-  'poke-bowl',
-  'sushi-set',
+  // Завтраки и перекусы (4): ресторанные завтраки и смузи
+  'avocado-toast',
+  'smoothie-bowl',
+  'croissant-salmon',
+  'spinach-cheese-pancake',
+  // Салаты и закуски (3): ресторанные закуски
+  'bruschetta',
+  'cobb-salad',
+  'salade-nicoise',
+  // Овощи и гарниры (8): ресторанные вегетарианские позиции
+  'julienne',
+  'ratatouille',
+  'mushroom-risotto',
+  'eggplant-parmesan',
   'crispy-tofu',
+  'falafel-wrap',
+  'buddha-bowl',
+  'caprese-salad',
+  // Курица (6): кухни ресторанов и стритфуд
   'chicken-tikka-masala',
-  'soba-beef',
   'chicken-teriyaki',
   'chicken-stir-fry',
   'sweet-sour-chicken',
+  'chicken-fajitas',
+  'bbq-chicken-wings',
+  // Мясо и гриль (7): стейки и гриль — витрина PRO
+  'beef-steak',
+  'beef-burger',
+  'bbq-pork-ribs',
+  'pork-french',
+  'lyulya-kebab',
+  'beef-tacos',
+  'soba-beef',
+  // Рыба и морепродукты (14): морепродукты — главный премиум-раздел
+  'tom-yum',
+  'poke-bowl',
+  'sushi-set',
   'mussels-cream',
   'tuna-steak-sesame',
   'fried-calamari',
@@ -1479,31 +1516,15 @@ export const PRO_DISH_IDS: ReadonlySet<string> = new Set([
   'baked-salmon-quinoa',
   'shrimp-pasta',
   'garlic-shrimp',
-  'beef-steak',
-  'mushroom-risotto',
-  'eggplant-parmesan',
-  'julienne',
-  'pork-french',
-  'lyulya-kebab',
-  'ratatouille',
-  'buddha-bowl',
-  'beef-burger',
   'fish-and-chips',
-  'beef-tacos',
-  'chicken-fajitas',
-  'bbq-pork-ribs',
-  'bbq-chicken-wings',
+  'cajun-shrimp-pasta',
+  'shrimp-saganaki',
+  'salt-pepper-shrimp',
+  // Выпечка и десерты (3): кондитерская и пицца
   'pepperoni-pizza',
-  'falafel-wrap',
-  'croissant-salmon',
-  'avocado-toast',
-  'smoothie-bowl',
-  'spinach-cheese-pancake',
-  'bruschetta',
-  'caprese-salad',
   'adjarian-khachapuri',
   'ny-cheesecake',
-  // Кухни мира: авторская коллекция
+  // Кухни мира: авторская коллекция целиком
   ...WORLD_PRO_IDS,
 ]);
 
