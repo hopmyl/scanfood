@@ -84,47 +84,61 @@ async function scanWithOpenRouter(imageDataUrl: string): Promise<DetectedProduct
   // Дефолт — nemotron: единственная быстрая бесплатная vision-модель без
   // гео-блока Google AI Studio (gemma-*:free из РФ режутся, 2026-11-05)
   const model = process.env.OPENROUTER_MODEL?.trim() || 'nvidia/nemotron-3.5-super-vl:free';
-  const fallbackModels = ['google/gemma-4-26b-a4b-it:free'];
+  const models = [model, 'google/gemma-4-26b-a4b-it:free'];
 
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), 50_000);
   try {
-    const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${key}`,
-        'Content-Type': 'application/json',
-        'X-Title': 'ScanRecipe',
-      },
-      signal: controller.signal,
-      body: JSON.stringify({
-        model,
-        // Фейловер: при 429/недоступности основной модели роутер сам попробует следующую
-        models: [model, ...fallbackModels],
-        messages: [
-          {
-            role: 'user',
-            content: [
-              { type: 'text', text: SCAN_PROMPT },
-              { type: 'image_url', image_url: { url: imageDataUrl } },
-            ],
-          },
-        ],
-        // 2000, а не 512: reasoning-модели пишут рассуждение в те же токены —
-        // на 512 контент пуст (finish_reason=length, 0 продуктов)
-        max_tokens: 2000,
-        temperature: 0.2,
-      }),
-    });
-    if (!res.ok) {
-      const detail = (await res.text()).slice(0, 200);
-      throw new Error(`openrouter ${res.status}: ${detail}`);
+    let httpFailed: Error | null = null;
+    let sawEmptyOk = false;
+    // Перебор моделей сами (OpenRouter с полем models иногда всё равно
+    // останавливается на первой): 429/перегрузка → следующая
+    for (const m of models) {
+      const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${key}`,
+          'Content-Type': 'application/json',
+          'X-Title': 'ScanRecipe',
+        },
+        signal: controller.signal,
+        body: JSON.stringify({
+          model: m,
+          models,
+          messages: [
+            {
+              role: 'user',
+              content: [
+                { type: 'text', text: SCAN_PROMPT },
+                { type: 'image_url', image_url: { url: imageDataUrl } },
+              ],
+            },
+          ],
+          // Капа на рассуждение: nemotron пишет reasoning в те же max_tokens —
+          // без капы на сложном фото контент обрезался в пустоту (2026-11-05)
+          reasoning: { max_tokens: 1000 },
+          max_tokens: 3000,
+          temperature: 0.2,
+        }),
+      });
+      if (!res.ok) {
+        const detail = (await res.text()).slice(0, 200);
+        httpFailed = new Error(`openrouter ${res.status}: ${detail}`);
+        continue;
+      }
+      const data: unknown = await res.json();
+      const msg =
+        (data as { choices?: Array<{ message?: { content?: string; reasoning?: unknown } }> })
+          ?.choices?.[0]?.message ?? {};
+      let products = extractProducts(msg.content ?? '');
+      if (products.length === 0 && typeof msg.reasoning === 'string' && msg.reasoning) {
+        products = extractProducts(msg.reasoning);
+      }
+      if (products.length > 0) return products;
+      sawEmptyOk = true;
     }
-    const data: unknown = await res.json();
-    const text =
-      (data as { choices?: Array<{ message?: { content?: string } }> })?.choices?.[0]
-        ?.message?.content ?? '';
-    return extractProducts(text);
+    if (httpFailed && !sawEmptyOk) throw httpFailed;
+    return [];
   } finally {
     clearTimeout(timer);
   }

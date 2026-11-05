@@ -211,8 +211,10 @@ async function tryDirectOpenRouter(
             ],
           },
         ],
-        // 2000, а не 512: у reasoning-моделей рассуждение идёт в те же токены
-        max_tokens: 2000,
+        // Капа на рассуждение: nemotron пишет reasoning в те же max_tokens —
+        // без капы контент обрезается в пустоту (2026-11-05)
+        reasoning: { max_tokens: 1000 },
+        max_tokens: 3000,
         temperature: 0.2,
       },
       DIRECT_TIMEOUT,
@@ -232,8 +234,15 @@ async function tryDirectOpenRouter(
       // неверный/исчерпанный ключ — это «недоступно» (демо), а не «ошибка»
       return { ok: false, reason: r.status === 401 || r.status === 402 || r.status === 403 ? 'unavailable' : 'failed', detail };
     }
-    const data = (await r.json()) as { choices?: Array<{ message?: { content?: string } }> };
-    const products = extractProducts(data?.choices?.[0]?.message?.content ?? '');
+    const data = (await r.json()) as {
+      choices?: Array<{ message?: { content?: string; reasoning?: unknown } }>;
+    };
+    const msg = data?.choices?.[0]?.message ?? {};
+    let products = extractProducts(msg.content ?? '');
+    if (products.length === 0 && typeof msg.reasoning === 'string' && msg.reasoning) {
+      // Страховка: JSON мог остаться в блоке рассуждения
+      products = extractProducts(msg.reasoning);
+    }
     if (products.length === 0) {
       return { ok: false, reason: 'failed', detail: 'модель не вернула список продуктов' };
     }

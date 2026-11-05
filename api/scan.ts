@@ -160,47 +160,65 @@ async function scanWithOpenAICompat(
       'VISION_MODEL (или AI_MODEL) не задан — укажи модель провайдера (например, glm-4.5v для z.ai, llama-3.2-11b-vision-instruct для Groq, Qwen/Qwen2.5-VL-7B-Instruct для HuggingFace)',
     );
   }
+  const models = [provider.model, ...(provider.fallbackModels ?? [])];
+  // Капа на рассуждение — только OpenRouter (унифицированный параметр;
+  // прочие OpenAI-совместимые серверы могут споткнуться о незнакомое поле).
+  // Урок 2026-11-05: nemotron пишет рассуждение в те же max_tokens, на сложном
+  // фото (полный холодильник) переполняла даже 2000 — контент обрезался в
+  // пустоту, API отвечал «продукты не найдены». Капа гарантирует место контенту.
+  const isOpenRouter = (provider.base ?? '').includes('openrouter.ai');
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), 50_000);
   try {
-    const res = await fetch(`${provider.base}/chat/completions`, {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${provider.key ?? ''}`,
-        'Content-Type': 'application/json',
-      },
-      signal: controller.signal,
-      body: JSON.stringify({
-        model: provider.model,
-        // Фейловер OpenRouter: при 429/недоступности основной модели роутер
-        // сам повторит запрос со следующей из списка
-        ...(provider.fallbackModels?.length
-          ? { models: [provider.model, ...provider.fallbackModels] }
-          : {}),
-        messages: [
-          {
-            role: 'user',
-            content: [
-              { type: 'text', text: SCAN_PROMPT },
-              { type: 'image_url', image_url: { url: imageDataUrl } },
-            ],
-          },
-        ],
-        // 2000, а не 512: reasoning-модели (nemotron, dots) пишут рассуждение
-        // в те же токены — на 512 контент пуст (finish_reason=length, 0 продуктов)
-        max_tokens: 2000,
-        temperature: 0.2,
-      }),
-    });
-    if (!res.ok) {
-      const detail = (await res.text()).slice(0, 200);
-      throw new Error(`openai-compat ${res.status}: ${detail}`);
+    let httpFailed: Error | null = null;
+    let sawEmptyOk = false; // модель ответила 200, но продуктов не вернула
+    for (const model of models) {
+      const res = await fetch(`${provider.base}/chat/completions`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${provider.key ?? ''}`,
+          'Content-Type': 'application/json',
+        },
+        signal: controller.signal,
+        body: JSON.stringify({
+          model,
+          // Фейловер OpenRouter: при 429/недоступности основной модели роутер
+          // сам повторит запрос со следующей из списка
+          ...(provider.fallbackModels?.length ? { models } : {}),
+          messages: [
+            {
+              role: 'user',
+              content: [
+                { type: 'text', text: SCAN_PROMPT },
+                { type: 'image_url', image_url: { url: imageDataUrl } },
+              ],
+            },
+          ],
+          ...(isOpenRouter ? { reasoning: { max_tokens: 1000 } } : {}),
+          // 3000: запас под рассуждение (капнутое) + JSON до 12 продуктов
+          max_tokens: 3000,
+          temperature: 0.2,
+        }),
+      });
+      if (!res.ok) {
+        const detail = (await res.text()).slice(0, 200);
+        httpFailed = new Error(`openai-compat ${res.status}: ${detail}`);
+        continue; // 429/перегрузка — пробуем следующую модель сами
+      }
+      const data: unknown = await res.json();
+      const msg =
+        (data as { choices?: Array<{ message?: { content?: string; reasoning?: unknown } }> })
+          ?.choices?.[0]?.message ?? {};
+      let products = extractProducts(msg.content ?? '');
+      if (products.length === 0 && typeof msg.reasoning === 'string' && msg.reasoning) {
+        // Страховка: JSON мог остаться в блоке рассуждения (обрезанный контент)
+        products = extractProducts(msg.reasoning);
+      }
+      if (products.length > 0) return products;
+      sawEmptyOk = true;
     }
-    const data: unknown = await res.json();
-    const text =
-      (data as { choices?: Array<{ message?: { content?: string } }> })?.choices?.[0]
-        ?.message?.content ?? '';
-    return extractProducts(text);
+    if (httpFailed && !sawEmptyOk) throw httpFailed;
+    return [];
   } finally {
     clearTimeout(timer);
   }
