@@ -1,3 +1,9 @@
+pasta-carbonara
+beef-steak
+soba-beef
+beef-burger
+spaghetti-bolognese
+bbq-pork-ribs
 adjarian-khachapuri
 ajvar
 american-pancakes
@@ -16,10 +22,8 @@ banana-bread
 bbq-chicken-wings
 bbq-pulled-pork
 beef-broccoli
-beef-burger
 beef-chow-fun
 beef-goulash
-beef-steak
 beef-stroganoff
 beef-tacos
 blt-sandwich
@@ -156,7 +160,6 @@ pad-thai-shrimp
 pad-woo-sen
 paella-seafood
 pan-con-tomate
-pasta-carbonara
 patatas-bravas
 pepperoni-pizza
 philly-cheesesteak
@@ -189,7 +192,6 @@ shui-zhu-beef
 sloppy-joes
 smashed-cucumber-salad
 smoothie-bowl
-soba-beef
 solyanka
 som-tam
 son-in-law-eggs
