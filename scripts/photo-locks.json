@@ -1390,5 +1390,17 @@
   "at": "2026-11-05T21:43:26.687Z",
   "score": 8,
   "src": "natural-v7"
+ },
+ "sweet-sour-chicken": {
+  "sha256": "3008db31e37eecef813c5d4d586f8b85dceac2c644424c354de37ba9cd7e87d7",
+  "at": "2026-11-05T23:14:11.564Z",
+  "score": 7,
+  "src": "natural-v7"
+ },
+ "sesame-noodles-cold": {
+  "sha256": "f31234118af94d4aa0f10dcf48900083dc764a254e2630f6e387974b477fc7b2",
+  "at": "2026-11-05T23:14:46.824Z",
+  "score": 7,
+  "src": "natural-v7"
  }
 }
