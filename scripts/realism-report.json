@@ -1548,15 +1548,15 @@
  },
  "lazy-vareniki": {
   "score": 4,
-  "steam": false,
+  "steam": true,
   "plastic": true,
   "text": false,
   "people": false,
   "wrong": true,
   "glamor": false,
-  "note": "Пельмени, не ленивые вареники; тесто выглядит восковым",
-  "mtime": 1793913244000,
-  "at": "2026-11-05T21:40:44.351Z"
+  "note": "Пельмени вместо ленивых вареников, рисованное свечение, восковая текстура",
+  "mtime": 1793918600000,
+  "at": "2026-11-05T23:10:51.129Z"
  },
  "lentil-soup": {
   "score": 8,
