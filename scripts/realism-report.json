@@ -39,10 +39,11 @@
   "text": false,
   "people": false,
   "wrong": false,
+  "glamor": false,
   "note": "ошибка критика",
   "error": true,
   "mtime": 1793862632000,
-  "at": "2026-11-05T09:14:40.329Z"
+  "at": "2026-11-05T10:13:52.772Z"
  },
  "ajvar": {
   "score": -1,
@@ -51,10 +52,11 @@
   "text": false,
   "people": false,
   "wrong": false,
+  "glamor": false,
   "note": "ошибка критика",
   "error": true,
   "mtime": 1793862632000,
-  "at": "2026-11-05T09:18:10.498Z"
+  "at": "2026-11-05T10:17:22.936Z"
  },
  "american-pancakes": {
   "score": 8,
