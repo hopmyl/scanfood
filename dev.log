@@ -70,3 +70,25 @@
 7:40:18 AM [vite] (client) page reload skills/design/design-systems/brand-inspiration/airbnb/components.html
 7:40:18 AM [vite] (client) page reload skills/design/design-systems/style-skills/default/components.html
 7:40:18 AM [vite] (client) page reload skills/gaokao-generate-report/templates/volunteer_report.html
+8:05:10 AM [vite] (client) hmr update /src/index.css, /src/screens/CatalogScreen.tsx, /src/screens/DishScreen.tsx, /src/screens/ScanScreen.tsx, /src/App.tsx, /src/components/BottomNav.tsx, /src/screens/PantryScreen.tsx, /src/screens/ShoppingScreen.tsx, /src/screens/FavoritesScreen.tsx, /src/screens/ProfileScreen.tsx, /src/components/DishCard.tsx, /src/components/ProToggle.tsx
+8:05:21 AM [vite] (client) hmr update /src/index.css, /src/screens/CatalogScreen.tsx, /src/screens/DishScreen.tsx, /src/screens/ScanScreen.tsx, /src/App.tsx, /src/components/BottomNav.tsx, /src/screens/PantryScreen.tsx, /src/screens/ShoppingScreen.tsx, /src/screens/FavoritesScreen.tsx, /src/screens/ProfileScreen.tsx, /src/components/DishCard.tsx, /src/components/ProToggle.tsx
+8:05:34 AM [vite] (client) hmr update /src/index.css, /src/screens/ScanScreen.tsx
+8:05:34 AM [vite] (client) hmr update /src/index.css, /src/screens/ScanScreen.tsx
+8:05:48 AM [vite] (client) hmr update /src/screens/ScanScreen.tsx, /src/index.css
+8:05:58 AM [vite] (client) hmr update /src/index.css, /src/screens/CatalogScreen.tsx, /src/screens/DishScreen.tsx, /src/screens/ScanScreen.tsx, /src/App.tsx, /src/components/BottomNav.tsx, /src/screens/PantryScreen.tsx, /src/screens/ShoppingScreen.tsx, /src/screens/FavoritesScreen.tsx, /src/screens/ProfileScreen.tsx, /src/components/DishCard.tsx, /src/components/ProToggle.tsx
+8:06:06 AM [vite] (client) hmr update /src/index.css, /src/screens/CatalogScreen.tsx, /src/screens/DishScreen.tsx, /src/screens/ScanScreen.tsx, /src/App.tsx, /src/components/BottomNav.tsx, /src/screens/PantryScreen.tsx, /src/screens/ShoppingScreen.tsx, /src/screens/FavoritesScreen.tsx, /src/screens/ProfileScreen.tsx, /src/components/DishCard.tsx, /src/components/ProToggle.tsx
+8:20:53 AM [vite] (client) hmr update /src/screens/ScanScreen.tsx, /src/index.css
+8:21:04 AM [vite] (client) hmr update /src/screens/ScanScreen.tsx, /src/index.css
+8:21:20 AM [vite] (client) hmr update /src/screens/ScanScreen.tsx, /src/index.css
+8:21:21 AM [vite] (client) hmr update /src/screens/ScanScreen.tsx, /src/index.css
+8:21:36 AM [vite] (client) hmr update /src/screens/ScanScreen.tsx, /src/index.css
+8:21:49 AM [vite] (client) hmr update /src/index.css, /src/screens/ScanScreen.tsx
+8:22:23 AM [vite] (client) hmr update /src/index.css, /src/screens/ScanScreen.tsx
+8:22:45 AM [vite] (client) page reload index.html
+8:22:56 AM [vite] (client) hmr update /src/index.css, /src/screens/CatalogScreen.tsx, /src/screens/DishScreen.tsx, /src/screens/ScanScreen.tsx, /src/App.tsx, /src/components/BottomNav.tsx, /src/screens/PantryScreen.tsx, /src/screens/ShoppingScreen.tsx, /src/screens/FavoritesScreen.tsx, /src/screens/ProfileScreen.tsx, /src/components/DishCard.tsx, /src/components/ProToggle.tsx
+8:23:19 AM [vite] (client) hmr update /src/index.css, /src/screens/CatalogScreen.tsx, /src/screens/DishScreen.tsx, /src/screens/ScanScreen.tsx, /src/App.tsx, /src/components/BottomNav.tsx, /src/screens/PantryScreen.tsx, /src/screens/ShoppingScreen.tsx, /src/screens/FavoritesScreen.tsx, /src/screens/ProfileScreen.tsx, /src/components/DishCard.tsx, /src/components/ProToggle.tsx
+8:23:36 AM [vite] (client) hmr update /src/index.css, /src/screens/CatalogScreen.tsx, /src/screens/DishScreen.tsx, /src/screens/ScanScreen.tsx, /src/App.tsx, /src/components/BottomNav.tsx, /src/screens/PantryScreen.tsx, /src/screens/ShoppingScreen.tsx, /src/screens/FavoritesScreen.tsx, /src/screens/ProfileScreen.tsx, /src/components/DishCard.tsx, /src/components/ProToggle.tsx
+8:23:54 AM [vite] (client) page reload .mirror/404.html
+8:23:54 AM [vite] (client) page reload .mirror/index.html
+8:23:54 AM [vite] (client) page reload .mirror/404.html
+8:23:54 AM [vite] (client) page reload .mirror/index.html
