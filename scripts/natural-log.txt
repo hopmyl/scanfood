@@ -1,0 +1,70 @@
+2026-11-05T13:03:42.366Z === НАТУРАЛ v7 старт: 1 блюд (кандидатов на блюдо: 2) ===
+2026-11-05T13:03:42.457Z Критик z-ai: НЕДОСТУПЕН (429) — работаю через OR-фолбэк
+2026-11-05T13:03:42.483Z Генератор z-ai: НЕДОСТУПЕН (429) — работаю через flux/OR
+2026-11-05T13:03:42.483Z --- lazy-vareniki: «Lazy vareniki: boiled diamond-shaped cottage cheese dough pieces with …»
+2026-11-05T13:04:45.788Z   [критик] OR-фолбэк недоступен (used=0/15) — fail-open
+2026-11-05T13:04:48.791Z MANUAL lazy-vareniki score=-1 (нет-критики) — лучший из 1 записан, на ваш просмотр
+2026-11-05T13:04:48.793Z === НАТУРАЛ v7 итог: заморожено 0, на просмотр 1, критик OR used=0 ===
+2026-11-05T13:05:33.801Z === НАТУРАЛ v7 старт: 1 блюд (кандидатов на блюдо: 2) ===
+2026-11-05T13:05:34.144Z Критик z-ai: НЕДОСТУПЕН (429) — работаю через OR-фолбэк
+2026-11-05T13:05:34.160Z Генератор z-ai: НЕДОСТУПЕН (429) — работаю через flux/OR
+2026-11-05T13:05:34.161Z --- lazy-vareniki: «Lazy vareniki: boiled diamond-shaped cottage cheese dough pieces with …»
+2026-11-05T13:06:46.211Z   [критик] OR-фолбэк (used=1/15)
+2026-11-05T13:07:21.608Z   [критик] OR-фолбэк (used=2/15)
+2026-11-05T13:07:24.611Z MANUAL lazy-vareniki score=8 (текст+не-то-блюдо) — лучший из 2 записан, на ваш просмотр
+2026-11-05T13:07:24.612Z === НАТУРАЛ v7 итог: заморожено 0, на просмотр 1, критик OR used=2 ===
+2026-11-05T13:08:25.059Z === НАТУРАЛ v7 старт: 10 блюд (кандидатов на блюдо: 2) ===
+2026-11-05T13:08:25.403Z Критик z-ai: НЕДОСТУПЕН (429) — работаю через OR-фолбэк
+2026-11-05T13:08:25.427Z Генератор z-ai: НЕДОСТУПЕН (429) — работаю через flux/OR
+2026-11-05T13:08:25.427Z --- tuna-steak-sesame: «Grilled tuna steak with sesame crust. Mediterranean dish, olive oil, f…»
+2026-11-05T13:08:44.815Z   [критик] OR-фолбэк (used=1/15)
+2026-11-05T13:14:06.015Z === НАТУРАЛ v7 старт: 4 блюд (кандидатов на блюдо: 2) ===
+2026-11-05T13:14:06.370Z Критик z-ai: НЕДОСТУПЕН (429) — работаю через OR-фолбэк
+2026-11-05T13:14:06.398Z Генератор z-ai: НЕДОСТУПЕН (429) — работаю через flux/OR
+2026-11-05T13:14:06.398Z --- tuna-steak-sesame: «Grilled tuna steak with sesame crust. Mediterranean dish, olive oil, f…»
+2026-11-05T13:14:22.824Z   [критик] OR-фолбэк (used=1/15)
+2026-11-05T13:14:41.017Z   [критик] OR-фолбэк (used=2/15)
+2026-11-05T13:14:44.020Z MANUAL tuna-steak-sesame score=8 (текст) — лучший из 2 записан, на ваш просмотр
+2026-11-05T13:14:44.021Z --- turkish-lentil-soup: «Turkish red lentil soup mercimek corbasi. Mediterranean dish, olive oi…»
+2026-11-05T13:15:01.588Z   [критик] OR-фолбэк (used=3/15)
+2026-11-05T13:15:22.552Z   [критик] OR-фолбэк (used=4/15)
+2026-11-05T13:15:25.554Z MANUAL turkish-lentil-soup score=3 (пластик+текст) — лучший из 2 записан, на ваш просмотр
+2026-11-05T13:15:25.554Z --- corn-chicken-soup: «Chinese sweet corn and chicken soup. Chinese dish, round white plate o…»
+2026-11-05T13:15:45.247Z   [критик] OR-фолбэк (used=5/15)
+2026-11-05T13:16:12.060Z   [критик] OR-фолбэк (used=6/15)
+2026-11-05T13:16:15.063Z MANUAL corn-chicken-soup score=4 (пластик+текст) — лучший из 2 записан, на ваш просмотр
+2026-11-05T13:16:15.063Z --- tofu-larb: «Tofu larb vegetarian salad. Thai street food, banana leaf or ceramic b…»
+2026-11-05T13:16:27.377Z   [критик] OR-фолбэк (used=7/15)
+2026-11-05T13:16:46.026Z   [критик] OR-фолбэк (used=8/15)
+2026-11-05T13:16:49.028Z MANUAL tofu-larb score=9 (текст) — лучший из 2 записан, на ваш просмотр
+2026-11-05T13:16:49.028Z === НАТУРАЛ v7 итог: заморожено 0, на просмотр 4, критик OR used=8 ===
+2026-11-05T13:17:36.647Z === НАТУРАЛ v7 старт: 6 блюд (кандидатов на блюдо: 1) ===
+2026-11-05T13:17:36.773Z Критик z-ai: НЕДОСТУПЕН (429) — работаю через OR-фолбэк
+2026-11-05T13:17:36.787Z Генератор z-ai: НЕДОСТУПЕН (429) — работаю через flux/OR
+2026-11-05T13:17:36.787Z --- sushi-set: «Sushi rolls set on a dark slate. Japanese dish, minimal plating, black…»
+2026-11-05T13:17:53.012Z   [критик] OR-фолбэк (used=9/15)
+2026-11-05T13:17:56.014Z KEEP sushi-set: лучший кандидат 3 хуже старого 6 — файл не трогаю
+2026-11-05T13:17:56.014Z --- sweet-sour-chicken: «Sweet and sour chicken with bell peppers. Chinese dish, round white pl…»
+2026-11-05T13:18:45.307Z FAIL sweet-sour-chicken: ни один канал не дал кадра
+2026-11-05T13:18:45.308Z --- thai-congee-jok: «Thai rice congee jok with pork. Thai street food, banana leaf or ceram…»
+2026-11-05T13:19:06.514Z   [критик] OR-фолбэк (used=10/15)
+2026-11-05T13:19:09.517Z KEEP thai-congee-jok: лучший кандидат 3 хуже старого 7 — файл не трогаю
+2026-11-05T13:19:09.517Z --- crispy-tofu: «Crispy golden fried tofu cubes glazed in soy sauce with sesame seeds a…»
+2026-11-05T13:20:05.287Z FAIL crispy-tofu: ни один канал не дал кадра
+2026-11-05T13:20:05.287Z --- imam-bayildi: «Turkish stuffed eggplants imam bayildi. Mediterranean dish, olive oil,…»
+2026-11-05T13:20:20.412Z   [критик] OR-фолбэк (used=11/15)
+2026-11-05T13:20:23.414Z KEEP imam-bayildi: лучший кандидат 4 хуже старого 8 — файл не трогаю
+2026-11-05T13:20:23.467Z --- khao-man-gai: «Khao man gai chicken rice with ginger sauce. Thai street food, banana …»
+2026-11-05T13:21:13.085Z FAIL khao-man-gai: ни один канал не дал кадра
+2026-11-05T13:21:13.085Z === НАТУРАЛ v7 итог: заморожено 0, на просмотр 3, критик OR used=11 ===
+2026-11-05T13:22:45.372Z === НАТУРАЛ v7 старт: 2 блюд (кандидатов на блюдо: 2) ===
+2026-11-05T13:22:45.742Z Критик z-ai: НЕДОСТУПЕН (429) — работаю через OR-фолбэк
+2026-11-05T13:22:45.772Z Генератор z-ai: НЕДОСТУПЕН (429) — работаю через flux/OR
+2026-11-05T13:22:45.773Z --- tuna-steak-sesame: «Grilled tuna steak with sesame crust. Mediterranean dish, olive oil, f…»
+2026-11-05T13:23:07.697Z   [критик] OR-фолбэк (used=12/15)
+2026-11-05T13:23:31.371Z   [критик] OR-фолбэк (used=13/15)
+2026-11-05T13:23:34.372Z MANUAL tuna-steak-sesame score=8 (не-то-блюдо) — лучший из 2 записан, на ваш просмотр
+2026-11-05T13:23:34.373Z --- tofu-larb: «Tofu larb vegetarian salad. Thai street food, banana leaf or ceramic b…»
+2026-11-05T13:23:55.855Z   [критик] OR-фолбэк (used=14/15)
+2026-11-05T13:23:55.855Z KEEP tofu-larb: лучший кандидат 8 хуже текущего 9 — файл не трогаю
+2026-11-05T13:23:55.855Z === НАТУРАЛ v7 итог: заморожено 0, на просмотр 2, критик OR used=14 ===
