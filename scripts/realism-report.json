@@ -1547,16 +1547,16 @@
   "at": "2026-11-04T17:41:12.981Z"
  },
  "lazy-vareniki": {
-  "score": 4,
+  "score": 6,
   "steam": false,
   "plastic": true,
   "text": false,
   "people": false,
   "wrong": true,
-  "glamor": true,
-  "note": "Пельмени восковые, форма не ромбы, гламурный свет",
-  "mtime": 1793922163000,
-  "at": "2026-11-06T00:10:54.510Z"
+  "glamor": false,
+  "note": "Это пельмени, а не ленивые вареники; текстура восковая",
+  "mtime": 1793924012000,
+  "at": "2026-11-06T00:40:48.797Z"
  },
  "lentil-soup": {
   "score": 8,
