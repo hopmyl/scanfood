@@ -1402,5 +1402,11 @@
   "at": "2026-11-05T23:14:46.824Z",
   "score": 7,
   "src": "natural-v7"
+ },
+ "thai-congee-jok": {
+  "sha256": "afc797e915e0b43725488f19b160a2bddf185dfa4cd9293e948aaa1360fb4496",
+  "at": "2026-11-06T01:44:40.643Z",
+  "score": 8,
+  "src": "natural-v7"
  }
 }
