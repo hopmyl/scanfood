@@ -176,3 +176,9 @@
 2026-11-06T01:43:24.672Z --- thai-congee-jok: «Thai rice congee jok with pork. Thai street food, banana leaf or ceram…»
 2026-11-06T01:44:40.643Z OK+ЗАМОК thai-congee-jok score=8 (чисто) каналов=1
 2026-11-06T01:44:40.643Z === НАТУРАЛ v7 итог: заморожено 1, на просмотр 2, критик OR used=0 ===
+2026-11-06T02:10:52.359Z === НАТУРАЛ v7 старт: 3 блюд (кандидатов на блюдо: 2) ===
+2026-11-06T02:10:55.313Z Критик z-ai: жив
+2026-11-06T02:11:24.865Z Генератор z-ai: жив
+2026-11-06T02:11:24.865Z --- tuna-egg-salad: «Light tuna salad with boiled egg quarters, cucumber slices and corn in…»
+2026-11-06T02:12:56.375Z OK+ЗАМОК tuna-egg-salad score=7 (чисто) каналов=1
+2026-11-06T02:12:56.375Z --- tofu-larb: «Tofu larb vegetarian salad. Thai street food, banana leaf or ceramic b…»
