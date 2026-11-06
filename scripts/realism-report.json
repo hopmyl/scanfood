@@ -2678,16 +2678,16 @@
   "at": "2026-11-05T16:41:55.651Z"
  },
  "turkish-lentil-soup": {
-  "score": 4,
-  "steam": true,
+  "score": 5,
+  "steam": false,
   "plastic": true,
   "text": false,
   "people": false,
   "wrong": false,
-  "glamor": false,
-  "note": "Рисованный пар и однородная текстура супа",
-  "mtime": 1793884650000,
-  "at": "2026-11-05T16:42:06.169Z"
+  "glamor": true,
+  "note": "Похоже на чечевичный суп, но текстура слегка «нейронная», гламурный свет",
+  "mtime": 1793936626000,
+  "at": "2026-11-06T04:11:16.464Z"
  },
  "turkish-pide": {
   "score": 8,
