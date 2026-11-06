@@ -58,6 +58,25 @@ const LOG_FILE = 'scripts/natural-log.txt';
 const STATE_FILE = 'scripts/natural-state.json'; // последний балл записанного кадра (для защиты от регрессии)
 const SHORTLIST = 'scripts/regen-shortlist.txt';
 
+// ОВЕРРАЙДЫ МАРКЕТОЛОГА (2026-11-06): для блюд из scripts/prompt-overrides.json
+// кандидатные промпты даёт агент-маркетолог (анти-слоп, запрос пользователя
+// «создай агента маркетолога, который сделает правильные промпты»),
+// вместо констант v7 и сцен sceneFor. Файл опционален: нет файла или блюда —
+// поведение прежнее. Константы DISH_STYLE_V7/TURBO_STYLE НЕ менялись.
+const OVERRIDES_FILE = 'scripts/prompt-overrides.json';
+const OVERRIDES = fs.existsSync(OVERRIDES_FILE)
+  ? JSON.parse(fs.readFileSync(OVERRIDES_FILE, 'utf8'))
+  : {};
+const overrideFor = (id) => {
+  const ov = OVERRIDES[id];
+  return ov && ov.base ? ov : null;
+};
+function overrideScene(ov, attempt) {
+  const vs = Array.isArray(ov.variants) ? ov.variants.filter(Boolean) : [];
+  if (attempt === 0 || !vs.length) return ov.base;
+  return vs[(attempt - 1) % vs.length];
+}
+
 const OR_KEY = process.env.OPENROUTER_API_KEY || '';
 const OR_IMAGE_MODEL = process.env.PHOTO_OR_MODEL || 'google/gemini-2.5-flash-image';
 const OR_CRITIC_MODEL = process.env.PHOTO_OR_CRITIC || 'nvidia/nemotron-3.5-super-vl:free';
@@ -422,8 +441,14 @@ async function main() {
     const cands = [];
     for (let i = 0; i < CANDIDATES; i++) {
       const salt = paid ? i : i + 1;
-      const promptV7 = `${subject}, ${sceneFor(id, salt)}, ${DISH_STYLE_V7}`;
-      const promptTurbo = `${subject}, ${sceneFor(id, salt)}, ${TURBO_STYLE}`;
+      // Оверрайд маркетолога: сцена уже вшита в его промпт, добавляем только
+      // глобальный негатив (каналы z-ai/OR понимают негативы; turbo — нет).
+      const ov = overrideFor(id);
+      const ovPrompt = ov
+        ? overrideScene(ov, salt) + (OVERRIDES._negative ? `, ${OVERRIDES._negative}` : '')
+        : null;
+      const promptV7 = ovPrompt || `${subject}, ${sceneFor(id, salt)}, ${DISH_STYLE_V7}`;
+      const promptTurbo = ov ? overrideScene(ov, salt) : `${subject}, ${sceneFor(id, salt)}, ${TURBO_STYLE}`;
       let buf = null;
       if (paid) buf = await genOrImage(promptV7);
       if (!buf) buf = await genZai(zai, promptV7);
@@ -443,6 +468,13 @@ async function main() {
       log(`FAIL ${id}: ни один канал не дал кадра`);
       continue;
     }
+    // ЗАЩИТА ОТ СЛЕПЫХ ЗАМЕН (2026-11-06): если критик недоступен (z-ai 429
+    // и OR-фолбэк мёртв), кадр не проверен — слепо перезаписывать файл
+    // запрещено, блюдо остаётся в очереди до прогона с живым критиком.
+    if (!best.qa) {
+      log(`SKIP ${id}: критик недоступен — слепая замена запрещена, жду критика`);
+      continue;
+    }
 
     const outPath = path.join(OUT_DIR, `${id}.jpg`);
     // Защита от регрессии: не записывать кадр хуже уже записанного/зааудированного.
@@ -450,7 +482,10 @@ async function main() {
     let state = {};
     try { state = JSON.parse(fs.readFileSync(STATE_FILE, 'utf8')); } catch {}
     const baseScore = Math.max(report[id]?.score ?? -1, state[id] ?? -1);
-    if (best.qa && best.qa.score >= 0 && baseScore >= 0 && best.qa.score < baseScore) {
+    // Для слоп-карт с оверрайдом маркетолога старый балл завышен старым
+    // критиком (он пропускал глянец) — разрешаем замену файла даже при
+    // «регрессии» по старой шкале; реальный судья — фотограф (после прогона).
+    if (best.qa && best.qa.score >= 0 && baseScore >= 0 && best.qa.score < baseScore && !overrideFor(id)) {
       log(`KEEP ${id}: лучший кандидат ${best.qa.score} хуже текущего ${baseScore} — файл не трогаю`);
       if (!manualSet.has(id)) {
         manualSet.add(id);

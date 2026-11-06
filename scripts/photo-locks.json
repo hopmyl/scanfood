@@ -131,12 +131,6 @@
   "score": 8,
   "src": "audit-v7"
  },
- "beef-burger": {
-  "sha256": "76328aec689bf2e8ee57dee91c01905baa6cfaa572ab7c2a18a8796551e67bd4",
-  "at": "2026-11-05T13:03:01.856Z",
-  "score": 7,
-  "src": "audit-v7"
- },
  "beef-chow-fun": {
   "sha256": "77360efa79e4a2c7902ddde4a37cde06dee5205dd514a73399266334d0cc4be8",
   "at": "2026-11-05T13:03:01.856Z",
@@ -287,12 +281,6 @@
   "score": 8,
   "src": "audit-v7"
  },
- "chicken-cutlets": {
-  "sha256": "578c95fc3d01dfdbefed66e4a602046ee0373fc6d87caaf08b991e98fc3590d2",
-  "at": "2026-11-05T13:03:01.860Z",
-  "score": 8,
-  "src": "audit-v7"
- },
  "chicken-fajitas": {
   "sha256": "01b9e24b84d5da72c50b09be5739de09e912c8719afe1b89082b0213c5dc5753",
   "at": "2026-11-05T13:03:01.861Z",
@@ -394,12 +382,6 @@
   "at": "2026-11-05T13:03:01.863Z",
   "score": 7,
   "src": "user-approved"
- },
- "cinnamon-rolls": {
-  "sha256": "afb3bf95cf0d18779b2ce7d53562ac394dd7f6e5e2188e79e1366f334d374e94",
-  "at": "2026-11-05T13:03:01.863Z",
-  "score": 8,
-  "src": "audit-v7"
  },
  "clam-chowder": {
   "sha256": "e010e53fa14a73e12f2562168a3d2bb84330c9d001b30ca0a699938083967bc8",
@@ -511,12 +493,6 @@
  },
  "falafel-bowl": {
   "sha256": "a8d7c44b0759a1bc50ecdb0df3796014094fcd23df7205331a73435825c45dbf",
-  "at": "2026-11-05T13:03:01.866Z",
-  "score": 7,
-  "src": "audit-v7"
- },
- "falafel-wrap": {
-  "sha256": "0a89a79d40c7f634ba4530c3f0d4f1235276e54637db463cb8b578901f790108",
   "at": "2026-11-05T13:03:01.866Z",
   "score": 7,
   "src": "audit-v7"
@@ -1025,12 +1001,6 @@
   "score": 8,
   "src": "audit-v7"
  },
- "philly-cheesesteak": {
-  "sha256": "86fe13f86d66053844e9d01f877ddede5100fea08c4513dc2c85f3e7b9c2fb6e",
-  "at": "2026-11-05T13:03:01.879Z",
-  "score": 7,
-  "src": "audit-v7"
- },
  "pineapple-fried-rice": {
   "sha256": "2e45feb3a64c12bd7be6532950d73e1169092bde7e25889df631937bdbbf75b0",
   "at": "2026-11-05T13:03:01.880Z",
@@ -1177,12 +1147,6 @@
  },
  "shui-zhu-beef": {
   "sha256": "6d548e9e54a23b55693771de9c28f8bee097835c8e42e384c82c15986fdc4715",
-  "at": "2026-11-05T13:03:01.883Z",
-  "score": 8,
-  "src": "audit-v7"
- },
- "sloppy-joes": {
-  "sha256": "c0354909f06947a9e50d31983a1222f4e4a48b5f08ee050f8f1e7e5b048122f4",
   "at": "2026-11-05T13:03:01.883Z",
   "score": 8,
   "src": "audit-v7"
@@ -1347,18 +1311,6 @@
   "sha256": "6b65976b932d86cdf0c76d056af9dff022351ced7c1d317035a4ca1d06bb8c22",
   "at": "2026-11-05T13:03:01.886Z",
   "score": 7,
-  "src": "audit-v7"
- },
- "tuna-sandwich": {
-  "sha256": "5607639c471c8831d5fdfe1259f8aa4fd8be4246bec698daf817ce7033ee6d1e",
-  "at": "2026-11-05T13:03:01.886Z",
-  "score": 7,
-  "src": "audit-v7"
- },
- "turkish-pide": {
-  "sha256": "9fb5da64ac1d73d3373bd1e635bc934e2e90b57f85e77da7e58e21823c73e400",
-  "at": "2026-11-05T13:03:01.887Z",
-  "score": 8,
   "src": "audit-v7"
  },
  "ajvar": {

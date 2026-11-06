@@ -1,0 +1,60 @@
+{
+ "_negative": "plastic sheen, artificial gloss, oversharpened, hyperrealistic, 3d render, cgi, fake, synthetic, overly perfect, clinical, sterile, moody dark lighting, dramatic shadows.",
+ "_source": "агент-маркетолог, запрос пользователя 2026-11-06 (анти-слоп)",
+ "beef-burger": {
+  "base": "A classic beef burger with melted cheddar cheese, a slightly wilted lettuce leaf, and a slice of tomato on a crumbly brioche bun, sitting on a worn wooden table. The burger is slightly messy with drippy sauce and a few sesame seeds fallen onto the table, all under soft natural daylight from a nearby window.",
+  "variants": [
+   "A classic beef burger with melted cheddar cheese, lettuce, and tomato in a brioche bun, half-eaten on a simple ceramic plate with a few grease stains and crumbs, resting on a rustic kitchen counter with a blurred background of cabinets.",
+   "A classic beef burger with melted cheddar cheese, lettuce, and tomato in a brioche bun, viewed from above on a dark stone countertop. The burger is imperfect, with the top bun slightly askew and a small puddle of condensation from a nearby glass, all lit by soft, diffused window light."
+  ]
+ },
+ "chicken-cutlets": {
+  "base": "A plate of homemade golden-breaded chicken kotlety with a slightly uneven, dark-spotted crust, served with creamy mashed potatoes and a few slices of pickle. The food rests on a simple ceramic plate on a rustic wooden table, lit by soft natural daylight from a nearby window.",
+  "variants": [
+   "A close-up shot of a fork cutting into a chicken kotlety, revealing its fibrous texture, next to a dollop of mashed potatoes with a pat of slightly melted butter and a pickle. The scene is on a used ceramic plate with crumbs, set against a softly blurred background of a kitchen counter.",
+   "A kotlety with a realistically crumbly, uneven breading sits on a white ceramic plate, accompanied by mashed potatoes and a pickle. A small puddle of condensation forms on the plate near the pickle, all under the gentle, diffused light of a kitchen window."
+  ]
+ },
+ "cinnamon-rolls": {
+  "base": "A cinnamon roll with a generous drizzle of glaze sits on a rustic wooden table, soft daylight from a nearby window casting gentle shadows on its uneven, slightly torn edges and the crumbs scattered around it. The glaze has realistic drips, and the roll itself has a matte finish, showing no artificial shine. The scene feels authentic and unpolished, as if captured spontaneously at home.",
+  "variants": [
+   "A cinnamon roll rests on a simple ceramic plate, its glaze pooling slightly and a few crumbs fallen onto a worn wooden surface. The scene is lit by natural light from a window, creating soft highlights and a shallow depth of field that blurs the background, emphasizing the imperfect, homemade texture of the pastry.",
+   "Close-up of a cinnamon roll on a textured wooden table, with a fork resting beside it. The glaze is visibly thick and has dripped down the side, and there are small indentations on the roll where it was handled. The lighting is soft and natural, with no harsh shadows, making the scene feel warm and inviting rather than staged."
+  ]
+ },
+ "falafel-wrap": {
+  "base": "A falafel wrap resting on a rustic wooden table, nestled among real sprigs of parsley and crumbs from a slightly torn pita bread. The falafel has a matte, crumbly texture, and the tahini sauce looks softly spread without any gloss. Soft daylight streams from a nearby window, creating gentle shadows and no harsh reflections.",
+  "variants": [
+   "A half-eaten falafel wrap on a simple ceramic plate, with a few drops of olive oil pooling near the edge and visible condensation on the cool wrap. The background is a softly blurred kitchen counter with a cutting board and a knife, lit by natural morning light.",
+   "A close-up of a falafel wrap's cross-section, showing the layers of chickpea patties, tomatoes, and lettuce spilling out slightly onto a worn wooden board. The scene is lit by soft, diffused window light, casting long, natural shadows and highlighting the imperfect, textured edges of the pita."
+  ]
+ },
+ "philly-cheesesteak": {
+  "base": "A Philly cheesesteak sandwich on a wooden table, soft daylight from a nearby window illuminates the scene. The bread is matte with a slightly torn crust, the beef is sliced with visible fibers, and the cheese has a naturally melted, stringy texture. A few crumbs and a small drip of juice rest on the plate.",
+  "variants": [
+   "A half-eaten Philly cheesesteak on a simple ceramic plate, slightly askew on a rustic kitchen counter. Soft, diffused daylight creates a natural highlight on the rough bread surface, and the melted cheese shows real, uneven strands. A faint condensation bead is visible on the cold plate.",
+   "A close-up of a Philly cheesesteak's cross-section, revealing the layered ingredients. The scene is set on a slightly worn wooden table in the foreground, with a softly blurred background of a sunlit kitchen. The bread shows a craggy, open texture, the beef fibers are distinct, and the cheese is bubbled and unevenly melted."
+  ]
+ },
+ "sloppy-joes": {
+  "base": "A messy Sloppy Joe sandwich on a simple ceramic plate, sitting on a worn wooden table in natural daylight from a nearby window; the sauce is matte and drips unevenly onto the plate, the bread edges are slightly smeared, and real crumbs are scattered around. The ground meat is visible with a mix of fine and coarse crumbs, and the scene has a shallow depth of field like a phone photo.",
+  "variants": [
+   "A half-eaten Sloppy Joe burger on a paper-lined tray, resting on a checkered kitchen countertop; soft window light illuminates the messy burger with sauce-stained fingers in the foreground, condensation on a nearby glass, and a slightly out-of-focus background with everyday clutter.",
+   "A generous portion of loose meat Sloppy Joe filling spooned onto a slice of toasted brioche, served on a rustic stoneware plate; the scene is captured in bright, soft window light, showing a sprinkle of real herbs, a few stray meat particles, and a simple wooden background with natural texture."
+  ]
+ },
+ "tuna-sandwich": {
+  "base": "A tuna salad sandwich cut in half, standing upright on a plain ceramic plate. The filling features moist, flaky canned tuna mixed with creamy mayonnaise and visible chunks of cucumber, nestled against ruffled green lettuce with natural veins. The bread has a soft, matte crust with an uneven edge and a few crumbs on a simple wooden table, all under soft, natural daylight from a nearby window.",
+  "variants": [
+   "A close-up of a tuna salad sandwich on a used ceramic plate, slightly tilted to show the moist filling spilling out. The scene is lit by soft window light, creating gentle, realistic shadows on the table surface. The bread crust is textured and imperfect, with a hint of condensation on the plate's edge.",
+   "A tuna salad sandwich halves resting on a slightly worn wooden board. The soft whole wheat bread shows a matte surface with a soft, uneven crust, and the filling is a realistic mix of wet, flaky tuna and creamy mayonnaise. The background is softly blurred, and the entire scene is bathed in calm, natural morning light."
+  ]
+ },
+ "turkish-pide": {
+  "base": "Turkish pide with minced meat on a worn wooden table, soft daylight from a nearby window illuminating uneven bread edges and tiny crumbs, a ceramic plate with a slight condensation ring, a real fork resting on the fabric tablecloth.",
+  "variants": [
+   "Turkish pide flatbread on a rustic ceramic plate, placed on a linen cloth over a wooden table, natural light from a window casting soft shadows on the slightly torn bread and a small puddle of olive oil, a sprig of fresh herbs lying nearby.",
+   "Turkish pide with minced meat on a simple ceramic plate, sitting on a slightly dusty wooden table, soft daylight from a side window highlighting the bread's rough texture and a few stray meat pieces, a knife with visible use marks resting beside it."
+  ]
+ }
+}
