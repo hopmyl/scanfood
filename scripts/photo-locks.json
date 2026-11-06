@@ -184,5 +184,23 @@
   "at": "2026-11-06T17:27:12.871Z",
   "score": 8,
   "src": "human-pass-photographer-sweep"
+ },
+ "apple-pie": {
+  "sha256": "11aa7bebd968cbc4afeb8b33a1d2c72b8f92c5d9df1e51f5ad78ef5b478656a6",
+  "at": "2026-11-06T17:51:06.494Z",
+  "score": 8,
+  "src": "natural-v7"
+ },
+ "arroz-con-pollo": {
+  "sha256": "bbca2f120ebfdf806a99dd28441446470f3c738e9b0419decc62a31aef4bc9be",
+  "at": "2026-11-06T17:51:46.715Z",
+  "score": 8,
+  "src": "natural-v7"
+ },
+ "avgolemono": {
+  "sha256": "332daa047fa3a1f2b03126d3cb91935757cbc5429ea2a634ae66f7f10c69efce",
+  "at": "2026-11-06T17:53:47.892Z",
+  "score": 8,
+  "src": "natural-v7"
  }
 }

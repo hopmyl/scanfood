@@ -227,3 +227,42 @@
 2026-11-06T17:29:51.876Z --- philly-cheesesteak: «Philly cheesesteak with peppers…»
 2026-11-06T17:31:16.974Z MANUAL philly-cheesesteak score=6 (чисто) — лучший из 2 записан, на ваш просмотр
 2026-11-06T17:31:16.974Z === НАТУРАЛ v7 итог: заморожено 0, на просмотр 2, критик OR used=0 ===
+2026-11-06T17:45:07.890Z === НАТУРАЛ v7 старт: 5 блюд (кандидатов на блюдо: 2) ===
+2026-11-06T17:45:10.783Z Критик z-ai: жив
+2026-11-06T17:45:44.367Z Генератор z-ai: жив
+2026-11-06T17:45:44.368Z --- american-pancakes: «Fluffy American pancakes with maple syrup…»
+2026-11-06T17:47:28.990Z   [критик] OR-фолбэк недоступен (использовано 0/15 за сутки) — fail-open
+2026-11-06T17:49:17.682Z   [критик] OR-фолбэк недоступен (использовано 0/15 за сутки) — fail-open
+2026-11-06T17:49:20.684Z SKIP american-pancakes: критик недоступен — слепая замена запрещена, жду критика
+2026-11-06T17:49:20.684Z --- apple-pie: «Classic American apple pie with lattice…»
+2026-11-06T17:51:06.495Z OK+ЗАМОК apple-pie score=8 (чисто) каналов=1
+2026-11-06T17:51:06.495Z --- arroz-con-pollo: «Arroz con pollo Spanish chicken rice. Mediterranean dish, olive oil, f…»
+2026-11-06T17:51:46.715Z OK+ЗАМОК arroz-con-pollo score=8 (чисто) каналов=1
+2026-11-06T17:51:46.715Z --- avgolemono: «Greek lemon chicken rice soup avgolemono. Mediterranean dish, olive oi…»
+2026-11-06T17:53:47.893Z OK+ЗАМОК avgolemono score=8 (чисто) каналов=2
+2026-11-06T17:53:47.893Z --- avocado-toast: «Avocado toast on whole grain bread with a poached egg on top, chili fl…»
+2026-11-06T17:54:25.109Z KEEP avocado-toast: лучший кандидат 7 хуже текущего 8 — файл не трогаю
+2026-11-06T17:54:25.110Z === НАТУРАЛ v7 итог: заморожено 3, на просмотр 1, критик OR used=0 ===
+2026-11-06T17:54:54.011Z === НАТУРАЛ v7 старт: 5 блюд (кандидатов на блюдо: 2) ===
+2026-11-06T17:54:54.086Z Критик z-ai: НЕДОСТУПЕН (429) — работаю через OR-фолбэк
+2026-11-06T17:54:54.105Z Генератор z-ai: НЕДОСТУПЕН (429) — работаю через flux/OR
+2026-11-06T17:54:54.106Z --- american-pancakes: «Fluffy American pancakes with maple syrup…»
+2026-11-06T17:55:00.523Z   [критик] OR-фолбэк недоступен (использовано 0/15 за сутки) — fail-open
+2026-11-06T17:55:34.556Z   [критик] OR-фолбэк недоступен (использовано 0/15 за сутки) — fail-open
+2026-11-06T17:55:37.558Z SKIP american-pancakes: критик недоступен — слепая замена запрещена, жду критика
+2026-11-06T17:55:37.559Z --- baked-feta-pasta: «Baked feta with cherry tomatoes and pasta. Mediterranean dish, olive o…»
+2026-11-06T17:55:51.363Z   [критик] OR-фолбэк недоступен (использовано 0/15 за сутки) — fail-open
+2026-11-06T17:56:25.073Z   [критик] OR-фолбэк недоступен (использовано 0/15 за сутки) — fail-open
+2026-11-06T17:56:28.076Z SKIP baked-feta-pasta: критик недоступен — слепая замена запрещена, жду критика
+2026-11-06T17:56:28.076Z --- baozi-steamed-buns: «Steamed pork buns baozi. Chinese dish, round white plate or bamboo ste…»
+2026-11-06T17:56:44.824Z   [критик] OR-фолбэк недоступен (использовано 0/15 за сутки) — fail-open
+2026-11-06T17:57:36.892Z SKIP baozi-steamed-buns: критик недоступен — слепая замена запрещена, жду критика
+2026-11-06T17:57:36.892Z --- beef-burger: «Classic beef burger with melted cheddar cheese, lettuce, tomato in a b…»
+2026-11-06T17:57:43.988Z   [критик] OR-фолбэк недоступен (использовано 0/15 за сутки) — fail-open
+2026-11-06T17:58:21.700Z   [критик] OR-фолбэк недоступен (использовано 0/15 за сутки) — fail-open
+2026-11-06T17:58:24.700Z SKIP beef-burger: критик недоступен — слепая замена запрещена, жду критика
+2026-11-06T17:58:24.700Z --- avocado-toast: «Avocado toast on whole grain bread with a poached egg on top, chili fl…»
+2026-11-06T17:58:40.509Z   [критик] OR-фолбэк недоступен (использовано 0/15 за сутки) — fail-open
+2026-11-06T17:59:15.192Z   [критик] OR-фолбэк недоступен (использовано 0/15 за сутки) — fail-open
+2026-11-06T17:59:18.193Z SKIP avocado-toast: критик недоступен — слепая замена запрещена, жду критика
+2026-11-06T17:59:18.193Z === НАТУРАЛ v7 итог: заморожено 0, на просмотр 0, критик OR used=0 ===

@@ -45,27 +45,28 @@
   "at": "2026-11-05T16:40:56.152Z"
  },
  "ajvar": {
-  "score": 7,
-  "steam": false,
-  "plastic": false,
-  "text": false,
-  "people": false,
-  "wrong": false,
-  "glamor": true,
-  "note": "Похоже на айвар, но тёмный рекламный стиль и рендер-глянец",
-  "mtime": 1793862632000,
-  "at": "2026-11-05T16:40:59.695Z"
- },
- "american-pancakes": {
   "score": 8,
   "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Реалистичная стопка панкейков с сиропом, сомнений мало",
-  "mtime": 1793684381000,
-  "at": "2026-11-03T16:10:11.596Z"
+  "glamor": false,
+  "note": "Реалистичный айвар, текстура чуть однородная, но правдоподобно",
+  "mtime": 1793897710000,
+  "at": "2026-11-06T17:43:12.000Z"
+ },
+ "american-pancakes": {
+  "score": 6,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "glamor": true,
+  "note": "Стопка блинов с сиропом, но слишком глянцевый тёмный фон",
+  "mtime": 1793862632000,
+  "at": "2026-11-06T17:43:14.635Z"
  },
  "apple-charlotte": {
   "score": 8,
@@ -74,42 +75,46 @@
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Реалистичный яблочный пирог, соответствует описанию",
-  "mtime": 1793684381000,
-  "at": "2026-11-03T16:10:13.719Z"
+  "glamor": false,
+  "note": "Реалистичный шарлотка-кекс, яблочные дольки видны, домашний свет",
+  "mtime": 1793862632000,
+  "at": "2026-11-06T17:43:18.588Z"
  },
  "apple-pie": {
-  "score": 9,
+  "score": 6,
   "steam": false,
-  "plastic": false,
+  "plastic": true,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Реалистичный яблочный пирог с решёткой, всё соответствует",
-  "mtime": 1793684381000,
-  "at": "2026-11-03T16:10:16.914Z"
+  "glamor": true,
+  "note": "Сетчатый яблочный пирог верный, но текстура плойки восковая, гламурный свет",
+  "mtime": 1793862632000,
+  "at": "2026-11-06T17:43:21.837Z"
  },
  "arroz-con-pollo": {
-  "score": 8,
+  "score": 6,
   "steam": false,
-  "plastic": false,
+  "plastic": true,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Рис с курицей реалистичен, терракотовая тарелка, соответствует описанию",
-  "mtime": 1793684381000,
-  "at": "2026-11-03T16:10:20.145Z"
+  "glamor": false,
+  "note": "Похоже на рис с курицей, но текстура слегка восковая",
+  "mtime": 1793862632000,
+  "at": "2026-11-06T17:43:41.518Z"
  },
  "avgolemono": {
   "score": 7,
   "steam": false,
-  "plastic": false,
+  "plastic": true,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Суп похож на avgolemono, реалистично, но слегка ИИ-текстура",
-  "mtime": 1793726083000,
-  "at": "2026-11-03T17:42:54.421Z"
+  "glamor": false,
+  "note": "Похоже на avgolemono, но текстура супа слишком однородная",
+  "mtime": 1793862632000,
+  "at": "2026-11-06T17:43:43.601Z"
  },
  "avocado-toast": {
   "score": 8,
@@ -118,9 +123,10 @@
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Реалистичный кадр, блюдо соответствует описанию",
-  "mtime": 1793684381000,
-  "at": "2026-11-03T16:10:24.566Z"
+  "glamor": true,
+  "note": "Реалистично, но постановочный рекламный стиль съёмки",
+  "mtime": 1793862632000,
+  "at": "2026-11-06T17:43:45.773Z"
  },
  "baba-ganoush": {
   "score": 8,
@@ -129,20 +135,22 @@
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Реалистичный баба гануш с баклажаном и зеленью",
-  "mtime": 1793725777000,
-  "at": "2026-11-03T17:42:56.988Z"
+  "glamor": false,
+  "note": "Реалистичный баба гануш, тёплый домашний свет",
+  "mtime": 1793862632000,
+  "at": "2026-11-06T17:43:48.066Z"
  },
  "baked-apples": {
-  "score": 9,
+  "score": 8,
   "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Реалистичные печёные яблоки с орехами и изюмом",
-  "mtime": 1793725603000,
-  "at": "2026-11-03T17:42:58.994Z"
+  "glamor": false,
+  "note": "Реалистичные печёные яблоки, начинка видна частично",
+  "mtime": 1793862632000,
+  "at": "2026-11-06T17:43:50.006Z"
  },
  "baked-dorado": {
   "score": 8,
@@ -156,48 +164,52 @@
   "at": "2026-11-03T16:10:37.567Z"
  },
  "baked-feta-pasta": {
-  "score": 8,
+  "score": 6,
   "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Паста с томатами и сыром выглядит реалистично, хотя текстура слегка сглажена",
-  "mtime": 1793684381000,
-  "at": "2026-11-03T16:10:39.500Z"
+  "glamor": true,
+  "note": "Блюдо верное, но тёмный рекламный фон",
+  "mtime": 1793862632000,
+  "at": "2026-11-06T17:43:53.516Z"
  },
  "baked-mackerel": {
-  "score": 7,
+  "score": 8,
   "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Реалистичная скумбрия с лимоном и фольгой, рыба слегка неестественна",
-  "mtime": 1793727944000,
-  "at": "2026-11-03T18:40:01.265Z"
+  "glamor": false,
+  "note": "Скумбрия с лимоном и розмарином выглядит реалистично, ИИ-артефактов нет",
+  "mtime": 1793862632000,
+  "at": "2026-11-06T17:43:58.984Z"
  },
  "baked-salmon-quinoa": {
-  "score": 8,
+  "score": 6,
   "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Реалистичный кадр: лосось, киноа, лимон, розмарин; лёгкие артефакты текстуры рыб",
-  "mtime": 1793684381000,
-  "at": "2026-11-03T16:10:46.692Z"
+  "glamor": false,
+  "note": "Лосось и гарнир чуть синтетичны, текстура зерна подозрительна",
+  "mtime": 1793862632000,
+  "at": "2026-11-06T17:44:03.239Z"
  },
  "banana-bread": {
-  "score": 8,
+  "score": 6,
   "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Реалистичный кекс с бананами и орехами, нарезка есть",
-  "mtime": 1793684381000,
-  "at": "2026-11-03T16:10:49.115Z"
+  "glamor": false,
+  "note": "Реалистичный кадр, но текстура хлеба слегка искусственная",
+  "mtime": 1793862632000,
+  "at": "2026-11-06T17:44:05.728Z"
  },
  "banana-pudding": {
   "score": 7,
@@ -206,20 +218,22 @@
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Реалистичный банановый пудинг с печеньем, слегка ИИ-текстура крошки",
-  "mtime": 1793684381000,
-  "at": "2026-11-03T16:10:53.083Z"
+  "glamor": false,
+  "note": "Банановый пудинг с печеньем, реалистичный кадр",
+  "mtime": 1793862632000,
+  "at": "2026-11-06T17:44:08.938Z"
  },
  "baozi-steamed-buns": {
-  "score": 7,
+  "score": 6,
   "steam": false,
-  "plastic": false,
+  "plastic": true,
   "text": false,
-  "people": false,
+  "people": true,
   "wrong": false,
-  "note": "Булочки и палочки соответствуют, фон размыт корректно",
-  "mtime": 1793684381000,
-  "at": "2026-11-03T16:10:56.468Z"
+  "glamor": false,
+  "note": "Булочки слегка восковые; на фоне возможно размытое лицо",
+  "mtime": 1793862632000,
+  "at": "2026-11-06T17:44:11.470Z"
  },
  "bbq-chicken-wings": {
   "score": 7,
@@ -228,86 +242,94 @@
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Реалистичные крылья в глянцевом соусе, кунжут есть",
-  "mtime": 1793684381000,
-  "at": "2026-11-03T16:10:59.646Z"
+  "glamor": false,
+  "note": "Реалистичные крылья в глазури с кунжутом, лёгкий глянец",
+  "mtime": 1793862632000,
+  "at": "2026-11-06T17:44:15.787Z"
  },
  "bbq-pork-ribs": {
-  "score": 8,
-  "steam": false,
-  "plastic": false,
-  "text": false,
-  "people": false,
-  "wrong": false,
-  "note": "Реалистичные рёбры в глазури, кунжут на месте",
-  "mtime": 1793684381000,
-  "at": "2026-11-03T16:11:07.490Z"
- },
- "bbq-pulled-pork": {
-  "score": 8,
-  "steam": false,
-  "plastic": false,
-  "text": false,
-  "people": false,
-  "wrong": false,
-  "note": "Выглядит как pulled pork, реалистично",
-  "mtime": 1793726266000,
-  "at": "2026-11-03T17:43:05.298Z"
- },
- "beef-broccoli": {
-  "score": 8,
-  "steam": false,
-  "plastic": false,
-  "text": false,
-  "people": false,
-  "wrong": false,
-  "note": "Реалистичная говядина с брокколи, есть палочки",
-  "mtime": 1793728027000,
-  "at": "2026-11-03T18:40:03.180Z"
- },
- "beef-burger": {
   "score": 7,
   "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Реалистичный бургер, котлета чуть темновата, но выглядит съедобно",
-  "mtime": 1793684382000,
-  "at": "2026-11-03T16:11:16.759Z"
+  "glamor": false,
+  "note": "Реалистичные рёбры с глазурью, лёгкая неуверенность в текстуре",
+  "mtime": 1793862632000,
+  "at": "2026-11-06T17:44:18.386Z"
+ },
+ "bbq-pulled-pork": {
+  "score": 5,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": true,
+  "glamor": false,
+  "note": "Похоже на лапшу/соломку в соусе, не pulled pork",
+  "mtime": 1793862632000,
+  "at": "2026-11-06T17:44:22.640Z"
+ },
+ "beef-broccoli": {
+  "score": 7,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "glamor": false,
+  "note": "Говядина с брокколи верно, реалистично, слегка ИИ-глянец соуса",
+  "mtime": 1793862632000,
+  "at": "2026-11-06T17:44:27.192Z"
+ },
+ "beef-burger": {
+  "score": 6,
+  "steam": false,
+  "plastic": true,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "glamor": true,
+  "note": "Похоже на ИИ-рендер: восковая текстура, гламурный свет, неестественный укус",
+  "mtime": 1793986191874.7903,
+  "at": "2026-11-06T17:44:29.577Z"
  },
  "beef-chow-fun": {
-  "score": 8,
+  "score": 7,
   "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Реалистичная лапша с говядиной, подача соответствует",
-  "mtime": 1793684382000,
-  "at": "2026-11-03T16:11:19.140Z"
+  "glamor": false,
+  "note": "Реалистичная лапша с говядиной, тарелка не белая, но это допустимо",
+  "mtime": 1793862632000,
+  "at": "2026-11-06T17:44:31.628Z"
  },
  "beef-goulash": {
-  "score": 9,
+  "score": 7,
   "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Реалистичный гуляш с пюре, естественные текстуры",
-  "mtime": 1793684382000,
-  "at": "2026-11-03T16:11:21.371Z"
+  "glamor": true,
+  "note": "Гуляш с пюре соответствует; гламурный тёмный свет",
+  "mtime": 1793862632000,
+  "at": "2026-11-06T17:44:35.125Z"
  },
  "beef-steak": {
-  "score": 9,
+  "score": 6,
   "steam": false,
-  "plastic": false,
+  "plastic": true,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Реалистичный рибай медиум с розмарином и маслом",
-  "mtime": 1793684382000,
-  "at": "2026-11-03T16:11:24.099Z"
+  "glamor": false,
+  "note": "Реалистичный стейк, но волокна мяса слегка «нейронные»",
+  "mtime": 1793862632000,
+  "at": "2026-11-06T17:44:38.160Z"
  },
  "beef-stroganoff": {
   "score": 8,
@@ -316,9 +338,10 @@
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Реалистичное рагу с пюре, соответствует бефстроганову",
-  "mtime": 1793684382000,
-  "at": "2026-11-03T16:11:26.332Z"
+  "glamor": false,
+  "note": "Бефстроганов с пюре выглядит реалистично, лёгкая ИИ-гладкость соуса",
+  "mtime": 1793862632000,
+  "at": "2026-11-06T17:44:41.581Z"
  },
  "beef-tacos": {
   "score": 8,
@@ -327,20 +350,22 @@
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Реалистичные тако с говядиной, сальсой, лаймом; лёгкая ИИ-глянцевость",
-  "mtime": 1793684382000,
-  "at": "2026-11-03T17:43:10.089Z"
+  "glamor": false,
+  "note": "Реалистичные тако с говядиной, сальсой, лаймом и кинзой",
+  "mtime": 1793862632000,
+  "at": "2026-11-06T17:44:44.021Z"
  },
  "blt-sandwich": {
-  "score": 8,
+  "score": 6,
   "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Реалистичный BLT, хорошая текстура хлеба и бекона",
-  "mtime": 1793684382000,
-  "at": "2026-11-03T17:43:11.818Z"
+  "glamor": true,
+  "note": "BLT реалистичен, но слишком глянцевая рекламная подача",
+  "mtime": 1793862632000,
+  "at": "2026-11-06T17:44:46.545Z"
  },
  "blueberry-muffins": {
   "score": 8,
@@ -349,9 +374,10 @@
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Реалистичные маффины, живая подача, верное блюдо",
-  "mtime": 1793684382000,
-  "at": "2026-11-03T17:43:13.957Z"
+  "glamor": false,
+  "note": "Реалистичные маффины, домашняя подача, текстура натуральная",
+  "mtime": 1793862632000,
+  "at": "2026-11-06T17:44:50.147Z"
  },
  "borscht": {
   "score": 8,
@@ -360,9 +386,10 @@
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Реалистичный борщ, есть сметана, укроп, хлеб; мелких кусочков мало",
-  "mtime": 1793684382000,
-  "at": "2026-11-03T17:43:16.599Z"
+  "glamor": false,
+  "note": "Реалистичный борщ, сметана и укроп видны, хлеб есть",
+  "mtime": 1793862632000,
+  "at": "2026-11-06T17:44:52.049Z"
  },
  "briam": {
   "score": 8,
@@ -371,9 +398,10 @@
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Реалистичные запечённые овощи, терракотовая тарелка, всё соответствует",
-  "mtime": 1793684382000,
-  "at": "2026-11-03T17:43:19.132Z"
+  "glamor": false,
+  "note": "Реалистичный ресторанный кадр, овощи соответствуют бриаму",
+  "mtime": 1793862632000,
+  "at": "2026-11-06T17:44:54.410Z"
  },
  "brownies": {
   "score": 9,
