@@ -146,3 +146,11 @@
 2026-11-05T23:42:43.489Z --- tofu-larb: «Tofu larb vegetarian salad. Thai street food, banana leaf or ceramic b…»
 2026-11-05T23:43:18.983Z KEEP tofu-larb: лучший кандидат 8 хуже текущего 9 — файл не трогаю
 2026-11-05T23:43:18.983Z --- thai-congee-jok: «Thai rice congee jok with pork. Thai street food, banana leaf or ceram…»
+2026-11-06T00:11:09.541Z === НАТУРАЛ v7 старт: 3 блюд (кандидатов на блюдо: 2) ===
+2026-11-06T00:11:12.494Z Критик z-ai: жив
+2026-11-06T00:11:56.845Z Генератор z-ai: жив
+2026-11-06T00:11:56.845Z --- lazy-vareniki: «Lazy vareniki: boiled diamond-shaped cottage cheese dough pieces with …»
+2026-11-06T00:13:32.307Z MANUAL lazy-vareniki score=6 (не-то-блюдо) — лучший из 2 записан, на ваш просмотр
+2026-11-06T00:13:32.307Z --- tofu-larb: «Tofu larb vegetarian salad. Thai street food, banana leaf or ceramic b…»
+2026-11-06T00:14:09.536Z KEEP tofu-larb: лучший кандидат 7 хуже текущего 9 — файл не трогаю
+2026-11-06T00:14:09.536Z --- thai-congee-jok: «Thai rice congee jok with pork. Thai street food, banana leaf or ceram…»
