@@ -1,0 +1,92 @@
+{
+ "styleCharter": {
+  "ru": [
+   "Тёплый естественный дневной свет из окна (soft window daylight), лёгкие тени — НЕ студийная драма и НЕ moody-чёрный фон.",
+   "Матовые, реальные текстуры: видны крошка, неровная корочка, неровные края, капли соуса матовые, а не зеркальные.",
+   "Сдержанная, «съедобная» палитра: никаких кислотных перенасыщенных цветов.",
+   "Реальные несовершенства — именно они продают «домашность»: крошки на столе, неровно намазанный соус, чуть съехавший лист салата.",
+   "Посуда и фон в стиле серии: тёмный камень/тёмное дерево допустимы, но свет мягкий и тёплый; без фальшивого боке-реквизита.",
+   "Запрещённые слова в промптах: glossy, perfect, flawless, hyper-detailed, 8k, studio lighting, dramatic lighting, moody, cinematic, ultra, professional advertisement."
+  ],
+  "en": [
+   "Warm natural window daylight, soft shadows; no studio drama, no moody black-key look.",
+   "Matte, honest textures: visible crumb, uneven browning, imperfect edges; sauces look moist, not mirror-glossy.",
+   "Restrained edible palette; no oversaturated colors.",
+   "Real imperfections sell homemade: crumbs on the table, sauce smeared, a leaf slightly out of place.",
+   "Series props: dark stone / dark wood are fine, but lit softly and warmly; no fake bokeh props.",
+   "Banned prompt words: glossy, perfect, flawless, hyper-detailed, 8k, studio lighting, dramatic lighting, moody, cinematic, ultra, professional advertisement."
+  ]
+ },
+ "prompts": {
+  "tuna-sandwich": {
+   "nameRu": "Сэндвич с тунцом на зерновом хлебе",
+   "verdict": "REGEN",
+   "prompt": "A tuna salad sandwich on whole wheat bread, cut diagonally to show a textured filling with visible chunks of tuna mixed with Greek yogurt, a few stray cucumber slices, and a loose leaf of lettuce resting on top. On a dark stone surface, soft window light, warm and natural, casting gentle shadows. Honest textures: rough bread crumbs, uneven edges, matte ingredients.",
+   "negative": "glossy, plastic, perfect, flawless, hyper-detailed, 8k, studio lighting, dramatic lighting, moody, cinematic, ultra, professional advertisement, uniform carpet-like filling, fake bokeh, smooth sauce, pristine leaves, even browning",
+   "focusRu": "На фото должен быть виден разрез сэндвича, где начинка выглядит естественно, с кусочками тунца и неровной текстурой йогурта.",
+   "madeAt": 1793965585038
+  },
+  "beef-burger": {
+   "nameRu": "Классический бургер с говядиной",
+   "verdict": "REGEN",
+   "prompt": "A classic beef burger on a brioche bun, viewed from a 30-degree angle, with a slightly uneven beef patty, melted cheddar, visible tomato slices, pickled rings, and a smear of sauce on the side. Warm natural window light casts soft shadows on a dark wood table with crumbs. Matte textures, honest colors, and a slightly messy, homemade feel.",
+   "negative": "glossy, perfect, flawless, hyper-detailed, 8k, studio lighting, dramatic lighting, moody, cinematic, ultra, professional advertisement, plastic sheen, even patty surface, neon colors, repetitive sauce wave, fake bokeh props, wax-like sauce",
+   "focusRu": "на фото должны быть видны кольца маринованного огурца",
+   "madeAt": 1793965587211
+  },
+  "falafel-wrap": {
+   "nameRu": "Ролл с фалафелем и овощами",
+   "verdict": "REGEN",
+   "prompt": "A falafel wrap cut in half, revealing uneven layers of falafel balls with crumbly, irregularly browned crusts, fresh tomato and cucumber slices, and crisp lettuce leaves, all drizzled with matte tahini sauce, on a dark wood table in warm natural window light with soft shadows.",
+   "negative": "glossy, perfect, flawless, hyper-detailed, 8k, studio lighting, dramatic lighting, moody, cinematic, ultra, professional advertisement, identical falafel balls, seamless wrap interior, waxy sauce sheen, fake bokeh",
+   "focusRu": "на фото обязан быть виден срез ролла с неровными слоями начинки и крошащимся фалафелем.",
+   "madeAt": 1793965588971
+  },
+  "chicken-cutlets": {
+   "nameRu": "Домашние куриные котлеты",
+   "verdict": "REGEN",
+   "prompt": "Homemade chicken cutlets on a dark wood table, 30-degree angle, warm window light casting soft shadows, visible uneven breading with crumbs, irregular edges, matte sauce with a spoon smear, a few stray crumbs nearby, authentic textures",
+   "negative": "glossy, perfect, flawless, hyper-detailed, 8k, studio lighting, dramatic lighting, moody, cinematic, ultra, professional advertisement, uniform breading, wax sauce sheen, repetitive asparagus, dark background, fake bokeh props",
+   "focusRu": "Неровная панировка с крошками и рваные края котлет",
+   "madeAt": 1793965591031
+  },
+  "turkish-pide": {
+   "nameRu": "Пиде — турецкая лодочка с фаршем",
+   "verdict": "REGEN",
+   "prompt": "Turkish pide boat-shaped flatbread with an open center filled with minced beef, diced onion, bell peppers, and a cracked egg on top, resting on a dark wood table, warm window light, soft shadows, matte textures, visible crumb and uneven browning, 30 degree angle",
+   "negative": "glossy, perfect, flawless, hyper-detailed, 8k, studio lighting, dramatic lighting, moody, cinematic, ultra, professional advertisement, round pizza, flat meat texture, smooth surface, dark moody bokeh background",
+   "focusRu": "на фото обязательно должна быть форма лодочки с открытой серединой и защипами по краям",
+   "madeAt": 1793965593204
+  },
+  "philly-cheesesteak": {
+   "nameRu": "Филли чизстейк",
+   "verdict": "REGEN",
+   "prompt": "A Philly cheesesteak sandwich on a toasted bun, cut diagonally to reveal layers of thinly sliced beef, melted provolone cheese, sautéed bell peppers, and caramelized onions, resting on a dark wood table, warm natural window light, soft shadows, crumbs on the table, sauce smeared on the wrapper.",
+   "negative": "waxy cheese, plastic sheen, repetitive pepper pattern, carpet-like beef texture, oversaturated colors, no onion, no mayonnaise, glossy, perfect, flawless, hyper-detailed, studio lighting, dramatic lighting, moody, cinematic, ultra, professional advertisement",
+   "focusRu": "На фото виден разрез бутерброда, демонстрирующий слои говядины, сыра, перца и карамелизированного лука.",
+   "madeAt": 1793965595118
+  },
+  "sloppy-joes": {
+   "nameRu": "Слоппи джо",
+   "verdict": "REGEN",
+   "prompt": "A messy Sloppy Joe sandwich on a dark wood table, top bun pushed aside revealing ground beef with visible onion pieces and uneven texture, sauce dripping naturally, warm window light casting soft shadows, 30-degree angle, crumbs on the tablecloth.",
+   "negative": "glossy, perfect, flawless, hyper-detailed, 8k, studio lighting, dramatic lighting, moody, cinematic, ultra, professional advertisement, plastic sheen, uniform meat granules, floating bun, fork without shadow, repetitive meatballs, fake bokeh",
+   "focusRu": "Наверх сдвинутая булочка, открывающая фарш с крупными крошками и видимыми кусочками лука.",
+   "madeAt": 1793965825348
+  },
+  "cinnamon-rolls": {
+   "nameRu": "Синнабоны с глазурью",
+   "verdict": "REGEN",
+   "prompt": "Homemade cinnamon rolls on a dark stone surface, spiral shape with uneven layers and a slightly flattened edge, matte cream cheese frosting with drips and cinnamon specks, visible crumbs, warm window light, soft shadows, 30° angle.",
+   "negative": "glossy, perfect, flawless, hyper-detailed, 8k, studio lighting, dramatic lighting, moody, cinematic, ultra, professional advertisement, plastic sheen on glaze, perfectly uniform spiral, wax-like texture",
+   "focusRu": "спираль с неровными витками и подтёками глазури",
+   "madeAt": 1793965826861
+  }
+ },
+ "styleProposal": {
+  "STYLE_A_NEW": "editorial food photography, served on a dark slate plate on a rustic dark wooden table, warm soft daylight, natural shadows, matte textures, clean and sophisticated composition, inspired by high-end culinary magazines, inviting and authentic feel, no dramatic moody lighting.",
+  "STYLE_B_NEW": "authentic food photography, real food textures: visible grains and crumb, uneven browning, natural imperfect shapes, sauces with a natural sheen, not a plastic gloss, rustic and honest presentation, focus on the ingredient's true character.",
+  "NEGATIVE_GLOBAL": "plastic sheen, artificial gloss, oversharpened, hyperrealistic, 3d render, cgi, fake, synthetic, overly perfect, clinical, sterile, moody dark lighting, dramatic shadows.",
+  "обоснованиеRu": "Новые стили заменяют клишированный 'moody' стиль на тёплый редакционный вид и убирают 'пластиковый' глянец соусов. Глобальный negative-промпт блокирует ключевые триггеры нейрослопа, гарантируя более аутентичный и аппетитный результат."
+ }
+}
