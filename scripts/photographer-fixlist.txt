@@ -1,0 +1,8 @@
+beef-burger
+chicken-cutlets
+cinnamon-rolls
+falafel-wrap
+philly-cheesesteak
+sloppy-joes
+tuna-sandwich
+turkish-pide
