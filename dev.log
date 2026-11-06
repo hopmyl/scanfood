@@ -83,3 +83,7 @@
 5:32:20 PM [vite] (client) hmr update /src/index.css, /src/screens/DishScreen.tsx, /src/screens/CatalogScreen.tsx, /src/screens/PantryScreen.tsx, /src/screens/ShoppingScreen.tsx, /src/screens/FavoritesScreen.tsx, /src/screens/ProfileScreen.tsx, /src/App.tsx, /src/components/BottomNav.tsx, /src/screens/ScanScreen.tsx, /src/components/ProToggle.tsx, /src/components/DishCard.tsx
 5:32:27 PM [vite] (client) page reload .mirror/404.html
 5:32:27 PM [vite] (client) page reload .mirror/index.html
+5:59:52 PM [vite] (client) hmr update /src/index.css, /src/screens/DishScreen.tsx, /src/screens/CatalogScreen.tsx, /src/screens/PantryScreen.tsx, /src/screens/ShoppingScreen.tsx, /src/screens/FavoritesScreen.tsx, /src/screens/ProfileScreen.tsx, /src/App.tsx, /src/components/BottomNav.tsx, /src/screens/ScanScreen.tsx, /src/components/ProToggle.tsx, /src/components/DishCard.tsx
+6:00:03 PM [vite] (client) hmr update /src/index.css, /src/screens/DishScreen.tsx, /src/screens/CatalogScreen.tsx, /src/screens/PantryScreen.tsx, /src/screens/ShoppingScreen.tsx, /src/screens/FavoritesScreen.tsx, /src/screens/ProfileScreen.tsx, /src/App.tsx, /src/components/BottomNav.tsx, /src/screens/ScanScreen.tsx, /src/components/ProToggle.tsx, /src/components/DishCard.tsx
+6:00:10 PM [vite] (client) page reload .mirror/404.html
+6:00:10 PM [vite] (client) page reload .mirror/index.html
