@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # Репликация buildQueue() из natural-regen.mjs (v7) + сборка следующей партии
 # промптов для ручной генерации пользователем в Gemini.
-import json, os, hashlib
+import json, os, hashlib, sys
 
 ROOT = '/home/z/my-project'
 
@@ -91,3 +91,17 @@ open(f'{ROOT}/download/gemini-batch-prompts.txt', 'w').write(txt)
 print(f'Партия: {min(BATCH, len(queue))} промптов -> download/gemini-batch-prompts.txt')
 for line in out:
     print(line.split('\n')[0])
+
+# --- Полная очередь (--all): все оставшиеся промпты одним файлом ---
+if 'all' in sys.argv or '--all' in sys.argv:
+    allout = []
+    for n, dish in enumerate(queue, 1):
+        sc = report.get(dish, {}).get('score', '?')
+        allout.append(f'{n}. {dish}  (текущий балл аудита: {sc})\n{prompt_for(dish)}')
+    full = ('СканРецепт — ПОЛНАЯ очередь ручной генерации в Gemini: '
+            f'{len(queue)} карточек (худшие сверху, стиль v7).\n'
+            'Формат: ландшафт (3:2 или 4:3). Можно присылать пачками по 10-15 — '
+            'каждая проверяется критиком и ставится на замок.\n\n'
+            + '\n\n'.join(allout) + '\n')
+    open(f'{ROOT}/download/gemini-full-queue-prompts.txt', 'w').write(full)
+    print(f'Полная очередь: {len(queue)} промптов -> download/gemini-full-queue-prompts.txt')
