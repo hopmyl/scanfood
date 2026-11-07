@@ -2130,3 +2130,13 @@ SKIP american-pancakes: критик недоступен — слепая за�
 2026-11-07T17:57:33.418Z --- avocado-toast: «Avocado toast on whole grain bread with a poached egg on top, chili fl…»
 2026-11-07T17:58:11.590Z OK+ЗАМОК avocado-toast score=8 (чисто) каналов=1
 2026-11-07T17:58:11.590Z === НАТУРАЛ v7 итог: заморожено 3, на просмотр 0, критик OR used=0 ===
+2026-11-07T22:00:40.815Z === НАТУРАЛ v7 старт: 3 блюд (кандидатов на блюдо: 2) ===
+2026-11-07T22:00:43.215Z Критик z-ai: жив
+2026-11-07T22:01:16.111Z Генератор z-ai: жив
+2026-11-07T22:01:16.111Z --- baked-mackerel: «Whole baked mackerel fish with lemon slices in opened foil, herbs, gar…»
+2026-11-07T22:02:30.931Z OK+ЗАМОК baked-mackerel score=8 (чисто) каналов=2
+2026-11-07T22:02:30.931Z --- baba-ganoush: «Baba ganoush smoked eggplant dip. Mediterranean dish, olive oil, fresh…»
+2026-11-07T22:03:08.987Z OK+ЗАМОК baba-ganoush score=7 (чисто) каналов=1
+2026-11-07T22:03:08.987Z --- ajvar: «Balkan roasted pepper ajvar spread. Mediterranean dish, olive oil, fre…»
+2026-11-07T22:03:46.011Z KEEP ajvar: лучший кандидат 7 хуже текущего 8 — файл не трогаю
+2026-11-07T22:03:46.011Z === НАТУРАЛ v7 итог: заморожено 2, на просмотр 1, критик OR used=0 ===
