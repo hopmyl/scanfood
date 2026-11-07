@@ -19,6 +19,12 @@ MODE="${2:-}"
 LOG=/tmp/qa-runner.log
 echo "=== qa-runner START $(date) N=$N mode=$MODE ===" >> "$LOG"
 
+# --- ПАУЗА РЕМОНТА ФОТО (запрос пользователя 2026-11-07: прекратить 429-спам) ---
+# scripts/photo-repair-paused.flag — генерация и natural-regen пропускаются.
+# FORCE_REPAIR=1 — принудительный запуск мимо паузы (автоснятие при ZAI_OK).
+if [ -f scripts/photo-repair-paused.flag ] && [ "${FORCE_REPAIR:-}" != "1" ]; then
+  echo "=== photo-repair SKIPPED (пауза по запросу пользователя) $(date) ===" >> "$LOG"
+else
 NEED=$(node -e "
   const fs=require('fs'), crypto=require('crypto');
   const mode=process.argv[1]||'';
@@ -65,6 +71,7 @@ fi
 echo "=== natural-regen START $(date) ===" >> "$LOG"
 timeout 240 node scripts/natural-regen.mjs --limit=3 >> "$LOG" 2>&1 || true
 echo "=== natural-regen EXIT $(date) ===" >> "$LOG"
+fi # конец блока ремонта (пауза)
 
 # --- Срез агента-повара: рецепты и порядок шагов (инкрементально) ---
 # ПАУЗА ПОВАРА (запрос пользователя 2026-11-02 ~13:40: «повара на паузу,
