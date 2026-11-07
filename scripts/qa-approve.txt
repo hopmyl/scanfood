@@ -12,3 +12,11 @@ korean-carrot
 homestyle-tofu
 kluay-tod
 jiaozi-pork
+falafel-wrap
+philly-cheesesteak
+chicken-cutlets
+sloppy-joes
+cinnamon-rolls
+turkish-pide
+beef-burger
+tuna-sandwich

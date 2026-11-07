@@ -28,3 +28,10 @@ julienne
 di-san-xian
 vegetable-stew
 yam-woon-sen
+falafel-wrap
+philly-cheesesteak
+chicken-cutlets
+sloppy-joes
+cinnamon-rolls
+turkish-pide
+beef-burger
