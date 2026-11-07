@@ -1659,3 +1659,133 @@ SKIP american-pancakes: критик недоступен — слепая за�
 === НАТУРАЛ v7 итог: заморожено 0, на просмотр 0, критик OR used=0 ===
 2026-11-07T07:01:36.655Z === НАТУРАЛ v7 итог: заморожено 0, на просмотр 0, критик OR used=0 ===
 2026-11-07T07:33:00Z [восстановлено после reset] пробы natural-regen 07:12/07:21/07:31 UTC — SKIP american-pancakes (критик 429), итог: заморожено 0
+=== НАТУРАЛ v7 старт: 1 блюд (кандидатов на блюдо: 2) ===
+2026-11-07T07:41:28.409Z === НАТУРАЛ v7 старт: 1 блюд (кандидатов на блюдо: 2) ===
+Failed to make vision API request: Error: API request failed with status 429: {"error":"Too many requests, please try again later"}
+    at ZAI.createChatCompletionVision (file:///home/z/my-project/node_modules/z-ai-web-dev-sdk/dist/index.js:148:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async critiquePhoto (file:///home/z/my-project/scripts/photo-critic.mjs:103:19)
+    at async probeZaiCritic (file:///home/z/my-project/scripts/natural-regen.mjs:306:13)
+    at async main (file:///home/z/my-project/scripts/natural-regen.mjs:417:21)
+  [критик] попытка 1: API request failed with status 429: {"error":"Too many requests, please try again later"}
+Критик z-ai: НЕДОСТУПЕН (429) — работаю через OR-фолбэк
+2026-11-07T07:41:28.483Z Критик z-ai: НЕДОСТУПЕН (429) — работаю через OR-фолбэк
+Failed to make image generation request: Error: API request failed with status 429: {"error":"Too many requests, please try again later"}
+    at ZAI.createImageGeneration (file:///home/z/my-project/node_modules/z-ai-web-dev-sdk/dist/index.js:265:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async probeZaiImage (file:///home/z/my-project/scripts/natural-regen.mjs:200:15)
+    at async main (file:///home/z/my-project/scripts/natural-regen.mjs:419:20)
+Генератор z-ai: НЕДОСТУПЕН (429) — работаю через flux/OR
+2026-11-07T07:41:28.513Z Генератор z-ai: НЕДОСТУПЕН (429) — работаю через flux/OR
+--- american-pancakes: «Fluffy American pancakes with maple syrup…»
+2026-11-07T07:41:28.514Z --- american-pancakes: «Fluffy American pancakes with maple syrup…»
+Failed to make vision API request: Error: API request failed with status 429: {"error":"Too many requests, please try again later"}
+    at ZAI.createChatCompletionVision (file:///home/z/my-project/node_modules/z-ai-web-dev-sdk/dist/index.js:148:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async critiquePhoto (file:///home/z/my-project/scripts/photo-critic.mjs:103:19)
+    at async critiqueWithFallback (file:///home/z/my-project/scripts/natural-regen.mjs:311:13)
+    at async main (file:///home/z/my-project/scripts/natural-regen.mjs:457:20)
+  [критик] попытка 1: API request failed with status 429: {"error":"Too many requests, please try again later"}
+  [критик] OR-фолбэк недоступен (использовано 0/15 за сутки) — fail-open
+2026-11-07T07:41:36.145Z   [критик] OR-фолбэк недоступен (использовано 0/15 за сутки) — fail-open
+  [flux] HTTP 402 application/json (попытка 1)
+Failed to make vision API request: Error: API request failed with status 429: {"error":"Too many requests, please try again later"}
+    at ZAI.createChatCompletionVision (file:///home/z/my-project/node_modules/z-ai-web-dev-sdk/dist/index.js:148:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async critiquePhoto (file:///home/z/my-project/scripts/photo-critic.mjs:103:19)
+    at async critiqueWithFallback (file:///home/z/my-project/scripts/natural-regen.mjs:311:13)
+    at async main (file:///home/z/my-project/scripts/natural-regen.mjs:457:20)
+  [критик] попытка 1: API request failed with status 429: {"error":"Too many requests, please try again later"}
+  [критик] OR-фолбэк недоступен (использовано 0/15 за сутки) — fail-open
+2026-11-07T07:41:53.687Z   [критик] OR-фолбэк недоступен (использовано 0/15 за сутки) — fail-open
+SKIP american-pancakes: критик недоступен — слепая замена запрещена, жду критика
+2026-11-07T07:41:56.688Z SKIP american-pancakes: критик недоступен — слепая замена запрещена, жду критика
+=== НАТУРАЛ v7 итог: заморожено 0, на просмотр 0, критик OR used=0 ===
+2026-11-07T07:41:56.688Z === НАТУРАЛ v7 итог: заморожено 0, на просмотр 0, критик OR used=0 ===
+=== НАТУРАЛ v7 старт: 1 блюд (кандидатов на блюдо: 2) ===
+2026-11-07T07:51:00.718Z === НАТУРАЛ v7 старт: 1 блюд (кандидатов на блюдо: 2) ===
+Failed to make vision API request: Error: API request failed with status 429: {"error":"Too many requests, please try again later"}
+    at ZAI.createChatCompletionVision (file:///home/z/my-project/node_modules/z-ai-web-dev-sdk/dist/index.js:148:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async critiquePhoto (file:///home/z/my-project/scripts/photo-critic.mjs:103:19)
+    at async probeZaiCritic (file:///home/z/my-project/scripts/natural-regen.mjs:306:13)
+    at async main (file:///home/z/my-project/scripts/natural-regen.mjs:417:21)
+  [критик] попытка 1: API request failed with status 429: {"error":"Too many requests, please try again later"}
+Критик z-ai: НЕДОСТУПЕН (429) — работаю через OR-фолбэк
+2026-11-07T07:51:00.791Z Критик z-ai: НЕДОСТУПЕН (429) — работаю через OR-фолбэк
+Failed to make image generation request: Error: API request failed with status 429: {"error":"Too many requests, please try again later"}
+    at ZAI.createImageGeneration (file:///home/z/my-project/node_modules/z-ai-web-dev-sdk/dist/index.js:265:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async probeZaiImage (file:///home/z/my-project/scripts/natural-regen.mjs:200:15)
+    at async main (file:///home/z/my-project/scripts/natural-regen.mjs:419:20)
+Генератор z-ai: НЕДОСТУПЕН (429) — работаю через flux/OR
+2026-11-07T07:51:00.817Z Генератор z-ai: НЕДОСТУПЕН (429) — работаю через flux/OR
+--- american-pancakes: «Fluffy American pancakes with maple syrup…»
+2026-11-07T07:51:00.817Z --- american-pancakes: «Fluffy American pancakes with maple syrup…»
+Failed to make vision API request: Error: API request failed with status 429: {"error":"Too many requests, please try again later"}
+    at ZAI.createChatCompletionVision (file:///home/z/my-project/node_modules/z-ai-web-dev-sdk/dist/index.js:148:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async critiquePhoto (file:///home/z/my-project/scripts/photo-critic.mjs:103:19)
+    at async critiqueWithFallback (file:///home/z/my-project/scripts/natural-regen.mjs:311:13)
+    at async main (file:///home/z/my-project/scripts/natural-regen.mjs:457:20)
+  [критик] попытка 1: API request failed with status 429: {"error":"Too many requests, please try again later"}
+  [критик] OR-фолбэк недоступен (использовано 0/15 за сутки) — fail-open
+2026-11-07T07:51:12.895Z   [критик] OR-фолбэк недоступен (использовано 0/15 за сутки) — fail-open
+  [flux] HTTP 402 application/json (попытка 1)
+Failed to make vision API request: Error: API request failed with status 429: {"error":"Too many requests, please try again later"}
+    at ZAI.createChatCompletionVision (file:///home/z/my-project/node_modules/z-ai-web-dev-sdk/dist/index.js:148:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async critiquePhoto (file:///home/z/my-project/scripts/photo-critic.mjs:103:19)
+    at async critiqueWithFallback (file:///home/z/my-project/scripts/natural-regen.mjs:311:13)
+    at async main (file:///home/z/my-project/scripts/natural-regen.mjs:457:20)
+  [критик] попытка 1: API request failed with status 429: {"error":"Too many requests, please try again later"}
+  [критик] OR-фолбэк недоступен (использовано 0/15 за сутки) — fail-open
+2026-11-07T07:51:30.335Z   [критик] OR-фолбэк недоступен (использовано 0/15 за сутки) — fail-open
+SKIP american-pancakes: критик недоступен — слепая замена запрещена, жду критика
+2026-11-07T07:51:33.336Z SKIP american-pancakes: критик недоступен — слепая замена запрещена, жду критика
+=== НАТУРАЛ v7 итог: заморожено 0, на просмотр 0, критик OR used=0 ===
+2026-11-07T07:51:33.336Z === НАТУРАЛ v7 итог: заморожено 0, на просмотр 0, критик OR used=0 ===
+=== НАТУРАЛ v7 старт: 1 блюд (кандидатов на блюдо: 2) ===
+2026-11-07T08:00:41.579Z === НАТУРАЛ v7 старт: 1 блюд (кандидатов на блюдо: 2) ===
+Failed to make vision API request: Error: API request failed with status 429: {"error":"Too many requests, please try again later"}
+    at ZAI.createChatCompletionVision (file:///home/z/my-project/node_modules/z-ai-web-dev-sdk/dist/index.js:148:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async critiquePhoto (file:///home/z/my-project/scripts/photo-critic.mjs:103:19)
+    at async probeZaiCritic (file:///home/z/my-project/scripts/natural-regen.mjs:306:13)
+    at async main (file:///home/z/my-project/scripts/natural-regen.mjs:417:21)
+  [критик] попытка 1: API request failed with status 429: {"error":"Too many requests, please try again later"}
+Критик z-ai: НЕДОСТУПЕН (429) — работаю через OR-фолбэк
+2026-11-07T08:00:41.648Z Критик z-ai: НЕДОСТУПЕН (429) — работаю через OR-фолбэк
+Failed to make image generation request: Error: API request failed with status 429: {"error":"Too many requests, please try again later"}
+    at ZAI.createImageGeneration (file:///home/z/my-project/node_modules/z-ai-web-dev-sdk/dist/index.js:265:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async probeZaiImage (file:///home/z/my-project/scripts/natural-regen.mjs:200:15)
+    at async main (file:///home/z/my-project/scripts/natural-regen.mjs:419:20)
+Генератор z-ai: НЕДОСТУПЕН (429) — работаю через flux/OR
+2026-11-07T08:00:41.679Z Генератор z-ai: НЕДОСТУПЕН (429) — работаю через flux/OR
+--- american-pancakes: «Fluffy American pancakes with maple syrup…»
+2026-11-07T08:00:41.679Z --- american-pancakes: «Fluffy American pancakes with maple syrup…»
+  [flux] HTTP 402 application/json (попытка 1)
+Failed to make vision API request: Error: API request failed with status 429: {"error":"Too many requests, please try again later"}
+    at ZAI.createChatCompletionVision (file:///home/z/my-project/node_modules/z-ai-web-dev-sdk/dist/index.js:148:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async critiquePhoto (file:///home/z/my-project/scripts/photo-critic.mjs:103:19)
+    at async critiqueWithFallback (file:///home/z/my-project/scripts/natural-regen.mjs:311:13)
+    at async main (file:///home/z/my-project/scripts/natural-regen.mjs:457:20)
+  [критик] попытка 1: API request failed with status 429: {"error":"Too many requests, please try again later"}
+  [критик] OR-фолбэк недоступен (использовано 0/15 за сутки) — fail-open
+2026-11-07T08:00:55.999Z   [критик] OR-фолбэк недоступен (использовано 0/15 за сутки) — fail-open
+  [flux] HTTP 402 application/json (попытка 1)
+Failed to make vision API request: Error: API request failed with status 429: {"error":"Too many requests, please try again later"}
+    at ZAI.createChatCompletionVision (file:///home/z/my-project/node_modules/z-ai-web-dev-sdk/dist/index.js:148:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async critiquePhoto (file:///home/z/my-project/scripts/photo-critic.mjs:103:19)
+    at async critiqueWithFallback (file:///home/z/my-project/scripts/natural-regen.mjs:311:13)
+    at async main (file:///home/z/my-project/scripts/natural-regen.mjs:457:20)
+  [критик] попытка 1: API request failed with status 429: {"error":"Too many requests, please try again later"}
+  [критик] OR-фолбэк недоступен (использовано 0/15 за сутки) — fail-open
+2026-11-07T08:01:13.164Z   [критик] OR-фолбэк недоступен (использовано 0/15 за сутки) — fail-open
+SKIP american-pancakes: критик недоступен — слепая замена запрещена, жду критика
+2026-11-07T08:01:16.166Z SKIP american-pancakes: критик недоступен — слепая замена запрещена, жду критика
+=== НАТУРАЛ v7 итог: заморожено 0, на просмотр 0, критик OR used=0 ===
+2026-11-07T08:01:16.166Z === НАТУРАЛ v7 итог: заморожено 0, на просмотр 0, критик OR used=0 ===
