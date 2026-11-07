@@ -2120,3 +2120,13 @@ SKIP american-pancakes: критик недоступен — слепая за�
 2026-11-07T11:21:24.217Z SKIP american-pancakes: критик недоступен — слепая замена запрещена, жду критика
 === НАТУРАЛ v7 итог: заморожено 0, на просмотр 0, критик OR used=0 ===
 2026-11-07T11:21:24.218Z === НАТУРАЛ v7 итог: заморожено 0, на просмотр 0, критик OR used=0 ===
+2026-11-07T17:54:19.753Z === НАТУРАЛ v7 старт: 3 блюд (кандидатов на блюдо: 2) ===
+2026-11-07T17:54:21.667Z Критик z-ai: жив
+2026-11-07T17:54:59.267Z Генератор z-ai: жив
+2026-11-07T17:54:59.268Z --- american-pancakes: «Fluffy American pancakes with maple syrup…»
+2026-11-07T17:55:41.626Z OK+ЗАМОК american-pancakes score=8 (чисто) каналов=1
+2026-11-07T17:55:41.628Z --- baked-feta-pasta: «Baked feta with cherry tomatoes and pasta. Mediterranean dish, olive o…»
+2026-11-07T17:57:33.418Z OK+ЗАМОК baked-feta-pasta score=7 (чисто) каналов=2
+2026-11-07T17:57:33.418Z --- avocado-toast: «Avocado toast on whole grain bread with a poached egg on top, chili fl…»
+2026-11-07T17:58:11.590Z OK+ЗАМОК avocado-toast score=8 (чисто) каналов=1
+2026-11-07T17:58:11.590Z === НАТУРАЛ v7 итог: заморожено 3, на просмотр 0, критик OR used=0 ===
