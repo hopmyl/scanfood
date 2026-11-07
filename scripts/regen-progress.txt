@@ -68,3 +68,12 @@ cabbage-pie
 caponata
 char-siu-pork
 cajun-shrimp-pasta
+chicken-mushroom-pasta
+chicken-noodle-soup
+chicken-plov
+cheese-soup
+chicken-shawarma
+chicken-congee
+chicken-pot-pie
+buttermilk-biscuits
+carrot-cake
