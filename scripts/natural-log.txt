@@ -2115,3 +2115,8 @@ Failed to make vision API request: Error: API request failed with status 429: {"
 2026-11-07T11:20:32+00:00 === РУЧНОЙ ПРИЁМ (Gemini, партия пользователя): falafel-wrap, philly-cheesesteak, chicken-cutlets, sloppy-joes, cinnamon-rolls, turkish-pide — замки + approve, qa-manual очищен ===
   [flux] HTTP 402 application/json (попытка 1)
   [flux] HTTP 402 application/json (попытка 2)
+  [flux] HTTP 402 application/json (попытка 3)
+SKIP american-pancakes: критик недоступен — слепая замена запрещена, жду критика
+2026-11-07T11:21:24.217Z SKIP american-pancakes: критик недоступен — слепая замена запрещена, жду критика
+=== НАТУРАЛ v7 итог: заморожено 0, на просмотр 0, критик OR used=0 ===
+2026-11-07T11:21:24.218Z === НАТУРАЛ v7 итог: заморожено 0, на просмотр 0, критик OR used=0 ===
