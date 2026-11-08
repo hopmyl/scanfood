@@ -77,3 +77,4 @@ chicken-congee
 chicken-pot-pie
 buttermilk-biscuits
 carrot-cake
+chicken-tikka-masala
