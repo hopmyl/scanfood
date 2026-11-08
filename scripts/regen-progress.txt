@@ -96,3 +96,12 @@ corn-chicken-soup
 cumin-lamb
 cornbread
 coleslaw
+fried-calamari
+fish-and-chips
+eggplant-parmesan
+fish-cutlets
+draniki
+falafel-bowl
+dolma-grape-leaves
+fresh-spring-rolls
+deviled-eggs
