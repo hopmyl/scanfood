@@ -1183,16 +1183,16 @@
   "at": "2026-11-08T19:13:09.152Z"
  },
  "garlic-bok-choy": {
-  "score": 7,
+  "score": 6,
   "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
   "glamor": false,
-  "note": "Реалистичное фото; овощ скорее шпинат, но похоже",
-  "mtime": 1794073312000,
-  "at": "2026-11-07T23:42:44.024Z"
+  "note": "Похоже на настоящую фото, но текстура слегка ИИ-гладкая",
+  "mtime": 1794165373000,
+  "at": "2026-11-08T20:13:00.927Z"
  },
  "garlic-shrimp": {
   "score": 6,
@@ -1219,18 +1219,6 @@
   "at": "2026-11-08T19:13:12.833Z"
  },
  "general-tso-chicken": {
-  "score": 6,
-  "steam": false,
-  "plastic": true,
-  "text": false,
-  "people": false,
-  "wrong": false,
-  "glamor": false,
-  "note": "Курица похожа, но глазурь слишком глянцевая, восковая текстура",
-  "mtime": 1794073312000,
-  "at": "2026-11-08T01:43:01.897Z"
- },
- "glazed-donuts": {
   "score": 7,
   "steam": false,
   "plastic": true,
@@ -1238,9 +1226,21 @@
   "people": false,
   "wrong": false,
   "glamor": false,
-  "note": "Пончики настоящие, глазурь слегка восковая, но реалистично",
-  "mtime": 1794073312000,
-  "at": "2026-11-08T01:43:05.783Z"
+  "note": "Блюдо верное, но текстура курицы восковая, подозрительно однородная",
+  "mtime": 1794165330000,
+  "at": "2026-11-08T20:13:03.027Z"
+ },
+ "glazed-donuts": {
+  "score": 6,
+  "steam": false,
+  "plastic": true,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "glamor": true,
+  "note": "Пончики есть, но текстура восковая, рендерный глянец",
+  "mtime": 1794168744988.1755,
+  "at": "2026-11-08T20:13:05.934Z"
  },
  "greek-lemon-chicken": {
   "score": 8,
@@ -1255,16 +1255,16 @@
   "at": "2026-11-08T19:13:14.920Z"
  },
  "greek-moussaka": {
-  "score": 6,
+  "score": 7,
   "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
   "glamor": false,
-  "note": "Мусака узнаваема, но текстура соуса подозрительно глянцевая",
-  "mtime": 1794073312000,
-  "at": "2026-11-08T01:43:11.440Z"
+  "note": "Мусака в терракоте реалистична, текстура слегка ИИ-гладкая",
+  "mtime": 1794165286000,
+  "at": "2026-11-08T20:13:07.710Z"
  },
  "greek-salad": {
   "score": 8,
@@ -1279,40 +1279,40 @@
   "at": "2026-11-08T01:43:16.429Z"
  },
  "greek-yogurt-granola": {
-  "score": 7,
+  "score": 6,
   "steam": false,
-  "plastic": false,
+  "plastic": true,
   "text": false,
   "people": false,
   "wrong": false,
   "glamor": false,
-  "note": "Йогурт с мёдом и гранолой, реалистично, но лёгкая рендерность",
-  "mtime": 1794073312000,
-  "at": "2026-11-08T01:43:21.300Z"
+  "note": "Похоже на греческий йогурт, но текстура восковая",
+  "mtime": 1794165640000,
+  "at": "2026-11-08T20:13:10.032Z"
  },
  "green-curry-chicken": {
-  "score": 7,
+  "score": 6,
   "steam": false,
-  "plastic": false,
+  "plastic": true,
   "text": false,
   "people": false,
   "wrong": false,
   "glamor": false,
-  "note": "Зелёный карри с курицей, реалистично, лайм и чили на месте",
-  "mtime": 1794073312000,
-  "at": "2026-11-08T01:43:23.829Z"
+  "note": "Курица выглядит восковой, однородная ИИ-текстура",
+  "mtime": 1794165691000,
+  "at": "2026-11-08T20:13:11.993Z"
  },
  "grilled-cheese-soup": {
-  "score": 7,
+  "score": 9,
   "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
   "glamor": false,
-  "note": "Реалистичный домашний кадр, но сыр слегка глянцевый",
-  "mtime": 1794073312000,
-  "at": "2026-11-08T01:43:35.692Z"
+  "note": "Реалистичный домашний кадр, всё соответствует описанию",
+  "mtime": 1794165746000,
+  "at": "2026-11-08T20:13:13.638Z"
  },
  "grilled-chicken-broccoli": {
   "score": 8,
@@ -2614,44 +2614,46 @@
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Салат с капустой, огурцом, укропом и яйцом реалистичен",
-  "mtime": 1793684382000,
-  "at": "2026-11-04T18:51:35.624Z"
+  "glamor": false,
+  "note": "Реалистично, но яйца выглядят слегка неестественно",
+  "mtime": 1794073313000,
+  "at": "2026-11-08T20:13:15.783Z"
  },
  "sushi-set": {
-  "score": 6,
-  "steam": false,
-  "plastic": true,
-  "text": false,
-  "people": false,
-  "wrong": false,
-  "glamor": false,
-  "note": "Роллы слегка восковые, текстура риса однородная, но композиция соответствует",
-  "mtime": 1793911374000,
-  "at": "2026-11-05T21:10:39.916Z"
- },
- "sweet-potato-fries": {
-  "score": 8,
+  "score": 7,
   "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Реалистичная румяная корочка, но текстура слегка однородна",
-  "mtime": 1793684382000,
-  "at": "2026-11-04T18:51:40.796Z"
+  "glamor": false,
+  "note": "Реалистичные роллы, тёмный сланец и палочки, лёгкий ИИ-глянец",
+  "mtime": 1794073313000,
+  "at": "2026-11-08T20:13:19.529Z"
+ },
+ "sweet-potato-fries": {
+  "score": 7,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "glamor": false,
+  "note": "Реалистичные батат-фри, слегка гладковатая текстура, но съедобно",
+  "mtime": 1794073313000,
+  "at": "2026-11-08T20:13:21.020Z"
  },
  "sweet-sour-chicken": {
-  "score": 5,
+  "score": 7,
   "steam": false,
   "plastic": true,
   "text": false,
   "people": false,
   "wrong": false,
   "glamor": false,
-  "note": "Курица восковая, глянцевая текстура похожа на ИИ",
-  "mtime": 1793862632000,
-  "at": "2026-11-05T16:41:34.201Z"
+  "note": "Курица в кисло-сладком соусе есть, но текстура слегка восковая",
+  "mtime": 1794073313000,
+  "at": "2026-11-08T20:13:23.005Z"
  },
  "tabbouleh": {
   "score": 8,
@@ -2660,88 +2662,94 @@
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Реалистичный табуле с булгуром и зеленью, терракота",
-  "mtime": 1793819871256.6072,
-  "at": "2026-11-04T19:39:54.230Z"
+  "glamor": false,
+  "note": "Реалистичный табуле с булгуром и зеленью, домашняя подача",
+  "mtime": 1794073313000,
+  "at": "2026-11-08T20:13:25.424Z"
  },
  "tea-eggs": {
-  "score": 9,
-  "steam": false,
-  "plastic": false,
-  "text": false,
-  "people": false,
-  "wrong": false,
-  "note": "Реалистичные чайные яйца, мраморный узор, бадьян",
-  "mtime": 1793820450726.8538,
-  "at": "2026-11-04T19:39:55.968Z"
- },
- "thai-congee-jok": {
-  "score": 6,
+  "score": 8,
   "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
   "glamor": true,
-  "note": "Похоже на джок, мясо крупновато; тёмная студийная подача",
-  "mtime": 1793862632000,
-  "at": "2026-11-05T16:41:40.310Z"
+  "note": "Чайные яйца похожи на настоящие, но фон гламурный студийный",
+  "mtime": 1794073313000,
+  "at": "2026-11-08T20:13:27.940Z"
+ },
+ "thai-congee-jok": {
+  "score": 7,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "glamor": false,
+  "note": "Джок с рисом, свининой, чили и лаймом — соответствует",
+  "mtime": 1794073313000,
+  "at": "2026-11-08T20:13:30.640Z"
  },
  "thai-fried-rice": {
-  "score": 8,
+  "score": 7,
   "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Реалистичный кадр: кхао пад с креветками, лайм, чили, банановый лист",
-  "mtime": 1793724461000,
-  "at": "2026-11-04T19:11:12.288Z"
+  "glamor": false,
+  "note": "Реалистичный кхao pad с креветками, лайм и чили на месте",
+  "mtime": 1794073313000,
+  "at": "2026-11-08T20:13:32.720Z"
  },
  "thai-spring-rolls": {
-  "score": 7,
-  "steam": false,
-  "plastic": false,
-  "text": false,
-  "people": false,
-  "wrong": false,
-  "note": "Реалистичные спринг-роллы, переизбыток роллов, чуть ИИ-текстура",
-  "mtime": 1793820053798.6274,
-  "at": "2026-11-04T19:39:57.573Z"
- },
- "thai-sticky-wings": {
-  "score": 8,
-  "steam": false,
-  "plastic": false,
-  "text": false,
-  "people": false,
-  "wrong": false,
-  "note": "Реалистичные крылья в соусе, лайм и чили на месте",
-  "mtime": 1793820161780.2275,
-  "at": "2026-11-04T19:39:59.003Z"
- },
- "tod-mun-pla": {
-  "score": 7,
-  "steam": false,
-  "plastic": false,
-  "text": false,
-  "people": false,
-  "wrong": false,
-  "note": "Реалистичные рыбные котлеты, лайм и чили на месте",
-  "mtime": 1793724504000,
-  "at": "2026-11-04T19:11:18.634Z"
- },
- "tofu-larb": {
-  "score": 5,
+  "score": 6,
   "steam": false,
   "plastic": true,
   "text": false,
   "people": false,
   "wrong": false,
   "glamor": true,
-  "note": "Похоже на larb, но текстура восковая, ИИ-глянец",
-  "mtime": 1793885057000,
-  "at": "2026-11-05T16:41:43.442Z"
+  "note": "Спринг-роллы верные, но восковая текстура и гламурная постановка",
+  "mtime": 1794073313000,
+  "at": "2026-11-08T20:13:34.619Z"
+ },
+ "thai-sticky-wings": {
+  "score": 7,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "glamor": true,
+  "note": "Гламурная подача, но крылья реальные, лайм и чили есть",
+  "mtime": 1794073313000,
+  "at": "2026-11-08T20:13:36.706Z"
+ },
+ "tod-mun-pla": {
+  "score": 8,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "glamor": false,
+  "note": "Рыбные котлеты, лайм и чили на месте, реалистично",
+  "mtime": 1794073313000,
+  "at": "2026-11-08T20:13:39.397Z"
+ },
+ "tofu-larb": {
+  "score": 6,
+  "steam": false,
+  "plastic": true,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "glamor": false,
+  "note": "Похоже на ларб, но текстура восковая, ИИ-подозрения",
+  "mtime": 1794073313000,
+  "at": "2026-11-08T20:13:41.401Z"
  },
  "tom-kha-gai": {
   "score": 7,
@@ -2772,65 +2780,70 @@
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Реалистичный суп-том ям, креветки видны, лайм и чили есть",
-  "mtime": 1793819630953.2583,
-  "at": "2026-11-04T19:40:03.242Z"
+  "glamor": true,
+  "note": "Том Ям с креветками верный, но тёмный гламурный студийный кадр",
+  "mtime": 1794073313000,
+  "at": "2026-11-08T20:13:43.645Z"
  },
  "tomato-egg-stirfry": {
+  "score": 6,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "glamor": true,
+  "note": "Похоже на томат с яйцом, но слегка рендерно, глянцево",
+  "mtime": 1794073313000,
+  "at": "2026-11-08T20:13:45.434Z"
+ },
+ "trout-foil": {
   "score": 8,
   "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Реалистичное томатное яйцо, всё соответствует описанию",
-  "mtime": 1793724868000,
-  "at": "2026-11-04T19:11:35.096Z"
- },
- "trout-foil": {
-  "score": 9,
-  "steam": false,
-  "plastic": false,
-  "text": false,
-  "people": false,
-  "wrong": false,
-  "note": "Реалистичный снимок форели с лимоном и тимьяном в фольге",
-  "mtime": 1793819722465.771,
-  "at": "2026-11-04T19:40:05.380Z"
+  "glamor": false,
+  "note": "Реалистичная рыба в фольге, лимон и тимьян на месте",
+  "mtime": 1794073313000,
+  "at": "2026-11-08T20:13:47.930Z"
  },
  "tu-dou-si": {
-  "score": 7,
-  "steam": false,
-  "plastic": false,
-  "text": false,
-  "people": false,
-  "wrong": false,
-  "note": "Реалистичная съёмка, похоже на соломку, но текстура сомнительна",
-  "mtime": 1793820347997.2683,
-  "at": "2026-11-04T19:40:10.081Z"
- },
- "tuna-egg-salad": {
-  "score": 4,
+  "score": 5,
   "steam": false,
   "plastic": true,
   "text": false,
   "people": false,
-  "wrong": false,
-  "glamor": false,
-  "note": "Тунец пластилиновый, текстура неестественно гладкая",
-  "mtime": 1793862632000,
-  "at": "2026-11-05T16:41:48.969Z"
+  "wrong": true,
+  "glamor": true,
+  "note": "Похоже на соломку/грибы, не картофель; восковая текстура",
+  "mtime": 1794073313000,
+  "at": "2026-11-08T20:13:50.126Z"
  },
- "tuna-melt": {
-  "score": 7,
+ "tuna-egg-salad": {
+  "score": 6,
   "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Реалистичный тунец melt с чеддером, начинка слегка неестественна",
-  "mtime": 1793725074000,
-  "at": "2026-11-04T19:11:46.537Z"
+  "glamor": false,
+  "note": "Салат верный, но тунец выглядит неестественно, текстура подозрительна",
+  "mtime": 1794073313000,
+  "at": "2026-11-08T20:13:52.922Z"
+ },
+ "tuna-melt": {
+  "score": 8,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "glamor": false,
+  "note": "Тунный melt с чеддером выглядит реалистично, тёплый свет",
+  "mtime": 1794073313000,
+  "at": "2026-11-08T20:13:55.831Z"
  },
  "tuna-sandwich": {
   "score": 7,
