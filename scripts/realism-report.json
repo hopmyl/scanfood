@@ -746,16 +746,17 @@
   "at": "2026-11-07T23:12:30.111Z"
  },
  "chicken-tikka-masala": {
-  "score": 7,
+  "score": -1,
   "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
   "glamor": false,
-  "note": "Реалистичное фото: карри, рис, наан, кинза на месте",
-  "mtime": 1794073312000,
-  "at": "2026-11-07T23:12:32.011Z"
+  "note": "ошибка критика",
+  "error": true,
+  "mtime": 1794102404618.9875,
+  "at": "2026-11-08T02:15:10.908Z"
  },
  "chili-con-carne": {
   "score": 8,
@@ -1361,15 +1362,17 @@
   "at": "2026-11-08T01:43:45.321Z"
  },
  "hash-browns": {
-  "score": 7,
+  "score": -1,
   "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Хрустящие картофельные оладьи, реалистично, но лёгкая ИИ-гладкость",
-  "mtime": 1793684382000,
-  "at": "2026-11-03T21:09:36.961Z"
+  "glamor": false,
+  "note": "ошибка критика",
+  "error": true,
+  "mtime": 1794073312000,
+  "at": "2026-11-08T02:18:41.058Z"
  },
  "herring-shuba": {
   "score": 9,
