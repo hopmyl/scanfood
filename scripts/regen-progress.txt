@@ -78,3 +78,12 @@ chicken-pot-pie
 buttermilk-biscuits
 carrot-cake
 chicken-tikka-masala
+chicken-stir-fry
+chicken-thighs-potato
+chicken-souvlaki
+chicken-tagine
+chinese-egg-tarts
+cobb-salad
+chili-con-carne
+clam-chowder
+club-sandwich

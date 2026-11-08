@@ -746,17 +746,16 @@
   "at": "2026-11-07T23:12:30.111Z"
  },
  "chicken-tikka-masala": {
-  "score": -1,
+  "score": 6,
   "steam": false,
-  "plastic": false,
+  "plastic": true,
   "text": false,
   "people": false,
   "wrong": false,
   "glamor": false,
-  "note": "ошибка критика",
-  "error": true,
-  "mtime": 1794102404618.9875,
-  "at": "2026-11-08T02:15:10.908Z"
+  "note": "Текстура курицы восковая, bowl скорее керамическая, а не металлическая",
+  "mtime": 1794102404000,
+  "at": "2026-11-08T16:43:07.370Z"
  },
  "chili-con-carne": {
   "score": 8,
@@ -1362,52 +1361,30 @@
   "at": "2026-11-08T01:43:45.321Z"
  },
  "hash-browns": {
-  "score": -1,
+  "score": 7,
   "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
   "glamor": false,
-  "note": "ошибка критика",
-  "error": true,
+  "note": "Реалистичные хрустящие хэшбрауны, хороший свет, лёгкая ИИ-гладкость краёв",
   "mtime": 1794073312000,
-  "at": "2026-11-08T02:18:41.058Z"
+  "at": "2026-11-08T16:43:11.448Z"
  },
  "herring-shuba": {
-  "score": 9,
+  "score": 6,
   "steam": false,
   "plastic": false,
   "text": false,
-  "people": false,
+  "people": true,
   "wrong": false,
-  "note": "Слои шубы читаются, кадр реалистичный, естественно",
-  "mtime": 1793684382000,
-  "at": "2026-11-03T21:09:40.292Z"
+  "glamor": false,
+  "note": "Слои шубы на месте, но текстура слегка синтетична",
+  "mtime": 1794073312000,
+  "at": "2026-11-08T16:43:15.901Z"
  },
  "homestyle-tofu": {
-  "score": 7,
-  "steam": false,
-  "plastic": true,
-  "text": false,
-  "people": false,
-  "wrong": false,
-  "note": "Тофу с луком реалистичен, но текстура слегка восковая",
-  "mtime": 1793817481448.3494,
-  "at": "2026-11-04T18:41:37.188Z"
- },
- "hong-shao-rou": {
-  "score": 8,
-  "steam": false,
-  "plastic": false,
-  "text": false,
-  "people": false,
-  "wrong": false,
-  "note": "Реалистичная свинина, лёгкая ИИ-гладкость соуса",
-  "mtime": 1793684382000,
-  "at": "2026-11-03T21:09:44.729Z"
- },
- "hot-sour-soup": {
   "score": 6,
   "steam": false,
   "plastic": false,
@@ -1415,9 +1392,33 @@
   "people": false,
   "wrong": false,
   "glamor": false,
-  "note": "Похоже на острокислый суп с грибами, слегка ИИ-текстура",
-  "mtime": 1793862632000,
-  "at": "2026-11-05T16:41:07.959Z"
+  "note": "Тофу с перцем и луком, но перцев в блюде нет; текстура слегка однородна",
+  "mtime": 1794073312000,
+  "at": "2026-11-08T16:43:18.829Z"
+ },
+ "hong-shao-rou": {
+  "score": 7,
+  "steam": false,
+  "plastic": true,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "glamor": false,
+  "note": "Похоже на хуншао жоу, но глазурь восковая",
+  "mtime": 1794073312000,
+  "at": "2026-11-08T16:43:22.230Z"
+ },
+ "hot-sour-soup": {
+  "score": 7,
+  "steam": false,
+  "plastic": true,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "glamor": false,
+  "note": "Суп с грибами похож, но текстура слегка пластикова",
+  "mtime": 1794073312000,
+  "at": "2026-11-08T16:43:24.748Z"
  },
  "huang-men-ji": {
   "score": 8,
@@ -1426,32 +1427,34 @@
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Блюдо соответствует, выглядит реалистично, фон размыт.",
-  "mtime": 1793684382000,
-  "at": "2026-11-03T21:09:48.787Z"
+  "glamor": false,
+  "note": "Реалистичное фото, блюдо соответствует, огрехов нет",
+  "mtime": 1794073312000,
+  "at": "2026-11-08T16:43:26.719Z"
  },
  "hummus-classic": {
+  "score": 7,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "glamor": true,
+  "note": "Хумус реалистичен, но тёмный гламурный студийный свет",
+  "mtime": 1794073312000,
+  "at": "2026-11-08T16:43:29.114Z"
+ },
+ "imam-bayildi": {
   "score": 8,
   "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Реалистичный хумус с оливковым маслом и паприкой",
-  "mtime": 1793740488000,
-  "at": "2026-11-04T17:40:55.857Z"
- },
- "imam-bayildi": {
-  "score": 7,
-  "steam": false,
-  "plastic": false,
-  "text": true,
-  "people": false,
-  "wrong": false,
   "glamor": false,
-  "note": "Блюдо соответствует, надпись на фото снижает балл",
-  "mtime": 1793862632000,
-  "at": "2026-11-05T16:41:09.957Z"
+  "note": "Реалистичные фаршированные баклажаны на терракотовой тарелке",
+  "mtime": 1794073312000,
+  "at": "2026-11-08T16:43:33.537Z"
  },
  "jambalaya": {
   "score": 7,
@@ -1460,20 +1463,22 @@
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Реалистичная джамбалайя, креветки и колбаса читаются, лёгкая ИИ-глянцевость риса",
-  "mtime": 1793684382000,
-  "at": "2026-11-03T21:09:56.567Z"
+  "glamor": false,
+  "note": "Реалистичная джамбалайя с креветками и колбасой, лёгкая ИИ-гладкость риса",
+  "mtime": 1794073312000,
+  "at": "2026-11-08T16:43:36.440Z"
  },
  "jiaozi-pork": {
-  "score": 6,
+  "score": 7,
   "steam": false,
-  "plastic": true,
+  "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Пельмени с уксусом и палочками верны, но текстура слегка восковая",
-  "mtime": 1793816643248.6628,
-  "at": "2026-11-04T18:26:40.809Z"
+  "glamor": true,
+  "note": "Похоже на пельмени с уксусом, слегка рекламный стиль",
+  "mtime": 1794073312000,
+  "at": "2026-11-08T16:43:39.457Z"
  },
  "julienne": {
   "score": 7,
@@ -1487,26 +1492,28 @@
   "at": "2026-11-04T18:09:53.415Z"
  },
  "kai-jeow": {
-  "score": 7,
-  "steam": false,
-  "plastic": false,
-  "text": false,
-  "people": false,
-  "wrong": false,
-  "note": "Реалистичный кай джао с лаймом и чили",
-  "mtime": 1793684382000,
-  "at": "2026-11-03T21:10:04.312Z"
- },
- "kefir-pancakes": {
   "score": 8,
   "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Похоже на сырники, реалистично, края ровноваты",
-  "mtime": 1793684382000,
-  "at": "2026-11-03T21:10:06.397Z"
+  "glamor": false,
+  "note": "Реалистичный кай джао с лаймом и чили, домашняя подача",
+  "mtime": 1794073313000,
+  "at": "2026-11-08T16:43:41.943Z"
+ },
+ "kefir-pancakes": {
+  "score": 7,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "glamor": false,
+  "note": "Оладьи со сметаной выглядят реалистично, освещение домашнее",
+  "mtime": 1794073313000,
+  "at": "2026-11-08T16:43:43.531Z"
  },
  "key-lime-pie": {
   "score": 8,
@@ -1520,71 +1527,76 @@
   "at": "2026-11-03T21:10:08.460Z"
  },
  "khao-man-gai": {
-  "score": 5,
+  "score": 7,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "glamor": false,
+  "note": "Курица с рисом, чили и лаймом на месте; текстура слегка однородна",
+  "mtime": 1794073313000,
+  "at": "2026-11-08T16:46:52.741Z"
+ },
+ "khao-soi": {
+  "score": 6,
+  "steam": false,
+  "plastic": true,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "glamor": true,
+  "note": "Кхао сой верный, но курица и лапша пластиковые, постановочный глянец",
+  "mtime": 1794073313000,
+  "at": "2026-11-08T16:46:55.492Z"
+ },
+ "kibbeh": {
+  "score": 6,
   "steam": false,
   "plastic": true,
   "text": false,
   "people": false,
   "wrong": false,
   "glamor": false,
-  "note": "Курица выглядит восково-глянцевой, тесто похоже на рендер",
-  "mtime": 1793862632000,
-  "at": "2026-11-05T16:41:13.640Z"
- },
- "khao-soi": {
-  "score": 7,
-  "steam": false,
-  "plastic": false,
-  "text": false,
-  "people": false,
-  "wrong": false,
-  "note": "Khao soi узнаваем: курица, лапша, чили, лайм",
-  "mtime": 1793814642094.514,
-  "at": "2026-11-04T18:09:56.881Z"
- },
- "kibbeh": {
-  "score": 7,
-  "steam": false,
-  "plastic": false,
-  "text": false,
-  "people": false,
-  "wrong": false,
-  "note": "Киббе реалистичны, текстура хорошая, лёгкая ИИ-гладкость",
-  "mtime": 1793740598000,
-  "at": "2026-11-04T17:41:02.393Z"
+  "note": "Текстура киббе слишком однородная и восковая",
+  "mtime": 1794073313000,
+  "at": "2026-11-08T16:46:57.282Z"
  },
  "kluay-buat-chi": {
-  "score": 8,
+  "score": 5,
+  "steam": false,
+  "plastic": true,
+  "text": false,
+  "people": true,
+  "wrong": false,
+  "glamor": false,
+  "note": "Блюдо верное, но еда восковая и нейронная по текстуре",
+  "mtime": 1794073313000,
+  "at": "2026-11-08T16:46:59.516Z"
+ },
+ "kluay-tod": {
+  "score": 7,
   "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Бананы в кокосовом молоке, реалистично, чили и лайм есть",
-  "mtime": 1793684382000,
-  "at": "2026-11-03T21:10:17.545Z"
+  "glamor": false,
+  "note": "Соответствует описанию, реалистично, но слегка гладкая текстура",
+  "mtime": 1794073313000,
+  "at": "2026-11-08T16:47:02.862Z"
  },
- "kluay-tod": {
+ "kofte-turkish": {
   "score": 7,
   "steam": false,
   "plastic": true,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Похоже на банановые фриттеры, текстура слегка восковая",
-  "mtime": 1793817441658.1294,
-  "at": "2026-11-04T18:41:41.885Z"
- },
- "kofte-turkish": {
-  "score": 8,
-  "steam": false,
-  "plastic": false,
-  "text": false,
-  "people": false,
-  "wrong": false,
-  "note": "Реалистичные кёфте с рисом, сервировка соответствует описанию",
-  "mtime": 1793684382000,
-  "at": "2026-11-03T21:10:21.864Z"
+  "glamor": true,
+  "note": "Кёфте с рисом верны, но глянцевый пластиковый вид",
+  "mtime": 1794073313000,
+  "at": "2026-11-08T16:47:04.974Z"
  },
  "korean-carrot": {
   "score": 7,
@@ -1593,65 +1605,70 @@
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Морковча в каменной миске, реалистичная подача с палочками",
-  "mtime": 1793740448000,
-  "at": "2026-11-04T17:41:04.431Z"
+  "glamor": true,
+  "note": "Морковча в каменной миске, реалистично, но постановочно-рекламный свет",
+  "mtime": 1794073313000,
+  "at": "2026-11-08T16:47:07.344Z"
  },
  "kuay-teow-beef-soup": {
-  "score": 8,
+  "score": 5,
   "steam": false,
-  "plastic": false,
+  "plastic": true,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Реалистичный суп с говядиной, лаймом и чили на месте",
-  "mtime": 1793684382000,
-  "at": "2026-11-03T21:10:26.412Z"
+  "glamor": false,
+  "note": "Похоже на суп с лаймом, но текстура мяса восковая, ИИ-признаки",
+  "mtime": 1794073313000,
+  "at": "2026-11-08T16:47:09.678Z"
  },
  "kung-pao-chicken": {
-  "score": 8,
-  "steam": false,
-  "plastic": false,
-  "text": false,
-  "people": false,
-  "wrong": false,
-  "note": "Реалистичный кунг-пао, тарелка и палочки соответствуют",
-  "mtime": 1793684382000,
-  "at": "2026-11-04T17:41:06.510Z"
- },
- "lahmacun": {
   "score": 7,
   "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
-  "note": "Похоже на лахмаджун, корж толстоват, но реалистично",
-  "mtime": 1793684382000,
-  "at": "2026-11-04T17:41:09.549Z"
+  "glamor": true,
+  "note": "Кунг-пао с арахисом и чили, стильный рекламный свет",
+  "mtime": 1794073313000,
+  "at": "2026-11-08T16:47:12.293Z"
  },
- "larb-chicken": {
-  "score": 8,
-  "steam": false,
-  "plastic": false,
-  "text": false,
-  "people": false,
-  "wrong": false,
-  "note": "Ларб с рисом, лаймом и чили соответствует описанию",
-  "mtime": 1793684382000,
-  "at": "2026-11-04T17:41:12.981Z"
- },
- "lazy-vareniki": {
+ "lahmacun": {
   "score": 6,
   "steam": false,
   "plastic": true,
   "text": false,
   "people": false,
+  "wrong": false,
+  "glamor": false,
+  "note": "Похоже на лахмаджун, но текстура восковая, слишком однородная",
+  "mtime": 1794073313000,
+  "at": "2026-11-08T16:47:15.020Z"
+ },
+ "larb-chicken": {
+  "score": 7,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
+  "wrong": false,
+  "glamor": false,
+  "note": "Похоже на ларб с рисом, лаймом и чили; реалистично, но текстура слегка ИИ",
+  "mtime": 1794073313000,
+  "at": "2026-11-08T16:47:17.929Z"
+ },
+ "lazy-vareniki": {
+  "score": 7,
+  "steam": false,
+  "plastic": false,
+  "text": false,
+  "people": false,
   "wrong": true,
   "glamor": false,
-  "note": "Это пельмени, а не ленивые вареники; текстура восковая",
-  "mtime": 1793924012000,
-  "at": "2026-11-06T00:40:48.797Z"
+  "note": "Обычные вареники, а не ленивые ромбы из творога",
+  "mtime": 1794073313000,
+  "at": "2026-11-08T16:47:24.072Z"
  },
  "lentil-soup": {
   "score": 8,

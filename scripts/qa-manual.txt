@@ -7,3 +7,5 @@ baozi-steamed-buns
 ajvar
 cabbage-pie
 cajun-shrimp-pasta
+chicken-stir-fry
+club-sandwich
