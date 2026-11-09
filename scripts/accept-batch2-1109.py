@@ -1,0 +1,95 @@
+#!/usr/bin/env python3
+# Приём батча-2 от пользователя (Gemini, 2026-11-09, «лови 5» + «и ещё 5») — ПОЛНЫЙ, 10 фото.
+# 10 фото = все 10 блюд партии №2, батч-2 закрыт.
+# QA: визуальная проверка агентом по монтажам /tmp/photo-inbox/b2-m1.jpg, b2-m2.jpg
+# (все фотореалистичны, анти-слоп ок, соответствие блюдам и промптам),
+# пиксельная сверка scripts/check-batch2-dupes.py: дубликатов с продом и между собой нет.
+# Формат сайта: 1024x1024 (как все карточки), Q88.
+import json, hashlib, os
+from PIL import Image
+from datetime import datetime, timezone
+
+ROOT = '/home/z/my-project'
+# (файл-источник, slug, визуальный балл)
+BATCH = [
+    ('upload/Gemini_Generated_Image_1yjv571yjv571yjv.jfif', 'chicken-mushroom-pasta', 9),
+    ('upload/Gemini_Generated_Image_dyy369dyy369dyy3.jfif', 'caprese-salad', 9),
+    ('upload/Gemini_Generated_Image_ewv6zeewv6zeewv6.jfif', 'bruschetta', 9),
+    ('upload/Gemini_Generated_Image_qt4tl9qt4tl9qt4t.jfif', 'beef-chow-fun', 9),
+    ('upload/Gemini_Generated_Image_uhkjqyuhkjqyuhkj.jfif', 'twice-cooked-pork', 9),
+    ('upload/Gemini_Generated_Image_296qjw296qjw296q.jfif', 'chicken-shawarma', 9),
+    ('upload/Gemini_Generated_Image_445utl445utl445u.jfif', 'chicken-tikka-masala', 9),
+    ('upload/Gemini_Generated_Image_ib8icjib8icjib8i.jfif', 'garlic-shrimp', 9),
+    ('upload/Gemini_Generated_Image_je6cbje6cbje6cbj.jfif', 'gai-yang', 9),
+    ('upload/Gemini_Generated_Image_hhv3wdhhv3wdhhv3.jfif', 'gai-pad-med-mamuang', 9),
+]
+
+def sha256(p):
+    h = hashlib.sha256()
+    with open(p, 'rb') as f:
+        for chunk in iter(lambda: f.read(1 << 20), b''):
+            h.update(chunk)
+    return h.hexdigest()
+
+now = datetime.now(timezone.utc).isoformat(timespec='seconds')
+accepted = {}
+for src_rel, dish, score in BATCH:
+    src = os.path.join(ROOT, src_rel)
+    dst = os.path.join(ROOT, 'public', 'dishes', dish + '.jpg')
+    old_sha = sha256(dst)
+    im = Image.open(src)
+    if im.mode != 'RGB':
+        im = im.convert('RGB')
+    if im.size != (1024, 1024):
+        im = im.resize((1024, 1024), Image.LANCZOS)
+    im.save(dst, 'JPEG', quality=88, optimize=True)
+    new_sha = sha256(dst)
+    accepted[dish] = {'sha256': new_sha, 'score': score, 'old': old_sha}
+    print(f"{dish:24s} {im.size} {os.path.getsize(dst)//1024}KB  old={old_sha[:8]} new={new_sha[:8]}")
+
+# --- photo-locks.json (конвейер больше не трогает эти блюда) ---
+lp = os.path.join(ROOT, 'scripts', 'photo-locks.json')
+locks = json.load(open(lp))
+for dish, info in accepted.items():
+    locks[dish] = {'sha256': info['sha256'], 'at': now, 'score': info['score'], 'src': 'human-pass-gemini-user'}
+json.dump(locks, open(lp, 'w'), indent=1, ensure_ascii=False)
+print('locks:', len(locks), f'(+{len(accepted)})')
+
+# --- natural-state.json ---
+sp = os.path.join(ROOT, 'scripts', 'natural-state.json')
+state = json.load(open(sp))
+for dish, info in accepted.items():
+    state[dish] = info['score']
+json.dump(state, open(sp, 'w'), indent=1, ensure_ascii=False)
+print('natural-state:', len(state))
+
+# --- qa-approve.txt (человеческий апрув) ---
+ap = os.path.join(ROOT, 'scripts', 'qa-approve.txt')
+approved = [l.strip() for l in open(ap) if l.strip()]
+add = [d for d in accepted if d not in approved]
+approved += add
+open(ap, 'w').write('\n'.join(approved) + '\n')
+print('qa-approve: +', add, '| всего', len(approved))
+
+# --- regen-progress.txt (очередь Gemini и старый конвейер считают выполненным) ---
+pp = os.path.join(ROOT, 'scripts', 'regen-progress.txt')
+prog = [l.strip() for l in open(pp) if l.strip()]
+addp = [d for d in accepted if d not in prog]
+prog += addp
+open(pp, 'w').write('\n'.join(prog) + '\n')
+print('regen-progress: +', addp, '| всего', len(prog))
+
+# --- логи ---
+for logf, line in [
+    (os.path.join(ROOT, 'scripts', 'natural-log.txt'),
+     f"{now} === РУЧНОЙ ПРИЁМ (Gemini, батч-2 пользователя, полный 10/10): {', '.join(accepted)} — замки + approve + progress ==="),
+    (os.path.join(ROOT, 'scripts', 'heartbeat.log'),
+     f"{now} приём батча-2: 10 фото пользователя установлены ({', '.join(accepted)}), замки +10; партия-2 закрыта полностью"),
+]:
+    with open(logf, 'a') as f:
+        f.write(line + '\n')
+print('logs appended')
+
+# --- верификация замков ---
+ok = all(sha256(os.path.join(ROOT, 'public', 'dishes', d + '.jpg')) == locks[d]['sha256'] for d in accepted)
+print('lock verification:', 'PASS' if ok else 'FAIL')

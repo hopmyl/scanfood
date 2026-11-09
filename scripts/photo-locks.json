@@ -401,5 +401,65 @@
   "at": "2026-11-09T09:23:07+00:00",
   "score": 9,
   "src": "human-pass-gemini-user"
+ },
+ "chicken-mushroom-pasta": {
+  "sha256": "d83843e8c9aa34d08b71285c16cfdf630b5c7f0308d38c09672568f55eb82040",
+  "at": "2026-11-09T11:25:18+00:00",
+  "score": 9,
+  "src": "human-pass-gemini-user"
+ },
+ "caprese-salad": {
+  "sha256": "6d2ceb507ca4dddf52cad701c08ac0ebc123d8721ff3f1fdd291dac4d6ef443a",
+  "at": "2026-11-09T11:25:18+00:00",
+  "score": 9,
+  "src": "human-pass-gemini-user"
+ },
+ "bruschetta": {
+  "sha256": "b385b5578baf93c28e7f27b12b49a2bfadf33a1d846f62f442fde93ff9b69ebb",
+  "at": "2026-11-09T11:25:18+00:00",
+  "score": 9,
+  "src": "human-pass-gemini-user"
+ },
+ "beef-chow-fun": {
+  "sha256": "59103cf3df4e80e8ce9a10f451682446153883c6f04da315d05a822a26fb7381",
+  "at": "2026-11-09T11:25:18+00:00",
+  "score": 9,
+  "src": "human-pass-gemini-user"
+ },
+ "twice-cooked-pork": {
+  "sha256": "969bc6a5134dcb6c4539d2ae0dd793736ae62ebedcd687711ae5bdd1b062f0e1",
+  "at": "2026-11-09T11:25:18+00:00",
+  "score": 9,
+  "src": "human-pass-gemini-user"
+ },
+ "chicken-shawarma": {
+  "sha256": "8b96d751e21ca749f55c3278db00883579460075ba95a0e286daa5ea0a8f0ed8",
+  "at": "2026-11-09T11:25:18+00:00",
+  "score": 9,
+  "src": "human-pass-gemini-user"
+ },
+ "chicken-tikka-masala": {
+  "sha256": "4d9f96f73741a382d47f7e66a428c48c49c370ce231270e5ca63e3a5b524a8c3",
+  "at": "2026-11-09T11:25:18+00:00",
+  "score": 9,
+  "src": "human-pass-gemini-user"
+ },
+ "garlic-shrimp": {
+  "sha256": "846865ae6d13d3330a2603feb098634243d9ef07817027161920d9303652d3cc",
+  "at": "2026-11-09T11:25:18+00:00",
+  "score": 9,
+  "src": "human-pass-gemini-user"
+ },
+ "gai-yang": {
+  "sha256": "400ff28cdef447428d44d08bff8cf9cb73e3ed5ec9d4cd8dead4c6855da6281a",
+  "at": "2026-11-09T11:25:18+00:00",
+  "score": 9,
+  "src": "human-pass-gemini-user"
+ },
+ "gai-pad-med-mamuang": {
+  "sha256": "27c0e6483d4be2f8fcad74de25b8f6b69aafe62cf5810a55be5745f642fc5d15",
+  "at": "2026-11-09T11:25:18+00:00",
+  "score": 9,
+  "src": "human-pass-gemini-user"
  }
 }

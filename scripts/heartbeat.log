@@ -452,3 +452,4 @@ heartbeat: 2026-11-03 05:55:50 РУЧНОЙ заход: разблокирова
 2026-11-09T09:44:33+00:00 старт прогона (cron 493803): зомби 1c01b37 откачен; пробы critic 429 / image 429 — ремонт SKIP, аудит-попытка
 2026-11-09T10:43:30+00:00 прогон 13:42: зомби 13db4cf откачен; проб critic 429 / image 429, тихо; очередь: pending 120, manual 13
 2026-11-09T11:12:37+00:00 прогон 14:12: зомби 3afde26 откачен; проб critic 429 / image 429, тихо
+2026-11-09T11:25:18+00:00 приём батча-2: 10 фото пользователя установлены (chicken-mushroom-pasta, caprese-salad, bruschetta, beef-chow-fun, twice-cooked-pork, chicken-shawarma, chicken-tikka-masala, garlic-shrimp, gai-yang, gai-pad-med-mamuang), замки +10; партия-2 закрыта полностью
