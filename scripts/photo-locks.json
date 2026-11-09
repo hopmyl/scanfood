@@ -515,5 +515,59 @@
   "at": "2026-11-09T12:59:07+00:00",
   "score": 9,
   "src": "human-pass-gemini-user"
+ },
+ "pad-kee-mao": {
+  "sha256": "ddb37a9efbfc4b5fe8809d54e43063e4f10e053c78bbdc988c3acaa803a98656",
+  "at": "2026-11-09T15:25:53+00:00",
+  "score": 9,
+  "src": "human-pass-gemini-user"
+ },
+ "okroshka": {
+  "sha256": "1865033ce2e55c40f2230f084b9addd130cc864aa292a7f31b4e595c5500505a",
+  "at": "2026-11-09T15:25:53+00:00",
+  "score": 9,
+  "src": "human-pass-gemini-user"
+ },
+ "mushroom-risotto": {
+  "sha256": "c5438ee9349793a0347dac4237df99b641ffab61fe2abfbdb55080dc146657d4",
+  "at": "2026-11-09T15:25:53+00:00",
+  "score": 9,
+  "src": "human-pass-gemini-user"
+ },
+ "mediterranean-lentil-salad": {
+  "sha256": "b74b032fd78cf263b0ca81636624908d6629ab5b82331aeb49c49fde925e71a8",
+  "at": "2026-11-09T15:25:53+00:00",
+  "score": 9,
+  "src": "human-pass-gemini-user"
+ },
+ "ukha": {
+  "sha256": "092dd76709c3a3324b6d97f2b735b8cb0e3ccc6a2a089846b4c32937cd2ff137",
+  "at": "2026-11-09T15:25:53+00:00",
+  "score": 9,
+  "src": "human-pass-gemini-user"
+ },
+ "spaghetti-bolognese": {
+  "sha256": "ed57426f277c100367dbce59a2499a2d2b6a71e76d81f4ec8dfd63e4c2b13193",
+  "at": "2026-11-09T15:25:53+00:00",
+  "score": 9,
+  "src": "human-pass-gemini-user"
+ },
+ "shrimp-prik-king": {
+  "sha256": "a36151220b90eb3e70623e5f618db7b7b91bd6a8b0fecbeb1548e18fc3974391",
+  "at": "2026-11-09T15:25:53+00:00",
+  "score": 9,
+  "src": "human-pass-gemini-user"
+ },
+ "shakshuka": {
+  "sha256": "5d2333336b14320ca76749c54b2d4599a2176c9e49ea90b1758f783fb48466c8",
+  "at": "2026-11-09T15:25:53+00:00",
+  "score": 9,
+  "src": "human-pass-gemini-user"
+ },
+ "paella-seafood": {
+  "sha256": "70432f3d097e3539d58ddd33639bcbfa7fcf005337ac56410eef871d3041fb78",
+  "at": "2026-11-09T15:25:53+00:00",
+  "score": 9,
+  "src": "human-pass-gemini-user"
  }
 }

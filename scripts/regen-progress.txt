@@ -140,3 +140,12 @@ kibbeh
 meatballs-tomato
 lahmacun
 mapo-tofu
+pad-kee-mao
+okroshka
+mushroom-risotto
+mediterranean-lentil-salad
+ukha
+spaghetti-bolognese
+shrimp-prik-king
+shakshuka
+paella-seafood
