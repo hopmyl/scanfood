@@ -257,12 +257,6 @@
   "score": 7,
   "src": "natural-v7"
  },
- "avocado-toast": {
-  "sha256": "708a117bab9eecc7fc1a9e6d68352b247b125122d31a182abe1f50dd9a18f517",
-  "at": "2026-11-07T17:58:11.589Z",
-  "score": 8,
-  "src": "natural-v7"
- },
  "baked-mackerel": {
   "sha256": "c12bac7ab00075c87aedaf7204f58fd1175735f0b45d8e60b9b8f5100c7a124e",
   "at": "2026-11-07T22:02:30.930Z",
@@ -675,6 +669,54 @@
  "yangzhou-fried-rice": {
   "sha256": "07303b788433b35e431829130ae8b7c7051234dfebe013f3baf65a46bd366d04",
   "at": "2026-11-09T17:05:13+00:00",
+  "score": 9,
+  "src": "human-pass-gemini-user"
+ },
+ "hong-shao-rou": {
+  "sha256": "7630f5e417c2fc4cf73bcf0abb08c8d8161e2c6aa388f5c9539a95cd39fac9e2",
+  "at": "2026-11-09T17:16:18+00:00",
+  "score": 9,
+  "src": "human-pass-gemini-user"
+ },
+ "harira": {
+  "sha256": "a546e91491b63e1ac2077ccd145b86d753b4f9e55f98506e19e169b1a3a98881",
+  "at": "2026-11-09T17:16:18+00:00",
+  "score": 9,
+  "src": "human-pass-gemini-user"
+ },
+ "hand-torn-cabbage": {
+  "sha256": "200c0a9432923a007c96c4f84994a2d820a1694924a8b107853cd0c2079001d6",
+  "at": "2026-11-09T17:16:18+00:00",
+  "score": 9,
+  "src": "human-pass-gemini-user"
+ },
+ "general-tso-chicken": {
+  "sha256": "01a3df31ab45bc1d4f96369820db75d9494d14dec58e6c7506b0a2ac5758955a",
+  "at": "2026-11-09T17:16:18+00:00",
+  "score": 9,
+  "src": "human-pass-gemini-user"
+ },
+ "fried-calamari": {
+  "sha256": "046f9577293e0a0fd5f82c2a384ac6887d985016352fc47011e40be5bf019e03",
+  "at": "2026-11-09T17:16:18+00:00",
+  "score": 9,
+  "src": "human-pass-gemini-user"
+ },
+ "jambalaya": {
+  "sha256": "1a883eb0ff38d460a4641d3288bf4c51ae09a01f46c732866881c99abd78f1e2",
+  "at": "2026-11-09T17:16:18+00:00",
+  "score": 9,
+  "src": "human-pass-gemini-user"
+ },
+ "hummus-classic": {
+  "sha256": "dff646028cc130884c8e70ab9bd15ee842e48964a5607eddb12ad0642e11e93b",
+  "at": "2026-11-09T17:16:18+00:00",
+  "score": 9,
+  "src": "human-pass-gemini-user"
+ },
+ "hot-sour-soup": {
+  "sha256": "e426905fee1062191a10620a829f2d3c64d9b490667a2851ded8a6cfa286ed92",
+  "at": "2026-11-09T17:16:18+00:00",
   "score": 9,
   "src": "human-pass-gemini-user"
  }
