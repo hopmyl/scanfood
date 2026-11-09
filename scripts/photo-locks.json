@@ -274,5 +274,60 @@
   "at": "2026-11-07T22:03:08.987Z",
   "score": 7,
   "src": "natural-v7"
+ },
+ "borscht": {
+  "sha256": "67ee4e27c462fa55df487fdbceaccec517b6d816b503f080846335f9be3d3ccb",
+  "at": "2026-11-09T08:58:33.000Z",
+  "src": "gemini-user"
+ },
+ "milk-blini": {
+  "sha256": "5726f5ff7c0ad0ecc6dc07a9ae0ce9f3fd65d4a7bbdefc4f3b5913665aa88179",
+  "at": "2026-11-09T08:58:33.000Z",
+  "src": "gemini-user"
+ },
+ "cottage-cheese-pancakes": {
+  "sha256": "6e383356939b06df33878527ed4ec9c06def40d303e46adb5c7420274814178a",
+  "at": "2026-11-09T08:58:33.000Z",
+  "src": "gemini-user"
+ },
+ "oatmeal-bowl": {
+  "sha256": "ba04f522ba5badd49e313a8df50fb3ec04956c75dca994badd8b8aa9c317213c",
+  "at": "2026-11-09T08:58:33.000Z",
+  "src": "gemini-user"
+ },
+ "chicken-noodle-soup": {
+  "sha256": "6f63c6b0c86a594c797bfc5dfdba5dcf453923c2665c58346137ca938dd08e1f",
+  "at": "2026-11-09T08:58:33.000Z",
+  "src": "gemini-user"
+ },
+ "caesar-salad": {
+  "sha256": "9cd23d47e81b779b167eda4a65703970b8c303a77a5816992b91e9b629bfea75",
+  "at": "2026-11-09T08:58:33.000Z",
+  "src": "gemini-user"
+ },
+ "greek-salad": {
+  "sha256": "5c45f877a2beeb5f04f96d2b35aa63e3fe9c78262c4361b6faa25c1f788c9a24",
+  "at": "2026-11-09T08:58:33.000Z",
+  "src": "gemini-user"
+ },
+ "pasta-carbonara": {
+  "sha256": "809ef23ff73c1da6f665dda9b3c01e5d955c6f6009f211ef778abc9151dab120",
+  "at": "2026-11-09T08:58:33.000Z",
+  "src": "gemini-user"
+ },
+ "margherita-pizza": {
+  "sha256": "6db392a4f21fc25ff9265288f5e8fe7b929c6e9d95322db7870eb5eaacd05c8d",
+  "at": "2026-11-09T08:58:33.000Z",
+  "src": "gemini-user"
+ },
+ "chicken-plov": {
+  "sha256": "c058242b45a2ecb95b61a92fe1c19c1ca29312d05036b22757ea95c1e710ec04",
+  "at": "2026-11-09T08:58:33.000Z",
+  "src": "gemini-user"
+ },
+ "baked-salmon-quinoa": {
+  "sha256": "dfa891e72b24880a950fbd394128993d1fef8af9b1d0937c96dc8fd510d50a58",
+  "at": "2026-11-09T08:58:33.000Z",
+  "src": "gemini-user"
  }
 }

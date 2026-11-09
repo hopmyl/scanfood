@@ -119,3 +119,10 @@ greek-yogurt-granola
 green-curry-chicken
 grilled-cheese-soup
 grilled-chicken-broccoli
+borscht
+milk-blini
+cottage-cheese-pancakes
+oatmeal-bowl
+greek-salad
+pasta-carbonara
+margherita-pizza
