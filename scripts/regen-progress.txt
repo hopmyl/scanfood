@@ -134,3 +134,9 @@ poke-bowl
 kluay-buat-chi
 tuna-steak-sesame
 twice-cooked-pork
+khao-soi
+herring-shuba
+kibbeh
+meatballs-tomato
+lahmacun
+mapo-tofu

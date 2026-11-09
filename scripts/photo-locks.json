@@ -461,5 +461,59 @@
   "at": "2026-11-09T11:25:18+00:00",
   "score": 9,
   "src": "human-pass-gemini-user"
+ },
+ "green-curry-chicken": {
+  "sha256": "8f168ab837b666893053b47fa39e28a940d3ff1606e8199dbc11c82d3726549b",
+  "at": "2026-11-09T12:59:07+00:00",
+  "score": 9,
+  "src": "human-pass-gemini-user"
+ },
+ "greek-yogurt-granola": {
+  "sha256": "a89b4afcfff920f7a52d7de49dd6dd6e9ea446e0791e2ccde27f338be8d78130",
+  "at": "2026-11-09T12:59:07+00:00",
+  "score": 9,
+  "src": "human-pass-gemini-user"
+ },
+ "glazed-donuts": {
+  "sha256": "ddfc56e065151dc17507f2cf1940ca43f57dbec45be948b32662261b66dea7cb",
+  "at": "2026-11-09T12:59:07+00:00",
+  "score": 9,
+  "src": "human-pass-gemini-user"
+ },
+ "khao-soi": {
+  "sha256": "28e6705e74ec1d93b62fd72ed14011870bb98c01cdbad00cf1a7b6da6caca2e8",
+  "at": "2026-11-09T12:59:07+00:00",
+  "score": 9,
+  "src": "human-pass-gemini-user"
+ },
+ "herring-shuba": {
+  "sha256": "97a02b707d06035d584c99236cb68ee331551576d0a0f8ff3922ca2c69238516",
+  "at": "2026-11-09T12:59:07+00:00",
+  "score": 9,
+  "src": "human-pass-gemini-user"
+ },
+ "kibbeh": {
+  "sha256": "ff7af396d1e30ab06f877028c3bc19484ba52c14e51052f57ec5179039d56a32",
+  "at": "2026-11-09T12:59:07+00:00",
+  "score": 9,
+  "src": "human-pass-gemini-user"
+ },
+ "meatballs-tomato": {
+  "sha256": "26556038f8ea127a3b88e76c915ee4d075a47596dda406bacf223ef1edaed3f2",
+  "at": "2026-11-09T12:59:07+00:00",
+  "score": 9,
+  "src": "human-pass-gemini-user"
+ },
+ "lahmacun": {
+  "sha256": "a46e0cd2033e34c7b3f31d94ed8778a88cf6a8ef74231218dc86d2772393a94f",
+  "at": "2026-11-09T12:59:07+00:00",
+  "score": 9,
+  "src": "human-pass-gemini-user"
+ },
+ "mapo-tofu": {
+  "sha256": "a43fa9c5fa88980d6a0b16e3338d90675ca2172bc161b28a740084bd20855e8c",
+  "at": "2026-11-09T12:59:07+00:00",
+  "score": 9,
+  "src": "human-pass-gemini-user"
  }
 }
