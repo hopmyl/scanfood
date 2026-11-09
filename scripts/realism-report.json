@@ -1315,16 +1315,17 @@
   "at": "2026-11-08T20:13:13.638Z"
  },
  "grilled-chicken-broccoli": {
-  "score": 8,
+  "score": -1,
   "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
   "glamor": false,
-  "note": "Реалистичное фото: курица, брокколи, лимон — всё соответствует",
-  "mtime": 1794073312000,
-  "at": "2026-11-08T01:43:38.031Z"
+  "note": "ошибка критика",
+  "error": true,
+  "mtime": 1794169023000,
+  "at": "2026-11-09T09:27:10.583Z"
  },
  "grilled-vegetables-platter": {
   "score": 8,
@@ -2892,16 +2893,17 @@
   "at": "2026-11-04T19:12:00.929Z"
  },
  "twice-cooked-pork": {
-  "score": 7,
+  "score": -1,
   "steam": false,
   "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
   "glamor": false,
-  "note": "Реалистичная свинина дважды жареная с луком, всё верно",
-  "mtime": 1793862632000,
-  "at": "2026-11-05T16:42:09.462Z"
+  "note": "ошибка критика",
+  "error": true,
+  "mtime": 1794073313000,
+  "at": "2026-11-09T09:30:40.771Z"
  },
  "ukha": {
   "score": 6,
