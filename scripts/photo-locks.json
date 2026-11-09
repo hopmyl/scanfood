@@ -623,5 +623,59 @@
   "at": "2026-11-09T15:43:49+00:00",
   "score": 9,
   "src": "human-pass-gemini-user"
+ },
+ "fresh-spring-rolls": {
+  "sha256": "f6c14ccd4bfbe89791bfe8419b79a89d3d78e397bebef27040b2004ac71ddb08",
+  "at": "2026-11-09T17:05:13+00:00",
+  "score": 9,
+  "src": "human-pass-gemini-user"
+ },
+ "eggplant-parmesan": {
+  "sha256": "1d0ca696e74e34b7f4d99e526782c27700c2dc355c1b899b3c4761bceb90ae8d",
+  "at": "2026-11-09T17:05:13+00:00",
+  "score": 9,
+  "src": "human-pass-gemini-user"
+ },
+ "dolma-grape-leaves": {
+  "sha256": "aaaa33ffe649e01e2277551e5eff4fc5f55dab5ed3b753287f23ada220639ac5",
+  "at": "2026-11-09T17:05:13+00:00",
+  "score": 9,
+  "src": "human-pass-gemini-user"
+ },
+ "crispy-tofu": {
+  "sha256": "2d7a5b47b22f7f5d3b4a97532d405f30b54c0dc494e820317957de46051d50f6",
+  "at": "2026-11-09T17:05:13+00:00",
+  "score": 9,
+  "src": "human-pass-gemini-user"
+ },
+ "club-sandwich": {
+  "sha256": "c2c03ac359b3173265d955b21018d931c7d6cdba9f2f1bcc11256217171dd0c4",
+  "at": "2026-11-09T17:05:13+00:00",
+  "score": 9,
+  "src": "human-pass-gemini-user"
+ },
+ "cajun-shrimp-pasta": {
+  "sha256": "897a633b2c82f33cb59249306cafa18057604cf005eea3d578214dd6193aeb0e",
+  "at": "2026-11-09T17:05:13+00:00",
+  "score": 9,
+  "src": "human-pass-gemini-user"
+ },
+ "yu-xiang-pork": {
+  "sha256": "f94229ee993990087201789beb999222b745c94e3d7971bdb4865b9e0346deb6",
+  "at": "2026-11-09T17:05:13+00:00",
+  "score": 9,
+  "src": "human-pass-gemini-user"
+ },
+ "yemista": {
+  "sha256": "e300a1d0760f092cd7a42d65f6293b04de151ce56617c3a57769c80dbe93cfe8",
+  "at": "2026-11-09T17:05:13+00:00",
+  "score": 9,
+  "src": "human-pass-gemini-user"
+ },
+ "yangzhou-fried-rice": {
+  "sha256": "07303b788433b35e431829130ae8b7c7051234dfebe013f3baf65a46bd366d04",
+  "at": "2026-11-09T17:05:13+00:00",
+  "score": 9,
+  "src": "human-pass-gemini-user"
  }
 }
