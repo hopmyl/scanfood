@@ -464,3 +464,4 @@ heartbeat: 2026-11-03 05:55:50 РУЧНОЙ заход: разблокирова
 2026-11-09T17:05:13+00:00 приём батча-6: 9 фото пользователя установлены (fresh-spring-rolls, eggplant-parmesan, dolma-grape-leaves, crispy-tofu, club-sandwich, cajun-shrimp-pasta, yu-xiang-pork, yemista, yangzhou-fried-rice), замки +9; партия-6 закрыта полностью
 2026-11-09T17:16:18+00:00 приём батча-7: 8 фото пользователя установлены (hong-shao-rou, harira, hand-torn-cabbage, general-tso-chicken, fried-calamari, jambalaya, hummus-classic, hot-sour-soup), замки +8; hash-browns остался в очереди
 2026-11-09T17:17:59+00:00 avocado-toast: замок снят по просьбе пользователя, промпт на переделку отдан в партии №8
+2026-11-09T20:17:35+00:00 старт прогона (cron 518229): зомби 3fe3666 откачен (backup-zombie-3fe3666); батч-7 уже принят другой сессией (8/9, hash-browns остался); план: аудит+ремонт+партия-8 (тост первым)
