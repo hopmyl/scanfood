@@ -213,6 +213,7 @@ turkish-lentil-soup
 turkish-pide
 twice-cooked-pork
 ukha
+vegetable-stew
 vinaigrette
 walnut-shrimp
 wedge-salad
