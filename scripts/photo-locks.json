@@ -329,5 +329,77 @@
   "sha256": "dfa891e72b24880a950fbd394128993d1fef8af9b1d0937c96dc8fd510d50a58",
   "at": "2026-11-09T08:58:33.000Z",
   "src": "gemini-user"
+ },
+ "kuay-teow-beef-soup": {
+  "sha256": "6ae42badd44c92849bee5cfa5ec3dd214e564c0da2c16b2dd5a51581860a4e95",
+  "at": "2026-11-09T09:23:07+00:00",
+  "score": 9,
+  "src": "human-pass-gemini-user"
+ },
+ "yogurt-honey-walnuts": {
+  "sha256": "a36f039a44b1b5cf369628a82bd6b6cabd2a4a9bcd58d7db8a1e37417a0d4de7",
+  "at": "2026-11-09T09:23:07+00:00",
+  "score": 9,
+  "src": "human-pass-gemini-user"
+ },
+ "cabbage-pie": {
+  "sha256": "db6b121ae0bd51d5cc810dcc65fffb0f18b993d7761466405eb1583e35109f3e",
+  "at": "2026-11-09T09:23:07+00:00",
+  "score": 9,
+  "src": "human-pass-gemini-user"
+ },
+ "tu-dou-si": {
+  "sha256": "4a1db5f9ed23dccae9b8530b8434573432337f1834d32fb1204bacaf999613e0",
+  "at": "2026-11-09T09:23:07+00:00",
+  "score": 9,
+  "src": "human-pass-gemini-user"
+ },
+ "turkish-lentil-soup": {
+  "sha256": "e89387a115c31226ff09ab5bb5435f355b7965dc27f9b86d3b600f7efbd78a8a",
+  "at": "2026-11-09T09:23:07+00:00",
+  "score": 9,
+  "src": "human-pass-gemini-user"
+ },
+ "chicken-stir-fry": {
+  "sha256": "5d984fc9a71b39e8d702591356a4620f9fc7dba9b94f515842f0bc9a82b58702",
+  "at": "2026-11-09T09:23:07+00:00",
+  "score": 9,
+  "src": "human-pass-gemini-user"
+ },
+ "poke-bowl": {
+  "sha256": "ae430d8ad6f6ee9e14f21f5415621561ebb9e38dcfc4f677f148e4fe7039783d",
+  "at": "2026-11-09T09:23:07+00:00",
+  "score": 9,
+  "src": "human-pass-gemini-user"
+ },
+ "baozi-steamed-buns": {
+  "sha256": "c6b1efb55b91c79f465b35e050aefe2cd365a4c4b2df9563529d5a0694672d80",
+  "at": "2026-11-09T09:23:07+00:00",
+  "score": 9,
+  "src": "human-pass-gemini-user"
+ },
+ "kluay-buat-chi": {
+  "sha256": "57f37e33b7b30d63d368e744d33a100b8f7a6c34ead4cf61b98e9272d944b7d0",
+  "at": "2026-11-09T09:23:07+00:00",
+  "score": 8,
+  "src": "human-pass-gemini-user"
+ },
+ "cumin-lamb": {
+  "sha256": "b9722a8686f30915678441c46356eed2446553bb6aa068909e1e7e3f42241ded",
+  "at": "2026-11-09T09:23:07+00:00",
+  "score": 9,
+  "src": "human-pass-gemini-user"
+ },
+ "corn-chicken-soup": {
+  "sha256": "9b68b8b94a22a06404a8336c99155acf197418590f91f0a4a1bce8e0836a326a",
+  "at": "2026-11-09T09:23:07+00:00",
+  "score": 8,
+  "src": "human-pass-gemini-user"
+ },
+ "tuna-steak-sesame": {
+  "sha256": "bb836d9d36a6386be9bb211ab954e6ccfc9ca6876f2cc426d39033c65a36a767",
+  "at": "2026-11-09T09:23:07+00:00",
+  "score": 9,
+  "src": "human-pass-gemini-user"
  }
 }

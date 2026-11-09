@@ -2148,3 +2148,4 @@ SKIP american-pancakes: критик недоступен — слепая за�
 2026-11-07T23:56:52.821Z --- ajvar: «Balkan roasted pepper ajvar spread. Mediterranean dish, olive oil, fre…»
 2026-11-07T23:57:30.024Z KEEP ajvar: лучший кандидат 7 хуже текущего 8 — файл не трогаю
 2026-11-07T23:57:30.024Z --- banana-bread: «Banana bread loaf with walnut topping, one slice cut, ripe banana on s…»
+2026-11-09T09:23:07+00:00 === РУЧНОЙ ПРИЁМ (Gemini, батч-1 пользователя): kuay-teow-beef-soup, yogurt-honey-walnuts, cabbage-pie, tu-dou-si, turkish-lentil-soup, chicken-stir-fry, poke-bowl, baozi-steamed-buns, kluay-buat-chi, cumin-lamb, corn-chicken-soup, tuna-steak-sesame — замки + approve + progress ===

@@ -446,3 +446,5 @@ heartbeat: 2026-11-03 05:55:50 РУЧНОЙ заход: разблокирова
 2026-11-08T20:23:41+00:00 прогон 04:11: аудит +5 (итого 84), ремонт всего 1 (grilled-chicken-broccoli score=-1, критик errored; API сильно тормозит), пендинг ~117
 2026-11-09T08:42:28+00:00 прогон 16:41: старт прогона (cron 493803)
 2026-11-09T08:58:39+00:00 прогон 15:41+: пользователь прислал 12 фото Gemini — 11 установлены (borscht, milk-blini, syrniki, oatmeal, chicken-noodle, caesar, greek, carbonara, margherita, chicken-plov, baked-salmon-quinoa), замки 46->57; лава-кейк пропущен (нет рецепта)
+2026-11-09T09:23:07+00:00 прогон 17:11: пользователь прислал 12 фото Gemini (батч-1) — все установлены (kuay-teow-beef-soup, yogurt-honey-walnuts, cabbage-pie, tu-dou-si, turkish-lentil-soup, chicken-stir-fry, poke-bowl, baozi-steamed-buns, kluay-buat-chi, cumin-lamb, corn-chicken-soup, tuna-steak-sesame), замки +12; 2 фото пропущены (нет блюда на сайте: лосось-спаржа и лава-кейк)
+2026-11-09T09:25:00+00:00 старт прогона (cron 493803): зомби bc87a11+0c6f1fd откачены (backup-ветки), приём батча-1 пользователя, план: аудит+ремонт

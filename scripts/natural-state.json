@@ -1,7 +1,7 @@
 {
- "tuna-steak-sesame": 8,
+ "tuna-steak-sesame": 9,
  "tofu-larb": 9,
- "corn-chicken-soup": 6,
+ "corn-chicken-soup": 8,
  "ajvar": 7,
  "khao-man-gai": 8,
  "lazy-vareniki": 6,
@@ -12,8 +12,8 @@
  "sesame-noodles-cold": 7,
  "thai-congee-jok": 8,
  "tuna-egg-salad": 7,
- "turkish-lentil-soup": 7,
- "yogurt-honey-walnuts": 8,
+ "turkish-lentil-soup": 9,
+ "yogurt-honey-walnuts": 9,
  "tuna-sandwich": -1,
  "philly-cheesesteak": 9,
  "beef-burger": 5,
@@ -30,5 +30,12 @@
  "avocado-toast": 8,
  "baked-mackerel": 8,
  "baba-ganoush": 7,
- "baozi-steamed-buns": 4
+ "baozi-steamed-buns": 9,
+ "kuay-teow-beef-soup": 9,
+ "cabbage-pie": 9,
+ "tu-dou-si": 9,
+ "chicken-stir-fry": 9,
+ "poke-bowl": 9,
+ "kluay-buat-chi": 8,
+ "cumin-lamb": 9
 }
