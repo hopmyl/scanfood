@@ -78,13 +78,18 @@ def prompt_for(dish):
     scene = f'{pick(ANGLES, salt)}, {pick(TABLES, salt)}, {pick(BACKGROUNDS, salt)}'
     return f'{subj}, {scene}, {STYLE}, {NEG}'
 
-BATCH = 12
+# Размер партии: --n=<N>, по умолчанию 9 (просьба пользователя от 2026-11-09)
+BATCH = 9
+for a in sys.argv:
+    if a.startswith('--n='):
+        try: BATCH = int(a.split('=', 1)[1])
+        except ValueError: pass
 out = []
 for n, dish in enumerate(queue[:BATCH], 1):
     sc = report.get(dish, {}).get('score', '?')
     out.append(f'{n}. {dish}  (текущий балл аудита: {sc})\n{prompt_for(dish)}')
 
-txt = ('СканРецепт — партия для Gemini №1 (худшие из очереди, стиль v7).\n'
+txt = (f'СканРецепт — следующая партия для Gemini ({BATCH} шт, худшие из очереди, стиль v7).\n'
        'Формат: ландшафт (3:2 или 4:3). Прислать пачкой — сверю по содержимому.\n\n'
        + '\n\n'.join(out) + '\n')
 open(f'{ROOT}/download/gemini-batch-prompts.txt', 'w').write(txt)
