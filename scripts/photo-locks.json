@@ -569,5 +569,59 @@
   "at": "2026-11-09T15:25:53+00:00",
   "score": 9,
   "src": "human-pass-gemini-user"
+ },
+ "yam-woon-sen": {
+  "sha256": "2a826f482eb8d4ea856867ce4d11f3ae518a633f3b7a5f6875f89a8ff5ac843e",
+  "at": "2026-11-09T15:43:49+00:00",
+  "score": 9,
+  "src": "human-pass-gemini-user"
+ },
+ "white-bean-tuna-salad": {
+  "sha256": "d579f939d67a1e8bb7ba33f4f38bf47b941ade45e0c08ab74df6bf30a762946c",
+  "at": "2026-11-09T15:43:49+00:00",
+  "score": 9,
+  "src": "human-pass-gemini-user"
+ },
+ "wedge-salad": {
+  "sha256": "640299357de8c0018f6322590b964b1b7c06091ce2cccee34cc4a39524ba8cd9",
+  "at": "2026-11-09T15:43:49+00:00",
+  "score": 9,
+  "src": "human-pass-gemini-user"
+ },
+ "walnut-shrimp": {
+  "sha256": "a22d24be15da756130f9bc48d33eb1748205564046a282e8387ecb8faef02040",
+  "at": "2026-11-09T15:43:49+00:00",
+  "score": 9,
+  "src": "human-pass-gemini-user"
+ },
+ "tuna-egg-salad": {
+  "sha256": "c68776632900b03cf30daef98226d484ccafdc7247b4209b33f72573cee56bc1",
+  "at": "2026-11-09T15:43:49+00:00",
+  "score": 9,
+  "src": "human-pass-gemini-user"
+ },
+ "tomato-egg-stirfry": {
+  "sha256": "d14efdeabd4b4856dba55dab422470605de670a346f855a34fbc006e6a11891f",
+  "at": "2026-11-09T15:43:49+00:00",
+  "score": 9,
+  "src": "human-pass-gemini-user"
+ },
+ "tofu-larb": {
+  "sha256": "38fc952627933afacc35881ad8070afcfb940b14a8db342c136e3d0a9d32584d",
+  "at": "2026-11-09T15:43:49+00:00",
+  "score": 9,
+  "src": "human-pass-gemini-user"
+ },
+ "thai-spring-rolls": {
+  "sha256": "472722bfc026cd8723ddfbec95d31f10a26b347fb53382d449e47d0a5a5de22e",
+  "at": "2026-11-09T15:43:49+00:00",
+  "score": 9,
+  "src": "human-pass-gemini-user"
+ },
+ "spanish-tortilla": {
+  "sha256": "c3bed1c64e7b780221b18b98bdf26b23ef8b26caeed44543ee5d5d02a4e35796",
+  "at": "2026-11-09T15:43:49+00:00",
+  "score": 9,
+  "src": "human-pass-gemini-user"
  }
 }
