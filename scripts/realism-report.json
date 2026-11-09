@@ -1325,7 +1325,7 @@
   "note": "ошибка критика",
   "error": true,
   "mtime": 1794169023000,
-  "at": "2026-11-09T09:27:10.583Z"
+  "at": "2026-11-09T11:46:50.892Z"
  },
  "grilled-vegetables-platter": {
   "score": 8,
@@ -2906,16 +2906,17 @@
   "at": "2026-11-09T09:30:40.771Z"
  },
  "ukha": {
-  "score": 6,
+  "score": -1,
   "steam": false,
-  "plastic": true,
+  "plastic": false,
   "text": false,
   "people": false,
   "wrong": false,
   "glamor": false,
-  "note": "Лосось выглядит восково-пластиковым, текстура слишком гладкая",
-  "mtime": 1793897148000,
-  "at": "2026-11-05T19:10:44.853Z"
+  "note": "ошибка критика",
+  "error": true,
+  "mtime": 1794073313000,
+  "at": "2026-11-09T11:50:21.076Z"
  },
  "vegetable-stew": {
   "score": 7,
