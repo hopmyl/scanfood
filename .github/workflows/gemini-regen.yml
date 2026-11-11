@@ -1,0 +1,46 @@
+name: gemini-regen
+# Автогенерация брака через Gemini API (заморозка соблюдена: только существующие
+# блюда из очереди). Ключ хранится ТОЛЬКО в repo secret GEMINI_API_KEY.
+# Запуск: вкладка Actions -> gemini-regen -> Run workflow (n = сколько блюд).
+on:
+  workflow_dispatch:
+    inputs:
+      n:
+        description: 'Сколько блюд сгенерировать за запуск'
+        required: false
+        default: '6'
+permissions:
+  contents: write
+concurrency:
+  group: gemini-regen
+  cancel-in-progress: false
+jobs:
+  regen:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Deps
+        run: pip install pillow requests
+      - name: Generate
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          REPO_ROOT: ${{ github.workspace }}
+        run: python scripts/gemini-actions-regen.py --n=${{ github.event.inputs.n || '6' }}
+      - name: Commit
+        run: |
+          git config user.name "gemini-regen-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add public/dishes scripts/gemini-api-log.txt scripts/gemini-api-last-run.json || true
+          if git diff --cached --quiet; then
+            echo "Нечего коммитить (всё дубли/сбои)"
+          else
+            git commit -m "photos: gemini-api автогенерация брака (Actions)"
+            git push origin main
+          fi
