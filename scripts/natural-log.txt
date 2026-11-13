@@ -2156,3 +2156,4 @@ SKIP american-pancakes: критик недоступен — слепая за�
 2026-11-09T17:05:13+00:00 === РУЧНОЙ ПРИЁМ (Gemini, батч-6 пользователя, полный 9/9): fresh-spring-rolls, eggplant-parmesan, dolma-grape-leaves, crispy-tofu, club-sandwich, cajun-shrimp-pasta, yu-xiang-pork, yemista, yangzhou-fried-rice — замки + approve + progress ===
 2026-11-09T17:16:18+00:00 === РУЧНОЙ ПРИЁМ (Gemini, батч-7 пользователя, 8/9, hash-browns не прислан): hong-shao-rou, harira, hand-torn-cabbage, general-tso-chicken, fried-calamari, jambalaya, hummus-classic, hot-sour-soup — замки + approve + progress ===
 2026-11-09T17:17:59+00:00 === РАЗБЛОКИРОВКА avocado-toast по просьбе пользователя (гламурный кадр, флаг критика glamor) — замок снят, переделка в партии №8 ===
+2026-11-13T08:56:09+00:00 === РУЧНОЙ ПРИЁМ (Gemini, батч-8, часть 1: 4 фото пользователя): yu-xiang-eggplant, lyulya-kebab, wonton-soup, kefir-pancakes — замки + approve + progress ===

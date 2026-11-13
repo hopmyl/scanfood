@@ -719,5 +719,29 @@
   "at": "2026-11-09T17:16:18+00:00",
   "score": 9,
   "src": "human-pass-gemini-user"
+ },
+ "yu-xiang-eggplant": {
+  "sha256": "98189771b0eecbc5dd98309c937deef6489be2423ee937d52c928a3efe57065d",
+  "at": "2026-11-13T08:56:09+00:00",
+  "score": 9,
+  "src": "human-pass-gemini-user"
+ },
+ "lyulya-kebab": {
+  "sha256": "6f8af271d237c4504e2a9db62ef70f0f8d4a667cd8b9aaf035a8bf994442748c",
+  "at": "2026-11-13T08:56:09+00:00",
+  "score": 9,
+  "src": "human-pass-gemini-user"
+ },
+ "wonton-soup": {
+  "sha256": "73543c64c32d3dd5865be7302347390584b6024730b6ddd5a3b73bfd29ec8448",
+  "at": "2026-11-13T08:56:09+00:00",
+  "score": 9,
+  "src": "human-pass-gemini-user"
+ },
+ "kefir-pancakes": {
+  "sha256": "45d5f4876dcde7b974f7ba36a215852c4809634d3a393e5d61672ab2919288fe",
+  "at": "2026-11-13T08:56:09+00:00",
+  "score": 9,
+  "src": "human-pass-gemini-user"
  }
 }

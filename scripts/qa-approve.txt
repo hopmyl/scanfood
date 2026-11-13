@@ -86,3 +86,7 @@ fried-calamari
 jambalaya
 hummus-classic
 hot-sour-soup
+yu-xiang-eggplant
+lyulya-kebab
+wonton-soup
+kefir-pancakes
