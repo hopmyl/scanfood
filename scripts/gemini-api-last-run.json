@@ -2,13 +2,29 @@
  "done": [],
  "skipped": [
   [
-   "wonton-soup",
+   "yam-nuea",
    "api-fail"
   ],
   [
-   "yam-nuea",
+   "mango-sticky-rice",
+   "api-fail"
+  ],
+  [
+   "mimosa",
+   "api-fail"
+  ],
+  [
+   "moo-yang",
+   "api-fail"
+  ],
+  [
+   "olivier",
+   "api-fail"
+  ],
+  [
+   "pad-gratiem-garlic-veg",
    "api-fail"
   ]
  ],
- "ts": "2026-11-12T09:19:55Z"
+ "ts": "2026-11-18T11:56:08Z"
 }
