@@ -749,5 +749,65 @@
   "at": "2026-11-25T10:03:10+00:00",
   "score": 7,
   "src": "local-gen-zai-critic-pass"
+ },
+ "bbq-pulled-pork": {
+  "sha256": "51a2f57675b0d35cf91310361943af23679cb06acb39a69f4d3931ca1b87fef8",
+  "at": "2026-11-25T10:56:16+00:00",
+  "score": 7,
+  "src": "local-gen-zai-critic-pass"
+ },
+ "chow-mein-chicken": {
+  "sha256": "6845034003d2638f7f5138c1f1e9e7995b3d9d219389b13852b58f0ca1e2f037",
+  "at": "2026-11-25T10:56:16+00:00",
+  "score": 7,
+  "src": "local-gen-zai-critic-pass"
+ },
+ "grilled-vegetables-platter": {
+  "sha256": "083bb7a6a87ea8988ea61fe5f1f5ec3fb69af5f2c6b1a1535adef8ea73f0cab4",
+  "at": "2026-11-25T10:56:16+00:00",
+  "score": 7,
+  "src": "local-gen-zai-critic-pass"
+ },
+ "hash-browns": {
+  "sha256": "65a9a2dd6838a4c61bb8569155c8e5f8354238c6271df05b983cfa1c695a7509",
+  "at": "2026-11-25T10:56:16+00:00",
+  "score": 8,
+  "src": "local-gen-zai-critic-pass"
+ },
+ "jiaozi-pork": {
+  "sha256": "0cfc097c73d81d37fdfa1906424d36d1e96d2b27526c3a7979476739beaf026b",
+  "at": "2026-11-25T10:56:16+00:00",
+  "score": 7,
+  "src": "local-gen-zai-critic-pass"
+ },
+ "kai-jeow": {
+  "sha256": "8edf3cc4533c7940d3bdc6d64601af047f054dd784d7357538d7c29582d22ba9",
+  "at": "2026-11-25T10:56:16+00:00",
+  "score": 8,
+  "src": "local-gen-zai-critic-pass"
+ },
+ "homestyle-tofu": {
+  "sha256": "9f6542db5a939f8a2370260902f35f17c68ab69ccb9ee06feb8b88cd67a8d7e9",
+  "at": "2026-11-25T10:56:16+00:00",
+  "score": 7,
+  "src": "local-gen-zai-critic-pass"
+ },
+ "huang-men-ji": {
+  "sha256": "7924bf7ab1a4aaf8b38cc429f2b9e9a410ffa3e6a735d379fa0d0b7e6a71de52",
+  "at": "2026-11-25T10:56:16+00:00",
+  "score": 7,
+  "src": "local-gen-zai-critic-pass"
+ },
+ "khao-man-gai": {
+  "sha256": "177de001e7f7936e6d9ce471b070e68dfef829cc3cd7a6f7c913db7a254dbaa0",
+  "at": "2026-11-25T10:56:16+00:00",
+  "score": 7,
+  "src": "local-gen-zai-critic-pass"
+ },
+ "kluay-tod": {
+  "sha256": "64d8d56d3476f674704cf0e37fbe7a235764829109bbc7889e6352c22828a5ab",
+  "at": "2026-11-25T10:56:16+00:00",
+  "score": 7,
+  "src": "local-gen-zai-critic-pass"
  }
 }

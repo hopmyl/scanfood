@@ -8,10 +8,17 @@ from PIL import Image
 from datetime import datetime, timezone
 
 ROOT = '/home/z/my-project'
-# slug -> (score, вердикт критика)
-MAP = {
-    'yam-nuea': (7, 'Реалистичный тайский говяжий салат, лайм и перец на месте'),
-}
+# slug -> (score, вердикт критика). Источник: результаты батча ИЛИ хардкод.
+if len(sys.argv) > 1 and os.path.exists(sys.argv[1]):
+    _res = json.load(open(sys.argv[1]))
+    MAP = {slug: (info['score'], info['note']) for slug, info in _res['pass'].items()}
+    _suffix = '-gen'
+    print(f"источник: {sys.argv[1]} (pass={len(MAP)}, fail={len(_res.get('fail', {}))})")
+else:
+    MAP = {
+        'yam-nuea': (7, 'Реалистичный тайский говяжий салат, лайм и перец на месте'),
+    }
+    _suffix = '-test'
 
 def sha256(p):
     h = hashlib.sha256()
@@ -23,7 +30,7 @@ def sha256(p):
 now = datetime.now(timezone.utc).isoformat(timespec='seconds')
 accepted = {}
 for slug, (score, note) in MAP.items():
-    src = os.path.join(ROOT, 'download', slug + '-test.png')
+    src = os.path.join(ROOT, 'download', slug + _suffix + '.png')
     dst = os.path.join(ROOT, 'public', 'dishes', slug + '.jpg')
     if not os.path.exists(src):
         print(f'НЕТ ФАЙЛА {src}, пропуск'); continue
@@ -71,11 +78,13 @@ json.dump(state, open(sp, 'w'), indent=1, ensure_ascii=False)
 print('natural-state: +', len(accepted))
 
 # --- логи ---
+_slugs = ', '.join(accepted)
+_scores = ', '.join(f"{s}:{i['score']}" for s, i in accepted.items())
 for logf, line in [
     (os.path.join(ROOT, 'scripts', 'natural-log.txt'),
-     f"{now} === ЛОКАЛЬНАЯ ГЕНЕРАЦИЯ (z-ai, тест): {', '.join(accepted)} — score 7, замки + approve ==="),
+     f"{now} === ЛОКАЛЬНАЯ ГЕНЕРАЦИЯ (z-ai): {_slugs} — замки + approve ==="),
     (os.path.join(ROOT, 'scripts', 'heartbeat.log'),
-     f"{now} local-gen: yam-nuea сгенерирован песочницей (z-ai), критик 7/чисто, залочен"),
+     f"{now} local-gen: {_slugs} сгенерированы песочницей (z-ai), критик {_scores}, залочены"),
 ]:
     with open(logf, 'a') as f:
         f.write(line + '\n')
