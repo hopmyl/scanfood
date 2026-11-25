@@ -1,5 +1,5 @@
 {
-  "at": "2026-11-25T11:14:59.926Z",
+  "at": "2026-11-25T11:44:52.373Z",
   "batch": [
     "imam-bayildi",
     "kofte-turkish",
@@ -7,12 +7,7 @@
     "kung-pao-chicken",
     "larb-chicken",
     "lazy-vareniki",
-    "lentil-soup",
-    "mac-and-cheese",
     "mango-sticky-rice",
-    "massaman-beef",
-    "meatloaf",
-    "menemen",
     "mimosa",
     "moo-yang",
     "mussels-cream",
@@ -147,6 +142,76 @@
       "score": 7,
       "note": "Менемен узнаваем, свет домашний; текстура яиц слегка сглажена",
       "path": "/home/z/my-project/download/menemen-gen.png"
+    },
+    "mimosa": {
+      "score": 7,
+      "note": "Слоёный салат в стеклянной миске, реалистично, слегка ИИ-текстуры",
+      "path": "/home/z/my-project/download/mimosa-gen.png"
+    },
+    "moo-yang": {
+      "score": 8,
+      "note": "Реалистичный кадр: свинина, соус джао, лайм, чили на месте",
+      "path": "/home/z/my-project/download/moo-yang-gen.png"
+    },
+    "napa-tofu-soup": {
+      "score": 8,
+      "note": "Реалистичный домашний суп, всё соответствует описанию",
+      "path": "/home/z/my-project/download/napa-tofu-soup-gen.png"
+    },
+    "ny-cheesecake": {
+      "score": 8,
+      "note": "Реалистичный чизкейк с соусом и мятой, естественный свет",
+      "path": "/home/z/my-project/download/ny-cheesecake-gen.png"
+    },
+    "oat-cookies": {
+      "score": 8,
+      "note": "Печенье реалистичное, но на тарелке, а не решётке",
+      "path": "/home/z/my-project/download/oat-cookies-gen.png"
+    },
+    "olivier": {
+      "score": 8,
+      "note": "Реалистичный оливье в стеклянной bowl, всё соответствует",
+      "path": "/home/z/my-project/download/olivier-gen.png"
+    },
+    "pad-see-ew": {
+      "score": 8,
+      "note": "Лапша тонкая, не широкая, но блюдо реалистично",
+      "path": "/home/z/my-project/download/pad-see-ew-gen.png"
+    },
+    "pad-thai-shrimp": {
+      "score": 8,
+      "note": "Реалистичный pad thai с креветками, лаймом и чили",
+      "path": "/home/z/my-project/download/pad-thai-shrimp-gen.png"
+    },
+    "pad-woo-sen": {
+      "score": 7,
+      "note": "Реалистичная фуд-съёмка, верное блюдо, лёгкая постановочность",
+      "path": "/home/z/my-project/download/pad-woo-sen-gen.png"
+    },
+    "pan-con-tomate": {
+      "score": 7,
+      "note": "Реалистичная пан кон томате, домашний свет, хорошее качество",
+      "path": "/home/z/my-project/download/pan-con-tomate-gen.png"
+    },
+    "patatas-bravas": {
+      "score": 7,
+      "note": "Реалистичный кадр, но картофель подозрительно однородный",
+      "path": "/home/z/my-project/download/patatas-bravas-gen.png"
+    },
+    "pea-soup": {
+      "score": 7,
+      "note": "Гороховый суп с беконом вместо рёбрышек, реалистично",
+      "path": "/home/z/my-project/download/pea-soup-gen.png"
+    },
+    "pelmeni": {
+      "score": 8,
+      "note": "Реалистичные пельмени, сметана, масло, укроп; естественный свет.",
+      "path": "/home/z/my-project/download/pelmeni-gen.png"
+    },
+    "pepperoni-pizza": {
+      "score": 8,
+      "note": "Реалистичная пицца, перчони плоские без «чашек»",
+      "path": "/home/z/my-project/download/pepperoni-pizza-gen.png"
     }
   },
   "fail": {
@@ -156,7 +221,10 @@
     "kung-pao-chicken": "score=7 flags=пластик — Курица с арахисом и перцем есть, но текстура восковая",
     "larb-chicken": "score=6 flags=чисто — Похоже на ларб, но текстура фарша слегка неестественна",
     "lazy-vareniki": "score=4 flags=пластик+не-то-блюдо — Обычные вареники вместо ленивых ромбиков; тесто восковое",
-    "mango-sticky-rice": "score=6 flags=пластик+не-то-блюдо — Рис выглядит восковым; это жёлтый рис, не манго-стикки-райс"
+    "mango-sticky-rice": "score=6 flags=пластик+не-то-блюдо — Рис выглядит восковым; это жёлтый рис, не манго-стикки-райс",
+    "mussels-cream": "score=3 flags=пластик+не-то-блюдо — Куски мяса в соусе, не мидии; восковая текстура",
+    "pad-gratiem-garlic-veg": "score=7 flags=нейро-глянец — Реалистично, но постановочная рекламная стилизация с глянцем",
+    "pad-krapow-chicken": "score=6 flags=пластик — Куриный фарш слишком однородный, слегка нейронная текстура"
   },
   "log": [
     "bbq-pulled-pork попытка1: score=3 flags=пластик+не-то-блюдо — Глянцевые нитевидные волокна, похоже на лапшу, не на мясо",
@@ -215,6 +283,41 @@
     "meatloaf попытка1: score=-1 flags=чисто — ошибка критика",
     "meatloaf попытка2: score=7 flags=чисто — Реалистичный meatloaf с глазурью, домашних свет",
     "menemen попытка1: score=-1 flags=чисто — ошибка критика",
-    "menemen попытка2: score=7 flags=чисто — Менемен узнаваем, свет домашний; текстура яиц слегка сглажена"
+    "menemen попытка2: score=7 flags=чисто — Менемен узнаваем, свет домашний; текстура яиц слегка сглажена",
+    "mimosa попытка1: score=7 flags=чисто — Слоёный салат в стеклянной миске, реалистично, слегка ИИ-текстуры",
+    "moo-yang попытка1: score=-1 flags=чисто — ошибка критика",
+    "moo-yang попытка2: score=8 flags=чисто — Реалистичный кадр: свинина, соус джао, лайм, чили на месте",
+    "mussels-cream попытка1: score=-1 flags=чисто — ошибка критика",
+    "mussels-cream попытка2: score=3 flags=пластик+не-то-блюдо — Куски мяса в соусе, не мидии; восковая текстура",
+    "mussels-cream попытка3: score=-1 flags=чисто — ошибка критика",
+    "napa-tofu-soup попытка1: score=6 flags=нейро-глянец — Похоже на капустно-тофунный суп, но текстура слегка сгенерированная",
+    "napa-tofu-soup попытка2: score=-1 flags=чисто — ошибка критика",
+    "napa-tofu-soup попытка3: score=8 flags=чисто — Реалистичный домашний суп, всё соответствует описанию",
+    "ny-cheesecake попытка1: score=-1 flags=чисто — ошибка критика",
+    "ny-cheesecake попытка2: score=8 flags=чисто — Реалистичный чизкейк с соусом и мятой, естественный свет",
+    "oat-cookies попытка1: score=-1 flags=чисто — ошибка критика",
+    "oat-cookies попытка2: score=8 flags=чисто — Печенье реалистичное, но на тарелке, а не решётке",
+    "olivier попытка1: score=8 flags=чисто — Реалистичный оливье в стеклянной bowl, всё соответствует",
+    "pad-gratiem-garlic-veg попытка1: score=-1 flags=чисто — ошибка критика",
+    "pad-gratiem-garlic-veg попытка2: score=7 flags=нейро-глянец — Реалистично, но постановочная рекламная стилизация с глянцем",
+    "pad-gratiem-garlic-veg попытка3: score=-1 flags=чисто — ошибка критика",
+    "pad-krapow-chicken попытка1: score=6 flags=пластик — Куриный фарш слишком однородный, слегка нейронная текстура",
+    "pad-krapow-chicken попытка2: score=-1 flags=чисто — ошибка критика",
+    "pad-krapow-chicken попытка3: score=6 flags=пластик+нейро-глянец — Блюдо верное, но фарш выглядит восково-пластиковым",
+    "pad-see-ew попытка1: score=-1 flags=чисто — ошибка критика",
+    "pad-see-ew попытка2: score=8 flags=чисто — Лапша тонкая, не широкая, но блюдо реалистично",
+    "pad-thai-shrimp попытка1: score=-1 flags=чисто — ошибка критика",
+    "pad-thai-shrimp попытка2: score=8 flags=чисто — Реалистичный pad thai с креветками, лаймом и чили",
+    "pad-woo-sen попытка1: score=7 flags=чисто — Реалистичная фуд-съёмка, верное блюдо, лёгкая постановочность",
+    "pan-con-tomate попытка1: score=-1 flags=чисто — ошибка критика",
+    "pan-con-tomate попытка2: score=7 flags=чисто — Реалистичная пан кон томате, домашний свет, хорошее качество",
+    "patatas-bravas попытка1: score=-1 flags=чисто — ошибка критика",
+    "patatas-bravas попытка2: score=7 flags=чисто — Реалистичный кадр, но картофель подозрительно однородный",
+    "pea-soup попытка1: score=-1 flags=чисто — ошибка критика",
+    "pea-soup попытка2: score=7 flags=чисто — Гороховый суп с беконом вместо рёбрышек, реалистично",
+    "pelmeni попытка1: score=-1 flags=чисто — ошибка критика",
+    "pelmeni попытка2: score=8 flags=чисто — Реалистичные пельмени, сметана, масло, укроп; естественный свет.",
+    "pepperoni-pizza попытка1: score=-1 flags=чисто — ошибка критика",
+    "pepperoni-pizza попытка2: score=8 flags=чисто — Реалистичная пицца, перчони плоские без «чашек»"
   ]
 }
