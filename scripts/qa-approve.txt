@@ -96,3 +96,8 @@ hash-browns
 kai-jeow
 huang-men-ji
 khao-man-gai
+lentil-soup
+mac-and-cheese
+massaman-beef
+meatloaf
+menemen

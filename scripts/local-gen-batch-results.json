@@ -1,17 +1,7 @@
 {
-  "at": "2026-11-25T10:56:04.650Z",
+  "at": "2026-11-25T11:14:59.926Z",
   "batch": [
-    "bbq-pulled-pork",
-    "chow-mein-chicken",
-    "grilled-vegetables-platter",
-    "hash-browns",
-    "homestyle-tofu",
-    "huang-men-ji",
     "imam-bayildi",
-    "jiaozi-pork",
-    "kai-jeow",
-    "khao-man-gai",
-    "kluay-tod",
     "kofte-turkish",
     "korean-carrot",
     "kung-pao-chicken",
@@ -132,11 +122,41 @@
       "score": 7,
       "note": "Реалистичные фриттеры, всё соответствует описанию",
       "path": "/home/z/my-project/download/kluay-tod-gen.png"
+    },
+    "lentil-soup": {
+      "score": 8,
+      "note": "Реалистичная чечевичная похлёбка с морковью, лимоном и кинзой",
+      "path": "/home/z/my-project/download/lentil-soup-gen.png"
+    },
+    "mac-and-cheese": {
+      "score": 7,
+      "note": "Реалистичная макаронная запеканка с корочкой, сомнений немного",
+      "path": "/home/z/my-project/download/mac-and-cheese-gen.png"
+    },
+    "massaman-beef": {
+      "score": 7,
+      "note": "Массаман с говядиной, картофелем, арахисом; реалистично",
+      "path": "/home/z/my-project/download/massaman-beef-gen.png"
+    },
+    "meatloaf": {
+      "score": 7,
+      "note": "Реалистичный meatloaf с глазурью, домашних свет",
+      "path": "/home/z/my-project/download/meatloaf-gen.png"
+    },
+    "menemen": {
+      "score": 7,
+      "note": "Менемен узнаваем, свет домашний; текстура яиц слегка сглажена",
+      "path": "/home/z/my-project/download/menemen-gen.png"
     }
   },
   "fail": {
     "imam-bayildi": "score=4 flags=пластик+текст+нейро-глянец — ИИ-рендер: глянцевый баклажан, странный текст с опечаткой",
-    "kofte-turkish": "score=6 flags=пластик — Тефтели восковые, однородная нейронная текстура, нет зелени"
+    "kofte-turkish": "score=6 flags=пластик — Тефтели восковые, однородная нейронная текстура, нет зелени",
+    "korean-carrot": "score=6 flags=не-то-блюдо — Масса коричневая мелкозернистая, не морковь по-корейски",
+    "kung-pao-chicken": "score=7 flags=пластик — Курица с арахисом и перцем есть, но текстура восковая",
+    "larb-chicken": "score=6 flags=чисто — Похоже на ларб, но текстура фарша слегка неестественна",
+    "lazy-vareniki": "score=4 flags=пластик+не-то-блюдо — Обычные вареники вместо ленивых ромбиков; тесто восковое",
+    "mango-sticky-rice": "score=6 flags=пластик+не-то-блюдо — Рис выглядит восковым; это жёлтый рис, не манго-стикки-райс"
   },
   "log": [
     "bbq-pulled-pork попытка1: score=3 flags=пластик+не-то-блюдо — Глянцевые нитевидные волокна, похоже на лапшу, не на мясо",
@@ -172,6 +192,29 @@
     "kluay-tod попытка2: score=7 flags=чисто — Реалистичные фриттеры, всё соответствует описанию",
     "kofte-turkish попытка1: score=-1 flags=чисто — ошибка критика",
     "kofte-turkish попытка2: score=6 flags=пластик — Тефтели восковые, однородная нейронная текстура, нет зелени",
-    "kofte-turkish попытка3: score=-1 flags=чисто — ошибка критика"
+    "kofte-turkish попытка3: score=-1 flags=чисто — ошибка критика",
+    "korean-carrot попытка1: score=3 flags=не-то-блюдо — Вместо морковной салата — рис; блюдо не совпадает",
+    "korean-carrot попытка2: score=-1 flags=чисто — ошибка критика",
+    "korean-carrot попытка3: score=6 flags=не-то-блюдо — Масса коричневая мелкозернистая, не морковь по-корейски",
+    "kung-pao-chicken попытка1: score=-1 flags=чисто — ошибка критика",
+    "kung-pao-chicken попытка2: score=7 flags=пластик — Курица с арахисом и перцем есть, но текстура восковая",
+    "kung-pao-chicken попытка3: score=-1 flags=чисто — ошибка критика",
+    "larb-chicken попытка1: score=6 flags=чисто — Похоже на ларб, но текстура фарша слегка неестественна",
+    "larb-chicken попытка2: score=-1 flags=чисто — ошибка критика",
+    "larb-chicken попытка3: score=5 flags=не-то-блюдо — Похоже на рис с кусочками курицы, а не ларб",
+    "lazy-vareniki попытка1: score=-1 flags=чисто — ошибка критика",
+    "lazy-vareniki попытка2: score=4 flags=пластик+не-то-блюдо — Обычные вареники вместо ленивых ромбиков; тесто восковое",
+    "lazy-vareniki попытка3: score=-1 flags=чисто — ошибка критика",
+    "lentil-soup попытка1: score=8 flags=чисто — Реалистичная чечевичная похлёбка с морковью, лимоном и кинзой",
+    "mac-and-cheese попытка1: score=-1 flags=чисто — ошибка критика",
+    "mac-and-cheese попытка2: score=7 flags=чисто — Реалистичная макаронная запеканка с корочкой, сомнений немного",
+    "mango-sticky-rice попытка1: score=-1 flags=чисто — ошибка критика",
+    "mango-sticky-rice попытка2: score=6 flags=пластик+не-то-блюдо — Рис выглядит восковым; это жёлтый рис, не манго-стикки-райс",
+    "mango-sticky-rice попытка3: score=-1 flags=чисто — ошибка критика",
+    "massaman-beef попытка1: score=7 flags=чисто — Массаман с говядиной, картофелем, арахисом; реалистично",
+    "meatloaf попытка1: score=-1 flags=чисто — ошибка критика",
+    "meatloaf попытка2: score=7 flags=чисто — Реалистичный meatloaf с глазурью, домашних свет",
+    "menemen попытка1: score=-1 flags=чисто — ошибка критика",
+    "menemen попытка2: score=7 flags=чисто — Менемен узнаваем, свет домашний; текстура яиц слегка сглажена"
   ]
 }
