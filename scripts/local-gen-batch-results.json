@@ -1,5 +1,5 @@
 {
-  "at": "2026-11-26T00:53:17.645Z",
+  "at": "2026-11-26T01:13:14.795Z",
   "batch": [
     "imam-bayildi",
     "kofte-turkish",
@@ -7,17 +7,9 @@
     "larb-chicken",
     "lazy-vareniki",
     "pad-krapow-chicken",
-    "pineapple-fried-rice",
     "pissaladiere",
-    "pisto-manchego",
     "pla-neung-manao",
-    "pollo-al-ajillo",
-    "pork-french",
-    "potato-skins",
-    "provence-chicken",
-    "pumpkin-soup",
     "qing-zheng-fish",
-    "rassolnik",
     "red-curry-pumpkin",
     "roasted-roots",
     "salade-nicoise",
@@ -254,19 +246,44 @@
       "score": 8,
       "note": "Рассольник узнаваем: перловка, огурцы, картошка, сметана, укроп",
       "path": "/home/z/my-project/download/rassolnik-gen.png"
+    },
+    "kofte-turkish": {
+      "score": 8,
+      "note": "Реалистичные кёфте с рисом, лёгкая ИИ-текстура подливки",
+      "path": "/home/z/my-project/download/kofte-turkish-gen.png"
+    },
+    "kung-pao-chicken": {
+      "score": 8,
+      "note": "Кунг-пао с арахисом и чили, реалистично, посуда и палочки соответствуют",
+      "path": "/home/z/my-project/download/kung-pao-chicken-gen.png"
+    },
+    "pissaladiere": {
+      "score": 7,
+      "note": "Похоже на настоящую писсаладьер, но текстура начинки слегка искусственна",
+      "path": "/home/z/my-project/download/pissaladiere-gen.png"
+    },
+    "pla-neung-manao": {
+      "score": 7,
+      "note": "Реалистичный пароваренный окунь с лаймом и чесноком",
+      "path": "/home/z/my-project/download/pla-neung-manao-gen.png"
+    },
+    "red-curry-pumpkin": {
+      "score": 7,
+      "note": "Реалистичный кадр: карри с тыквой, лайм, чили",
+      "path": "/home/z/my-project/download/red-curry-pumpkin-gen.png"
+    },
+    "roasted-roots": {
+      "score": 8,
+      "note": "Реалистичные печёные корнеплоды, естественный свет, соответствует описанию",
+      "path": "/home/z/my-project/download/roasted-roots-gen.png"
     }
   },
   "fail": {
-    "imam-bayildi": "score=7 flags=пластик — Фаршированные баклажаны узнаваемы, но текстура фарша слегка пластиковая",
-    "kofte-turkish": "score=5 flags=не-то-блюдо — Мясо кусками рагу, не шарики-кофте",
-    "kung-pao-chicken": "score=6 flags=пластик — Курица с арахисом и чили есть, но текстура восковая, подозрение на ИИ",
-    "larb-chicken": "score=6 flags=пластик — Похоже на larb, но текстура риса и курицы слегка восковая, ИИ-подозрение",
-    "lazy-vareniki": "score=5 flags=пластик+не-то-блюдо — Похожи на пельмени, а не ленивые вареники; тесто пластиковое",
-    "pad-krapow-chicken": "score=8 flags=нейро-глянец — Пад ка-прау с яйцом на месте, стилизованная подача",
-    "pissaladiere": "score=5 flags=пластик+не-то-блюдо — Пластилиновая текстура, нет анчоусов — не похоже на pissaladiere",
-    "pla-neung-manao": "score=4 flags=пластик — Рыба восковая, нейронная текстура, сомнительно",
-    "qing-zheng-fish": "score=8 flags=текст — Реалистичное блюдо, но есть текстовая надпись",
-    "red-curry-pumpkin": "score=6 flags=чисто — Похоже на настоящий красный карри, но текстура слегка ИИ-подозрительна"
+    "imam-bayildi": "score=6 flags=чисто — Похоже на имам баялды, но соус подозрительно однородный",
+    "larb-chicken": "score=6 flags=не-то-блюдо — На фото лапша с лаймом, не ларб",
+    "lazy-vareniki": "score=6 flags=пластик+не-то-блюдо — Пельмени, а не ленивые вареники; восковая текстура",
+    "pad-krapow-chicken": "score=6 flags=чисто — Курица слегка восковая, нет риса и листа",
+    "qing-zheng-fish": "score=6 flags=пластик — Блюдо верное, но текстура рыбы слегка нейронная"
   },
   "log": [
     "bbq-pulled-pork попытка1: score=3 flags=пластик+не-то-блюдо — Глянцевые нитевидные волокна, похоже на лапшу, не на мясо",
@@ -412,6 +429,32 @@
     "rassolnik попытка1: score=8 flags=чисто — Рассольник узнаваем: перловка, огурцы, картошка, сметана, укроп",
     "red-curry-pumpkin попытка1: score=-1 flags=чисто — ошибка критика",
     "red-curry-pumpkin попытка2: score=6 flags=чисто — Похоже на настоящий красный карри, но текстура слегка ИИ-подозрительна",
-    "red-curry-pumpkin попытка3: score=-1 flags=чисто — ошибка критика"
+    "red-curry-pumpkin попытка3: score=-1 flags=чисто — ошибка критика",
+    "imam-bayildi попытка1: score=6 flags=чисто — Похоже на имам баялды, но соус подозрительно однородный",
+    "imam-bayildi попытка2: score=-1 flags=чисто — ошибка критика",
+    "imam-bayildi попытка3: score=4 flags=пластик — Сморщенные баклажаны выглядят восковыми, нейронная текстура",
+    "kofte-turkish попытка1: score=-1 flags=чисто — ошибка критика",
+    "kofte-turkish попытка2: score=8 flags=чисто — Реалистичные кёфте с рисом, лёгкая ИИ-текстура подливки",
+    "kung-pao-chicken попытка1: score=-1 flags=чисто — ошибка критика",
+    "kung-pao-chicken попытка2: score=8 flags=чисто — Кунг-пао с арахисом и чили, реалистично, посуда и палочки соответствуют",
+    "larb-chicken попытка1: score=-1 flags=чисто — ошибка критика",
+    "larb-chicken попытка2: score=6 flags=не-то-блюдо — На фото лапша с лаймом, не ларб",
+    "larb-chicken попытка3: score=-1 flags=чисто — ошибка критика",
+    "lazy-vareniki попытка1: score=5 flags=не-то-блюдо — Обычные пельмени, а не ленивые вареники ромбами",
+    "lazy-vareniki попытка2: score=-1 flags=чисто — ошибка критика",
+    "lazy-vareniki попытка3: score=6 flags=пластик+не-то-блюдо — Пельмени, а не ленивые вареники; восковая текстура",
+    "pad-krapow-chicken попытка1: score=6 flags=чисто — Курица слегка восковая, нет риса и листа",
+    "pad-krapow-chicken попытка2: score=-1 flags=чисто — ошибка критика",
+    "pad-krapow-chicken попытка3: score=6 flags=пластик — Блюдо верное, но курица восковая, ИИ-текстура",
+    "pissaladiere попытка1: score=-1 flags=чисто — ошибка критика",
+    "pissaladiere попытка2: score=7 flags=чисто — Похоже на настоящую писсаладьер, но текстура начинки слегка искусственна",
+    "pla-neung-manao попытка1: score=-1 flags=чисто — ошибка критика",
+    "pla-neung-manao попытка2: score=7 flags=чисто — Реалистичный пароваренный окунь с лаймом и чесноком",
+    "qing-zheng-fish попытка1: score=-1 flags=чисто — ошибка критика",
+    "qing-zheng-fish попытка2: score=6 flags=пластик — Блюдо верное, но текстура рыбы слегка нейронная",
+    "qing-zheng-fish попытка3: score=-1 flags=чисто — ошибка критика",
+    "red-curry-pumpkin попытка1: score=7 flags=чисто — Реалистичный кадр: карри с тыквой, лайм, чили",
+    "roasted-roots попытка1: score=-1 flags=чисто — ошибка критика",
+    "roasted-roots попытка2: score=8 flags=чисто — Реалистичные печёные корнеплоды, естественный свет, соответствует описанию"
   ]
 }
