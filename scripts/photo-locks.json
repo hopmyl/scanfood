@@ -752,463 +752,469 @@
  },
  "bbq-pulled-pork": {
   "sha256": "51a2f57675b0d35cf91310361943af23679cb06acb39a69f4d3931ca1b87fef8",
-  "at": "2026-11-26T02:25:36+00:00",
+  "at": "2026-11-26T02:41:26+00:00",
   "score": 7,
   "src": "local-gen-zai-critic-pass"
  },
  "chow-mein-chicken": {
   "sha256": "6845034003d2638f7f5138c1f1e9e7995b3d9d219389b13852b58f0ca1e2f037",
-  "at": "2026-11-26T02:25:36+00:00",
+  "at": "2026-11-26T02:41:26+00:00",
   "score": 7,
   "src": "local-gen-zai-critic-pass"
  },
  "grilled-vegetables-platter": {
   "sha256": "083bb7a6a87ea8988ea61fe5f1f5ec3fb69af5f2c6b1a1535adef8ea73f0cab4",
-  "at": "2026-11-26T02:25:36+00:00",
+  "at": "2026-11-26T02:41:26+00:00",
   "score": 7,
   "src": "local-gen-zai-critic-pass"
  },
  "hash-browns": {
   "sha256": "65a9a2dd6838a4c61bb8569155c8e5f8354238c6271df05b983cfa1c695a7509",
-  "at": "2026-11-26T02:25:36+00:00",
+  "at": "2026-11-26T02:41:26+00:00",
   "score": 8,
   "src": "local-gen-zai-critic-pass"
  },
  "jiaozi-pork": {
   "sha256": "0cfc097c73d81d37fdfa1906424d36d1e96d2b27526c3a7979476739beaf026b",
-  "at": "2026-11-26T02:25:36+00:00",
+  "at": "2026-11-26T02:41:26+00:00",
   "score": 7,
   "src": "local-gen-zai-critic-pass"
  },
  "kai-jeow": {
   "sha256": "8edf3cc4533c7940d3bdc6d64601af047f054dd784d7357538d7c29582d22ba9",
-  "at": "2026-11-26T02:25:36+00:00",
+  "at": "2026-11-26T02:41:26+00:00",
   "score": 8,
   "src": "local-gen-zai-critic-pass"
  },
  "homestyle-tofu": {
   "sha256": "9f6542db5a939f8a2370260902f35f17c68ab69ccb9ee06feb8b88cd67a8d7e9",
-  "at": "2026-11-26T02:25:36+00:00",
+  "at": "2026-11-26T02:41:26+00:00",
   "score": 7,
   "src": "local-gen-zai-critic-pass"
  },
  "huang-men-ji": {
   "sha256": "7924bf7ab1a4aaf8b38cc429f2b9e9a410ffa3e6a735d379fa0d0b7e6a71de52",
-  "at": "2026-11-26T02:25:36+00:00",
+  "at": "2026-11-26T02:41:26+00:00",
   "score": 7,
   "src": "local-gen-zai-critic-pass"
  },
  "khao-man-gai": {
   "sha256": "177de001e7f7936e6d9ce471b070e68dfef829cc3cd7a6f7c913db7a254dbaa0",
-  "at": "2026-11-26T02:25:36+00:00",
+  "at": "2026-11-26T02:41:26+00:00",
   "score": 7,
   "src": "local-gen-zai-critic-pass"
  },
  "kluay-tod": {
   "sha256": "64d8d56d3476f674704cf0e37fbe7a235764829109bbc7889e6352c22828a5ab",
-  "at": "2026-11-26T02:25:36+00:00",
+  "at": "2026-11-26T02:41:26+00:00",
   "score": 7,
   "src": "local-gen-zai-critic-pass"
  },
  "lentil-soup": {
   "sha256": "0e9e05e9b6f1c6f8852acb5960f55fd238c592d241b1f2d2f9c0fcc9af15b344",
-  "at": "2026-11-26T02:25:36+00:00",
+  "at": "2026-11-26T02:41:26+00:00",
   "score": 8,
   "src": "local-gen-zai-critic-pass"
  },
  "mac-and-cheese": {
   "sha256": "68d48fe89efe197d3f3ce5d3b115b371e3dca220b2d87329b3b9ed939f7bda0f",
-  "at": "2026-11-26T02:25:36+00:00",
+  "at": "2026-11-26T02:41:26+00:00",
   "score": 7,
   "src": "local-gen-zai-critic-pass"
  },
  "massaman-beef": {
   "sha256": "fb651195f49bfb10de5cad189caeb5b0c5a4633b9a73638e27c4a92b8ffff4e8",
-  "at": "2026-11-26T02:25:36+00:00",
+  "at": "2026-11-26T02:41:26+00:00",
   "score": 7,
   "src": "local-gen-zai-critic-pass"
  },
  "meatloaf": {
   "sha256": "1ed42073889e038403b975a240ac32c81b5e454ca9ee13efd5f2111bf1cf5fa2",
-  "at": "2026-11-26T02:25:36+00:00",
+  "at": "2026-11-26T02:41:26+00:00",
   "score": 7,
   "src": "local-gen-zai-critic-pass"
  },
  "menemen": {
   "sha256": "8c29c355bd5fb1dc0da8bddb6d38056ad9d5c77c302926cf364e9b088f4e18e5",
-  "at": "2026-11-26T02:25:36+00:00",
+  "at": "2026-11-26T02:41:26+00:00",
   "score": 7,
   "src": "local-gen-zai-critic-pass"
  },
  "mimosa": {
   "sha256": "fee044fa9df4a80fce087160095e90acd34920ee6a5f1ca898480665cca241fd",
-  "at": "2026-11-26T02:25:36+00:00",
+  "at": "2026-11-26T02:41:26+00:00",
   "score": 7,
   "src": "local-gen-zai-critic-pass"
  },
  "moo-yang": {
   "sha256": "6444cd53dd06cbc3b7bd5663db5f1d1277dc8da4d03f39b9e932b6f9b6592b99",
-  "at": "2026-11-26T02:25:36+00:00",
+  "at": "2026-11-26T02:41:26+00:00",
   "score": 8,
   "src": "local-gen-zai-critic-pass"
  },
  "napa-tofu-soup": {
   "sha256": "cdc79a7b5f8388610fced0f327005978d4aec3e7f506cc2076d5c4adbca8744c",
-  "at": "2026-11-26T02:25:36+00:00",
+  "at": "2026-11-26T02:41:26+00:00",
   "score": 8,
   "src": "local-gen-zai-critic-pass"
  },
  "ny-cheesecake": {
   "sha256": "44a62923ec49fbb7784505a3c5ff444fec27947bfe10a69674e1cf6a0dc911a6",
-  "at": "2026-11-26T02:25:36+00:00",
+  "at": "2026-11-26T02:41:26+00:00",
   "score": 8,
   "src": "local-gen-zai-critic-pass"
  },
  "oat-cookies": {
   "sha256": "22f15f3db04ab1461ae7066f56175f7adfc914a2b410f656042f5d5952b1b9d2",
-  "at": "2026-11-26T02:25:36+00:00",
+  "at": "2026-11-26T02:41:26+00:00",
   "score": 8,
   "src": "local-gen-zai-critic-pass"
  },
  "olivier": {
   "sha256": "0112726f2c87df8b96c6bdd7d7573eac5948fa1a66f0dd6442228625313fb3cc",
-  "at": "2026-11-26T02:25:36+00:00",
+  "at": "2026-11-26T02:41:26+00:00",
   "score": 8,
   "src": "local-gen-zai-critic-pass"
  },
  "pad-see-ew": {
   "sha256": "3fa78ef37c1d205eb189e11a131a60d24b27bf604e223c84b281238a2780844f",
-  "at": "2026-11-26T02:25:36+00:00",
+  "at": "2026-11-26T02:41:26+00:00",
   "score": 8,
   "src": "local-gen-zai-critic-pass"
  },
  "pad-thai-shrimp": {
   "sha256": "32f20222054db246fb3e9f07d7d7e3c6842e734afeaf87b447214d2276ce6c57",
-  "at": "2026-11-26T02:25:36+00:00",
+  "at": "2026-11-26T02:41:26+00:00",
   "score": 8,
   "src": "local-gen-zai-critic-pass"
  },
  "pad-woo-sen": {
   "sha256": "83d1e2f0e240f5f7ebeb5ad36ebdae4b7ec541c9227be2fe0e1aac05e08cf5d8",
-  "at": "2026-11-26T02:25:36+00:00",
+  "at": "2026-11-26T02:41:26+00:00",
   "score": 7,
   "src": "local-gen-zai-critic-pass"
  },
  "pan-con-tomate": {
   "sha256": "d00a702467490334494d8611976906536391ebab01c7f649859493639689891f",
-  "at": "2026-11-26T02:25:36+00:00",
+  "at": "2026-11-26T02:41:26+00:00",
   "score": 7,
   "src": "local-gen-zai-critic-pass"
  },
  "patatas-bravas": {
   "sha256": "8eade7538d5da543c6c6a8e23336821daeecd13909dd1c238f53cd2e13d5dfeb",
-  "at": "2026-11-26T02:25:36+00:00",
+  "at": "2026-11-26T02:41:26+00:00",
   "score": 7,
   "src": "local-gen-zai-critic-pass"
  },
  "pea-soup": {
   "sha256": "2035802c33e1e0c02402bb44d7701921fa9737ce7b0e9a13b09ecb33c6722bce",
-  "at": "2026-11-26T02:25:36+00:00",
+  "at": "2026-11-26T02:41:26+00:00",
   "score": 7,
   "src": "local-gen-zai-critic-pass"
  },
  "pelmeni": {
   "sha256": "aabea3df7d057f7f6b6caad820325fa991983dd8f54972938ca50e6b2fcea303",
-  "at": "2026-11-26T02:25:36+00:00",
+  "at": "2026-11-26T02:41:26+00:00",
   "score": 8,
   "src": "local-gen-zai-critic-pass"
  },
  "pepperoni-pizza": {
   "sha256": "1ca7688ff1466c7157f3a3adaec0cbe07c40785b018e0056c6ad14a8e1a946c8",
-  "at": "2026-11-26T02:25:36+00:00",
+  "at": "2026-11-26T02:41:26+00:00",
   "score": 8,
   "src": "local-gen-zai-critic-pass"
  },
  "korean-carrot": {
   "sha256": "740aeee4f5313b3d2c15f0459aff3c5ba027d44263aa26019609bfb155164d2b",
-  "at": "2026-11-26T02:25:36+00:00",
+  "at": "2026-11-26T02:41:26+00:00",
   "score": 7,
   "src": "local-gen-zai-critic-pass"
  },
  "mango-sticky-rice": {
   "sha256": "df07ae62c0daa59d624ed99f390e731783c4923b5871843038012d6819032947",
-  "at": "2026-11-26T02:25:36+00:00",
+  "at": "2026-11-26T02:41:26+00:00",
   "score": 8,
   "src": "local-gen-zai-critic-pass"
  },
  "mussels-cream": {
   "sha256": "3e43e06c3aa5d305e1c38a9786802934d7c0ad40ff6080e6348a0ffa2c9c232c",
-  "at": "2026-11-26T02:25:36+00:00",
+  "at": "2026-11-26T02:41:26+00:00",
   "score": 8,
   "src": "local-gen-zai-critic-pass"
  },
  "pad-gratiem-garlic-veg": {
   "sha256": "e0644414a4e277b1961851b3eadb34d990c3a28a6e98375f6790cb75f33848cb",
-  "at": "2026-11-26T02:25:36+00:00",
+  "at": "2026-11-26T02:41:26+00:00",
   "score": 8,
   "src": "local-gen-zai-critic-pass"
  },
  "pineapple-fried-rice": {
   "sha256": "fdf83e94a6c15091e7f7e41f67c58b4f363a7e223cfdab52f9390fd67a6cdc57",
-  "at": "2026-11-26T02:25:36+00:00",
+  "at": "2026-11-26T02:41:26+00:00",
   "score": 7,
   "src": "local-gen-zai-critic-pass"
  },
  "pisto-manchego": {
   "sha256": "4f23b0dd3f64fb9b4b320ff091503505167abeb88b2adf2e932f7bb1e3c7301c",
-  "at": "2026-11-26T02:25:36+00:00",
+  "at": "2026-11-26T02:41:26+00:00",
   "score": 7,
   "src": "local-gen-zai-critic-pass"
  },
  "pollo-al-ajillo": {
   "sha256": "d1e41740f76b039fb6cd0374ede2b048a6a386faa8db97642073225c9f5b8357",
-  "at": "2026-11-26T02:25:36+00:00",
+  "at": "2026-11-26T02:41:26+00:00",
   "score": 8,
   "src": "local-gen-zai-critic-pass"
  },
  "pork-french": {
   "sha256": "e04bcf3979ecf443a2355872ff1b37f548bd6d212d1dce09e52b3e7931ef1804",
-  "at": "2026-11-26T02:25:36+00:00",
+  "at": "2026-11-26T02:41:26+00:00",
   "score": 7,
   "src": "local-gen-zai-critic-pass"
  },
  "potato-skins": {
   "sha256": "2aef1ba0c469a91dc91cb2eb7932ad7aeb74c236baefcc385ab774cb7729a27c",
-  "at": "2026-11-26T02:25:36+00:00",
+  "at": "2026-11-26T02:41:26+00:00",
   "score": 8,
   "src": "local-gen-zai-critic-pass"
  },
  "provence-chicken": {
   "sha256": "8ff1792eec9c80d21970b8af35e6fd757f6f952237e3e5d51ab7474b61a7f665",
-  "at": "2026-11-26T02:25:36+00:00",
+  "at": "2026-11-26T02:41:26+00:00",
   "score": 8,
   "src": "local-gen-zai-critic-pass"
  },
  "pumpkin-soup": {
   "sha256": "61fec7143c55a34606389e18ef5aadd144b428c862c3dd86de9a8326da0028d7",
-  "at": "2026-11-26T02:25:36+00:00",
+  "at": "2026-11-26T02:41:26+00:00",
   "score": 8,
   "src": "local-gen-zai-critic-pass"
  },
  "rassolnik": {
   "sha256": "a5b69d81da89641bb1b1a139117cd5f1882695d162bb1b0564fd9b3cdcf5940f",
-  "at": "2026-11-26T02:25:36+00:00",
+  "at": "2026-11-26T02:41:26+00:00",
   "score": 8,
   "src": "local-gen-zai-critic-pass"
  },
  "kofte-turkish": {
   "sha256": "a68310a8e78338c5086eb2272b26ccb746d184e3ca64c95e78ea6f99a7cf8b73",
-  "at": "2026-11-26T02:25:36+00:00",
+  "at": "2026-11-26T02:41:26+00:00",
   "score": 8,
   "src": "local-gen-zai-critic-pass"
  },
  "kung-pao-chicken": {
   "sha256": "6c22169692bcec34681b10ac439f2ed3b62e53211604fe23dbbdd382c15f427e",
-  "at": "2026-11-26T02:25:36+00:00",
+  "at": "2026-11-26T02:41:26+00:00",
   "score": 8,
   "src": "local-gen-zai-critic-pass"
  },
  "pissaladiere": {
   "sha256": "3e837025d95bd7f1d0ec06140c35f7211f478be770c4b7145a502f8e77dcfafa",
-  "at": "2026-11-26T02:25:36+00:00",
+  "at": "2026-11-26T02:41:26+00:00",
   "score": 7,
   "src": "local-gen-zai-critic-pass"
  },
  "pla-neung-manao": {
   "sha256": "10b102831ba79a36a3f6bb718277087473d3dac734862299ba3063a5682180b9",
-  "at": "2026-11-26T02:25:36+00:00",
+  "at": "2026-11-26T02:41:26+00:00",
   "score": 7,
   "src": "local-gen-zai-critic-pass"
  },
  "red-curry-pumpkin": {
   "sha256": "5f05f005525c4d9d6db8507ece73f5fe025662555a63461f14bb01d5531aff60",
-  "at": "2026-11-26T02:25:36+00:00",
+  "at": "2026-11-26T02:41:26+00:00",
   "score": 7,
   "src": "local-gen-zai-critic-pass"
  },
  "roasted-roots": {
   "sha256": "949f5d2ee79afb4ddb1df04a6c34310447733a4d68d0f3ebdeaffc2d7c0b16c0",
-  "at": "2026-11-26T02:25:36+00:00",
+  "at": "2026-11-26T02:41:26+00:00",
   "score": 8,
   "src": "local-gen-zai-critic-pass"
  },
  "imam-bayildi": {
   "sha256": "ebdbf4142295f8b65bdc65b70ef0808ee86406890ad000f1734fdad380eee3b7",
-  "at": "2026-11-26T02:25:36+00:00",
+  "at": "2026-11-26T02:41:26+00:00",
   "score": 8,
   "src": "local-gen-zai-critic-pass"
  },
  "larb-chicken": {
   "sha256": "3d3ada4fdb439cda8cd2d1137fdeb0703b5cca3f1deb232f88aec3388688cec4",
-  "at": "2026-11-26T02:25:36+00:00",
+  "at": "2026-11-26T02:41:26+00:00",
   "score": 8,
   "src": "local-gen-zai-critic-pass"
  },
  "pad-krapow-chicken": {
   "sha256": "ca7ec957fad25a38f5558a191321a35f6be70825b3ba0de32a8c15a4e123acfa",
-  "at": "2026-11-26T02:25:36+00:00",
+  "at": "2026-11-26T02:41:26+00:00",
   "score": 8,
   "src": "local-gen-zai-critic-pass"
  },
  "qing-zheng-fish": {
   "sha256": "ad3a3964d0dccb943cbe4391f0d66c59bbc004c9bdf0984d4135ba8247f04413",
-  "at": "2026-11-26T02:25:36+00:00",
+  "at": "2026-11-26T02:41:26+00:00",
   "score": 7,
   "src": "local-gen-zai-critic-pass"
  },
  "salade-nicoise": {
   "sha256": "104cfaae6390c4a1b19ee8a6815d9d04d3c1b564a742f9338bae84b4f6f25f0f",
-  "at": "2026-11-26T02:25:36+00:00",
+  "at": "2026-11-26T02:41:26+00:00",
   "score": 7,
   "src": "local-gen-zai-critic-pass"
  },
  "salt-pepper-shrimp": {
   "sha256": "862200b97df54d37c3d788ab753163c6ab196898e5aa3a1f2326cbac919200de",
-  "at": "2026-11-26T02:25:36+00:00",
+  "at": "2026-11-26T02:41:26+00:00",
   "score": 7,
   "src": "local-gen-zai-critic-pass"
  },
  "satay-veg-tofu": {
   "sha256": "0881868d27470ddff242b4f2549e54ea3272e5236fdc1756f1ef817006551f21",
-  "at": "2026-11-26T02:25:36+00:00",
+  "at": "2026-11-26T02:41:26+00:00",
   "score": 8,
   "src": "local-gen-zai-critic-pass"
  },
  "shrimp-pasta": {
   "sha256": "d94509e39133e8245f85cdcf848bcd093d3478e3ff8da841b53db32c2f64a195",
-  "at": "2026-11-26T02:25:36+00:00",
+  "at": "2026-11-26T02:41:26+00:00",
   "score": 8,
   "src": "local-gen-zai-critic-pass"
  },
  "smashed-cucumber-salad": {
   "sha256": "3b9de948d6b4b4d3290ee232ba16ec6ff61f12e2eb775afddbfd4b0674c2e9b0",
-  "at": "2026-11-26T02:25:36+00:00",
+  "at": "2026-11-26T02:41:26+00:00",
   "score": 7,
   "src": "local-gen-zai-critic-pass"
  },
  "smoothie-bowl": {
   "sha256": "e36337e271c514378b009e2ed9c18b6f829ec81178628a5efa44a4276d2c82af",
-  "at": "2026-11-26T02:25:36+00:00",
+  "at": "2026-11-26T02:41:26+00:00",
   "score": 8,
   "src": "local-gen-zai-critic-pass"
  },
  "soba-beef": {
   "sha256": "66459383f61b451470bb3881f515afc9e30cd63ade85d63fdceba64832309ec3",
-  "at": "2026-11-26T02:25:36+00:00",
+  "at": "2026-11-26T02:41:26+00:00",
   "score": 8,
   "src": "local-gen-zai-critic-pass"
  },
  "som-tam": {
   "sha256": "77f54fe56a428a7e3d89f91c2d1827b41a6e75d385fee5fc7a392961c368504a",
-  "at": "2026-11-26T02:25:36+00:00",
+  "at": "2026-11-26T02:41:26+00:00",
   "score": 7,
   "src": "local-gen-zai-critic-pass"
  },
  "southern-fried-chicken": {
   "sha256": "b93820b84f09fb83be07bdb418884ea6572e1b31ecba3238fd6551ca2fb1dc4f",
-  "at": "2026-11-26T02:25:36+00:00",
+  "at": "2026-11-26T02:41:26+00:00",
   "score": 7,
   "src": "local-gen-zai-critic-pass"
  },
  "spanakopita": {
   "sha256": "1cc2e0b1c6e5b6bfacd1814c0e468847b19cac3839936528ef4e5eb8b53c8943",
-  "at": "2026-11-26T02:25:36+00:00",
+  "at": "2026-11-26T02:41:26+00:00",
   "score": 7,
   "src": "local-gen-zai-critic-pass"
  },
  "spinach-cheese-pancake": {
   "sha256": "7b19895b02855461dc1686cf2b50c8351f9401b360946323785de7c04dc61975",
-  "at": "2026-11-26T02:25:36+00:00",
+  "at": "2026-11-26T02:41:26+00:00",
   "score": 7,
   "src": "local-gen-zai-critic-pass"
  },
  "spring-cabbage-salad": {
   "sha256": "8f50c2ad7ce58f5844cc0a31a1c4781235e368bd5bc54cf21fd28be7c5de3b09",
-  "at": "2026-11-26T02:25:36+00:00",
+  "at": "2026-11-26T02:41:26+00:00",
   "score": 7,
   "src": "local-gen-zai-critic-pass"
  },
  "sushi-set": {
   "sha256": "9f4627069b25a9f3fab97c61e13ce6fb75dd94ba04f39ea11ac7851b1e739625",
-  "at": "2026-11-26T02:25:36+00:00",
+  "at": "2026-11-26T02:41:26+00:00",
   "score": 8,
   "src": "local-gen-zai-critic-pass"
  },
  "sweet-potato-fries": {
   "sha256": "b85b687b39293439c5b93980e98741d3808a71750d3ee1578aee4db86b1cfb83",
-  "at": "2026-11-26T02:25:36+00:00",
+  "at": "2026-11-26T02:41:26+00:00",
   "score": 8,
   "src": "local-gen-zai-critic-pass"
  },
  "sweet-sour-chicken": {
   "sha256": "d5b3201ec6f66149b9e234ebdd1455315cc444e55c65ec9e03913c740ddc1a88",
-  "at": "2026-11-26T02:25:36+00:00",
+  "at": "2026-11-26T02:41:26+00:00",
   "score": 7,
   "src": "local-gen-zai-critic-pass"
  },
  "tabbouleh": {
   "sha256": "64edcf63fe34476d13eaaec2e659deb9335b6c563e84b529873d0c3e70559689",
-  "at": "2026-11-26T02:25:36+00:00",
+  "at": "2026-11-26T02:41:26+00:00",
   "score": 7,
   "src": "local-gen-zai-critic-pass"
  },
  "thai-fried-rice": {
   "sha256": "48d5514d114b298b91be2b179191226930e7c5cd617c41c15d35c9ad6db393fb",
-  "at": "2026-11-26T02:25:36+00:00",
+  "at": "2026-11-26T02:41:26+00:00",
   "score": 8,
   "src": "local-gen-zai-critic-pass"
  },
  "thai-sticky-wings": {
   "sha256": "f9cbd47af94994bfad0141abe38cb193a72fc8ddf5f8f645fce1e0bfee401d55",
-  "at": "2026-11-26T02:25:36+00:00",
+  "at": "2026-11-26T02:41:26+00:00",
   "score": 7,
   "src": "local-gen-zai-critic-pass"
  },
  "tom-yum": {
   "sha256": "c7ecbf422e27aefba5212f648eda245742cc9861da374609b447d30082b9e6c8",
-  "at": "2026-11-26T02:25:36+00:00",
+  "at": "2026-11-26T02:41:26+00:00",
   "score": 7,
   "src": "local-gen-zai-critic-pass"
  },
  "trout-foil": {
   "sha256": "472f5cb58f701e31139803fbd1a264b2e6174a17c7c5d46ac50912d4856d7220",
-  "at": "2026-11-26T02:25:36+00:00",
+  "at": "2026-11-26T02:41:26+00:00",
   "score": 8,
   "src": "local-gen-zai-critic-pass"
  },
  "spinach-artichoke-dip": {
   "sha256": "744586fbc7d4e2b9b12e9e5fa9b1d0a530cf4df3854a94dc3048f97399a879e2",
-  "at": "2026-11-26T02:25:36+00:00",
+  "at": "2026-11-26T02:41:26+00:00",
   "score": 8,
   "src": "local-gen-zai-critic-pass"
  },
  "tea-eggs": {
   "sha256": "6e682274b076f90c39ac70ea4a0cee480819a341dc3b0d91e68014d060b763ae",
-  "at": "2026-11-26T02:25:36+00:00",
+  "at": "2026-11-26T02:41:26+00:00",
   "score": 7,
   "src": "local-gen-zai-critic-pass"
  },
  "thai-congee-jok": {
   "sha256": "a61672bd6067931f3cdbba5cbe6552e710a3802caa4fae09e90e1182f37ef65b",
-  "at": "2026-11-26T02:25:36+00:00",
+  "at": "2026-11-26T02:41:26+00:00",
   "score": 7,
   "src": "local-gen-zai-critic-pass"
  },
  "tod-mun-pla": {
   "sha256": "ea128d5ab5f285885ebb12f10ddc56a7d84b40c3a81876c967d2aa89389a3cbd",
-  "at": "2026-11-26T02:25:36+00:00",
+  "at": "2026-11-26T02:41:26+00:00",
   "score": 7,
   "src": "local-gen-zai-critic-pass"
  },
  "tuna-melt": {
   "sha256": "ab83757c76ca11b3c194c0db17bb5cd98da8566f38f18a6c54173917e104bd3a",
-  "at": "2026-11-26T02:25:36+00:00",
+  "at": "2026-11-26T02:41:26+00:00",
   "score": 7,
   "src": "local-gen-zai-critic-pass"
  },
  "vinaigrette": {
   "sha256": "6a0e0a80452bbc97413225f52357cb0d36c3a6763d784f227bf707ecd2b95175",
-  "at": "2026-11-26T02:25:36+00:00",
+  "at": "2026-11-26T02:41:26+00:00",
+  "score": 7,
+  "src": "local-gen-zai-critic-pass"
+ },
+ "shui-zhu-beef": {
+  "sha256": "51b84d1358904c02cf8f800d057907ab07617fb59d856384781bc718a43e7d9e",
+  "at": "2026-11-26T02:41:26+00:00",
   "score": 7,
   "src": "local-gen-zai-critic-pass"
  }
