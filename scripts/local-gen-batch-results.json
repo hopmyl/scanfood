@@ -1,43 +1,13 @@
 {
-  "at": "2026-11-26T01:13:14.795Z",
+  "at": "2026-11-26T02:25:21.106Z",
   "batch": [
-    "imam-bayildi",
-    "kofte-turkish",
-    "kung-pao-chicken",
-    "larb-chicken",
     "lazy-vareniki",
-    "pad-krapow-chicken",
-    "pissaladiere",
-    "pla-neung-manao",
-    "qing-zheng-fish",
-    "red-curry-pumpkin",
-    "roasted-roots",
-    "salade-nicoise",
-    "salt-pepper-shrimp",
-    "satay-veg-tofu",
-    "shrimp-pasta",
     "shui-zhu-beef",
-    "smashed-cucumber-salad",
-    "smoothie-bowl",
-    "soba-beef",
-    "som-tam",
     "son-in-law-eggs",
-    "southern-fried-chicken",
-    "spanakopita",
     "spinach-artichoke-dip",
-    "spinach-cheese-pancake",
-    "spring-cabbage-salad",
-    "sushi-set",
-    "sweet-potato-fries",
-    "sweet-sour-chicken",
-    "tabbouleh",
     "tea-eggs",
     "thai-congee-jok",
-    "thai-fried-rice",
-    "thai-sticky-wings",
     "tod-mun-pla",
-    "tom-yum",
-    "trout-foil",
     "tuna-melt",
     "vinaigrette"
   ],
@@ -276,14 +246,162 @@
       "score": 8,
       "note": "Реалистичные печёные корнеплоды, естественный свет, соответствует описанию",
       "path": "/home/z/my-project/download/roasted-roots-gen.png"
+    },
+    "imam-bayildi": {
+      "score": 8,
+      "note": "Реалистичные фаршированные баклажаны, естественный свет, домашняя подача",
+      "path": "/home/z/my-project/download/imam-bayildi-gen.png"
+    },
+    "larb-chicken": {
+      "score": 8,
+      "note": "Реалистичный ларб с лаймом и чили, подача без бананового листа",
+      "path": "/home/z/my-project/download/larb-chicken-gen.png"
+    },
+    "pad-krapow-chicken": {
+      "score": 8,
+      "note": "Реалистичное фото пад капау с яйцом, рисом и лаймом",
+      "path": "/home/z/my-project/download/pad-krapow-chicken-gen.png"
+    },
+    "qing-zheng-fish": {
+      "score": 7,
+      "note": "Реалистичный паровой рыбный кадр, текстура рыбы слегка неестественна",
+      "path": "/home/z/my-project/download/qing-zheng-fish-gen.png"
+    },
+    "salade-nicoise": {
+      "score": 7,
+      "note": "Реалистичный нисуаз, тунец чуть странно текстурирован",
+      "path": "/home/z/my-project/download/salade-nicoise-gen.png"
+    },
+    "salt-pepper-shrimp": {
+      "score": 7,
+      "note": "Креветки выглядят реалистично, но текстура крошки слегка однородна",
+      "path": "/home/z/my-project/download/salt-pepper-shrimp-gen.png"
+    },
+    "satay-veg-tofu": {
+      "score": 8,
+      "note": "Реалистичный сатай с соусом, чили и лаймом",
+      "path": "/home/z/my-project/download/satay-veg-tofu-gen.png"
+    },
+    "shrimp-pasta": {
+      "score": 8,
+      "note": "Реалистичная креветочная паста, естественный свет, блюдо соответствует",
+      "path": "/home/z/my-project/download/shrimp-pasta-gen.png"
+    },
+    "smashed-cucumber-salad": {
+      "score": 7,
+      "note": "Настоящий салат из битых огурцов, реалистичная подача",
+      "path": "/home/z/my-project/download/smashed-cucumber-salad-gen.png"
+    },
+    "smoothie-bowl": {
+      "score": 8,
+      "note": "Реалистичный смузи-боул, топпинги рядами, всё соответствует",
+      "path": "/home/z/my-project/download/smoothie-bowl-gen.png"
+    },
+    "soba-beef": {
+      "score": 8,
+      "note": "Реалистичная лапша соба с говядиной, всё соответствует",
+      "path": "/home/z/my-project/download/soba-beef-gen.png"
+    },
+    "som-tam": {
+      "score": 7,
+      "note": "Салат узнаваем, чили и лайм есть, подача простая",
+      "path": "/home/z/my-project/download/som-tam-gen.png"
+    },
+    "southern-fried-chicken": {
+      "score": 7,
+      "note": "Реалистичная домашняя жареная курица, текстура корочки чуть нейронная",
+      "path": "/home/z/my-project/download/southern-fried-chicken-gen.png"
+    },
+    "spanakopita": {
+      "score": 7,
+      "note": "Реалистичная спанакопита, слегка ИИ-текстура коржа",
+      "path": "/home/z/my-project/download/spanakopita-gen.png"
+    },
+    "spinach-cheese-pancake": {
+      "score": 7,
+      "note": "Реалистичный блинчик со шпинатом и сыром, соответствует описанию",
+      "path": "/home/z/my-project/download/spinach-cheese-pancake-gen.png"
+    },
+    "spring-cabbage-salad": {
+      "score": 7,
+      "note": "Реалистичный салат, но желтки выглядят слегка неестественно",
+      "path": "/home/z/my-project/download/spring-cabbage-salad-gen.png"
+    },
+    "sushi-set": {
+      "score": 8,
+      "note": "Реалистичные роллы на сланце, хорошее дневное освещение",
+      "path": "/home/z/my-project/download/sushi-set-gen.png"
+    },
+    "sweet-potato-fries": {
+      "score": 8,
+      "note": "Реалистичные сладкие картофельные фри, домашняя подача",
+      "path": "/home/z/my-project/download/sweet-potato-fries-gen.png"
+    },
+    "sweet-sour-chicken": {
+      "score": 7,
+      "note": "Блюдо соответствует, реалистично; соус слегка глянцевый",
+      "path": "/home/z/my-project/download/sweet-sour-chicken-gen.png"
+    },
+    "tabbouleh": {
+      "score": 7,
+      "note": "Реалистичный табуле на терракотовой тарелке, мелкая зернистость слегка неестеств",
+      "path": "/home/z/my-project/download/tabbouleh-gen.png"
+    },
+    "thai-fried-rice": {
+      "score": 8,
+      "note": "Реалистичный кадр, креветочный рис соответствует описанию",
+      "path": "/home/z/my-project/download/thai-fried-rice-gen.png"
+    },
+    "thai-sticky-wings": {
+      "score": 7,
+      "note": "Крылья с чили и лаймом, реалистично, без листа банана",
+      "path": "/home/z/my-project/download/thai-sticky-wings-gen.png"
+    },
+    "tom-yum": {
+      "score": 7,
+      "note": "Том Ям с креветкой, лайм и чили есть; текстура супа слегка однородна",
+      "path": "/home/z/my-project/download/tom-yum-gen.png"
+    },
+    "trout-foil": {
+      "score": 8,
+      "note": "Реалистичная домашняя подача, рыба с лимоном и тимьяном в фольге",
+      "path": "/home/z/my-project/download/trout-foil-gen.png"
+    },
+    "spinach-artichoke-dip": {
+      "score": 8,
+      "note": "Реалистичный домашний дип, текстура правдоподобна",
+      "path": "/home/z/my-project/download/spinach-artichoke-dip-gen.png"
+    },
+    "tea-eggs": {
+      "score": 7,
+      "note": "Реалистичные чайные яйца, мраморный узор слегка однородный",
+      "path": "/home/z/my-project/download/tea-eggs-gen.png"
+    },
+    "thai-congee-jok": {
+      "score": 7,
+      "note": "Реалистичный джок со свининой, лайм и перец на месте",
+      "path": "/home/z/my-project/download/thai-congee-jok-gen.png"
+    },
+    "tod-mun-pla": {
+      "score": 7,
+      "note": "Реалистичные рыбные котлеты, лайм и чили на месте",
+      "path": "/home/z/my-project/download/tod-mun-pla-gen.png"
+    },
+    "tuna-melt": {
+      "score": 7,
+      "note": "Тунец с чеддером на тостах, реалистично, лёгкая ИИ-текстура начинки",
+      "path": "/home/z/my-project/download/tuna-melt-gen.png"
+    },
+    "vinaigrette": {
+      "score": 7,
+      "note": "Свекольный винегрет реалистичен, лёгкая ИИ-текстура кубиков",
+      "path": "/home/z/my-project/download/vinaigrette-gen.png"
     }
   },
   "fail": {
-    "imam-bayildi": "score=6 flags=чисто — Похоже на имам баялды, но соус подозрительно однородный",
-    "larb-chicken": "score=6 flags=не-то-блюдо — На фото лапша с лаймом, не ларб",
-    "lazy-vareniki": "score=6 flags=пластик+не-то-блюдо — Пельмени, а не ленивые вареники; восковая текстура",
-    "pad-krapow-chicken": "score=6 flags=чисто — Курица слегка восковая, нет риса и листа",
-    "qing-zheng-fish": "score=6 flags=пластик — Блюдо верное, но текстура рыбы слегка нейронная"
+    "lazy-vareniki": "score=5 flags=пластик+не-то-блюдо — Пельмени, а не ленивые вареники; тесто пластиковое",
+    "shui-zhu-beef": "score=6 flags=чисто — Похоже на шуйчжуonium, но текстура масла слегка неестественная",
+    "son-in-law-eggs": "score=6 flags=пластик — Похоже на son in law eggs, но текстура соуса восковая"
   },
   "log": [
     "bbq-pulled-pork попытка1: score=3 flags=пластик+не-то-блюдо — Глянцевые нитевидные волокна, похоже на лапшу, не на мясо",
@@ -455,6 +573,98 @@
     "qing-zheng-fish попытка3: score=-1 flags=чисто — ошибка критика",
     "red-curry-pumpkin попытка1: score=7 flags=чисто — Реалистичный кадр: карри с тыквой, лайм, чили",
     "roasted-roots попытка1: score=-1 flags=чисто — ошибка критика",
-    "roasted-roots попытка2: score=8 flags=чисто — Реалистичные печёные корнеплоды, естественный свет, соответствует описанию"
+    "roasted-roots попытка2: score=8 flags=чисто — Реалистичные печёные корнеплоды, естественный свет, соответствует описанию",
+    "imam-bayildi попытка1: score=8 flags=чисто — Реалистичные фаршированные баклажаны, естественный свет, домашняя подача",
+    "larb-chicken попытка1: score=-1 flags=чисто — ошибка критика",
+    "larb-chicken попытка2: score=8 flags=чисто — Реалистичный ларб с лаймом и чили, подача без бананового листа",
+    "lazy-vareniki попытка1: score=-1 flags=чисто — ошибка критика",
+    "lazy-vareniki попытка2: score=4 flags=пластик+не-то-блюдо — Это пельмени, а не ленивые вареники; тесто пластиковое",
+    "lazy-vareniki попытка3: score=-1 flags=чисто — ошибка критика",
+    "pad-krapow-chicken попытка1: score=8 flags=чисто — Реалистичное фото пад капау с яйцом, рисом и лаймом",
+    "qing-zheng-fish попытка1: score=-1 flags=чисто — ошибка критика",
+    "qing-zheng-fish попытка2: score=7 flags=чисто — Реалистичный паровой рыбный кадр, текстура рыбы слегка неестественна",
+    "salade-nicoise попытка1: score=-1 flags=чисто — ошибка критика",
+    "salade-nicoise попытка2: score=7 flags=чисто — Реалистичный нисуаз, тунец чуть странно текстурирован",
+    "salt-pepper-shrimp попытка1: score=-1 flags=чисто — ошибка критика",
+    "salt-pepper-shrimp попытка2: score=7 flags=чисто — Креветки выглядят реалистично, но текстура крошки слегка однородна",
+    "satay-veg-tofu попытка1: score=8 flags=чисто — Реалистичный сатай с соусом, чили и лаймом",
+    "shrimp-pasta попытка1: score=-1 flags=чисто — ошибка критика",
+    "shrimp-pasta попытка2: score=8 flags=чисто — Реалистичная креветочная паста, естественный свет, блюдо соответствует",
+    "shui-zhu-beef попытка1: score=-1 flags=чисто — ошибка критика",
+    "shui-zhu-beef попытка2: score=6 flags=пластик — Мясо выглядит восковым, подозрительно однородная текстура",
+    "shui-zhu-beef попытка3: score=-1 flags=чисто — ошибка критика",
+    "smashed-cucumber-salad попытка1: score=7 flags=чисто — Настоящий салат из битых огурцов, реалистичная подача",
+    "smoothie-bowl попытка1: score=-1 flags=чисто — ошибка критика",
+    "smoothie-bowl попытка2: score=8 flags=чисто — Реалистичный смузи-боул, топпинги рядами, всё соответствует",
+    "soba-beef попытка1: score=-1 flags=чисто — ошибка критика",
+    "soba-beef попытка2: score=8 flags=чисто — Реалистичная лапша соба с говядиной, всё соответствует",
+    "som-tam попытка1: score=-1 flags=чисто — ошибка критика",
+    "som-tam попытка2: score=7 flags=чисто — Салат узнаваем, чили и лайм есть, подача простая",
+    "son-in-law-eggs попытка1: score=4 flags=пластик+не-то-блюдо — Ожидались яйца, на фото восковидное жареное мясо",
+    "son-in-law-eggs попытка2: score=-1 flags=чисто — ошибка критика",
+    "son-in-law-eggs попытка3: score=5 flags=пластик+текст — Соус выглядит глянцево-пластиковым, есть надпись",
+    "southern-fried-chicken попытка1: score=-1 flags=чисто — ошибка критика",
+    "southern-fried-chicken попытка2: score=7 flags=чисто — Реалистичная домашняя жареная курица, текстура корочки чуть нейронная",
+    "spanakopita попытка1: score=-1 flags=чисто — ошибка критика",
+    "spanakopita попытка2: score=7 flags=чисто — Реалистичная спанакопита, слегка ИИ-текстура коржа",
+    "spinach-artichoke-dip попытка1: score=-1 flags=чисто — ошибка критика",
+    "spinach-artichoke-dip попытка2: score=6 flags=чисто — Запеканка с крошкой сверху, не классический дип",
+    "spinach-artichoke-dip попытка3: score=-1 flags=чисто — ошибка критика",
+    "spinach-cheese-pancake попытка1: score=6 flags=нейро-глянец — Блин со шпинатом есть, но фон и свет постановочно-гламурные",
+    "spinach-cheese-pancake попытка2: score=-1 flags=чисто — ошибка критика",
+    "spinach-cheese-pancake попытка3: score=7 flags=чисто — Реалистичный блинчик со шпинатом и сыром, соответствует описанию",
+    "spring-cabbage-salad попытка1: score=7 flags=чисто — Реалистичный салат, но желтки выглядят слегка неестественно",
+    "sushi-set попытка1: score=-1 flags=чисто — ошибка критика",
+    "sushi-set попытка2: score=8 flags=чисто — Реалистичные роллы на сланце, хорошее дневное освещение",
+    "sweet-potato-fries попытка1: score=-1 flags=чисто — ошибка критика",
+    "sweet-potato-fries попытка2: score=8 flags=чисто — Реалистичные сладкие картофельные фри, домашняя подача",
+    "sweet-sour-chicken попытка1: score=-1 flags=чисто — ошибка критика",
+    "sweet-sour-chicken попытка2: score=7 flags=чисто — Блюдо соответствует, реалистично; соус слегка глянцевый",
+    "tabbouleh попытка1: score=-1 flags=чисто — ошибка критика",
+    "tabbouleh попытка2: score=7 flags=чисто — Реалистичный табуле на терракотовой тарелке, мелкая зернистость слегка неестеств",
+    "tea-eggs попытка1: score=-1 flags=чисто — ошибка критика",
+    "tea-eggs попытка2: score=5 flags=пластик — Яйца выглядят восковыми, узор слишком однородный",
+    "tea-eggs попытка3: score=-1 flags=чисто — ошибка критика",
+    "thai-congee-jok попытка1: score=6 flags=пластик — Похоже на джок со свининой, но текстура слегка нейронная",
+    "thai-congee-jok попытка2: score=-1 flags=чисто — ошибка критика",
+    "thai-congee-jok попытка3: score=4 flags=пар — Рисованный пар, слегка нейронная текстура крупы",
+    "thai-fried-rice попытка1: score=-1 flags=чисто — ошибка критика",
+    "thai-fried-rice попытка2: score=8 flags=чисто — Реалистичный кадр, креветочный рис соответствует описанию",
+    "thai-sticky-wings попытка1: score=-1 flags=чисто — ошибка критика",
+    "thai-sticky-wings попытка2: score=7 flags=чисто — Крылья с чили и лаймом, реалистично, без листа банана",
+    "tod-mun-pla попытка1: score=-1 flags=чисто — ошибка критика",
+    "tod-mun-pla попытка2: score=5 flags=пластик+текст — Текст наложен, текстура котлет подозрительно однородная",
+    "tod-mun-pla попытка3: score=-1 flags=чисто — ошибка критика",
+    "tom-yum попытка1: score=7 flags=чисто — Том Ям с креветкой, лайм и чили есть; текстура супа слегка однородна",
+    "trout-foil попытка1: score=-1 flags=чисто — ошибка критика",
+    "trout-foil попытка2: score=8 flags=чисто — Реалистичная домашняя подача, рыба с лимоном и тимьяном в фольге",
+    "tuna-melt попытка1: score=5 flags=пластик — Тунец и чеддер есть, но хлеб и сыр слишком гладкие",
+    "tuna-melt попытка2: score=-1 flags=чисто — ошибка критика",
+    "tuna-melt попытка3: генерация упала Command failed: z-ai image -p \"Tuna melt with cheddar, casua",
+    "vinaigrette попытка1: score=3 flags=пластик+не-то-блюдо — Коричневое рагу вместо свекольной винегреты, пластилиновая текстура",
+    "vinaigrette попытка2: score=-1 flags=чисто — ошибка критика",
+    "vinaigrette попытка3: генерация упала Command failed: z-ai image -p \"Russian vinaigrette beet sala",
+    "lazy-vareniki попытка1: score=4 flags=пластик+не-то-блюдо — Пельмени вместо ленивых вареников, восковая текстура теста",
+    "lazy-vareniki попытка2: score=-1 flags=чисто — ошибка критика",
+    "lazy-vareniki попытка3: score=5 flags=пластик+не-то-блюдо — Пельмени, а не ленивые вареники; тесто пластиковое",
+    "shui-zhu-beef попытка1: score=-1 flags=чисто — ошибка критика",
+    "shui-zhu-beef попытка2: score=6 flags=чисто — Похоже на шуйчжуonium, но текстура масла слегка неестественная",
+    "shui-zhu-beef попытка3: score=-1 flags=чисто — ошибка критика",
+    "son-in-law-eggs попытка1: score=5 flags=пластик+не-то-блюдо — Омлет с мясной начинкой, не son in law eggs; восковая текстура",
+    "son-in-law-eggs попытка2: score=-1 flags=чисто — ошибка критика",
+    "son-in-law-eggs попытка3: score=6 flags=пластик — Похоже на son in law eggs, но текстура соуса восковая",
+    "spinach-artichoke-dip попытка1: score=-1 flags=чисто — ошибка критика",
+    "spinach-artichoke-dip попытка2: score=8 flags=чисто — Реалистичный домашний дип, текстура правдоподобна",
+    "tea-eggs попытка1: score=6 flags=чисто — Чайные яйца с мраморным рисунком, палочки есть; текстура яиц слегка подозрительн",
+    "tea-eggs попытка2: score=-1 flags=чисто — ошибка критика",
+    "tea-eggs попытка3: score=7 flags=чисто — Реалистичные чайные яйца, мраморный узор слегка однородный",
+    "thai-congee-jok попытка1: score=-1 flags=чисто — ошибка критика",
+    "thai-congee-jok попытка2: score=7 flags=чисто — Реалистичный джок со свининой, лайм и перец на месте",
+    "tod-mun-pla попытка1: score=-1 flags=чисто — ошибка критика",
+    "tod-mun-pla попытка2: score=7 flags=чисто — Реалистичные рыбные котлеты, лайм и чили на месте",
+    "tuna-melt попытка1: score=-1 flags=чисто — ошибка критика",
+    "tuna-melt попытка2: score=7 flags=чисто — Тунец с чеддером на тостах, реалистично, лёгкая ИИ-текстура начинки",
+    "vinaigrette попытка1: score=-1 flags=чисто — ошибка критика",
+    "vinaigrette попытка2: score=7 flags=чисто — Свекольный винегрет реалистичен, лёгкая ИИ-текстура кубиков"
   ]
 }
