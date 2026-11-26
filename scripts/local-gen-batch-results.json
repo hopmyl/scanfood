@@ -1,15 +1,9 @@
 {
-  "at": "2026-11-26T02:25:21.106Z",
+  "at": "2026-11-26T02:37:33.729Z",
   "batch": [
     "lazy-vareniki",
     "shui-zhu-beef",
-    "son-in-law-eggs",
-    "spinach-artichoke-dip",
-    "tea-eggs",
-    "thai-congee-jok",
-    "tod-mun-pla",
-    "tuna-melt",
-    "vinaigrette"
+    "son-in-law-eggs"
   ],
   "pass": {
     "bbq-pulled-pork": {
@@ -396,12 +390,16 @@
       "score": 7,
       "note": "Свекольный винегрет реалистичен, лёгкая ИИ-текстура кубиков",
       "path": "/home/z/my-project/download/vinaigrette-gen.png"
+    },
+    "shui-zhu-beef": {
+      "score": 7,
+      "note": "Говядина в перцовом масле выглядит реалистично, свет естественный",
+      "path": "/home/z/my-project/download/shui-zhu-beef-gen.png"
     }
   },
   "fail": {
-    "lazy-vareniki": "score=5 flags=пластик+не-то-блюдо — Пельмени, а не ленивые вареники; тесто пластиковое",
-    "shui-zhu-beef": "score=6 flags=чисто — Похоже на шуйчжуonium, но текстура масла слегка неестественная",
-    "son-in-law-eggs": "score=6 flags=пластик — Похоже на son in law eggs, но текстура соуса восковая"
+    "lazy-vareniki": "score=6 flags=пластик+не-то-блюдо — Пельмени/вареники, а не ленивые ромбы из творога",
+    "son-in-law-eggs": "score=3 flags=пластик+не-то-блюдо — Яиц нет — похоже на сладкий фарш, восковая текстура"
   },
   "log": [
     "bbq-pulled-pork попытка1: score=3 flags=пластик+не-то-блюдо — Глянцевые нитевидные волокна, похоже на лапшу, не на мясо",
@@ -665,6 +663,20 @@
     "tuna-melt попытка1: score=-1 flags=чисто — ошибка критика",
     "tuna-melt попытка2: score=7 flags=чисто — Тунец с чеддером на тостах, реалистично, лёгкая ИИ-текстура начинки",
     "vinaigrette попытка1: score=-1 flags=чисто — ошибка критика",
-    "vinaigrette попытка2: score=7 flags=чисто — Свекольный винегрет реалистичен, лёгкая ИИ-текстура кубиков"
+    "vinaigrette попытка2: score=7 flags=чисто — Свекольный винегрет реалистичен, лёгкая ИИ-текстура кубиков",
+    "lazy-vareniki попытка1: score=7 flags=не-то-блюдо — Пельмени, а не ленивые вареники ромбами",
+    "lazy-vareniki попытка2: score=-1 flags=чисто — ошибка критика",
+    "lazy-vareniki попытка3: score=6 flags=не-то-блюдо — Обычные вареники/пельмени, а не ленивые ромбы",
+    "shui-zhu-beef попытка1: score=-1 flags=чисто — ошибка критика",
+    "shui-zhu-beef попытка2: score=7 flags=чисто — Говядина в перцовом масле выглядит реалистично, свет естественный",
+    "son-in-law-eggs попытка1: score=-1 flags=чисто — ошибка критика",
+    "son-in-law-eggs попытка2: score=3 flags=пластик+не-то-блюдо+нейро-глянец — ИИ-рендер; фаршевая масса вместо яиц, восковая текстура",
+    "son-in-law-eggs попытка3: score=-1 flags=чисто — ошибка критика",
+    "lazy-vareniki попытка1: score=6 flags=пластик+не-то-блюдо — Пельмени/вареники, а не ленивые ромбы из творога",
+    "lazy-vareniki попытка2: score=-1 flags=чисто — ошибка критика",
+    "lazy-vareniki попытка3: score=5 flags=пластик+текст — Текст «Lazy vareniki», вареники восковые, скорее пельмени",
+    "son-in-law-eggs попытка1: score=-1 flags=чисто — ошибка критика",
+    "son-in-law-eggs попытка2: score=3 flags=пластик+не-то-блюдо — Яиц нет — похоже на сладкий фарш, восковая текстура",
+    "son-in-law-eggs попытка3: score=-1 flags=чисто — ошибка критика"
   ]
 }
