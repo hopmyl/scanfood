@@ -114,3 +114,5 @@ pan-con-tomate
 patatas-bravas
 pea-soup
 pepperoni-pizza
+mango-sticky-rice
+pad-gratiem-garlic-veg

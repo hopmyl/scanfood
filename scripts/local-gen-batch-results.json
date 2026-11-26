@@ -1,5 +1,5 @@
 {
-  "at": "2026-11-25T11:44:52.373Z",
+  "at": "2026-11-26T00:32:29.523Z",
   "batch": [
     "imam-bayildi",
     "kofte-turkish",
@@ -8,23 +8,9 @@
     "larb-chicken",
     "lazy-vareniki",
     "mango-sticky-rice",
-    "mimosa",
-    "moo-yang",
     "mussels-cream",
-    "napa-tofu-soup",
-    "ny-cheesecake",
-    "oat-cookies",
-    "olivier",
     "pad-gratiem-garlic-veg",
     "pad-krapow-chicken",
-    "pad-see-ew",
-    "pad-thai-shrimp",
-    "pad-woo-sen",
-    "pan-con-tomate",
-    "patatas-bravas",
-    "pea-soup",
-    "pelmeni",
-    "pepperoni-pizza",
     "pineapple-fried-rice",
     "pissaladiere",
     "pisto-manchego",
@@ -212,19 +198,34 @@
       "score": 8,
       "note": "Реалистичная пицца, перчони плоские без «чашек»",
       "path": "/home/z/my-project/download/pepperoni-pizza-gen.png"
+    },
+    "korean-carrot": {
+      "score": 7,
+      "note": "Похоже на морковчу, реалистично; палочки отсутствуют",
+      "path": "/home/z/my-project/download/korean-carrot-gen.png"
+    },
+    "mango-sticky-rice": {
+      "score": 8,
+      "note": "Манго со сладким рисом и кокосовым молоком реалистично",
+      "path": "/home/z/my-project/download/mango-sticky-rice-gen.png"
+    },
+    "mussels-cream": {
+      "score": 8,
+      "note": "Реалистичные мидели в сливочном соусе, хорошая подача",
+      "path": "/home/z/my-project/download/mussels-cream-gen.png"
+    },
+    "pad-gratiem-garlic-veg": {
+      "score": 8,
+      "note": "Реалистичная жареная зелень с чесноком, лаймом и перцем",
+      "path": "/home/z/my-project/download/pad-gratiem-garlic-veg-gen.png"
     }
   },
   "fail": {
-    "imam-bayildi": "score=4 flags=пластик+текст+нейро-глянец — ИИ-рендер: глянцевый баклажан, странный текст с опечаткой",
-    "kofte-turkish": "score=6 flags=пластик — Тефтели восковые, однородная нейронная текстура, нет зелени",
-    "korean-carrot": "score=6 flags=не-то-блюдо — Масса коричневая мелкозернистая, не морковь по-корейски",
-    "kung-pao-chicken": "score=7 flags=пластик — Курица с арахисом и перцем есть, но текстура восковая",
-    "larb-chicken": "score=6 flags=чисто — Похоже на ларб, но текстура фарша слегка неестественна",
-    "lazy-vareniki": "score=4 flags=пластик+не-то-блюдо — Обычные вареники вместо ленивых ромбиков; тесто восковое",
-    "mango-sticky-rice": "score=6 flags=пластик+не-то-блюдо — Рис выглядит восковым; это жёлтый рис, не манго-стикки-райс",
-    "mussels-cream": "score=3 flags=пластик+не-то-блюдо — Куски мяса в соусе, не мидии; восковая текстура",
-    "pad-gratiem-garlic-veg": "score=7 flags=нейро-глянец — Реалистично, но постановочная рекламная стилизация с глянцем",
-    "pad-krapow-chicken": "score=6 flags=пластик — Куриный фарш слишком однородный, слегка нейронная текстура"
+    "imam-bayildi": "score=7 flags=пластик — Фаршированные баклажаны узнаваемы, но текстура фарша слегка пластиковая",
+    "kofte-turkish": "score=5 flags=не-то-блюдо — Мясо кусками рагу, не шарики-кофте",
+    "kung-pao-chicken": "score=6 flags=пластик — Курица с арахисом и чили есть, но текстура восковая, подозрение на ИИ",
+    "larb-chicken": "score=6 flags=пластик — Похоже на larb, но текстура риса и курицы слегка восковая, ИИ-подозрение",
+    "lazy-vareniki": "score=5 flags=пластик+не-то-блюдо — Похожи на пельмени, а не ленивые вареники; тесто пластиковое"
   },
   "log": [
     "bbq-pulled-pork попытка1: score=3 flags=пластик+не-то-блюдо — Глянцевые нитевидные волокна, похоже на лапшу, не на мясо",
@@ -318,6 +319,29 @@
     "pelmeni попытка1: score=-1 flags=чисто — ошибка критика",
     "pelmeni попытка2: score=8 flags=чисто — Реалистичные пельмени, сметана, масло, укроп; естественный свет.",
     "pepperoni-pizza попытка1: score=-1 flags=чисто — ошибка критика",
-    "pepperoni-pizza попытка2: score=8 flags=чисто — Реалистичная пицца, перчони плоские без «чашек»"
+    "pepperoni-pizza попытка2: score=8 flags=чисто — Реалистичная пицца, перчони плоские без «чашек»",
+    "imam-bayildi попытка1: score=7 flags=пластик — Фаршированные баклажаны узнаваемы, но текстура фарша слегка пластиковая",
+    "imam-bayildi попытка2: score=-1 flags=чисто — ошибка критика",
+    "imam-bayildi попытка3: score=5 flags=пластик — Синенькие похожи, но текстура восковая, ИИ-подозрение",
+    "kofte-turkish попытка1: score=-1 flags=чисто — ошибка критика",
+    "kofte-turkish попытка2: score=5 flags=не-то-блюдо — Мясо кусками рагу, не шарики-кофте",
+    "kofte-turkish попытка3: score=-1 flags=чисто — ошибка критика",
+    "korean-carrot попытка1: score=5 flags=пластик+нейро-глянец — Салат похож, но текстура восковая, нейронная",
+    "korean-carrot попытка2: score=-1 flags=чисто — ошибка критика",
+    "korean-carrot попытка3: score=7 flags=чисто — Похоже на морковчу, реалистично; палочки отсутствуют",
+    "kung-pao-chicken попытка1: score=-1 flags=чисто — ошибка критика",
+    "kung-pao-chicken попытка2: score=6 flags=пластик — Курица с арахисом и чили есть, но текстура восковая, подозрение на ИИ",
+    "kung-pao-chicken попытка3: score=-1 flags=чисто — ошибка критика",
+    "larb-chicken попытка1: score=3 flags=пластик+не-то-блюдо — Спагетти вместо ларба, восковая нейротекстура",
+    "larb-chicken попытка2: score=-1 flags=чисто — ошибка критика",
+    "larb-chicken попытка3: score=6 flags=пластик — Похоже на larb, но текстура риса и курицы слегка восковая, ИИ-подозрение",
+    "lazy-vareniki попытка1: score=-1 flags=чисто — ошибка критика",
+    "lazy-vareniki попытка2: score=5 flags=пластик+не-то-блюдо — Похожи на пельмени, а не ленивые вареники; тесто пластиковое",
+    "lazy-vareniki попытка3: score=-1 flags=чисто — ошибка критика",
+    "mango-sticky-rice попытка1: score=8 flags=чисто — Манго со сладким рисом и кокосовым молоком реалистично",
+    "mussels-cream попытка1: score=-1 flags=чисто — ошибка критика",
+    "mussels-cream попытка2: score=8 flags=чисто — Реалистичные мидели в сливочном соусе, хорошая подача",
+    "pad-gratiem-garlic-veg попытка1: score=-1 flags=чисто — ошибка критика",
+    "pad-gratiem-garlic-veg попытка2: score=8 flags=чисто — Реалистичная жареная зелень с чесноком, лаймом и перцем"
   ]
 }
