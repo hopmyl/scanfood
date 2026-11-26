@@ -1,15 +1,11 @@
 {
-  "at": "2026-11-26T00:32:29.523Z",
+  "at": "2026-11-26T00:53:17.645Z",
   "batch": [
     "imam-bayildi",
     "kofte-turkish",
-    "korean-carrot",
     "kung-pao-chicken",
     "larb-chicken",
     "lazy-vareniki",
-    "mango-sticky-rice",
-    "mussels-cream",
-    "pad-gratiem-garlic-veg",
     "pad-krapow-chicken",
     "pineapple-fried-rice",
     "pissaladiere",
@@ -218,6 +214,46 @@
       "score": 8,
       "note": "Реалистичная жареная зелень с чесноком, лаймом и перцем",
       "path": "/home/z/my-project/download/pad-gratiem-garlic-veg-gen.png"
+    },
+    "pineapple-fried-rice": {
+      "score": 7,
+      "note": "Рис с кешью, чили и лаймом; ананаса не видно",
+      "path": "/home/z/my-project/download/pineapple-fried-rice-gen.png"
+    },
+    "pisto-manchego": {
+      "score": 7,
+      "note": "Писто с яйцом, реалистично, лёгкая ИИ-гладкость текстур",
+      "path": "/home/z/my-project/download/pisto-manchego-gen.png"
+    },
+    "pollo-al-ajillo": {
+      "score": 8,
+      "note": "Курица с креветками в масле, реалистично, соответствует описанию",
+      "path": "/home/z/my-project/download/pollo-al-ajillo-gen.png"
+    },
+    "pork-french": {
+      "score": 7,
+      "note": "Запечённый фарш под сыром с томатами, выглядит реалистично",
+      "path": "/home/z/my-project/download/pork-french-gen.png"
+    },
+    "potato-skins": {
+      "score": 8,
+      "note": "Реалистичные картофельные шкурки с сыром, домашняя подача",
+      "path": "/home/z/my-project/download/potato-skins-gen.png"
+    },
+    "provence-chicken": {
+      "score": 8,
+      "note": "Реалистичная курица с томатами, терракота, дневной свет, но текстура слегка сгла",
+      "path": "/home/z/my-project/download/provence-chicken-gen.png"
+    },
+    "pumpkin-soup": {
+      "score": 8,
+      "note": "Реалистичный суп с тыквенными семечками, лёгкий ИИ-глянец текстуры",
+      "path": "/home/z/my-project/download/pumpkin-soup-gen.png"
+    },
+    "rassolnik": {
+      "score": 8,
+      "note": "Рассольник узнаваем: перловка, огурцы, картошка, сметана, укроп",
+      "path": "/home/z/my-project/download/rassolnik-gen.png"
     }
   },
   "fail": {
@@ -225,7 +261,12 @@
     "kofte-turkish": "score=5 flags=не-то-блюдо — Мясо кусками рагу, не шарики-кофте",
     "kung-pao-chicken": "score=6 flags=пластик — Курица с арахисом и чили есть, но текстура восковая, подозрение на ИИ",
     "larb-chicken": "score=6 flags=пластик — Похоже на larb, но текстура риса и курицы слегка восковая, ИИ-подозрение",
-    "lazy-vareniki": "score=5 flags=пластик+не-то-блюдо — Похожи на пельмени, а не ленивые вареники; тесто пластиковое"
+    "lazy-vareniki": "score=5 flags=пластик+не-то-блюдо — Похожи на пельмени, а не ленивые вареники; тесто пластиковое",
+    "pad-krapow-chicken": "score=8 flags=нейро-глянец — Пад ка-прау с яйцом на месте, стилизованная подача",
+    "pissaladiere": "score=5 flags=пластик+не-то-блюдо — Пластилиновая текстура, нет анчоусов — не похоже на pissaladiere",
+    "pla-neung-manao": "score=4 flags=пластик — Рыба восковая, нейронная текстура, сомнительно",
+    "qing-zheng-fish": "score=8 flags=текст — Реалистичное блюдо, но есть текстовая надпись",
+    "red-curry-pumpkin": "score=6 flags=чисто — Похоже на настоящий красный карри, но текстура слегка ИИ-подозрительна"
   },
   "log": [
     "bbq-pulled-pork попытка1: score=3 flags=пластик+не-то-блюдо — Глянцевые нитевидные волокна, похоже на лапшу, не на мясо",
@@ -342,6 +383,35 @@
     "mussels-cream попытка1: score=-1 flags=чисто — ошибка критика",
     "mussels-cream попытка2: score=8 flags=чисто — Реалистичные мидели в сливочном соусе, хорошая подача",
     "pad-gratiem-garlic-veg попытка1: score=-1 flags=чисто — ошибка критика",
-    "pad-gratiem-garlic-veg попытка2: score=8 flags=чисто — Реалистичная жареная зелень с чесноком, лаймом и перцем"
+    "pad-gratiem-garlic-veg попытка2: score=8 flags=чисто — Реалистичная жареная зелень с чесноком, лаймом и перцем",
+    "pad-krapow-chicken попытка1: score=3 flags=пластик+текст+нейро-глянец — Наложенный текст, пластиковая текстура, ИИ-генерация",
+    "pad-krapow-chicken попытка2: score=-1 flags=чисто — ошибка критика",
+    "pad-krapow-chicken попытка3: score=8 flags=нейро-глянец — Пад ка-прау с яйцом на месте, стилизованная подача",
+    "pineapple-fried-rice попытка1: score=-1 flags=чисто — ошибка критика",
+    "pineapple-fried-rice попытка2: score=7 flags=чисто — Рис с кешью, чили и лаймом; ананаса не видно",
+    "pissaladiere попытка1: score=-1 flags=чисто — ошибка критика",
+    "pissaladiere попытка2: score=5 flags=пластик+не-то-блюдо — Пластилиновая текстура, нет анчоусов — не похоже на pissaladiere",
+    "pissaladiere попытка3: score=-1 flags=чисто — ошибка критика",
+    "pisto-manchego попытка1: score=7 flags=чисто — Писто с яйцом, реалистично, лёгкая ИИ-гладкость текстур",
+    "pla-neung-manao попытка1: score=-1 flags=чисто — ошибка критика",
+    "pla-neung-manao попытка2: score=4 flags=пластик — Рыба восковая, нейронная текстура, сомнительно",
+    "pla-neung-manao попытка3: score=-1 flags=чисто — ошибка критика",
+    "pollo-al-ajillo попытка1: score=6 flags=пластик — Курица выглядит восковой, текстура однородная, похожа на ИИ",
+    "pollo-al-ajillo попытка2: score=-1 flags=чисто — ошибка критика",
+    "pollo-al-ajillo попытка3: score=8 flags=чисто — Курица с креветками в масле, реалистично, соответствует описанию",
+    "pork-french попытка1: score=7 flags=чисто — Запечённый фарш под сыром с томатами, выглядит реалистично",
+    "potato-skins попытка1: score=-1 flags=чисто — ошибка критика",
+    "potato-skins попытка2: score=8 flags=чисто — Реалистичные картофельные шкурки с сыром, домашняя подача",
+    "provence-chicken попытка1: score=-1 flags=чисто — ошибка критика",
+    "provence-chicken попытка2: score=8 flags=чисто — Реалистичная курица с томатами, терракота, дневной свет, но текстура слегка сгла",
+    "pumpkin-soup попытка1: score=-1 flags=чисто — ошибка критика",
+    "pumpkin-soup попытка2: score=8 flags=чисто — Реалистичный суп с тыквенными семечками, лёгкий ИИ-глянец текстуры",
+    "qing-zheng-fish попытка1: score=-1 flags=чисто — ошибка критика",
+    "qing-zheng-fish попытка2: score=8 flags=текст — Реалистичное блюдо, но есть текстовая надпись",
+    "qing-zheng-fish попытка3: score=-1 flags=чисто — ошибка критика",
+    "rassolnik попытка1: score=8 flags=чисто — Рассольник узнаваем: перловка, огурцы, картошка, сметана, укроп",
+    "red-curry-pumpkin попытка1: score=-1 flags=чисто — ошибка критика",
+    "red-curry-pumpkin попытка2: score=6 flags=чисто — Похоже на настоящий красный карри, но текстура слегка ИИ-подозрительна",
+    "red-curry-pumpkin попытка3: score=-1 flags=чисто — ошибка критика"
   ]
 }

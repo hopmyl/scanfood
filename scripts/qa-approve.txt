@@ -116,3 +116,10 @@ pea-soup
 pepperoni-pizza
 mango-sticky-rice
 pad-gratiem-garlic-veg
+pineapple-fried-rice
+pisto-manchego
+pollo-al-ajillo
+potato-skins
+provence-chicken
+pumpkin-soup
+rassolnik
