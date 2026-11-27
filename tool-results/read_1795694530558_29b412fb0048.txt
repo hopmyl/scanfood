@@ -1,0 +1,653 @@
+     1→import { useEffect, useMemo, useRef, useState } from 'react';
+     2→import { Link } from 'react-router-dom';
+     3→import {
+     4→  CalendarDays,
+     5→  Check,
+     6→  ChevronLeft,
+     7→  ChevronRight,
+     8→  Flame,
+     9→  NotebookPen,
+    10→  Pencil,
+    11→  Plus,
+    12→  Search,
+    13→  X,
+    14→} from 'lucide-react';
+    15→import { DISHES } from '../data/dishes';
+    16→import { useAppStore, type DiaryEntry, type MealSlot } from '../store/useAppStore';
+    17→import { cn } from '../lib/utils';
+    18→
+    19→// ============================================================================
+    20→// Хелперы дат (локальная таймзона, ISO «YYYY-MM-DD»)
+    21→// ============================================================================
+    22→
+    23→const WD_SHORT = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
+    24→
+    25→function isoOf(d: Date): string {
+    26→  const p = (x: number) => String(x).padStart(2, '0');
+    27→  return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
+    28→}
+    29→
+    30→function parseIso(iso: string): Date {
+    31→  const [y, m, d] = iso.split('-').map(Number);
+    32→  return new Date(y, m - 1, d);
+    33→}
+    34→
+    35→function addDaysIso(iso: string, n: number): string {
+    36→  const d = parseIso(iso);
+    37→  d.setDate(d.getDate() + n);
+    38→  return isoOf(d);
+    39→}
+    40→
+    41→/** Неделя (Пн-Вс), в которую попадает дата */
+    42→function weekOf(iso: string): string[] {
+    43→  const d = parseIso(iso);
+    44→  const monday = addDaysIso(iso, -((d.getDay() + 6) % 7));
+    45→  return Array.from({ length: 7 }, (_, i) => addDaysIso(monday, i));
+    46→}
+    47→
+    48→const wdShort = (iso: string) => WD_SHORT[parseIso(iso).getDay()];
+    49→const dayNum = (iso: string) => parseIso(iso).getDate();
+    50→
+    51→/** Слот приёма пищи по текущему часу */
+    52→function currentMeal(): MealSlot {
+    53→  const h = new Date().getHours();
+    54→  if (h < 11) return 'breakfast';
+    55→  if (h < 16) return 'lunch';
+    56→  if (h < 22) return 'dinner';
+    57→  return 'snack';
+    58→}
+    59→
+    60→const MEALS: Array<{ id: MealSlot; labelRu: string; emoji: string }> = [
+    61→  { id: 'breakfast', labelRu: 'Завтрак', emoji: '🌅' },
+    62→  { id: 'lunch', labelRu: 'Обед', emoji: '☀️' },
+    63→  { id: 'dinner', labelRu: 'Ужин', emoji: '🌙' },
+    64→  { id: 'snack', labelRu: 'Перекус', emoji: '🍏' },
+    65→];
+    66→
+    67→const mealMeta = (m: MealSlot) => MEALS.find((x) => x.id === m) ?? MEALS[3];
+    68→
+    69→// ============================================================================
+    70→// Пикер блюд: каталог + ручной ввод (для дневника и плана)
+    71→// ============================================================================
+    72→
+    73→function DishPicker({
+    74→  open,
+    75→  date,
+    76→  kind,
+    77→  onClose,
+    78→}: {
+    79→  open: boolean;
+    80→  date: string;
+    81→  kind: 'eaten' | 'planned';
+    82→  onClose: () => void;
+    83→}) {
+    84→  const addDiaryEntry = useAppStore((s) => s.addDiaryEntry);
+    85→  const [meal, setMeal] = useState<MealSlot>('breakfast');
+    86→  const [q, setQ] = useState('');
+    87→  const [customName, setCustomName] = useState('');
+    88→  const [customKcal, setCustomKcal] = useState('');
+    89→
+    90→  useEffect(() => {
+    91→    if (open) {
+    92→      setMeal(kind === 'planned' ? 'breakfast' : currentMeal());
+    93→      setQ('');
+    94→      setCustomName('');
+    95→      setCustomKcal('');
+    96→    }
+    97→  }, [open, kind]);
+    98→
+    99→  if (!open) return null;
+   100→
+   101→  const query = q.trim().toLowerCase();
+   102→  const results = query
+   103→    ? DISHES.filter(
+   104→        (d) => d.nameRu.toLowerCase().includes(query) || d.nameEn.toLowerCase().includes(query),
+   105→      ).slice(0, 8)
+   106→    : DISHES.slice(0, 8);
+   107→
+   108→  const add = (e: Omit<DiaryEntry, 'id'>) => {
+   109→    addDiaryEntry(e);
+   110→    onClose();
+   111→  };
+   112→
+   113→  const kcalNum = Number(customKcal);
+   114→  const customValid = customName.trim().length >= 2 && Number.isFinite(kcalNum) && kcalNum > 0;
+   115→
+   116→  return (
+   117→    <div
+   118→      className="fixed inset-0 z-50 flex items-end justify-center bg-black/40 p-4 pb-6 sm:items-center"
+   119→      onClick={(e) => {
+   120→        if (e.target === e.currentTarget) onClose();
+   121→      }}
+   122→    >
+   123→      <div
+   124→        role="dialog"
+   125→        aria-modal="true"
+   126→        aria-label={kind === 'planned' ? 'Запланировать блюдо' : 'Записать блюдо'}
+   127→        onKeyDown={(e) => {
+   128→          if (e.key === 'Escape') onClose();
+   129→        }}
+   130→        className="max-h-[85vh] w-full max-w-md overflow-y-auto rounded-3xl border border-line bg-card p-4 shadow-xl"
+   131→      >
+   132→        <div className="mb-3 flex items-center justify-between">
+   133→          <h3 className="text-base font-bold text-ink">
+   134→            {kind === 'planned' ? 'Запланировать блюдо' : 'Записать блюдо'}
+   135→            <span className="ml-1.5 text-xs font-normal text-ink-2">
+   136→              · {wdShort(date)}, {dayNum(date)}
+   137→            </span>
+   138→          </h3>
+   139→          <button
+   140→            type="button"
+   141→            onClick={onClose}
+   142→            aria-label="Закрыть"
+   143→            className="flex h-8 w-8 items-center justify-center rounded-full text-ink-3 hover:bg-soft hover:text-ink"
+   144→          >
+   145→            <X size={16} />
+   146→          </button>
+   147→        </div>
+   148→
+   149→        {/* Слот приёма пищи */}
+   150→        <div className="mb-3 grid grid-cols-4 gap-1 rounded-2xl bg-soft p-1">
+   151→          {MEALS.map((m) => (
+   152→            <button
+   153→              key={m.id}
+   154→              type="button"
+   155→              onClick={() => setMeal(m.id)}
+   156→              aria-pressed={meal === m.id}
+   157→              className={cn(
+   158→                'rounded-xl px-1 py-1.5 text-[11px] font-semibold transition-colors',
+   159→                meal === m.id ? 'bg-card text-ink shadow-sm' : 'text-ink-2',
+   160→              )}
+   161→            >
+   162→              <span aria-hidden className="mr-0.5">
+   163→                {m.emoji}
+   164→              </span>
+   165→              {m.labelRu}
+   166→            </button>
+   167→          ))}
+   168→        </div>
+   169→
+   170→        {/* Поиск по каталогу */}
+   171→        <div className="relative mb-2">
+   172→          <Search size={16} className="absolute top-1/2 left-3 -translate-y-1/2 text-ink-3" />
+   173→          <input
+   174→            type="search"
+   175→            value={q}
+   176→            onChange={(e) => setQ(e.target.value)}
+   177→            placeholder="Найти блюдо в каталоге…"
+   178→            autoFocus
+   179→            className="w-full rounded-2xl border border-line bg-card py-2.5 pr-3 pl-9 text-sm text-ink placeholder:text-ink-3 focus:border-accent focus:outline-none"
+   180→          />
+   181→        </div>
+   182→
+   183→        <ul className="mb-3 space-y-1">
+   184→          {results.map((d) => (
+   185→            <li key={d.id}>
+   186→              <button
+   187→                type="button"
+   188→                onClick={() =>
+   189→                  add({
+   190→                    date,
+   191→                    meal,
+   192→                    kind,
+   193→                    dishId: d.id,
+   194→                    name: d.nameRu,
+   195→                    kcal: d.kcal,
+   196→                    p: d.bju.p,
+   197→                    f: d.bju.f,
+   198→                    c: d.bju.c,
+   199→                  })
+   200→                }
+   201→                className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-left transition-colors hover:bg-soft"
+   202→              >
+   203→                <span className="min-w-0 flex-1 truncate text-sm text-ink">{d.nameRu}</span>
+   204→                <span className="text-xs text-ink-3">{d.kcal} ккал</span>
+   205→                <Plus size={15} className="shrink-0 text-accent" />
+   206→              </button>
+   207→            </li>
+   208→          ))}
+   209→          {results.length === 0 && (
+   210→            <li className="rounded-xl bg-soft px-3 py-2 text-xs text-ink-2">
+   211→              В каталоге ничего не нашлось — добавь вручную ниже
+   212→            </li>
+   213→          )}
+   214→        </ul>
+   215→
+   216→        {/* Ручной ввод (свой продукт или блюдо без рецепта) */}
+   217→        <div className="rounded-2xl border border-line bg-soft/50 p-3">
+   218→          <p className="mb-2 text-xs font-semibold text-ink-2">Своё блюдо или продукт:</p>
+   219→          <div className="flex gap-2">
+   220→            <input
+   221→              value={customName}
+   222→              onChange={(e) => setCustomName(e.target.value)}
+   223→              placeholder="Название"
+   224→              className="min-w-0 flex-1 rounded-xl border border-line bg-card px-3 py-2 text-sm text-ink placeholder:text-ink-3 focus:border-accent focus:outline-none"
+   225→            />
+   226→            <input
+   227→              value={customKcal}
+   228→              onChange={(e) => setCustomKcal(e.target.value.replace(/\D/g, '').slice(0, 4))}
+   229→              inputMode="numeric"
+   230→              placeholder="ккал"
+   231→              className="w-20 shrink-0 rounded-xl border border-line bg-card px-3 py-2 text-sm text-ink placeholder:text-ink-3 focus:border-accent focus:outline-none"
+   232→            />
+   233→          </div>
+   234→          <button
+   235→            type="button"
+   236→            disabled={!customValid}
+   237→            onClick={() => add({ date, meal, kind, name: customName.trim(), kcal: kcalNum })}
+   238→            className="mt-2 w-full rounded-xl bg-accent py-2 text-xs font-semibold text-on-accent transition-colors hover:bg-accent-strong disabled:opacity-40"
+   239→          >
+   240→            Добавить
+   241→          </button>
+   242→        </div>
+   243→      </div>
+   244→    </div>
+   245→  );
+   246→}
+   247→
+   248→// ============================================================================
+   249→// Экран: Дневник + План
+   250→// ============================================================================
+   251→
+   252→export default function DiaryScreen() {
+   253→  const diary = useAppStore((s) => s.diary);
+   254→  const kcalTarget = useAppStore((s) => s.kcalTarget);
+   255→  const setKcalTarget = useAppStore((s) => s.setKcalTarget);
+   256→  const removeDiaryEntry = useAppStore((s) => s.removeDiaryEntry);
+   257→  const planToDiary = useAppStore((s) => s.planToDiary);
+   258→
+   259→  const [tab, setTab] = useState<'diary' | 'plan'>('diary');
+   260→  const [selectedDate, setSelectedDate] = useState(() => isoOf(new Date()));
+   261→  const [editingTarget, setEditingTarget] = useState(false);
+   262→  const [targetDraft, setTargetDraft] = useState('');
+   263→  const [picker, setPicker] = useState<{ open: boolean; date: string; kind: 'eaten' | 'planned' }>({
+   264→    open: false,
+   265→    date: '',
+   266→    kind: 'eaten',
+   267→  });
+   268→
+   269→  const todayIso = isoOf(new Date());
+   270→  const week = useMemo(() => weekOf(selectedDate), [selectedDate]);
+   271→
+   272→  const eatenToday = useMemo(
+   273→    () => diary.filter((e) => e.kind === 'eaten' && e.date === selectedDate),
+   274→    [diary, selectedDate],
+   275→  );
+   276→  const kcalToday = eatenToday.reduce((a, e) => a + e.kcal, 0);
+   277→  const pToday = eatenToday.reduce((a, e) => a + (e.p ?? 0), 0);
+   278→  const fToday = eatenToday.reduce((a, e) => a + (e.f ?? 0), 0);
+   279→  const cToday = eatenToday.reduce((a, e) => a + (e.c ?? 0), 0);
+   280→
+   281→  const dayKcal = (iso: string, kind: 'eaten' | 'planned') =>
+   282→    diary.filter((e) => e.kind === kind && e.date === iso).reduce((a, e) => a + e.kcal, 0);
+   283→
+   284→  const weekEaten = week.map((iso) => dayKcal(iso, 'eaten'));
+   285→  const chartScale = Math.max(kcalTarget, ...weekEaten, 1);
+   286→  const targetPct = Math.round((kcalTarget / chartScale) * 100);
+   287→  const progressPct = Math.min(100, Math.round((kcalToday / Math.max(kcalTarget, 1)) * 100));
+   288→  const overTarget = kcalToday > kcalTarget;
+   289→  const leftToday = kcalTarget - kcalToday;
+   290→
+   291→  const openPicker = (date: string, kind: 'eaten' | 'planned') => setPicker({ open: true, date, kind });
+   292→
+   293→  const saveTarget = () => {
+   294→    const n = Number(targetDraft);
+   295→    if (Number.isFinite(n) && n > 0) setKcalTarget(n);
+   296→    setEditingTarget(false);
+   297→  };
+   298→
+   299→  const plannedFor = (iso: string) => diary.filter((e) => e.kind === 'planned' && e.date === iso);
+   300→
+   301→  return (
+   302→    <div>
+   303→      {/* Шапка */}
+   304→      <header className="mb-4">
+   305→        <h1 className="flex items-center gap-2 text-xl font-bold tracking-tight text-ink">
+   306→          <NotebookPen size={22} className="text-accent" />
+   307→          Дневник питания
+   308→        </h1>
+   309→        <p className="text-xs text-ink-2">Калории по дням и неделям, план на неделю</p>
+   310→      </header>
+   311→
+   312→      {/* Переключатель Дневник / План */}
+   313→      <div className="mb-4 grid grid-cols-2 gap-1 rounded-2xl bg-soft p-1">
+   314→        <button
+   315→          type="button"
+   316→          onClick={() => setTab('diary')}
+   317→          className={cn(
+   318→            'flex items-center justify-center gap-1.5 rounded-xl py-2 text-sm font-semibold transition-colors',
+   319→            tab === 'diary' ? 'bg-card text-ink shadow-sm' : 'text-ink-2',
+   320→          )}
+   321→        >
+   322→          <NotebookPen size={15} />
+   323→          Дневник
+   324→        </button>
+   325→        <button
+   326→          type="button"
+   327→          onClick={() => setTab('plan')}
+   328→          className={cn(
+   329→            'flex items-center justify-center gap-1.5 rounded-xl py-2 text-sm font-semibold transition-colors',
+   330→            tab === 'plan' ? 'bg-card text-ink shadow-sm' : 'text-ink-2',
+   331→          )}
+   332→        >
+   333→          <CalendarDays size={15} />
+   334→          План
+   335→        </button>
+   336→      </div>
+   337→
+   338→      {/* Лента недели */}
+   339→      <div className="mb-4 flex items-center gap-1.5">
+   340→        <button
+   341→          type="button"
+   342→          onClick={() => setSelectedDate(addDaysIso(selectedDate, -7))}
+   343→          aria-label="Предыдущая неделя"
+   344→          className="flex h-9 w-8 shrink-0 items-center justify-center rounded-xl border border-line bg-card text-ink-2 hover:text-ink"
+   345→        >
+   346→          <ChevronLeft size={16} />
+   347→        </button>
+   348→        <div className="flex min-w-0 flex-1 justify-between gap-1">
+   349→          {week.map((iso) => (
+   350→            <button
+   351→              key={iso}
+   352→              type="button"
+   353→              onClick={() => setSelectedDate(iso)}
+   354→              aria-pressed={iso === selectedDate}
+   355→              className={cn(
+   356→                'flex flex-1 flex-col items-center rounded-xl border py-1.5 transition-colors',
+   357→                iso === selectedDate
+   358→                  ? 'border-accent bg-accent text-on-accent'
+   359→                  : 'border-line bg-card text-ink-2 hover:border-ink-3',
+   360→              )}
+   361→            >
+   362→              <span className="text-[10px] font-medium">{wdShort(iso)}</span>
+   363→              <span
+   364→                className={cn(
+   365→                  'text-sm font-bold',
+   366→                  iso === todayIso && iso !== selectedDate && 'text-accent',
+   367→                )}
+   368→              >
+   369→                {dayNum(iso)}
+   370→              </span>
+   371→            </button>
+   372→          ))}
+   373→        </div>
+   374→        <button
+   375→          type="button"
+   376→          onClick={() => setSelectedDate(addDaysIso(selectedDate, 7))}
+   377→          aria-label="Следующая неделя"
+   378→          className="flex h-9 w-8 shrink-0 items-center justify-center rounded-xl border border-line bg-card text-ink-2 hover:text-ink"
+   379→        >
+   380→          <ChevronRight size={16} />
+   381→        </button>
+   382→      </div>
+   383→
+   384→      {tab === 'diary' ? (
+   385→        <>
+   386→          {/* Итоги дня */}
+   387→          <section className="rounded-3xl border border-line bg-card p-4 shadow-sm" aria-label="Итоги дня">
+   388→            <div className="flex items-start justify-between gap-3">
+   389→              <div>
+   390→                <p className="text-xs text-ink-2">
+   391→                  {selectedDate === todayIso ? 'Сегодня' : `${wdShort(selectedDate)}, ${dayNum(selectedDate)}`} ·
+   392→                  съедено
+   393→                </p>
+   394→                <p className="mt-0.5 text-2xl font-bold text-ink">
+   395→                  {kcalToday}
+   396→                  <span className="ml-1 text-sm font-medium text-ink-3">/ {kcalTarget} ккал</span>
+   397→                </p>
+   398→              </div>
+   399→              {editingTarget ? (
+   400→                <div className="flex items-center gap-1.5">
+   401→                  <input
+   402→                    value={targetDraft}
+   403→                    onChange={(e) => setTargetDraft(e.target.value.replace(/\D/g, '').slice(0, 4))}
+   404→                    inputMode="numeric"
+   405→                    aria-label="Новая цель калорий"
+   406→                    className="w-20 rounded-xl border border-line bg-soft px-2.5 py-1.5 text-sm text-ink focus:border-accent focus:outline-none"
+   407→                  />
+   408→                  <button
+   409→                    type="button"
+   410→                    onClick={saveTarget}
+   411→                    aria-label="Сохранить цель"
+   412→                    className="flex h-8 w-8 items-center justify-center rounded-xl bg-accent text-on-accent hover:bg-accent-strong"
+   413→                  >
+   414→                    <Check size={14} strokeWidth={3} />
+   415→                  </button>
+   416→                </div>
+   417→              ) : (
+   418→                <button
+   419→                  type="button"
+   420→                  onClick={() => {
+   421→                    setTargetDraft(String(kcalTarget));
+   422→                    setEditingTarget(true);
+   423→                  }}
+   424→                  className="flex shrink-0 items-center gap-1 rounded-full bg-soft px-3 py-1.5 text-xs font-semibold text-ink-2 transition-colors hover:text-ink"
+   425→                >
+   426→                  <Pencil size={12} />
+   427→                  Цель
+   428→                </button>
+   429→              )}
+   430→            </div>
+   431→            <div className="mt-3 h-2.5 w-full overflow-hidden rounded-full bg-soft">
+   432→              <div
+   433→                className={cn('h-full rounded-full transition-all', overTarget ? 'bg-red-400' : 'bg-accent')}
+   434→                style={{ width: `${progressPct}%` }}
+   435→              />
+   436→            </div>
+   437→            <p className="mt-1.5 text-[11px] text-ink-2">
+   438→              {overTarget
+   439→                ? `${kcalToday - kcalTarget} ккал больше цели`
+   440→                : `${leftToday} ккал осталось до цели`}
+   441→            </p>
+   442→            <div className="mt-3 grid grid-cols-3 gap-2">
+   443→              {[
+   444→                { label: 'Белки', value: `${pToday} г` },
+   445→                { label: 'Жиры', value: `${fToday} г` },
+   446→                { label: 'Углев.', value: `${cToday} г` },
+   447→              ].map((t) => (
+   448→                <div key={t.label} className="rounded-xl bg-soft px-2 py-2 text-center">
+   449→                  <p className="text-sm font-bold text-ink">{t.value}</p>
+   450→                  <p className="text-[10px] text-ink-2">{t.label}</p>
+   451→                </div>
+   452→              ))}
+   453→            </div>
+   454→          </section>
+   455→
+   456→          {/* Недельный график */}
+   457→          <section className="mt-4 rounded-3xl border border-line bg-card p-4 shadow-sm" aria-label="Калории за неделю">
+   458→            <h2 className="mb-3 flex items-center gap-1.5 text-sm font-bold text-ink">
+   459→              <Flame size={15} className="text-accent" />
+   460→              Неделя: съеденные ккал
+   461→            </h2>
+   462→            <div className="relative flex h-24 items-end gap-1.5">
+   463→              <div
+   464→                className="pointer-events-none absolute inset-x-0 border-t border-dashed border-accent/70"
+   465→                style={{ bottom: `${targetPct}%` }}
+   466→                title={`Цель: ${kcalTarget} ккал`}
+   467→              />
+   468→              {week.map((iso, i) => {
+   469→                const kcal = weekEaten[i];
+   470→                const pct = Math.max(3, Math.round((kcal / chartScale) * 100));
+   471→                return (
+   472→                  <div key={iso} className="flex h-full flex-1 items-end" title={`${wdShort(iso)}: ${kcal} ккал`}>
+   473→                    <div
+   474→                      className={cn(
+   475→                        'w-full rounded-t-md',
+   476→                        iso === selectedDate ? 'bg-accent' : 'bg-accent/40',
+   477→                      )}
+   478→                      style={{ height: `${pct}%` }}
+   479→                    />
+   480→                  </div>
+   481→                );
+   482→              })}
+   483→            </div>
+   484→            <div className="mt-1.5 flex gap-1.5">
+   485→              {week.map((iso) => (
+   486→                <span
+   487→                  key={iso}
+   488→                  className={cn(
+   489→                    'flex-1 text-center text-[10px]',
+   490→                    iso === selectedDate ? 'font-bold text-ink' : 'text-ink-3',
+   491→                  )}
+   492→                >
+   493→                  {wdShort(iso)}
+   494→                </span>
+   495→              ))}
+   496→            </div>
+   497→          </section>
+   498→
+   499→          {/* Приёмы пищи */}
+   500→          {MEALS.map((m) => {
+   501→            const items = eatenToday.filter((e) => e.meal === m.id);
+   502→            const sum = items.reduce((a, e) => a + e.kcal, 0);
+   503→            return (
+   504→              <section key={m.id} className="mt-4">
+   505→                <div className="mb-2 flex items-center justify-between">
+   506→                  <h3 className="flex items-center gap-1.5 text-sm font-bold text-ink">
+   507→                    <span aria-hidden>{m.emoji}</span>
+   508→                    {m.labelRu}
+   509→                  </h3>
+   510→                  <span className="text-xs text-ink-2">{sum} ккал</span>
+   511→                </div>
+   512→                {items.length === 0 ? (
+   513→                  <p className="rounded-xl border border-dashed border-line px-3 py-2.5 text-xs text-ink-3">
+   514→                    Пусто — запиши блюдо кнопкой ниже
+   515→                  </p>
+   516→                ) : (
+   517→                  <ul className="divide-y divide-line overflow-hidden rounded-2xl border border-line bg-card">
+   518→                    {items.map((e) => (
+   519→                      <li key={e.id} className="flex items-center gap-2 px-3.5 py-2.5">
+   520→                        {e.dishId ? (
+   521→                          <Link
+   522→                            to={`/dish/${e.dishId}`}
+   523→                            className="min-w-0 flex-1 truncate text-sm text-ink hover:text-accent"
+   524→                          >
+   525→                            {e.name}
+   526→                          </Link>
+   527→                        ) : (
+   528→                          <span className="min-w-0 flex-1 truncate text-sm text-ink">{e.name}</span>
+   529→                        )}
+   530→                        <span className="shrink-0 text-xs text-ink-3">{e.kcal} ккал</span>
+   531→                        <button
+   532→                          type="button"
+   533→                          onClick={() => removeDiaryEntry(e.id)}
+   534→                          aria-label={`Убрать «${e.name}» из дневника`}
+   535→                          className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-ink-3 transition-colors hover:bg-soft hover:text-ink"
+   536→                        >
+   537→                          <X size={14} />
+   538→                        </button>
+   539→                      </li>
+   540→                    ))}
+   541→                  </ul>
+   542→                )}
+   543→              </section>
+   544→            );
+   545→          })}
+   546→
+   547→          <button
+   548→            type="button"
+   549→            onClick={() => openPicker(selectedDate, 'eaten')}
+   550→            className="mt-4 flex w-full items-center justify-center gap-2 rounded-2xl bg-accent py-3 text-sm font-semibold text-on-accent transition-colors hover:bg-accent-strong"
+   551→          >
+   552→            <Plus size={16} />
+   553→            Записать блюдо за {wdShort(selectedDate).toLowerCase()}, {dayNum(selectedDate)}
+   554→          </button>
+   555→        </>
+   556→      ) : (
+   557→        /* ================= ПЛАН НА НЕДЕЛЮ ================= */
+   558→        <>
+   559→          <p className="mb-3 text-xs text-ink-2">
+   560→            Запланируй блюда на каждый день — потом переноси в дневник одним нажатием ✓
+   561→          </p>
+   562→          <div className="grid gap-3 md:grid-cols-2">
+   563→            {week.map((iso) => {
+   564→              const planned = plannedFor(iso);
+   565→              const sum = planned.reduce((a, e) => a + e.kcal, 0);
+   566→              return (
+   567→                <section
+   568→                  key={iso}
+   569→                  className={cn(
+   570→                    'rounded-2xl border p-3.5',
+   571→                    iso === todayIso ? 'border-accent/50 bg-card shadow-sm' : 'border-line bg-card',
+   572→                  )}
+   573→                >
+   574→                  <div className="mb-2 flex items-center justify-between">
+   575→                    <p className="text-sm font-bold text-ink">
+   576→                      {wdShort(iso)}, {dayNum(iso)}
+   577→                      {iso === todayIso && (
+   578→                        <span className="ml-1.5 text-[10px] font-semibold text-accent">сегодня</span>
+   579→                      )}
+   580→                    </p>
+   581→                    <p className="text-xs text-ink-2">{sum} ккал</p>
+   582→                  </div>
+   583→                  {planned.length === 0 ? (
+   584→                    <p className="text-xs text-ink-3">Пока ничего не запланировано</p>
+   585→                  ) : (
+   586→                    <ul className="space-y-1.5">
+   587→                      {planned.map((e) => (
+   588→                        <li
+   589→                          key={e.id}
+   590→                          className="flex items-center gap-1.5 rounded-xl bg-soft px-2.5 py-1.5"
+   591→                        >
+   592→                          <span aria-hidden className="text-xs">
+   593→                            {mealMeta(e.meal).emoji}
+   594→                          </span>
+   595→                          {e.dishId ? (
+   596→                            <Link
+   597→                              to={`/dish/${e.dishId}`}
+   598→                              className="min-w-0 flex-1 truncate text-xs font-medium text-ink hover:text-accent"
+   599→                            >
+   600→                              {e.name}
+   601→                            </Link>
+   602→                          ) : (
+   603→                            <span className="min-w-0 flex-1 truncate text-xs font-medium text-ink">
+   604→                              {e.name}
+   605→                            </span>
+   606→                          )}
+   607→                          <span className="shrink-0 text-[11px] text-ink-3">{e.kcal}</span>
+   608→                          <button
+   609→                            type="button"
+   610→                            onClick={() => planToDiary(e.id)}
+   611→                            aria-label={`Отметить «${e.name}» съеденным`}
+   612→                            title="Съедено — в дневник"
+   613→                            className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-good/10 text-good transition-colors hover:bg-good hover:text-white"
+   614→                          >
+   615→                            <Check size={12} strokeWidth={3} />
+   616→                          </button>
+   617→                          <button
+   618→                            type="button"
+   619→                            onClick={() => removeDiaryEntry(e.id)}
+   620→                            aria-label={`Убрать «${e.name}» из плана`}
+   621→                            className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-ink-3 transition-colors hover:bg-red-500/10 hover:text-red-500"
+   622→                          >
+   623→                            <X size={12} />
+   624→                          </button>
+   625→                        </li>
+   626→                      ))}
+   627→                    </ul>
+   628→                  )}
+   629→                  <button
+   630→                    type="button"
+   631→                    onClick={() => openPicker(iso, 'planned')}
+   632→                    className="mt-2 flex w-full items-center justify-center gap-1 rounded-xl border border-dashed border-line py-1.5 text-xs font-semibold text-ink-2 transition-colors hover:border-accent hover:text-accent"
+   633→                  >
+   634→                    <Plus size={13} />
+   635→                    Запланировать
+   636→                  </button>
+   637→                </section>
+   638→              );
+   639→            })}
+   640→          </div>
+   641→        </>
+   642→      )}
+   643→
+   644→      <DishPicker
+   645→        open={picker.open}
+   646→        date={picker.date}
+   647→        kind={picker.kind}
+   648→        onClose={() => setPicker((p) => ({ ...p, open: false }))}
+   649→      />
+   650→    </div>
+   651→  );
+   652→}
+   653→

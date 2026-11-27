@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AlarmClock, Check, CookingPot, Plus, X } from 'lucide-react';
 import { SHELF_POOL } from '../data/dishes';
@@ -96,12 +96,21 @@ export default function PantryScreen() {
   const removeFromPantry = useAppStore((s) => s.removeFromPantry);
 
   const [pickerOpen, setPickerOpen] = useState(false);
+  const pickerRef = useRef<HTMLDivElement | null>(null);
   const [addedNames, setAddedNames] = useState<string[]>([]);
   /** Продукт, для которого открыт диалог срока годности */
   const [expiryFor, setExpiryFor] = useState<string | null>(null);
   const [expiryDraft, setExpiryDraft] = useState('');
 
   const match = useMemo(() => matchDishes(pantry), [pantry]);
+
+  // Панель «Пополнить» открывается под шкафчиком — прокатываем к ней,
+  // иначе пользователь не видит отклик (баг-репорт 26.11)
+  useEffect(() => {
+    if (pickerOpen) {
+      pickerRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }, [pickerOpen]);
 
   /** Скоропорт: продукт → дней осталось (только <= 7 дней, сортировка по срочности) */
   const expiringSoon = useMemo(
@@ -200,6 +209,32 @@ export default function PantryScreen() {
         </div>
       </div>
 
+      {/* ===== Пополнить: сразу под шкафчиком, чтобы добавление было видно без прокрутки ===== */}
+      {pickerOpen && (
+        <section
+          ref={pickerRef}
+          className="mt-3 rounded-2xl border border-line bg-card p-3.5"
+        >
+          <p className="mb-2 text-xs font-semibold text-ink-2">Нажми на баночку, чтобы добавить:</p>
+          <div className="flex flex-wrap gap-1.5">
+            {suggestable.map((p) => (
+              <button
+                key={p}
+                type="button"
+                onClick={() => addToPantry([p])}
+                className="flex items-center gap-1 rounded-full border border-line bg-soft px-2.5 py-1.5 text-xs font-medium text-ink transition-colors hover:border-accent hover:text-accent"
+              >
+                <span aria-hidden>{emojiFor(p)}</span>
+                {p}
+              </button>
+            ))}
+            {suggestable.length === 0 && (
+              <p className="text-xs text-ink-3">Все продукты из подборки уже в запасах 🎉</p>
+            )}
+          </div>
+        </section>
+      )}
+
       {/* Подсказка про сроки, пока ни один не указан — иначе фичу не найти */}
       {pantry.length > 0 && Object.keys(pantryExpiry).length === 0 && (
         <p className="mt-2 text-center text-[11px] text-ink-2">
@@ -209,8 +244,21 @@ export default function PantryScreen() {
 
       {/* ===== Диалог срока годности ===== */}
       {expiryFor && (
-        <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/40 p-4 pb-24 sm:items-center sm:pb-4">
-          <div className="w-full max-w-sm rounded-3xl border border-line bg-card p-5 shadow-xl">
+        <div
+          className="fixed inset-0 z-50 flex items-end justify-center bg-black/40 p-4 pb-24 sm:items-center sm:pb-4"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setExpiryFor(null);
+          }}
+        >
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-label={`Срок годности: ${expiryFor}`}
+            onKeyDown={(e) => {
+              if (e.key === 'Escape') setExpiryFor(null);
+            }}
+            className="w-full max-w-sm rounded-3xl border border-line bg-card p-5 shadow-xl"
+          >
             <div className="flex items-center gap-2">
               <span aria-hidden className="text-2xl">
                 {emojiFor(expiryFor)}
@@ -224,6 +272,7 @@ export default function PantryScreen() {
               type="date"
               value={expiryDraft}
               onChange={(e) => setExpiryDraft(e.target.value)}
+              autoFocus
               className="mt-3 w-full rounded-2xl border border-line bg-soft px-4 py-3 text-sm text-ink outline-none focus:border-accent"
             />
             {/* Быстрые пресеты — на телефоне/date-пикере долго возиться руками */}
@@ -328,27 +377,6 @@ export default function PantryScreen() {
           </p>
         </section>
       )}
-      {pickerOpen && (
-        <section className="mt-3 rounded-2xl border border-line bg-card p-3.5">
-          <p className="mb-2 text-xs font-semibold text-ink-2">Нажми на баночку, чтобы добавить:</p>
-          <div className="flex flex-wrap gap-1.5">
-            {suggestable.map((p) => (
-              <button
-                key={p}
-                type="button"
-                onClick={() => addToPantry([p])}
-                className="flex items-center gap-1 rounded-full border border-line bg-soft px-2.5 py-1.5 text-xs font-medium text-ink transition-colors hover:border-accent hover:text-accent"
-              >
-                <span aria-hidden>{emojiFor(p)}</span>
-                {p}
-              </button>
-            ))}
-            {suggestable.length === 0 && (
-              <p className="text-xs text-ink-3">Все продукты из подборки уже в запасах 🎉</p>
-            )}
-          </div>
-        </section>
-      )}
 
       {/* ===== Что приготовить из запасов ===== */}
       <section className="mt-6">
@@ -361,7 +389,7 @@ export default function PantryScreen() {
         </p>
 
         {match.canCook.length > 0 ? (
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
             {match.canCook.map((dish) => (
               <DishCard key={dish.id} dish={dish} />
             ))}

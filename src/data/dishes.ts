@@ -178,7 +178,10 @@ export const FRIDGE_PRODUCTS: FridgeProduct[] = [
   { name: 'Лук', emoji: '🧅', keys: ['лук', 'шалот'], inFridge: true, inShelf: true },
   { name: 'Чеснок', emoji: '🧄', keys: ['чеснок'], inFridge: true, inShelf: true },
   { name: 'Морковь', emoji: '🥕', keys: ['морков'], inFridge: true, inShelf: true },
-  { name: 'Картофель', emoji: '🥔', keys: ['картоф', 'батат'], inFridge: true, inShelf: true },
+  // ⚠️ «батат» — НЕ картофель: раньше ключ 'батат' внутри Картофеля давал ложное
+  // «из запасов» для фри из батата (баг-репорт 2026-11-26). Батат — отдельный продукт.
+  { name: 'Картофель', emoji: '🥔', keys: ['картоф'], inFridge: true, inShelf: true },
+  { name: 'Батат', emoji: '🍠', keys: ['батат'], inFridge: false, inShelf: true },
   { name: 'Свёкла', emoji: '🍠', keys: ['свёкл', 'свекл'], inFridge: false, inShelf: false },
   { name: 'Тыква', emoji: '🎃', keys: ['тыкв'], inFridge: false, inShelf: false },
   { name: 'Баклажаны', emoji: '🍆', keys: ['баклажан'], inFridge: false, inShelf: false },
@@ -220,6 +223,10 @@ export const FRIDGE_PRODUCTS: FridgeProduct[] = [
   { name: 'Тесто', emoji: '🥟', keys: ['тесто'], inFridge: false, inShelf: false },
   { name: 'Нори', emoji: '🥬', keys: ['нори'], inFridge: false, inShelf: true },
   { name: 'Орехи и семечки', emoji: '🥜', keys: ['орех', 'семечк', 'кунжут', 'чиа', 'гранол'], inFridge: false, inShelf: true },
+  // Пасты-«ложные друзья» макарон: арахисовая паста раньше покрывалась продуктом
+  // «Паста» по подстроке 'паста' (баг-репорт 2026-11-26). Теперь — отдельные продукты.
+  { name: 'Арахисовая паста', emoji: '🥜', keys: ['арахис'], inFridge: false, inShelf: true },
+  { name: 'Томатная паста', emoji: '🥫', keys: ['томатная паста', 'томат-паста'], inFridge: false, inShelf: true },
   { name: 'Соевый соус', emoji: '🍶', keys: ['соев'], inFridge: false, inShelf: true },
   { name: 'Соусы и заправки', emoji: '🥫', keys: ['соус', 'кетчуп', 'майонез', 'хумус', 'тахини', 'бальзам', 'паста том', 'том ям', 'тикка', 'горчиц', 'хрен', 'аджик', 'сироп'], inFridge: false, inShelf: true },
   { name: 'Бульон', emoji: '🥫', keys: ['бульон'], inFridge: false, inShelf: true },
@@ -1019,7 +1026,7 @@ const ALL_DISHES: Dish[] = [
   },
   {
     id: 'sushi-set',
-    nameEn: 'Sushi rolls set on a dark slate',
+    nameEn: 'Assorted sushi rolls set',
     nameRu: 'Сет суши-роллов',
     category: 'fish',
     kcal: 450,

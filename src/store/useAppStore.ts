@@ -21,6 +21,28 @@ export interface ShoppingItem {
   dishId?: string;
 }
 
+/** Слот приёма пищи в дневнике/планере */
+export type MealSlot = 'breakfast' | 'lunch' | 'dinner' | 'snack';
+
+/** Запись дневника калорий или плана питания (kind различает) */
+export interface DiaryEntry {
+  id: string;
+  /** ISO-дата «YYYY-MM-DD» (локальная таймзона) */
+  date: string;
+  meal: MealSlot;
+  /** 'eaten' — съедено (дневник), 'planned' — запланировано (планер) */
+  kind: 'eaten' | 'planned';
+  /** id блюда из каталога (если добавлено из рецепта) */
+  dishId?: string;
+  /** отображаемое имя (из каталога или своё) */
+  name: string;
+  kcal: number;
+  /** БЖУ на порцию, г (опционально) */
+  p?: number;
+  f?: number;
+  c?: number;
+}
+
 export interface NewShoppingItem {
   name: string;
   qty?: string;
@@ -39,6 +61,30 @@ interface AppState {
   pantryExpiry: Record<string, string>;
   /** тема оформления */
   theme: ThemeId;
+
+  /** дневник (eaten) и планер (planned) */
+  diary: DiaryEntry[];
+  /** дневная цель калорий для дневника */
+  kcalTarget: number;
+
+  /** Сколько раз приготовлено «Приготовил» с вычитанием из запасов (калькулятор экономии) */
+  cookedFromPantry: number;
+
+  /** Записать блюдо/продукт в дневник или план (kind внутри) */
+  addDiaryEntry: (entry: Omit<DiaryEntry, 'id'>) => void;
+  /** Удалить запись дневника/плана */
+  removeDiaryEntry: (id: string) => void;
+  /** Перенести запись плана в дневник (planned → eaten) */
+  planToDiary: (id: string) => void;
+  /** Дневная цель калорий */
+  setKcalTarget: (n: number) => void;
+
+  /**
+   * «Приготовил» (анти-отходы): вычитает использованные продукты из запасов
+   * и увеличивает счётчик приготовлений — для калькулятора экономии в профиле.
+   * Запись в дневник делает сам экран блюда (он знает ккал и слот).
+   */
+  markCooked: (usedPantryNames: string[]) => void;
 
   /**
    * ✅ ИСПРАВЛЕННЫЙ togglePro (причина бага «тумблер не нажимается»).
@@ -89,6 +135,9 @@ export const useAppStore = create<AppState>()(
       pantry: DEFAULT_PANTRY,
       pantryExpiry: {},
       theme: 'light',
+      diary: [],
+      kcalTarget: 2000,
+      cookedFromPantry: 0,
 
       togglePro: () =>
         set((state) => ({
@@ -200,12 +249,49 @@ export const useAppStore = create<AppState>()(
 
       setTheme: (theme) => set({ theme }),
 
+      addDiaryEntry: (entry) =>
+        set((state) => ({
+          diary: [
+            ...state.diary,
+            { ...entry, id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}` },
+          ],
+        })),
+
+      removeDiaryEntry: (id) =>
+        set((state) => ({ diary: state.diary.filter((e) => e.id !== id) })),
+
+      planToDiary: (id) =>
+        set((state) => ({
+          diary: state.diary.map((e) =>
+            e.id === id ? { ...e, kind: 'eaten' as const } : e,
+          ),
+        })),
+
+      setKcalTarget: (n) =>
+        set({ kcalTarget: Math.min(10000, Math.max(800, Math.round(n) || 2000)) }),
+
+      markCooked: (usedPantryNames) =>
+        set((state) => {
+          const used = new Set(usedPantryNames);
+          if (used.size === 0) {
+            // нечего вычитать — всё равно считаем ужин (экономия была на выбросе)
+            return { cookedFromPantry: state.cookedFromPantry + 1 };
+          }
+          const expiry = { ...state.pantryExpiry };
+          for (const n of used) delete expiry[n];
+          return {
+            pantry: state.pantry.filter((n) => !used.has(n)),
+            pantryExpiry: expiry,
+            cookedFromPantry: state.cookedFromPantry + 1,
+          };
+        }),
+
       resetProgress: () =>
         set((state) => ({
           userProfile: { isPro: false, scansLeft: FREE_SCANS_LIMIT, scannedTotal: 0 },
           favorites: [],
           shoppingList: [],
-          // pantry, pantryExpiry и theme — пользовательские настройки, не сбрасываем
+          // diary и kcalTarget — пользовательские данные дневника, не сбрасываем
           pantry: state.pantry,
           pantryExpiry: state.pantryExpiry,
           theme: state.theme,
@@ -213,7 +299,7 @@ export const useAppStore = create<AppState>()(
     }),
     {
       name: 'skan-recept-store', // ключ в localStorage
-      version: 3,
+      version: 5,
       migrate: (persisted, version) => {
         const state = (persisted ?? {}) as Partial<AppState>;
         return {
@@ -227,6 +313,9 @@ export const useAppStore = create<AppState>()(
           pantry: state.pantry ?? DEFAULT_PANTRY,
           pantryExpiry: state.pantryExpiry ?? {},
           theme: state.theme ?? 'light',
+          diary: state.diary ?? [],
+          kcalTarget: state.kcalTarget ?? 2000,
+          cookedFromPantry: state.cookedFromPantry ?? 0,
         } as AppState;
       },
     },

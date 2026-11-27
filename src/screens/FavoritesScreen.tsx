@@ -23,7 +23,7 @@ export default function FavoritesScreen() {
 
       {/* ---------- Избранные рецепты ---------- */}
       {favDishes.length > 0 ? (
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
           {favDishes.map((dish) => (
             <DishCard key={dish.id} dish={dish} />
           ))}

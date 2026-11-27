@@ -1,14 +1,15 @@
 import { useMemo } from 'react';
 import { NavLink } from 'react-router-dom';
-import { Home, PackageOpen, ScanLine, ShoppingCart, User } from 'lucide-react';
+import { Home, NotebookPen, PackageOpen, ScanLine, ShoppingCart, User } from 'lucide-react';
 import { useAppStore } from '../store/useAppStore';
 import { cn } from '../lib/utils';
 
 const items = [
   { to: '/', label: 'Каталог', icon: Home },
   { to: '/pantry', label: 'Запасы', icon: PackageOpen },
-  { to: '/scan', label: 'Скан', icon: ScanLine, center: true },
   { to: '/shopping', label: 'Покупки', icon: ShoppingCart, badge: true },
+  { to: '/scan', label: 'Скан', icon: ScanLine, center: true },
+  { to: '/diary', label: 'Дневник', icon: NotebookPen },
   { to: '/profile', label: 'Профиль', icon: User },
 ];
 
@@ -18,7 +19,8 @@ export default function BottomNav() {
 
   return (
     <nav className="pb-safe fixed inset-x-0 bottom-0 z-40 border-t border-line bg-card/90 backdrop-blur-lg">
-      <div className="mx-auto flex max-w-md items-end justify-around px-1 pt-1.5 pb-1">
+      {/* 6 пунктов: центральная кнопка Скан — по середине ряда; на широких экранах лента шире */}
+      <div className="mx-auto flex max-w-lg items-end justify-around px-1 pt-1.5 pb-1 lg:max-w-3xl">
         {items.map(({ to, label, icon: Icon, center, badge }) =>
           center ? (
             <NavLink

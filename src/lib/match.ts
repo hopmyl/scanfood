@@ -12,15 +12,32 @@ import {
 } from '../data/dishes';
 
 /**
+ * Пасты — «ложные друзья» макарон: арахисовая/томатная/кунжутная паста и
+ * паста том-ям/мисо не должны покрываться продуктом «Паста» (макароны).
+ * Для таких ингредиентов ключ продукта обязан сам быть пастовым
+ * ('арахис', 'томатная паста', 'тахини', 'паста том', …).
+ */
+const PASTE_INGREDIENT_RE =
+  /(арахисовая|кунжутная|томатная)\s+паста|паста\s+(том|мисо)|мисо-паста/;
+// Пастоспецифичные ключи. ВАЖНО: без универсального 'паста' — иначе
+// ключ макаронного продукта «Паста» снова покрывает арахисовую пасту.
+const PASTE_KEY_RE = /арахис|томатная паста|тахини|мисо|паста том|том ям|кунжут/;
+
+/**
  * Покрыт ли ингредиент набором доступных продуктов.
  * available — канонические имена продуктов (FRIDGE_PRODUCTS) либо сырые строки
  * (например, ингредиент, добавленный из блока «добавь X»).
  */
 export function coveredBy(ingredientName: string, available: string[]): boolean {
   const n = ingredientName.toLowerCase();
+  const isPaste = PASTE_INGREDIENT_RE.test(n);
   return available.some((a) => {
     const prod = PRODUCT_BY_NAME.get(a.toLowerCase());
-    if (prod) return prod.keys.some((k) => n.includes(k));
+    if (prod) {
+      return prod.keys.some(
+        (k) => (!isPaste || PASTE_KEY_RE.test(k)) && n.includes(k),
+      );
+    }
     const an = a.toLowerCase();
     return n.includes(an) || an.includes(n);
   });
@@ -83,6 +100,20 @@ export function matchDishes(available: string[]): MatchResult {
 /** Можно ли приготовить блюдо целиком из available */
 export function canCookFrom(dish: Dish, available: string[]): boolean {
   return realIngredients(dish).every((ing) => coveredBy(ing.name, available));
+}
+
+/**
+ * Какие канонические продукты из available реально используются в блюде
+ * (для «Приготовил» — авто-вычитания из Кладовой). Базовые специи/масло
+ * не вычитаются — они не участвуют в подборе.
+ */
+export function pantryProductsUsed(dish: Dish, available: string[]): string[] {
+  const used: string[] = [];
+  for (const p of available) {
+    const covered = realIngredients(dish).some((ing) => coveredBy(ing.name, [p]));
+    if (covered) used.push(p);
+  }
+  return used;
 }
 
 /** Эмодзи для произвольного ингредиента (по справочнику продуктов) */

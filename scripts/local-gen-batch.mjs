@@ -24,22 +24,8 @@ console.log(`пендинг: ${pending.length}, берём первых ${batch.
 // УСИЛЕННЫЙ стиль-блок v2 (апгрейд по запросу пользователя 2026-11-25: цель 9-10/10).
 // Против пластика: amateur-якорь в начале, matte/rough/шум; против глянца: светлый день, без студии.
 // Критик photo-critic.mjs НЕ тронут — баллы сравнимы.
-const STYLE =
-  ', casual amateur food photo shot on a phone camera, eye-level straight-on view, ' +
-  'bright soft daylight from a kitchen window, airy light scene, no studio lighting, ' +
-  'on a warm terracotta tiled table, softly blurred warm beige wall with linen textiles in the background, ' +
-  'real homemade comfort food on a simple matte ceramic plate, slightly messy honest home plating, ' +
-  'a folded beige linen napkin beside the dish, ' +
-  'a few raw ingredients and spices scattered around that naturally match this dish, ' +
-  'golden warm tone, soft natural shadows, muted natural colors, ' +
-  'rough matte food textures: visible grains and crumb, uneven browning, slightly irregular homemade shapes, ' +
-  'meat and chicken look fibrous and dry-matte with natural juices, never waxy or uniform, ' +
-  'sauces with a light oil sheen, a few crumbs on the table, ' +
-  'realistic dynamic range, slight photo noise, unedited casual snapshot from a real home cook, ' +
-  'shallow depth of field, 50mm lens look, static view of the table, ' +
-  'not a render, not CGI, not 3D, not illustration, no plastic sheen, no wax texture, no artificial gloss, ' +
-  'no studio advertising style, no dark moody lighting, no dramatic shadows, not oversharpened, not hyperrealistic, ' +
-  'no text anywhere in the frame, no captions, no lettering, blank or unlabeled jars and packages only';
+// С 2026-11-26 строка вынесена в scripts/gen-style.mjs (общая с local-gen-one.mjs), текст дословно тот же.
+import { STYLE } from './gen-style.mjs';
 
 const zai = await ZAI.create();
 // Возобновляемость: подтягиваем прошлые результаты, skip passers.

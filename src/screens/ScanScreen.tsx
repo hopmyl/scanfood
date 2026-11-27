@@ -14,6 +14,7 @@ import {
   Package,
   Pencil,
   Plus,
+  Receipt,
   RefreshCw,
   ScanBarcode,
   ScanLine,
@@ -29,7 +30,7 @@ import { cn, pluralRu } from '../lib/utils';
 import { scanProducts } from '../lib/scan-client';
 
 type Phase = 'idle' | 'scanning' | 'result' | 'paywall';
-type ScanMode = 'products' | 'barcode';
+type ScanMode = 'products' | 'barcode' | 'receipt';
 type CamState = 'starting' | 'on' | 'denied';
 /** Ступень зума как в системной камере: 1x / 2x / 3x */
 type ZoomLevel = 1 | 2 | 3;
@@ -738,6 +739,24 @@ export default function ScanScreen() {
     setPhase('result');
   };
 
+  /** Демо-чек (PRO): одно фото чека заносит сразу список продуктов в Кладовую */
+  const demoReceipt = () => {
+    const detected = pickRandom(SCAN_POOL, 6 + Math.floor(Math.random() * 4));
+    const list: ScanItem[] = detected.map((name) => ({
+      name,
+      confidence: 'high' as const,
+      checked: true,
+    }));
+    setItems(list);
+    recomputeMatch(list);
+    setSavedToPantry(false);
+    setAddedNames([]);
+    setIsDemo(true);
+    setScanFailed(null);
+    setScanDetail(null);
+    setPhase('result');
+  };
+
   // ================= Штрих-код =================
   /** Прямой запрос в Open Food Facts из браузера — фолбэк, когда /api недоступен (статический хостинг).
    *  Таймаут 9 с: база отвечает быстро, долгий ответ = плохая сеть, лучше сразу честная ошибка. */
@@ -921,6 +940,27 @@ export default function ScanScreen() {
     return `Лайт: осталось ${scansLeft} из 5 сканов`;
   }, [isPro, scansLeft]);
 
+  /** Результат распознавания — общий для «Продуктов» и демо-чека */
+  const scanResultBlock = (
+    <ScanResult
+      items={items}
+      isDemo={isDemo}
+      match={match}
+      savedToPantry={savedToPantry}
+      addedNames={addedNames}
+      renaming={renaming}
+      renameDraft={renameDraft}
+      emojiFor={emojiFor}
+      onToggle={toggleItem}
+      onRenameStart={renameStart}
+      onRenameDraft={setRenameDraft}
+      onRenameCommit={renameCommit}
+      onSavePantry={saveToPantry}
+      onAddMissing={addMissing}
+      onReset={resetResult}
+    />
+  );
+
   return (
     <div>
       <header className="mb-4 flex items-center justify-between">
@@ -940,12 +980,13 @@ export default function ScanScreen() {
       </header>
 
       {/* ---------- Переключатель режимов ---------- */}
-      <div className="mb-4 grid grid-cols-2 gap-1 rounded-2xl bg-soft p-1">
+      <div className="mb-4 grid grid-cols-3 gap-1 rounded-2xl bg-soft p-1">
         <button
           type="button"
           onClick={() => {
+            // фазу НЕ сбрасываем: результат «Продуктов» должен переживать
+            // переключение вкладок и возвращаться обратно (баг-репорт 26.11)
             setMode('products');
-            setPhase('idle');
           }}
           className={cn(
             'flex items-center justify-center gap-1.5 rounded-xl py-2 text-sm font-semibold transition-colors',
@@ -958,8 +999,8 @@ export default function ScanScreen() {
         <button
           type="button"
           onClick={() => {
+            // то же: не трогаем фазу — демо-скан не теряется при возврате
             setMode('barcode');
-            setPhase('idle');
           }}
           className={cn(
             'flex items-center justify-center gap-1.5 rounded-xl py-2 text-sm font-semibold transition-colors',
@@ -969,9 +1010,22 @@ export default function ScanScreen() {
           <ScanBarcode size={16} />
           Штрих-код
         </button>
+        <button
+          type="button"
+          onClick={() => {
+            setMode('receipt');
+          }}
+          className={cn(
+            'flex items-center justify-center gap-1.5 rounded-xl py-2 text-sm font-semibold transition-colors',
+            mode === 'receipt' ? 'bg-card text-ink shadow-sm' : 'text-ink-2',
+          )}
+        >
+          <Receipt size={16} className={cn(!isPro && 'text-pro')} />
+          Чек
+        </button>
       </div>
 
-      {phase === 'paywall' ? (
+      {phase === 'paywall' && mode === 'products' ? (
         /* ---------- Paywall: сканы Лайта закончились ---------- */
         <div className="rounded-3xl border border-line bg-card p-6 text-center shadow-sm">
           <span className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-accent-soft text-accent">
@@ -984,11 +1038,11 @@ export default function ScanScreen() {
           <ul className="mb-5 space-y-2 text-left">
             <li className="flex items-center gap-2.5 rounded-xl bg-soft px-3.5 py-2.5 text-sm text-ink">
               <InfinityIcon size={16} className="shrink-0 text-accent" />
-              Безлимитные сканирования продуктов
+              Безлимитные сканирования продуктов и чек одним фото
             </li>
             <li className="flex items-center gap-2.5 rounded-xl bg-soft px-3.5 py-2.5 text-sm text-ink">
               <Sparkles size={16} className="shrink-0 text-accent" />
-              КБЖУ и порции до 12 без ограничений
+              КБЖУ без размытия и порции до 12
             </li>
           </ul>
           <button
@@ -998,29 +1052,19 @@ export default function ScanScreen() {
           >
             Включить PRO (тестовый режим)
           </button>
+          <Link
+            to="/pro"
+            className="mt-2 flex w-full items-center justify-center rounded-2xl border border-line bg-card py-2.5 text-xs font-semibold text-ink transition-colors hover:bg-soft"
+          >
+            Сравнить тарифы PRO
+          </Link>
           <p className="mt-2 text-[11px] text-ink-3">Или переключи тумблер «Режим PRO» в профиле</p>
         </div>
       ) : mode === 'products' ? (
         <>
           {/* ================= РЕЖИМ: ПРОДУКТЫ ================= */}
           {phase === 'result' ? (
-            <ScanResult
-              items={items}
-              isDemo={isDemo}
-              match={match}
-              savedToPantry={savedToPantry}
-              addedNames={addedNames}
-              renaming={renaming}
-              renameDraft={renameDraft}
-              emojiFor={emojiFor}
-              onToggle={toggleItem}
-              onRenameStart={renameStart}
-              onRenameDraft={setRenameDraft}
-              onRenameCommit={renameCommit}
-              onSavePantry={saveToPantry}
-              onAddMissing={addMissing}
-              onReset={resetResult}
-            />
+            scanResultBlock
           ) : (
             <>
               <div
@@ -1296,28 +1340,12 @@ export default function ScanScreen() {
             </>
           )}
         </>
-      ) : (
+      ) : mode === 'barcode' ? (
         <>
           {/* ================= РЕЖИМ: ШТРИХ-КОД ================= */}
-          {phase === 'result' ? (
-            <ScanResult
-              items={items}
-              isDemo={false}
-              match={match}
-              savedToPantry={savedToPantry}
-              addedNames={addedNames}
-              renaming={renaming}
-              renameDraft={renameDraft}
-              emojiFor={emojiFor}
-              onToggle={toggleItem}
-              onRenameStart={renameStart}
-              onRenameDraft={setRenameDraft}
-              onRenameCommit={renameCommit}
-              onSavePantry={saveToPantry}
-              onAddMissing={addMissing}
-              onReset={resetResult}
-            />
-          ) : product ? (
+          {/* Результаты «Продуктов» живут в своей фазе и переживают переключение
+              вкладок — поэтому здесь НЕ проверяем phase === 'result' */}
+          {product ? (
             /* ---------- Карточка найденного товара ---------- */
             <div className="rounded-3xl border border-line bg-card p-4 shadow-sm">
               <div className="flex items-start gap-3.5">
@@ -1523,6 +1551,73 @@ export default function ScanScreen() {
                 </p>
               </div>
             </>
+          )}
+        </>
+      ) : (
+        <>
+          {/* ================= РЕЖИМ: ЧЕК — PRO-функция (стратегия 26.11) ================= */}
+          {/* Результат демо-чека показывается тем же компонентом, что и «Продукты» */}
+          {phase === 'result' ? (
+            scanResultBlock
+          ) : !isPro ? (
+            <div className="rounded-3xl border border-pro/30 bg-card p-6 text-center shadow-sm">
+              <span className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-pro/10 text-pro">
+                <Receipt size={26} />
+              </span>
+              <h2 className="flex items-center justify-center gap-1.5 text-lg font-bold text-ink">
+                Скан чека — одним фото
+              </h2>
+              <p className="mt-1 mb-4 text-sm text-ink-2">
+                Наведи камеру на бумажный чек — 15–20 продуктов из него сразу появятся в Кладовой.
+                Без ручного ввода позиций.
+              </p>
+              <ul className="mb-5 space-y-2 text-left">
+                <li className="flex items-center gap-2.5 rounded-xl bg-soft px-3.5 py-2.5 text-sm text-ink">
+                  <Receipt size={16} className="shrink-0 text-accent" />
+                  Один снимок вместо десяти минут набирания вручную
+                </li>
+                <li className="flex items-center gap-2.5 rounded-xl bg-soft px-3.5 py-2.5 text-sm text-ink">
+                  <Sparkles size={16} className="shrink-0 text-accent" />
+                  Сразу после чека — подборка «что приготовить из купленного»
+                </li>
+              </ul>
+              <button
+                type="button"
+                onClick={activateTestPro}
+                className="flex w-full items-center justify-center gap-2 rounded-2xl bg-pro py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90"
+              >
+                <Crown size={16} className="fill-current" />
+                Включить PRO (тестовый режим)
+              </button>
+              <Link
+                to="/pro"
+                className="mt-2 flex w-full items-center justify-center rounded-2xl border border-line bg-card py-2.5 text-xs font-semibold text-ink transition-colors hover:bg-soft"
+              >
+                Сравнить тарифы PRO
+              </Link>
+            </div>
+          ) : (
+            <div className="rounded-3xl border border-line bg-card p-6 text-center shadow-sm">
+              <span className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-accent-soft text-accent">
+                <Receipt size={26} />
+              </span>
+              <h2 className="text-lg font-bold text-ink">Сфотографируй чек</h2>
+              <p className="mt-1 text-sm text-ink-2">
+                Позиции чека распознаются на сервере и превращаются в список продуктов.
+                До включения живого распознавания можно попробовать демо-чек:
+              </p>
+              <button
+                type="button"
+                onClick={demoReceipt}
+                className="mt-4 flex w-full items-center justify-center gap-2 rounded-2xl bg-accent py-3 text-sm font-semibold text-on-accent transition-colors hover:bg-accent-strong"
+              >
+                <RefreshCw size={16} />
+                Демо-чек: 6–10 позиций в Кладовую
+              </button>
+              <p className="mt-2 text-[11px] text-ink-3">
+                Позиции можно снять галочками и переименовать — как после обычного скана
+              </p>
+            </div>
           )}
         </>
       )}

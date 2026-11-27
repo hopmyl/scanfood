@@ -7,7 +7,9 @@ import ScanScreen from './screens/ScanScreen';
 import PantryScreen from './screens/PantryScreen';
 import ShoppingScreen from './screens/ShoppingScreen';
 import FavoritesScreen from './screens/FavoritesScreen';
+import DiaryScreen from './screens/DiaryScreen';
 import ProfileScreen from './screens/ProfileScreen';
+import ProScreen from './screens/ProScreen';
 import { useAppStore } from './store/useAppStore';
 
 /** При переходе на новый экран скроллим окно наверх */
@@ -30,7 +32,7 @@ export default function App() {
   return (
     <div className="min-h-screen bg-app text-ink">
       <ScrollToTop />
-      <main className="mx-auto w-full max-w-md px-4 pt-4 pb-28">
+      <main className="mx-auto w-full max-w-md px-4 pt-4 pb-36 md:max-w-2xl md:px-6 lg:max-w-6xl lg:px-8">
         <Routes>
           <Route path="/" element={<CatalogScreen />} />
           <Route path="/dish/:id" element={<DishScreen />} />
@@ -38,7 +40,9 @@ export default function App() {
           <Route path="/pantry" element={<PantryScreen />} />
           <Route path="/shopping" element={<ShoppingScreen />} />
           <Route path="/favorites" element={<FavoritesScreen />} />
+          <Route path="/diary" element={<DiaryScreen />} />
           <Route path="/profile" element={<ProfileScreen />} />
+          <Route path="/pro" element={<ProScreen />} />
           <Route path="*" element={<CatalogScreen />} />
         </Routes>
       </main>

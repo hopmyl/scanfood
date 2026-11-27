@@ -3,18 +3,29 @@ import { Link, useParams } from 'react-router-dom';
 import {
   ArrowLeft,
   Check,
+  Clock,
+  CookingPot,
   Crown,
   Heart,
   Infinity as InfinityIcon,
   Lock,
   Minus,
+  NotebookPen,
   Plus,
   ShoppingBasket,
   Sparkles,
 } from 'lucide-react';
-import { CATEGORY_META, DISHES, FREE_DISHES_COUNT, PRO_DISHES_COUNT } from '../data/dishes';
-import { coveredBy } from '../lib/match';
+import {
+  CATEGORY_META,
+  CUISINE_META,
+  DIFFICULTY_META,
+  DISHES,
+  FREE_DISHES_COUNT,
+  PRO_DISHES_COUNT,
+} from '../data/dishes';
+import { coveredBy, pantryProductsUsed } from '../lib/match';
 import { DishImage } from '../components/DishCard';
+import CookMode from '../components/CookMode';
 import { useAppStore } from '../store/useAppStore';
 import { cn, formatAmount, formatKcal, pluralRu } from '../lib/utils';
 
@@ -30,6 +41,8 @@ export default function DishScreen() {
   const isFav = useAppStore((s) => (dish ? s.favorites.includes(dish.id) : false));
   const toggleFavorite = useAppStore((s) => s.toggleFavorite);
   const addToShoppingList = useAppStore((s) => s.addToShoppingList);
+  const addDiaryEntry = useAppStore((s) => s.addDiaryEntry);
+  const markCooked = useAppStore((s) => s.markCooked);
   const pantry = useAppStore((s) => s.pantry);
   // ⚠️ селектор возвращает стабильную ссылку (массив из стора),
   // производную считаем через useMemo — иначе getSnapshot не кэшируется (Zustand 5)
@@ -42,6 +55,11 @@ export default function DishScreen() {
   const [portions, setPortions] = useState(1);
   const [justAdded, setJustAdded] = useState(false);
   const [portionHint, setPortionHint] = useState(false);
+  const [diaryLogged, setDiaryLogged] = useState(false);
+  /** Режим готовки на кухне (крупный шрифт + таймеры) */
+  const [cookOpen, setCookOpen] = useState(false);
+  /** Сколько продуктов вычтено «Приготовил» — для короткого подтверждения */
+  const [cookedInfo, setCookedInfo] = useState<number | null>(null);
 
   if (!dish) {
     return (
@@ -66,6 +84,49 @@ export default function DishScreen() {
   const atCap = !isPro && portions >= MAX_PORTIONS_LITE;
   /** Авторское блюдо без подписки: показываем витрину вместо рецепта */
   const locked = dish.tier === 'pro' && !isPro;
+
+  /** Слот приёма пищи по текущему часу — для быстрой записи в дневник */
+  const currentMeal = (): 'breakfast' | 'lunch' | 'dinner' | 'snack' => {
+    const h = new Date().getHours();
+    if (h < 11) return 'breakfast';
+    if (h < 16) return 'lunch';
+    if (h < 22) return 'dinner';
+    return 'snack';
+  };
+
+  const logToDiary = () => {
+    if (!dish) return;
+    const p = new Date();
+    const iso = `${p.getFullYear()}-${String(p.getMonth() + 1).padStart(2, '0')}-${String(p.getDate()).padStart(2, '0')}`;
+    addDiaryEntry({
+      date: iso,
+      meal: currentMeal(),
+      kind: 'eaten',
+      dishId: dish.id,
+      name: dish.nameRu,
+      kcal: dish.kcal,
+      p: dish.bju.p,
+      f: dish.bju.f,
+      c: dish.bju.c,
+    });
+    setDiaryLogged(true);
+    window.setTimeout(() => setDiaryLogged(false), 2200);
+  };
+
+  /** «Приготовил» (анти-отходы): ужин в дневник + авто-вычитание продуктов из Кладовой */
+  const markCookedNow = () => {
+    if (!dish) return;
+    const used = pantryProductsUsed(dish, pantry);
+    markCooked(used);
+    logToDiary();
+    setCookedInfo(used.length);
+    window.setTimeout(() => setCookedInfo(null), 3600);
+  };
+
+  /** Финал режима готовки — то же «Приготовил» */
+  const handleCookedFromKitchen = () => {
+    markCookedNow();
+  };
 
   const changePortions = (delta: number) => {
     const next = portions + delta;
@@ -147,10 +208,78 @@ export default function DishScreen() {
         <h1 className="text-xl leading-tight font-bold text-ink">{dish.nameRu}</h1>
         <p className="mt-1 text-sm text-ink-2">{dish.nameEn}</p>
       </div>
-      <span className="mb-1 inline-flex items-center gap-1.5 rounded-full bg-accent-soft px-3 py-1 text-xs font-medium text-accent-ink">
-        <span aria-hidden>{meta.emoji}</span>
-        {meta.labelRu}
-      </span>
+      {/* Теги: категория, время, сложность и кухня — раньше были только фильтрами каталога */}
+      <div className="flex flex-wrap items-center gap-1.5">
+        <span className="inline-flex items-center gap-1.5 rounded-full bg-accent-soft px-3 py-1 text-xs font-medium text-accent-ink">
+          <span aria-hidden>{meta.emoji}</span>
+          {meta.labelRu}
+        </span>
+        {dish.timeMin !== undefined && (
+          <span className="inline-flex items-center gap-1 rounded-full border border-line bg-card px-3 py-1 text-xs font-medium text-ink-2">
+            <Clock size={12} aria-hidden />
+            {dish.timeMin} мин
+          </span>
+        )}
+        {dish.difficulty && (
+          <span className="inline-flex items-center gap-1 rounded-full border border-line bg-card px-3 py-1 text-xs font-medium text-ink-2">
+            <Sparkles size={12} aria-hidden />
+            {DIFFICULTY_META[dish.difficulty].labelRu} сложность
+          </span>
+        )}
+        {dish.cuisine && (
+          <span className="inline-flex items-center gap-1 rounded-full border border-line bg-card px-3 py-1 text-xs font-medium text-ink-2">
+            <span aria-hidden>{CUISINE_META[dish.cuisine].emoji}</span>
+            {CUISINE_META[dish.cuisine].labelRu} кухня
+          </span>
+        )}
+      </div>
+
+      {/* Быстрая запись в дневник + режим готовки (ккал и БЖУ — открытые данные карточки) */}
+      <button
+        type="button"
+        onClick={logToDiary}
+        aria-live="polite"
+        className={cn(
+          'mt-3 flex w-full items-center justify-center gap-2 rounded-2xl border py-2.5 text-sm font-semibold transition-colors',
+          diaryLogged
+            ? 'border-good/40 bg-good/10 text-good'
+            : 'border-line bg-card text-ink hover:bg-soft',
+        )}
+      >
+        {diaryLogged ? <Check size={16} strokeWidth={3} /> : <NotebookPen size={16} className="text-accent" />}
+        {diaryLogged ? 'Записано в дневник' : `Записать в дневник · ~${dish.kcal} ккал`}
+      </button>
+
+      {/* Кухня: режим готовки + «Приготовил» с авто-вычитанием из запасов (анти-отходы) */}
+      <div className="mt-2 grid grid-cols-2 gap-2">
+        <button
+          type="button"
+          onClick={() => setCookOpen(true)}
+          className="flex items-center justify-center gap-1.5 rounded-2xl bg-ink py-2.5 text-xs font-semibold text-app transition-opacity hover:opacity-90"
+        >
+          <CookingPot size={15} />
+          Готовить на кухне
+        </button>
+        <button
+          type="button"
+          onClick={markCookedNow}
+          className={cn(
+            'flex items-center justify-center gap-1.5 rounded-2xl py-2.5 text-xs font-semibold transition-colors',
+            cookedInfo !== null
+              ? 'bg-good/10 text-good'
+              : 'bg-card border border-line text-ink-2 hover:text-ink',
+          )}
+        >
+          <Check size={15} strokeWidth={3} />
+          Приготовил
+        </button>
+      </div>
+      {cookedInfo !== null && (
+        <p className="mt-1.5 text-center text-[11px] font-medium text-good" role="status">
+          Ужин в дневнике · из Кладовой вычтено {cookedInfo}{' '}
+          {pluralRu(cookedInfo, 'продукт', 'продукта', 'продуктов')}
+        </p>
+      )}
 
       {/* ===== КБЖУ, порции, ингредиенты и шаги — только вне замка ===== */}
       {locked ? (
@@ -169,8 +298,9 @@ export default function DishScreen() {
           <ul className="mt-4 space-y-2 text-left">
             <li className="flex items-center gap-2.5 rounded-xl bg-soft px-3.5 py-2.5 text-sm text-ink">
               <InfinityIcon size={16} className="shrink-0 text-accent" />
-              Все {FREE_DISHES_COUNT + PRO_DISHES_COUNT} рецептов: {FREE_DISHES_COUNT} блюд
-              бесплатно, {PRO_DISHES_COUNT} авторских — с PRO
+              Все {FREE_DISHES_COUNT + PRO_DISHES_COUNT} рецептов: {FREE_DISHES_COUNT}{' '}
+              {pluralRu(FREE_DISHES_COUNT, 'блюдо', 'блюда', 'блюд')} бесплатно, {PRO_DISHES_COUNT}{' '}
+              {pluralRu(PRO_DISHES_COUNT, 'авторское', 'авторских', 'авторских')} — с PRO
             </li>
             <li className="flex items-center gap-2.5 rounded-xl bg-soft px-3.5 py-2.5 text-sm text-ink">
               <Sparkles size={16} className="shrink-0 text-accent" />
@@ -185,8 +315,14 @@ export default function DishScreen() {
             <Crown size={16} className="fill-current" />
             Открыть рецепт с PRO
           </button>
+          <Link
+            to="/pro"
+            className="mt-2 flex w-full items-center justify-center gap-1.5 rounded-2xl border border-line bg-card py-2.5 text-xs font-semibold text-ink transition-colors hover:bg-soft"
+          >
+            Сравнить тарифы PRO
+          </Link>
           <p className="mt-2 text-[11px] text-ink-3">
-            Тестовый режим: подписка включается без оплаты
+            Тестовый режим: подписка включается без оплаты. Год — 166 ₽/мес.
           </p>
         </section>
       ) : (
@@ -246,7 +382,7 @@ export default function DishScreen() {
           <div>
             <p className="text-sm font-semibold text-ink">Порции</p>
             <p className="mt-0.5 text-[11px] text-ink-2">
-              {isPro ? 'Ингредиенты пересчитаются автоматически' : 'В Лайте — до 2, безлимит в PRO'}
+              {isPro ? 'Ингредиенты пересчитаются автоматически' : 'В Лайте — до 2, в PRO — до 12'}
             </p>
           </div>
           <div className="flex items-center gap-3">
@@ -341,7 +477,7 @@ export default function DishScreen() {
         </button>
         <p className="mt-1.5 text-center text-[11px] text-ink-3">
           Количество добавится с учётом {portions}{' '}
-          {pluralRu(portions, 'порции', 'порций', 'порций')}
+          {pluralRu(portions, 'порцию', 'порции', 'порций')}
         </p>
       </section>
 
@@ -360,6 +496,10 @@ export default function DishScreen() {
         </ol>
       </section>
         </>
+      )}
+      {/* Режим готовки: крупный шрифт, таймеры, экран не гаснет */}
+      {cookOpen && (
+        <CookMode dish={dish} onClose={() => setCookOpen(false)} onCooked={handleCookedFromKitchen} />
       )}
     </div>
   );

@@ -1,0 +1,1796 @@
+     1→import { useEffect, useMemo, useRef, useState } from 'react';
+     2→import { Link } from 'react-router-dom';
+     3→import { BrowserMultiFormatReader, type IScannerControls } from '@zxing/browser';
+     4→import {
+     5→  Barcode as BarcodeIcon,
+     6→  Camera,
+     7→  CameraOff,
+     8→  Check,
+     9→  CookingPot,
+    10→  Crown,
+    11→  ImagePlus,
+    12→  Infinity as InfinityIcon,
+    13→  Lock,
+    14→  Package,
+    15→  Pencil,
+    16→  Plus,
+    17→  RefreshCw,
+    18→  ScanBarcode,
+    19→  ScanLine,
+    20→  Sparkles,
+    21→  Store,
+    22→  X,
+    23→} from 'lucide-react';
+    24→import { FRIDGE_PRODUCTS, SCAN_POOL } from '../data/dishes';
+    25→import { emojiFor, matchDishes, type MatchResult } from '../lib/match';
+    26→import DishCard from '../components/DishCard';
+    27→import { useAppStore } from '../store/useAppStore';
+    28→import { cn, pluralRu } from '../lib/utils';
+    29→import { scanProducts } from '../lib/scan-client';
+    30→
+    31→type Phase = 'idle' | 'scanning' | 'result' | 'paywall';
+    32→type ScanMode = 'products' | 'barcode';
+    33→type CamState = 'starting' | 'on' | 'denied';
+    34→/** Ступень зума как в системной камере: 1x / 2x / 3x */
+    35→type ZoomLevel = 1 | 2 | 3;
+    36→
+    37→/** Чип зума: целые — «1×», дробные — с десятичной запятой («0,6×») */
+    38→const fmtZoom = (f: number): string =>
+    39→  `${Number.isInteger(f) ? f : f.toFixed(1).replace('.', ',')}×`;
+    40→/** Уверенность распознавания: high — точно, medium — возможно */
+    41→type Confidence = 'high' | 'medium';
+    42→/** Продукт из распознавания: имя + уверенность + отметка пользователя */
+    43→interface ScanItem {
+    44→  name: string;
+    45→  confidence: Confidence;
+    46→  /** зелёные отмечены по умолчанию, жёлтые — нет */
+    47→  checked: boolean;
+    48→}
+    49→/** Причина неудачи распознавания: null — нет ошибки */
+    50→type ScanFail = null | 'generic' | 'noprovider';
+    51→
+    52→/**
+    53→ * Заголовок ошибки распознавания. Отдельный текст для перегрузки сервиса
+    54→ * (429/лимит квоты ИИ): совет «при другом освещении» тут вводил бы в заблуждение.
+    55→ */
+    56→function failHeadline(fail: ScanFail, detail: string | null): string {
+    57→  if (fail === 'noprovider') {
+    58→    return 'Распознавание фото ещё не включено: нужен бесплатный ключ OpenRouter (сервис открыт без VPN). Штрих-коды и демо-скан работают уже сейчас.';
+    59→  }
+    60→  if (detail && detail.includes('перегружен')) {
+    61→    return 'Сервис распознавания сейчас занят — попробуй ещё раз через минуту.';
+    62→  }
+    63→  return 'Не получилось распознать фото. Попробуй ещё раз при другом освещении.';
+    64→}
+    65→type ProductState =
+    66→  | { kind: 'idle' }
+    67→  | { kind: 'loading'; code: string }
+    68→  | { kind: 'found'; code: string; product: BarcodeProduct }
+    69→  | { kind: 'notfound'; code: string }
+    70→  | { kind: 'error'; code: string };
+    71→
+    72→interface BarcodeProduct {
+    73→  barcode: string;
+    74→  name: string;
+    75→  brands: string;
+    76→  image: string | null;
+    77→  kcal: number | null;
+    78→  protein: number | null;
+    79→  fat: number | null;
+    80→  carbs: number | null;
+    81→  ingredientsText: string;
+    82→}
+    83→
+    84→function pickRandom<T>(arr: T[], n: number): T[] {
+    85→  const copy = [...arr];
+    86→  const out: T[] = [];
+    87→  while (out.length < n && copy.length > 0) {
+    88→    out.push(copy.splice(Math.floor(Math.random() * copy.length), 1)[0]);
+    89→  }
+    90→  return out;
+    91→}
+    92→
+    93→// --- Автоподбор самой широкой задней камеры ---
+    94→// Часть телефонов (в т.ч. realme и др.) по умолчанию включает телеобъектив
+    95→// или «склеенный» блок, у которого минимальный зум 2-2.5x: чип «1x» врёт,
+    96→// холодильник вблизи не снять. Перебираем задние камеры и ищем самую широкую.
+    97→
+    98→/** Кеш самой широкой задней камеры — зондирование один раз за сессию */
+    99→const WIDE_CAM_KEY = 'skanrecept-wide-cam';
+   100→
+   101→/** Соотношение сторон видоискателя 3:4 — под него кропается снимок в frameToDataUrl */
+   102→const VIEWFINDER_AR = 3 / 4;
+   103→
+   104→/** Мин зум трека или null, если зум не поддерживается */
+   105→function trackZoomMin(track: MediaStreamTrack | null | undefined): number | null {
+   106→  if (!track || typeof track.getCapabilities !== 'function') return null;
+   107→  try {
+   108→    const caps = track.getCapabilities() as unknown as { zoom?: { min?: number; max?: number } };
+   109→    if (caps.zoom && typeof caps.zoom.min === 'number') return caps.zoom.min;
+   110→  } catch {
+   111→    /* некоторые движки кидают на getCapabilities — считаем, что зума нет */
+   112→  }
+   113→  return null;
+   114→}
+   115→
+   116→/** Быстро открыть камеру по id, узнать её минимальный зум и сразу закрыть */
+   117→async function probeZoomMin(deviceId: string, timeoutMs = 2500): Promise<number | null> {
+   118→  let stream: MediaStream | null = null;
+   119→  const stop = () => stream?.getTracks().forEach((t) => t.stop());
+   120→  const gump = navigator.mediaDevices
+   121→    .getUserMedia({ video: { deviceId: { exact: deviceId } }, audio: false })
+   122→    .then((s) => {
+   123→      stream = s;
+   124→      return s;
+   125→    });
+   126→  try {
+   127→    const s = await Promise.race([
+   128→      gump,
+   129→      new Promise<never>((_, reject) =>
+   130→        setTimeout(() => reject(new Error('probe timeout')), timeoutMs),
+   131→      ),
+   132→    ]);
+   133→    const track = s.getVideoTracks()[0] ?? null;
+   134→    // Страховка: вдруг попали на фронталку — её в подбор не берём
+   135→    if (track?.getSettings?.().facingMode === 'user') {
+   136→      stop();
+   137→      return null;
+   138→    }
+   139→    const min = trackZoomMin(track);
+   140→    stop();
+   141→    return min;
+   142→  } catch {
+   143→    // Таймаут: getUserMedia может разрешиться позже — гасим камеру тогда,
+   144→    // иначе на медленном телефоне она останется включённой
+   145→    void gump.then(stop).catch(stop);
+   146→    return null;
+   147→  }
+   148→}
+   149→
+   150→/**
+   151→ * Перебираем «задние» камеры по подписи и ищем самую широкую (min zoom).
+   152→ * На десктопе (нет «задних» подписей) и iOS (нет getCapabilities) — no-op.
+   153→ */
+   154→async function findWidestBackCamera(
+   155→  currentDeviceId: string | null,
+   156→): Promise<{ deviceId: string; min: number } | null> {
+   157→  try {
+   158→    const devices = await navigator.mediaDevices.enumerateDevices();
+   159→    const isFront = (label: string) => /front|фронт|передн|user|face/i.test(label);
+   160→    const backs = devices
+   161→      .filter((d) => d.kind === 'videoinput' && d.label && !isFront(d.label))
+   162→      .slice(0, 6);
+   163→    if (backs.length === 0) return null;
+   164→    let best: { deviceId: string; min: number } | null = null;
+   165→    for (const d of backs) {
+   166→      if (currentDeviceId && d.deviceId === currentDeviceId) continue;
+   167→      const min = await probeZoomMin(d.deviceId);
+   168→      if (min !== null && min < (best?.min ?? Infinity)) best = { deviceId: d.deviceId, min };
+   169→      if (best && best.min <= 0.71) break; // ультраширик найден — хватит
+   170→    }
+   171→    return best;
+   172→  } catch {
+   173→    return null;
+   174→  }
+   175→}
+   176→
+   177→/** Приводим распознанную строку к каноническому продукту справочника */
+   178→function mapToCanonical(raw: string): string {
+   179→  const n = raw.toLowerCase();
+   180→  for (const p of FRIDGE_PRODUCTS) {
+   181→    if (p.keys.some((k) => n.includes(k))) return p.name;
+   182→  }
+   183→  return raw;
+   184→}
+   185→
+   186→/**
+   187→ * Снимок кадра видео в JPEG-датаURL — СТРОГО то, что видит пользователь:
+   188→ * сначала кроп под видоискатель 3:4 (object-cover), затем цифровой зум
+   189→ * (центральный кроп), затем уменьшение до 1024px. Без этого превью и
+   190→ * снимок расходились: пользователь наводил на продукты, а на сервер
+   191→ * уходил весь широкий кадр — продукты становились мелкими.
+   192→ */
+   193→function frameToDataUrl(video: HTMLVideoElement, digitalZoom: number): string | null {
+   194→  if (!video.videoWidth || !video.videoHeight) return null;
+   195→  const zoom = Math.max(1, digitalZoom);
+   196→  // 1) Кроп под видоискатель
+   197→  let sw = video.videoWidth;
+   198→  let sh = video.videoHeight;
+   199→  const streamAR = sw / sh;
+   200→  if (streamAR > VIEWFINDER_AR) {
+   201→    sw = sh * VIEWFINDER_AR; // альбомный поток — режем бока
+   202→  } else if (streamAR < VIEWFINDER_AR) {
+   203→    sh = sw / VIEWFINDER_AR; // более вертикальный поток — режем верх/низ
+   204→  }
+   205→  // 2) Цифровой зум — центральный кроп поверх видоискателя
+   206→  sw /= zoom;
+   207→  sh /= zoom;
+   208→  const sx = (video.videoWidth - sw) / 2;
+   209→  const sy = (video.videoHeight - sh) / 2;
+   210→  const canvas = document.createElement('canvas');
+   211→  const scale = Math.min(1, 1024 / Math.max(sw, sh));
+   212→  canvas.width = Math.round(sw * scale);
+   213→  canvas.height = Math.round(sh * scale);
+   214→  const ctx = canvas.getContext('2d');
+   215→  if (!ctx) return null;
+   216→  ctx.drawImage(video, sx, sy, sw, sh, 0, 0, canvas.width, canvas.height);
+   217→  return canvas.toDataURL('image/jpeg', 0.82);
+   218→}
+   219→
+   220→/** Файл из галереи → уменьшенный JPEG-датаURL (с учётом EXIF-поворота) */
+   221→async function fileToDataUrl(file: File): Promise<string> {
+   222→  // createImageBitmap уважает EXIF-поворот — фото с телефона часто повёрнуты,
+   223→  // и без этого блюда распознаются «лёжа на боку»
+   224→  if (typeof createImageBitmap === 'function') {
+   225→    try {
+   226→      const bmp = await createImageBitmap(file, { imageOrientation: 'from-image' });
+   227→      const canvas = document.createElement('canvas');
+   228→      const scale = Math.min(1, 1024 / Math.max(bmp.width, bmp.height));
+   229→      canvas.width = Math.round(bmp.width * scale);
+   230→      canvas.height = Math.round(bmp.height * scale);
+   231→      const ctx = canvas.getContext('2d');
+   232→      if (!ctx) throw new Error('canvas');
+   233→      ctx.drawImage(bmp, 0, 0, canvas.width, canvas.height);
+   234→      bmp.close();
+   235→      return canvas.toDataURL('image/jpeg', 0.82);
+   236→    } catch {
+   237→      /* фолбэк ниже — через Image */
+   238→    }
+   239→  }
+   240→  return new Promise((resolve, reject) => {
+   241→    const drawAndResolve = (
+   242→      source: ImageBitmap | HTMLImageElement,
+   243→      w: number,
+   244→      h: number,
+   245→      cleanup: () => void,
+   246→    ) => {
+   247→      const canvas = document.createElement('canvas');
+   248→      const scale = Math.min(1, 1024 / Math.max(w, h));
+   249→      canvas.width = Math.round(w * scale);
+   250→      canvas.height = Math.round(h * scale);
+   251→      const ctx = canvas.getContext('2d');
+   252→      if (!ctx) {
+   253→        cleanup();
+   254→        reject(new Error('canvas'));
+   255→        return;
+   256→      }
+   257→      ctx.drawImage(source, 0, 0, canvas.width, canvas.height);
+   258→      cleanup();
+   259→      resolve(canvas.toDataURL('image/jpeg', 0.82));
+   260→    };
+   261→
+   262→    // createImageBitmap({ imageOrientation: 'from-image' }) уважает EXIF —
+   263→    // фото с телефона не окажется вверх ногами на сервере
+   264→    const modern = () =>
+   265→      createImageBitmap(file, { imageOrientation: 'from-image' })
+   266→        .then((bmp) =>
+   267→          drawAndResolve(bmp, bmp.width, bmp.height, () => {
+   268→            bmp.close();
+   269→          }),
+   270→        )
+   271→        .catch(() => legacy());
+   272→
+   273→    const legacy = () => {
+   274→      const img = new Image();
+   275→      const url = URL.createObjectURL(file);
+   276→      img.onload = () =>
+   277→        drawAndResolve(img, img.width, img.height, () => URL.revokeObjectURL(url));
+   278→      img.onerror = () => {
+   279→        URL.revokeObjectURL(url);
+   280→        reject(new Error('image decode'));
+   281→      };
+   282→      img.src = url;
+   283→    };
+   284→
+   285→    if (typeof createImageBitmap === 'function') modern();
+   286→    else legacy();
+   287→  });
+   288→}
+   289→
+   290→export default function ScanScreen() {
+   291→  const isPro = useAppStore((s) => s.userProfile.isPro);
+   292→  const scansLeft = useAppStore((s) => s.userProfile.scansLeft);
+   293→  const performScan = useAppStore((s) => s.performScan);
+   294→  const addToPantry = useAppStore((s) => s.addToPantry);
+   295→  const addToShoppingList = useAppStore((s) => s.addToShoppingList);
+   296→  const pantry = useAppStore((s) => s.pantry);
+   297→
+   298→  const [mode, setMode] = useState<ScanMode>('products');
+   299→  /** Сессия barcode-сканера: инкремент = перезапуск чтения кода
+   300→   *  (после «Сканировать другой» или автоперезапуска после ошибки) */
+   301→  const [barcodeSession, setBarcodeSession] = useState(0);
+   302→  /** Последний прочитанный код + время — защита от повторного чтения того же кода */
+   303→  const lastCodeRef = useRef<{ code: string; at: number }>({ code: '', at: 0 });
+   304→  const [phase, setPhase] = useState<Phase>('idle');
+   305→  const [camState, setCamState] = useState<CamState>('starting');
+   306→  /** Распознанные продукты с уверенностью и отметками */
+   307→  const [items, setItems] = useState<ScanItem[]>([]);
+   308→  /** Имя продукта, который сейчас переименовывают */
+   309→  const [renaming, setRenaming] = useState<string | null>(null);
+   310→  const [renameDraft, setRenameDraft] = useState('');
+   311→  const [isDemo, setIsDemo] = useState(false);
+   312→  const [match, setMatch] = useState<MatchResult | null>(null);
+   313→  const [savedToPantry, setSavedToPantry] = useState(false);
+   314→  const [addedNames, setAddedNames] = useState<string[]>([]);
+   315→  const [scanFailed, setScanFailed] = useState<ScanFail>(null);
+   316→  /** Детали ошибки от сервера (например, «на фото не найдено продуктов») */
+   317→  const [scanDetail, setScanDetail] = useState<string | null>(null);
+   318→  /** Реальный аспект потока камеры — видоискатель подстраивается, ничего не обрезая */
+   319→  const [streamAR, setStreamAR] = useState<number | null>(null);
+   320→  /**
+   321→   * Способ съёмки. По умолчанию — системная камера (input capture=environment):
+   322→   * нативное приложение камеры с честным зумом 1×, автофокусом и вспышкой.
+   323→   * Живой видоискатель getUserMedia — опциональный режим по кнопке:
+   324→   * у ряда телефонов браузерный поток стартует «приближённым» независимо от правок.
+   325→   */
+   326→  const [liveCam, setLiveCam] = useState(false);
+   327→
+   328→  // --- штрих-код ---
+   329→  const [productState, setProductState] = useState<ProductState>({ kind: 'idle' });
+   330→  const [manualCode, setManualCode] = useState('');
+   331→  const [productInList, setProductInList] = useState(false);
+   332→
+   333→  const videoRef = useRef<HTMLVideoElement | null>(null);
+   334→  const fileInputRef = useRef<HTMLInputElement | null>(null);
+   335→  /** Скрытый input с capture=environment — открывает системную камеру телефона */
+   336→  const sysCamRef = useRef<HTMLInputElement | null>(null);
+   337→  const zxingRef = useRef<IScannerControls | null>(null);
+   338→  /** Последний снимок — для кнопки «Повторить» после ошибки */
+   339→  const lastShotRef = useRef<string | null>(null);
+   340→
+   341→  // --- зум камеры ---
+   342→  /** Активная ступень зума — реальный множитель (может быть 0,6 у ультраширика) */
+   343→  const [zoomFactor, setZoomFactor] = useState(1);
+   344→  /** Честные ступени: вычисляются из возможностей камеры после старта */
+   345→  const [zoomChips, setZoomChips] = useState<number[]>([1, 2, 3]);
+   346→  /** Цифровой зум (CSS scale) — только когда нативный track.zoom недоступен */
+   347→  const [cssZoom, setCssZoom] = useState(1);
+   348→  const cssZoomRef = useRef(1);
+   349→  const trackRef = useRef<MediaStreamTrack | null>(null);
+   350→  const nativeZoomRef = useRef<{ min: number; max: number } | null>(null);
+   351→  /** Зум потока при старте = честная 1x в единицах устройства (калибровка) */
+   352→  const baseZoomRef = useRef(1);
+   353→
+   354→  /** Переключение зума: нативный зум объектива, иначе CSS-кроп.
+   355→   *  Цели считаем от базовой точки — зума только что открытого потока
+   356→   *  (он равен родному полю зрения камеры в ЛЮБЫХ единицах: у ряда телефонов
+   357→   *  min диапазона — не 1x, из-за чего чип «1x» оказывался реальными 2-2.5x). */
+   358→  const applyZoom = async (level: ZoomLevel) => {
+   359→    setZoomFactor(level);
+   360→    const caps = nativeZoomRef.current;
+   361→    const track = trackRef.current;
+   362→    if (caps && track) {
+   363→      const target = Math.min(caps.max, Math.max(caps.min, baseZoomRef.current * level));
+   364→      try {
+   365→        await track.applyConstraints(
+   366→          { advanced: [{ zoom: target }] } as unknown as MediaTrackConstraints,
+   367→        );
+   368→        cssZoomRef.current = 1;
+   369→        setCssZoom(1);
+   370→        return;
+   371→      } catch {
+   372→        /* нативный зум не применился — уходим в цифровой */
+   373→      }
+   374→    }
+   375→    cssZoomRef.current = level;
+   376→    setCssZoom(level);
+   377→  };
+   378→
+   379→  // ================= Камера (продукты) =================
+   380→  useEffect(() => {
+   381→    if (mode !== 'products') return;
+   382→    // Живой видоискатель включается только по кнопке; по умолчанию снимаем
+   383→    // системной камерой (см. liveCam) — там зум/фокус управляются ОС
+   384→    if (!liveCam) return;
+   385→    let stream: MediaStream | null = null;
+   386→    let cancelled = false;
+   387→
+   388→    /** Подключить поток и дождаться метаданных, вернуть реальную ориентацию кадра */
+   389→    const attach = async (s: MediaStream): Promise<'portrait' | 'landscape'> => {
+   390→      const video = videoRef.current;
+   391→      if (!video) return 'landscape';
+   392→      video.srcObject = s;
+   393→      await video.play().catch(() => undefined);
+   394→      if (video.readyState < 1) {
+   395→        await new Promise<void>((resolve) => {
+   396→          const timer = window.setTimeout(resolve, 3000);
+   397→          video.addEventListener(
+   398→            'loadedmetadata',
+   399→            () => {
+   400→              window.clearTimeout(timer);
+   401→              resolve();
+   402→            },
+   403→            { once: true },
+   404→          );
+   405→        });
+   406→      }
+   407→      return video.videoWidth > 0 && video.videoWidth / video.videoHeight > 1.05
+   408→        ? 'landscape'
+   409→        : 'portrait';
+   410→    };
+   411→
+   412→    setCamState('starting');
+   413→    (async () => {
+   414→      /** Базовые видео-констрейнты: без жёсткого aspectRatio — принудительный 3:4
+   415→       *  заставляет часть HAL кропировать сенсор (ложный «зум 2-2.5x»). */
+   416→      const VIDEO_BASE: MediaTrackConstraints = {
+   417→        facingMode: 'environment',
+   418→        width: { ideal: 1280 },
+   419→        height: { ideal: 720 },
+   420→      };
+   421→      const VIDEO_PORTRAIT: MediaTrackConstraints = {
+   422→        facingMode: 'environment',
+   423→        width: { ideal: 720 },
+   424→        height: { ideal: 1280 },
+   425→      };
+   426→      /** Открыть поток, опционально на конкретной камере */
+   427→      const openWith = async (deviceId?: string | null) => {
+   428→        const video: MediaTrackConstraints = deviceId
+   429→          ? { ...VIDEO_BASE, deviceId: { exact: deviceId } }
+   430→          : { ...VIDEO_BASE };
+   431→        return navigator.mediaDevices.getUserMedia({ video, audio: false });
+   432→      };
+   433→      /** Перезапуск в портрете, не теряя выбранную камеру */
+   434→      const restartPortrait = async (deviceId?: string | null) => {
+   435→        const video: MediaTrackConstraints = deviceId
+   436→          ? { ...VIDEO_PORTRAIT, deviceId: { exact: deviceId } }
+   437→          : { ...VIDEO_PORTRAIT };
+   438→        return navigator.mediaDevices.getUserMedia({ video, audio: false });
+   439→      };
+   440→
+   441→      try {
+   442→        // Быстрый путь: в прошлый раз уже нашли самую широкую заднюю камеру
+   443→        let cachedWide: string | null = null;
+   444→        try {
+   445→          cachedWide = sessionStorage.getItem(WIDE_CAM_KEY);
+   446→        } catch {
+   447→          /* нет доступа к хранилищу */
+   448→        }
+   449→        if (cachedWide) {
+   450→          try {
+   451→            stream = await openWith(cachedWide);
+   452→          } catch {
+   453→            try {
+   454→              sessionStorage.removeItem(WIDE_CAM_KEY);
+   455→            } catch {
+   456→              /* не критично */
+   457→            }
+   458→            stream = null;
+   459→          }
+   460→        }
+   461→        if (!stream) {
+   462→          stream = await openWith();
+   463→        }
+   464→        if (cancelled) {
+   465→          stream.getTracks().forEach((t) => t.stop());
+   466→          return;
+   467→        }
+   468→        const deviceIdOf = (s: MediaStream | null): string | null => {
+   469→          const id = s?.getVideoTracks()[0]?.getSettings?.().deviceId;
+   470→          return typeof id === 'string' && id ? id : null;
+   471→        };
+   472→        let activeDeviceId = deviceIdOf(stream);
+   473→
+   474→        // Альбомный кадр в портретном видоискателе = скрытый кроп-зум —
+   475→        // перезапускаем поток явно портретными размерами (камеру сохраняем)
+   476→        let orientation = await attach(stream);
+   477→        if (orientation === 'landscape') {
+   478→          stream.getTracks().forEach((t) => t.stop());
+   479→          stream = await restartPortrait(activeDeviceId);
+   480→          if (cancelled) {
+   481→            stream.getTracks().forEach((t) => t.stop());
+   482→            return;
+   483→          }
+   484→          activeDeviceId = deviceIdOf(stream);
+   485→          orientation = await attach(stream);
+   486→          if (orientation === 'landscape') {
+   487→            // Телефон отдаёт только ландшафт — принимаем: видоискатель object-contain,
+   488→            // покажет весь кадр без обрезки, так что «1x» остаётся честным 1x
+   489→            console.info('[scan] камера отдаёт ландшафтный поток, показываем весь кадр');
+   490→          }
+   491→        }
+   492→
+   493→        // Подбор самой широкой камеры: если у текущей min зум заметно больше 1 —
+   494→        // вероятно, попали на телеобъектив. Ищем шире и переключаемся.
+   495→        let track = stream.getVideoTracks()[0] ?? null;
+   496→        const currentMin = trackZoomMin(track);
+   497→        if (currentMin !== null && currentMin > 1.05) {
+   498→          const wider = await findWidestBackCamera(activeDeviceId);
+   499→          if (wider && wider.min < currentMin) {
+   500→            try {
+   501→              sessionStorage.setItem(WIDE_CAM_KEY, wider.deviceId);
+   502→            } catch {
+   503→              /* нет доступа к хранилищу — просто будем искать каждый раз */
+   504→            }
+   505→            stream.getTracks().forEach((t) => t.stop());
+   506→            if (cancelled) return;
+   507→            stream = await openWith(wider.deviceId);
+   508→            if (cancelled) {
+   509→              stream.getTracks().forEach((t) => t.stop());
+   510→              return;
+   511→            }
+   512→            activeDeviceId = deviceIdOf(stream);
+   513→            orientation = await attach(stream);
+   514→            if (orientation === 'landscape') {
+   515→              stream.getTracks().forEach((t) => t.stop());
+   516→              try {
+   517→                stream = await restartPortrait(activeDeviceId);
+   518→                if (cancelled) {
+   519→                  stream.getTracks().forEach((t) => t.stop());
+   520→                  return;
+   521→                }
+   522→                await attach(stream);
+   523→              } catch {
+   524→                /* не вышло — оставляем как есть, снимок всё равно кропается под превью */
+   525→              }
+   526→            }
+   527→            track = stream.getVideoTracks()[0] ?? null;
+   528→          }
+   529→        }
+   530→
+   531→        const video = videoRef.current;
+   532→        setStreamAR(
+   533→          video && video.videoWidth > 0 ? video.videoWidth / video.videoHeight : 3 / 4,
+   534→        );
+   535→
+   536→        // Калибровка зума: запоминаем диапазон нативного зума и ТОЧКУ ОТСЧЁТА —
+   537→        // текущий зум свежего потока (getSettings().zoom), а не min диапазона.
+   538→        trackRef.current = track;
+   539→        nativeZoomRef.current = null;
+   540→        baseZoomRef.current = 1;
+   541→        let caps: { min: number; max: number } | null = null;
+   542→        if (track && typeof track.getCapabilities === 'function') {
+   543→          const raw = track.getCapabilities() as unknown as {
+   544→            zoom?: { min?: number; max?: number };
+   545→          };
+   546→          if (
+   547→            raw.zoom &&
+   548→            typeof raw.zoom.min === 'number' &&
+   549→            typeof raw.zoom.max === 'number' &&
+   550→            raw.zoom.max > raw.zoom.min
+   551→          ) {
+   552→            caps = { min: raw.zoom.min, max: raw.zoom.max };
+   553→            nativeZoomRef.current = caps;
+   554→          }
+   555→        }
+   556→
+   557→        // Стартуем с минимума объектива — это и есть настоящая «1×»
+   558→        if (caps && track) {
+   559→          try {
+   560→            await track.applyConstraints(
+   561→              { advanced: [{ zoom: caps.min }] } as unknown as MediaTrackConstraints,
+   562→            );
+   563→          } catch {
+   564→            /* игнорируем — остаётся цифровой зум */
+   565→          }
+   566→          const settings = track.getSettings() as unknown as { zoom?: number };
+   567→          if (typeof settings.zoom === 'number' && settings.zoom > 0) {
+   568→            // Свежий поток уже находится в своей честной 1x — фиксируем её как базу
+   569→            baseZoomRef.current = settings.zoom;
+   570→          } else if (nativeZoomRef.current) {
+   571→            // Единицы не рассказывают, где 1x, — берём min: хуже не станет,
+   572→            // потому что принудительный сброс зума мы больше не делаем
+   573→            baseZoomRef.current = nativeZoomRef.current.min;
+   574→          }
+   575→        }
+   576→
+   577→        setCamState('on');
+   578→      } catch {
+   579→        if (!cancelled) setCamState('denied');
+   580→      }
+   581→    })();
+   582→
+   583→    return () => {
+   584→      cancelled = true;
+   585→      trackRef.current = null;
+   586→      nativeZoomRef.current = null;
+   587→      baseZoomRef.current = 1;
+   588→      cssZoomRef.current = 1;
+   589→      setZoomFactor(1);
+   590→      setZoomChips([1, 2, 3]);
+   591→      setCssZoom(1);
+   592→      setStreamAR(null);
+   593→      stream?.getTracks().forEach((t) => t.stop());
+   594→    };
+   595→  }, [mode, liveCam]);
+   596→
+   597→  // ================= Сканер штрих-кода =================
+   598→  useEffect(() => {
+   599→    if (mode !== 'barcode') return;
+   600→    let cancelled = false;
+   601→
+   602→    setCamState('starting');
+   603→    (async () => {
+   604→      try {
+   605→        const reader = new BrowserMultiFormatReader();
+   606→        const controls = await reader.decodeFromVideoDevice(
+   607→          undefined,
+   608→          videoRef.current ?? undefined,
+   609→          (result) => {
+   610→            if (result && !cancelled) {
+   611→              const code = result.getText();
+   612→              // тот же код в течение 5 с игнорируем — после автоперезапуска
+   613→              // он ещё висит перед камерой и не должен зациклить запрос
+   614→              if (code === lastCodeRef.current.code && Date.now() - lastCodeRef.current.at < 5000) return;
+   615→              lastCodeRef.current = { code, at: Date.now() };
+   616→              void handleBarcode(code);
+   617→            }
+   618→          },
+   619→        );
+   620→        if (cancelled) {
+   621→          controls.stop();
+   622→          return;
+   623→        }
+   624→        zxingRef.current = controls;
+   625→        setCamState('on');
+   626→      } catch {
+   627→        if (!cancelled) setCamState('denied');
+   628→      }
+   629→    })();
+   630→
+   631→    return () => {
+   632→      cancelled = true;
+   633→      zxingRef.current?.stop();
+   634→      zxingRef.current = null;
+   635→    };
+   636→    // eslint-disable-next-line react-hooks/exhaustive-deps
+   637→  }, [mode, barcodeSession]);
+   638→
+   639→  /** Пересчитать подборку рецептов из отмеченных продуктов + запасов */
+   640→  const recomputeMatch = (list: ScanItem[]) => {
+   641→    const checked = list.filter((i) => i.checked).map((i) => i.name);
+   642→    setMatch(checked.length > 0 ? matchDishes([...checked, ...pantry]) : null);
+   643→  };
+   644→
+   645→  // ================= Распознавание фото =================
+   646→  const runRecognition = async (dataUrl: string) => {
+   647→    const result = performScan();
+   648→    if (result === 'limit') {
+   649→      setPhase('paywall');
+   650→      return;
+   651→    }
+   652→
+   653→    setPhase('scanning');
+   654→    setScanFailed(null);
+   655→    setScanDetail(null);
+   656→    setIsDemo(false);
+   657→    lastShotRef.current = dataUrl;
+   658→    try {
+   659→      // Цепочка: /api/scan этого origin → внешний API (VITE_SCAN_API_URL) →
+   660→      // OpenRouter из браузера (VITE_OPENROUTER_KEY) → «недоступно» (демо-скан).
+   661→      // Статусы 404/405/501 означают «распознавание недоступно», а не ошибку:
+   662→      // GitHub Pages отвечает 405 на любой POST — раньше это выглядело как «scan api 405».
+   663→      const outcome = await scanProducts(dataUrl);
+   664→      if (!outcome.ok) {
+   665→        // распознавание не дало результата — возвращаем списанный Лайт-скан
+   666→        useAppStore.getState().refundScan();
+   667→        setPhase('idle');
+   668→        if (outcome.reason === 'unavailable') {
+   669→          setScanFailed('noprovider');
+   670→        } else {
+   671→          setScanFailed('generic');
+   672→          setScanDetail(outcome.detail ? outcome.detail.slice(0, 160) : null);
+   673→        }
+   674→        return;
+   675→      }
+   676→      const byName = new Map<string, Confidence>();
+   677→      for (const p of outcome.products) {
+   678→        const name = mapToCanonical(p.name).trim();
+   679→        if (name.length < 2) continue;
+   680→        const conf: Confidence = p.confidence === 'medium' ? 'medium' : 'high';
+   681→        byName.set(name, byName.get(name) === 'high' ? 'high' : conf);
+   682→      }
+   683→      if (byName.size === 0) throw new Error('на фото не удалось найти продукты');
+   684→
+   685→      const list: ScanItem[] = [...byName.entries()].map(([name, confidence]) => ({
+   686→        name,
+   687→        confidence,
+   688→        // зелёные отмечены сразу, жёлтые ждут ручной проверки
+   689→        checked: confidence === 'high',
+   690→      }));
+   691→      setItems(list);
+   692→      recomputeMatch(list);
+   693→      setSavedToPantry(false);
+   694→      setAddedNames([]);
+   695→      setRenaming(null);
+   696→      setPhase('result');
+   697→    } catch (err) {
+   698→      setPhase('idle');
+   699→      setScanFailed('generic');
+   700→      setScanDetail(err instanceof Error ? err.message.slice(0, 160) : null);
+   701→    }
+   702→  };
+   703→
+   704→  const capture = () => {
+   705→    const dataUrl = videoRef.current
+   706→      ? frameToDataUrl(videoRef.current, cssZoomRef.current)
+   707→      : null;
+   708→    if (!dataUrl) return;
+   709→    void runRecognition(dataUrl);
+   710→  };
+   711→
+   712→  const onFilePicked = (file: File | undefined | null) => {
+   713→    if (!file) return;
+   714→    fileToDataUrl(file)
+   715→      .then((dataUrl) => runRecognition(dataUrl))
+   716→      .catch(() => {
+   717→        setScanFailed('generic');
+   718→        setScanDetail('не удалось прочитать выбранное фото');
+   719→      });
+   720→  };
+   721→
+   722→  /** Демо-скан: фолбэк без списания скана */
+   723→  const demoScan = () => {
+   724→    const detected = pickRandom(SCAN_POOL, 5 + Math.floor(Math.random() * 3));
+   725→    // имитируем реальную уверенность модели: часть продуктов «под вопросом»
+   726→    const list: ScanItem[] = detected.map((name, i) => ({
+   727→      name,
+   728→      confidence: i < detected.length - 2 ? 'high' : 'medium',
+   729→      checked: i < detected.length - 2,
+   730→    }));
+   731→    setItems(list);
+   732→    recomputeMatch(list);
+   733→    setSavedToPantry(false);
+   734→    setAddedNames([]);
+   735→    setIsDemo(true);
+   736→    setScanFailed(null);
+   737→    setScanDetail(null);
+   738→    setPhase('result');
+   739→  };
+   740→
+   741→  // ================= Штрих-код =================
+   742→  /** Прямой запрос в Open Food Facts из браузера — фолбэк, когда /api недоступен (статический хостинг).
+   743→   *  Таймаут 9 с: база отвечает быстро, долгий ответ = плохая сеть, лучше сразу честная ошибка. */
+   744→  const fetchOffDirect = async (code: string): Promise<BarcodeProduct | null> => {
+   745→    const fields =
+   746→      'product_name,product_name_ru,brands,image_front_small_url,image_url,' +
+   747→      'nutriments,ingredients_text,ingredients_text_ru';
+   748→    const ctrl = new AbortController();
+   749→    const timer = setTimeout(() => ctrl.abort(), 9000);
+   750→    let r: Response;
+   751→    try {
+   752→      r = await fetch(
+   753→        `https://world.openfoodfacts.org/api/v2/product/${code}.json?fields=${fields}`,
+   754→        { signal: ctrl.signal },
+   755→      );
+   756→    } finally {
+   757→      clearTimeout(timer);
+   758→    }
+   759→    const data = await r.json();
+   760→    if (data?.status !== 1) return null;
+   761→    const p = data.product;
+   762→    const name: string = (p.product_name_ru || p.product_name || '').trim();
+   763→    if (!name) return null;
+   764→    const n = p.nutriments ?? {};
+   765→    const toNum = (v: unknown): number | null => {
+   766→      const x = typeof v === 'string' ? Number.parseFloat(v) : (v as number);
+   767→      return Number.isFinite(x) ? Math.round(x * 10) / 10 : null;
+   768→    };
+   769→    let kcal = toNum(n['energy-kcal_100g']);
+   770→    if (kcal === null && n['energy_100g'] !== undefined) {
+   771→      const kj = toNum(n['energy_100g']);
+   772→      if (kj !== null) kcal = Math.round((kj / 4.184) * 10) / 10;
+   773→    }
+   774→    return {
+   775→      barcode: code,
+   776→      name,
+   777→      brands: (p.brands || '').split(',').map((s: string) => s.trim()).filter(Boolean)[0] ?? '',
+   778→      image: p.image_front_small_url || p.image_url || null,
+   779→      kcal,
+   780→      protein: toNum(n.proteins_100g),
+   781→      fat: toNum(n.fat_100g),
+   782→      carbs: toNum(n.carbohydrates_100g),
+   783→      ingredientsText: (p.ingredients_text_ru || p.ingredients_text || '').trim(),
+   784→    };
+   785→  };
+   786→
+   787→  const handleBarcode = async (code: string) => {
+   788→    if (productState.kind === 'loading') return;
+   789→    zxingRef.current?.stop();
+   790→    setProductState({ kind: 'loading', code });
+   791→    setProductInList(false);
+   792→    // Если карточка товара не открылась (notfound/error) — сами перезапускаем
+   793→    // сканер через 2,5 с; при found перезапуск делает кнопка «Сканировать другой»
+   794→    const autoRestart = setTimeout(() => setBarcodeSession((s) => s + 1), 2500);
+   795→    try {
+   796→      const r = await fetch(`/api/barcode?code=${encodeURIComponent(code)}`);
+   797→      const data = (await r.json()) as
+   798→        | { found: true; product: BarcodeProduct }
+   799→        | { found: false }
+   800→        | { error: string };
+   801→      if ('found' in data && data.found) {
+   802→        clearTimeout(autoRestart);
+   803→        setProductState({ kind: 'found', code, product: data.product });
+   804→      } else if ('found' in data) {
+   805→        setProductState({ kind: 'notfound', code });
+   806→      } else {
+   807→        // сервер вернул ошибку — пробуем напрямую из браузера
+   808→        const direct = await fetchOffDirect(code).catch(() => null);
+   809→        if (direct) {
+   810→          clearTimeout(autoRestart);
+   811→          setProductState({ kind: 'found', code, product: direct });
+   812→        } else {
+   813→          setProductState({ kind: 'error', code });
+   814→        }
+   815→      }
+   816→    } catch {
+   817→      // например, статический хостинг без /api — Open Food Facts отвечает и из браузера (CORS разрешён)
+   818→      const direct = await fetchOffDirect(code).catch(() => null);
+   819→      if (direct) {
+   820→        clearTimeout(autoRestart);
+   821→        setProductState({ kind: 'found', code, product: direct });
+   822→      } else {
+   823→        setProductState({ kind: 'error', code });
+   824→      }
+   825→    }
+   826→  };
+   827→
+   828→  const submitManualCode = () => {
+   829→    const code = manualCode.trim();
+   830→    if (!/^\d{8,14}$/.test(code)) return;
+   831→    void handleBarcode(code);
+   832→  };
+   833→
+   834→  /** «Найти рецепты» для найденного товара */
+   835→  const findRecipesForProduct = (product: BarcodeProduct) => {
+   836→    const list: ScanItem[] = [
+   837→      { name: mapToCanonical(product.name), confidence: 'high', checked: true },
+   838→    ];
+   839→    setItems(list);
+   840→    recomputeMatch(list);
+   841→    setIsDemo(false);
+   842→    setSavedToPantry(false);
+   843→    setAddedNames([]);
+   844→    setRenaming(null);
+   845→    setPhase('result');
+   846→  };
+   847→
+   848→  /** В запасы уходят только отмеченные продукты */
+   849→  const saveToPantry = () => {
+   850→    const checked = items.filter((i) => i.checked).map((i) => i.name);
+   851→    if (checked.length === 0) return;
+   852→    addToPantry(checked);
+   853→    setSavedToPantry(true);
+   854→  };
+   855→
+   856→  /** Отметить/снять продукт — подборка рецептов пересчитывается сразу */
+   857→  const toggleItem = (name: string) => {
+   858→    const next = items.map((i) => (i.name === name ? { ...i, checked: !i.checked } : i));
+   859→    setItems(next);
+   860→    recomputeMatch(next);
+   861→    setSavedToPantry(false);
+   862→  };
+   863→
+   864→  const renameStart = (name: string) => {
+   865→    setRenaming(name);
+   866→    setRenameDraft(name);
+   867→  };
+   868→
+   869→  /** Заменить название (например, «возможно сыр» → «брынза») */
+   870→  const renameCommit = () => {
+   871→    const oldName = renaming;
+   872→    setRenaming(null);
+   873→    if (!oldName) return;
+   874→    const newName = mapToCanonical(renameDraft.trim());
+   875→    if (!newName || newName === oldName) return;
+   876→    const old = items.find((i) => i.name === oldName);
+   877→    const existing = items.find((i) => i.name === newName);
+   878→    let next: ScanItem[];
+   879→    if (old && existing) {
+   880→      // переименование в уже существующий продукт — объединяем их
+   881→      next = items
+   882→        .filter((i) => i.name !== oldName && i.name !== newName)
+   883→        .concat([
+   884→          {
+   885→            name: newName,
+   886→            confidence:
+   887→              existing.confidence === 'high' || old.confidence === 'high' ? 'high' : 'medium',
+   888→            checked: existing.checked || old.checked,
+   889→          },
+   890→        ]);
+   891→    } else {
+   892→      next = items.map((i) => (i.name === oldName ? { ...i, name: newName } : i));
+   893→    }
+   894→    setItems(next);
+   895→    recomputeMatch(next);
+   896→    setSavedToPantry(false);
+   897→  };
+   898→
+   899→  const addMissing = (ingredient: string) => {
+   900→    addToShoppingList([{ name: ingredient }]);
+   901→    setAddedNames((prev) => [...prev, ingredient]);
+   902→  };
+   903→
+   904→  const activateTestPro = () => {
+   905→    useAppStore.getState().togglePro();
+   906→    setPhase('idle');
+   907→  };
+   908→
+   909→  const resetResult = () => {
+   910→    setPhase('idle');
+   911→    setScanFailed(null);
+   912→    setScanDetail(null);
+   913→    setRenaming(null);
+   914→  };
+   915→
+   916→  const productBusy = productState.kind === 'loading';
+   917→  const product = productState.kind === 'found' ? productState.product : null;
+   918→
+   919→  const headerHint = useMemo(() => {
+   920→    if (isPro) return 'PRO: безлимитные сканы';
+   921→    return `Лайт: осталось ${scansLeft} из 5 сканов`;
+   922→  }, [isPro, scansLeft]);
+   923→
+   924→  return (
+   925→    <div>
+   926→      <header className="mb-4 flex items-center justify-between">
+   927→        <div>
+   928→          <h1 className="text-xl font-bold tracking-tight text-ink">Сканирование</h1>
+   929→          <p className="text-xs text-ink-2">{headerHint}</p>
+   930→        </div>
+   931→        <span
+   932→          className={cn(
+   933→            'flex items-center gap-1 rounded-full px-3 py-1 text-xs font-semibold',
+   934→            isPro ? 'bg-pro/10 text-pro-ink' : 'bg-soft text-ink-2',
+   935→          )}
+   936→        >
+   937→          <Crown size={13} className={cn(isPro && 'fill-current')} />
+   938→          {isPro ? 'PRO' : 'Лайт'}
+   939→        </span>
+   940→      </header>
+   941→
+   942→      {/* ---------- Переключатель режимов ---------- */}
+   943→      <div className="mb-4 grid grid-cols-2 gap-1 rounded-2xl bg-soft p-1">
+   944→        <button
+   945→          type="button"
+   946→          onClick={() => {
+   947→            setMode('products');
+   948→            setPhase('idle');
+   949→          }}
+   950→          className={cn(
+   951→            'flex items-center justify-center gap-1.5 rounded-xl py-2 text-sm font-semibold transition-colors',
+   952→            mode === 'products' ? 'bg-card text-ink shadow-sm' : 'text-ink-2',
+   953→          )}
+   954→        >
+   955→          <ScanLine size={16} />
+   956→          Продукты
+   957→        </button>
+   958→        <button
+   959→          type="button"
+   960→          onClick={() => {
+   961→            setMode('barcode');
+   962→            setPhase('idle');
+   963→          }}
+   964→          className={cn(
+   965→            'flex items-center justify-center gap-1.5 rounded-xl py-2 text-sm font-semibold transition-colors',
+   966→            mode === 'barcode' ? 'bg-card text-ink shadow-sm' : 'text-ink-2',
+   967→          )}
+   968→        >
+   969→          <ScanBarcode size={16} />
+   970→          Штрих-код
+   971→        </button>
+   972→      </div>
+   973→
+   974→      {phase === 'paywall' ? (
+   975→        /* ---------- Paywall: сканы Лайта закончились ---------- */
+   976→        <div className="rounded-3xl border border-line bg-card p-6 text-center shadow-sm">
+   977→          <span className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-accent-soft text-accent">
+   978→            <Lock size={26} />
+   979→          </span>
+   980→          <h2 className="text-lg font-bold text-ink">Сканы закончились</h2>
+   981→          <p className="mt-1 mb-4 text-sm text-ink-2">
+   982→            Ты использовал все 5 сканов Лайт-версии. Переключись на PRO, чтобы продолжить.
+   983→          </p>
+   984→          <ul className="mb-5 space-y-2 text-left">
+   985→            <li className="flex items-center gap-2.5 rounded-xl bg-soft px-3.5 py-2.5 text-sm text-ink">
+   986→              <InfinityIcon size={16} className="shrink-0 text-accent" />
+   987→              Безлимитные сканирования продуктов
+   988→            </li>
+   989→            <li className="flex items-center gap-2.5 rounded-xl bg-soft px-3.5 py-2.5 text-sm text-ink">
+   990→              <Sparkles size={16} className="shrink-0 text-accent" />
+   991→              КБЖУ и порции до 12 без ограничений
+   992→            </li>
+   993→          </ul>
+   994→          <button
+   995→            type="button"
+   996→            onClick={activateTestPro}
+   997→            className="w-full rounded-2xl bg-accent py-3 text-sm font-semibold text-on-accent transition-colors hover:bg-accent-strong"
+   998→          >
+   999→            Включить PRO (тестовый режим)
+  1000→          </button>
+  1001→          <p className="mt-2 text-[11px] text-ink-3">Или переключи тумблер «Режим PRO» в профиле</p>
+  1002→        </div>
+  1003→      ) : mode === 'products' ? (
+  1004→        <>
+  1005→          {/* ================= РЕЖИМ: ПРОДУКТЫ ================= */}
+  1006→          {phase === 'result' ? (
+  1007→            <ScanResult
+  1008→              items={items}
+  1009→              isDemo={isDemo}
+  1010→              match={match}
+  1011→              savedToPantry={savedToPantry}
+  1012→              addedNames={addedNames}
+  1013→              renaming={renaming}
+  1014→              renameDraft={renameDraft}
+  1015→              emojiFor={emojiFor}
+  1016→              onToggle={toggleItem}
+  1017→              onRenameStart={renameStart}
+  1018→              onRenameDraft={setRenameDraft}
+  1019→              onRenameCommit={renameCommit}
+  1020→              onSavePantry={saveToPantry}
+  1021→              onAddMissing={addMissing}
+  1022→              onReset={resetResult}
+  1023→            />
+  1024→          ) : (
+  1025→            <>
+  1026→              <div
+  1027→                className={cn(
+  1028→                  'relative mx-auto flex w-full items-center justify-center overflow-hidden rounded-3xl',
+  1029→                  liveCam && camState === 'on'
+  1030→                    ? 'bg-stone-900'
+  1031→                    : 'aspect-[3/4] border-2 border-dashed border-accent/40 bg-card',
+  1032→                )}
+  1033→                // Видоискатель повторяет аспект потока: виден ВЕСЬ кадр,
+  1034→                // поэтому «1x» — честный угол обзора без скрытого кропа
+  1035→                style={
+  1036→                  liveCam && camState === 'on' && streamAR
+  1037→                    ? { aspectRatio: String(streamAR), maxHeight: '58vh' }
+  1038→                    : undefined
+  1039→                }
+  1040→              >
+  1041→                {/* Живое видео: contain — ничего не обрезаем (CSS-цифровой зум, если нативный недоступен) */}
+  1042→                <video
+  1043→                  ref={videoRef}
+  1044→                  playsInline
+  1045→                  muted
+  1046→                  style={{
+  1047→                    transform: `scale(${cssZoom})`,
+  1048→                    transition: 'transform 250ms ease',
+  1049→                  }}
+  1050→                  className={cn(
+  1051→                    'absolute inset-0 h-full w-full object-contain',
+  1052→                    liveCam && camState === 'on' ? 'block' : 'hidden',
+  1053→                  )}
+  1054→                />
+  1055→
+  1056→                {/* Ступени зума как в системной камере — честные множители,
+  1057→                    минимальный = настоящий минимум объектива (может быть 0,6×) */}
+  1058→                {liveCam && camState === 'on' && phase !== 'scanning' && (
+  1059→                  <div className="absolute bottom-24 left-1/2 z-10 flex -translate-x-1/2 items-center gap-1 rounded-full bg-black/40 p-1 backdrop-blur-sm">
+  1060→                    {zoomChips.map((f) => (
+  1061→                      <button
+  1062→                        key={f}
+  1063→                        type="button"
+  1064→                        onClick={() => void applyZoom(f as ZoomLevel)}
+  1065→                        aria-label={`Зум ${fmtZoom(f)}`}
+  1066→                        className={cn(
+  1067→                          'flex h-9 min-w-9 items-center justify-center rounded-full px-1.5 text-xs font-bold transition-colors',
+  1068→                          zoomFactor === f
+  1069→                            ? 'bg-white text-stone-900'
+  1070→                            : 'text-white/85 hover:text-white',
+  1071→                        )}
+  1072→                      >
+  1073→                        {fmtZoom(f)}
+  1074→                      </button>
+  1075→                    ))}
+  1076→                  </div>
+  1077→                )}
+  1078→
+  1079→                {/* Панель съёмки внутри видоискателя — затвор всегда виден */}
+  1080→                {liveCam && camState === 'on' && phase !== 'scanning' && (
+  1081→                  <div className="absolute bottom-4 left-0 right-0 z-10 flex items-center justify-center gap-6">
+  1082→                    <button
+  1083→                      type="button"
+  1084→                      onClick={() => fileInputRef.current?.click()}
+  1085→                      aria-label="Загрузить фото из галереи"
+  1086→                      className="flex h-12 w-12 items-center justify-center rounded-full bg-white/15 text-white backdrop-blur-sm transition-colors hover:bg-white/25"
+  1087→                    >
+  1088→                      <ImagePlus size={20} />
+  1089→                    </button>
+  1090→                    <button
+  1091→                      type="button"
+  1092→                      onClick={capture}
+  1093→                      aria-label="Сделать снимок"
+  1094→                      className="flex h-[72px] w-[72px] items-center justify-center rounded-full border-[3px] border-white/90 bg-white/10 transition-transform active:scale-90 disabled:opacity-60"
+  1095→                    >
+  1096→                      <span className="flex h-[56px] w-[56px] items-center justify-center rounded-full bg-accent text-on-accent shadow-lg shadow-black/30">
+  1097→                        <Camera size={26} />
+  1098→                      </span>
+  1099→                    </button>
+  1100→                    <button
+  1101→                      type="button"
+  1102→                      onClick={demoScan}
+  1103→                      className="flex h-12 items-center gap-1.5 rounded-full bg-white/15 px-4 text-xs font-semibold text-white backdrop-blur-sm transition-colors hover:bg-white/25"
+  1104→                    >
+  1105→                      <RefreshCw size={14} />
+  1106→                      Демо
+  1107→                    </button>
+  1108→                  </div>
+  1109→                )}
+  1110→
+  1111→                {/* Рамка видоискателя */}
+  1112→                {liveCam && camState === 'on' && phase !== 'scanning' && (
+  1113→                  <>
+  1114→                    <span className="pointer-events-none absolute top-6 left-6 h-10 w-10 rounded-tl-2xl border-t-2 border-l-2 border-white/80" />
+  1115→                    <span className="pointer-events-none absolute top-6 right-6 h-10 w-10 rounded-tr-2xl border-t-2 border-r-2 border-white/80" />
+  1116→                    <span className="pointer-events-none absolute bottom-6 left-6 h-10 w-10 rounded-bl-2xl border-b-2 border-l-2 border-white/80" />
+  1117→                    <span className="pointer-events-none absolute bottom-6 right-6 h-10 w-10 rounded-br-2xl border-b-2 border-r-2 border-white/80" />
+  1118→                    <p className="pointer-events-none absolute top-4 left-1/2 -translate-x-1/2 rounded-full bg-black/45 px-3 py-1 text-[11px] font-medium text-white backdrop-blur-sm">
+  1119→                      Наведи на продукты или холодильник
+  1120→                    </p>
+  1121→                  </>
+  1122→                )}
+  1123→
+  1124→                {/* Оверлей обработки */}
+  1125→                {phase === 'scanning' && (
+  1126→                  <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-stone-900/70 backdrop-blur-sm">
+  1127→                    <span className="flex h-16 w-16 animate-pulse items-center justify-center rounded-full bg-accent text-on-accent">
+  1128→                      <ScanLine size={30} />
+  1129→                    </span>
+  1130→                    <p className="text-sm font-medium text-white">Распознаём продукты…</p>
+  1131→                    <p className="max-w-[70%] text-center text-xs text-white/70">
+  1132→                      Снимок уходит на сервер и приходит обратно списком продуктов
+  1133→                    </p>
+  1134→                  </div>
+  1135→                )}
+  1136→
+  1137→                {/* Системная камера: основной способ — снимок через нативное приложение камеры */}
+  1138→                {!liveCam && phase !== 'scanning' && (
+  1139→                  <div className="flex w-full flex-col items-center gap-3 px-6 py-6 text-center">
+  1140→                    <span className="flex h-16 w-16 items-center justify-center rounded-full bg-accent-soft text-accent">
+  1141→                      <Camera size={28} />
+  1142→                    </span>
+  1143→                    <p className="text-sm font-semibold text-ink">Сфотографируй продукты</p>
+  1144→                    <p className="text-xs text-ink-2">
+  1145→                      Откроется системная камера — честный зум 1×, автофокус и вспышка,
+  1146→                      как в штатном приложении камеры
+  1147→                    </p>
+  1148→                    <button
+  1149→                      type="button"
+  1150→                      onClick={() => sysCamRef.current?.click()}
+  1151→                      className="mt-1 flex w-full items-center justify-center gap-2 rounded-2xl bg-accent py-3.5 text-sm font-semibold text-on-accent transition-colors hover:bg-accent-strong"
+  1152→                    >
+  1153→                      <Camera size={17} />
+  1154→                      Сделать фото
+  1155→                    </button>
+  1156→                    <div className="grid w-full grid-cols-2 gap-2">
+  1157→                      <button
+  1158→                        type="button"
+  1159→                        onClick={() => fileInputRef.current?.click()}
+  1160→                        className="flex items-center justify-center gap-1.5 rounded-2xl border border-line bg-card py-2.5 text-xs font-semibold text-ink-2 transition-colors hover:text-ink"
+  1161→                      >
+  1162→                        <ImagePlus size={14} />
+  1163→                        Из галереи
+  1164→                      </button>
+  1165→                      <button
+  1166→                        type="button"
+  1167→                        onClick={demoScan}
+  1168→                        className="flex items-center justify-center gap-1.5 rounded-2xl border border-line bg-card py-2.5 text-xs font-semibold text-ink-2 transition-colors hover:text-ink"
+  1169→                      >
+  1170→                        <RefreshCw size={14} />
+  1171→                        Демо-скан
+  1172→                      </button>
+  1173→                    </div>
+  1174→                    <button
+  1175→                      type="button"
+  1176→                      onClick={() => setLiveCam(true)}
+  1177→                      className="mt-0.5 text-xs font-semibold text-accent underline-offset-2 hover:underline"
+  1178→                    >
+  1179→                      Открыть живой видоискатель
+  1180→                    </button>
+  1181→                  </div>
+  1182→                )}
+  1183→
+  1184→                {/* Закрыть живой видоискатель */}
+  1185→                {liveCam && phase !== 'scanning' && (
+  1186→                  <button
+  1187→                    type="button"
+  1188→                    onClick={() => setLiveCam(false)}
+  1189→                    aria-label="Закрыть живой видоискатель"
+  1190→                    className="absolute top-3 right-3 z-20 flex h-9 w-9 items-center justify-center rounded-full bg-black/45 text-white backdrop-blur-sm transition-colors hover:bg-black/60"
+  1191→                  >
+  1192→                    <X size={16} />
+  1193→                  </button>
+  1194→                )}
+  1195→
+  1196→                {/* Нет камеры / стартуем (только в живом видоискателе) */}
+  1197→                {liveCam && camState !== 'on' && phase !== 'scanning' && (
+  1198→                  <div className="flex flex-col items-center gap-3 px-8 text-center">
+  1199→                    <span
+  1200→                      className={cn(
+  1201→                        'flex h-16 w-16 items-center justify-center rounded-full',
+  1202→                        camState === 'denied' ? 'bg-soft text-ink-3' : 'bg-accent-soft text-accent',
+  1203→                      )}
+  1204→                    >
+  1205→                      {camState === 'denied' ? <CameraOff size={28} /> : <Camera size={28} />}
+  1206→                    </span>
+  1207→                    {camState === 'denied' ? (
+  1208→                      <>
+  1209→                        <p className="text-sm font-semibold text-ink">Нет доступа к камере</p>
+  1210→                        <p className="text-xs text-ink-2">
+  1211→                          Разреши доступ в настройках браузера или загрузи фото из галереи
+  1212→                        </p>
+  1213→                      </>
+  1214→                    ) : (
+  1215→                      <>
+  1216→                        <p className="text-sm font-medium text-ink-2">Запускаем камеру…</p>
+  1217→                        <p className="text-xs text-ink-3">
+  1218→                          Наведись на содержимое холодильника и делай снимок
+  1219→                        </p>
+  1220→                      </>
+  1221→                    )}
+  1222→                  </div>
+  1223→                )}
+  1224→              </div>
+  1225→
+  1226→              {liveCam && camState !== 'on' && (
+  1227→                <div className="mt-4 space-y-2">
+  1228→                  <button
+  1229→                    type="button"
+  1230→                    onClick={() => fileInputRef.current?.click()}
+  1231→                    disabled={phase === 'scanning'}
+  1232→                    className="flex w-full items-center justify-center gap-2 rounded-2xl bg-accent py-3.5 text-sm font-semibold text-on-accent transition-colors hover:bg-accent-strong disabled:opacity-60"
+  1233→                  >
+  1234→                    <ImagePlus size={17} />
+  1235→                    Загрузить фото из галереи
+  1236→                  </button>
+  1237→                  <button
+  1238→                    type="button"
+  1239→                    onClick={demoScan}
+  1240→                    disabled={phase === 'scanning'}
+  1241→                    className="w-full rounded-2xl border border-line bg-card py-3 text-sm font-semibold text-ink-2 transition-colors hover:text-ink disabled:opacity-60"
+  1242→                  >
+  1243→                    Демо-скан (без списания)
+  1244→                  </button>
+  1245→                </div>
+  1246→              )}
+  1247→
+  1248→              <input
+  1249→                ref={fileInputRef}
+  1250→                type="file"
+  1251→                accept="image/*"
+  1252→                className="hidden"
+  1253→                onChange={(e) => {
+  1254→                  onFilePicked(e.target.files?.[0]);
+  1255→                  e.target.value = '';
+  1256→                }}
+  1257→              />
+  1258→
+  1259→              {/* Системная камера: нативное приложение камеры с честным зумом и фокусом */}
+  1260→              <input
+  1261→                ref={sysCamRef}
+  1262→                type="file"
+  1263→                accept="image/*"
+  1264→                capture="environment"
+  1265→                className="hidden"
+  1266→                onChange={(e) => {
+  1267→                  onFilePicked(e.target.files?.[0]);
+  1268→                  e.target.value = '';
+  1269→                }}
+  1270→              />
+  1271→
+  1272→              {scanFailed && (
+  1273→                <div className="mt-3 rounded-2xl border border-accent/30 bg-accent-soft px-4 py-3 text-center">
+  1274→                  <p className="text-xs font-medium text-accent-ink">
+  1275→                    {failHeadline(scanFailed, scanDetail)}
+  1276→                  </p>
+  1277→                  {scanFailed === 'generic' && scanDetail && !scanDetail.includes('перегружен') && (
+  1278→                    <p className="mt-1 text-[11px] text-accent-ink/80">Причина: {scanDetail}</p>
+  1279→                  )}
+  1280→                  {scanFailed === 'generic' && lastShotRef.current && (
+  1281→                    <button
+  1282→                      type="button"
+  1283→                      onClick={() => void runRecognition(lastShotRef.current as string)}
+  1284→                      className="mt-2.5 inline-flex items-center gap-1.5 rounded-full bg-accent px-4 py-1.5 text-xs font-semibold text-on-accent transition-colors hover:bg-accent-strong"
+  1285→                    >
+  1286→                      <RefreshCw size={13} />
+  1287→                      Повторить
+  1288→                    </button>
+  1289→                  )}
+  1290→                </div>
+  1291→              )}
+  1292→
+  1293→              <p className="mt-3 text-center text-[11px] text-ink-3">
+  1294→                Снимок обрабатывается на сервере и не сохраняется
+  1295→              </p>
+  1296→            </>
+  1297→          )}
+  1298→        </>
+  1299→      ) : (
+  1300→        <>
+  1301→          {/* ================= РЕЖИМ: ШТРИХ-КОД ================= */}
+  1302→          {phase === 'result' ? (
+  1303→            <ScanResult
+  1304→              items={items}
+  1305→              isDemo={false}
+  1306→              match={match}
+  1307→              savedToPantry={savedToPantry}
+  1308→              addedNames={addedNames}
+  1309→              renaming={renaming}
+  1310→              renameDraft={renameDraft}
+  1311→              emojiFor={emojiFor}
+  1312→              onToggle={toggleItem}
+  1313→              onRenameStart={renameStart}
+  1314→              onRenameDraft={setRenameDraft}
+  1315→              onRenameCommit={renameCommit}
+  1316→              onSavePantry={saveToPantry}
+  1317→              onAddMissing={addMissing}
+  1318→              onReset={resetResult}
+  1319→            />
+  1320→          ) : product ? (
+  1321→            /* ---------- Карточка найденного товара ---------- */
+  1322→            <div className="rounded-3xl border border-line bg-card p-4 shadow-sm">
+  1323→              <div className="flex items-start gap-3.5">
+  1324→                <div className="flex h-24 w-24 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-soft">
+  1325→                  {product.image ? (
+  1326→                    <img
+  1327→                      src={product.image}
+  1328→                      alt={product.name}
+  1329→                      className="h-full w-full object-cover"
+  1330→                      onError={(e) => {
+  1331→                        (e.currentTarget as HTMLImageElement).style.display = 'none';
+  1332→                      }}
+  1333→                    />
+  1334→                  ) : (
+  1335→                    <Package size={34} className="text-ink-3" />
+  1336→                  )}
+  1337→                </div>
+  1338→                <div className="min-w-0 flex-1">
+  1339→                  <h2 className="text-base leading-snug font-bold text-ink">{product.name}</h2>
+  1340→                  {product.brands && (
+  1341→                    <p className="mt-0.5 text-xs text-ink-2">{product.brands}</p>
+  1342→                  )}
+  1343→                  <p className="mt-1 text-[11px] text-ink-3">Код: {product.barcode}</p>
+  1344→                </div>
+  1345→              </div>
+  1346→
+  1347→              {/* КБЖУ на 100 г */}
+  1348→              <div className="mt-4 grid grid-cols-4 gap-2">
+  1349→                {[
+  1350→                  { label: 'ккал', value: product.kcal },
+  1351→                  { label: 'белки', value: product.protein, unit: 'г' },
+  1352→                  { label: 'жиры', value: product.fat, unit: 'г' },
+  1353→                  { label: 'углев.', value: product.carbs, unit: 'г' },
+  1354→                ].map((tile) => (
+  1355→                  <div key={tile.label} className="rounded-xl bg-soft px-2 py-2.5 text-center">
+  1356→                    <p className="text-sm font-bold text-ink">
+  1357→                      {tile.value === null ? '—' : tile.value}
+  1358→                      {tile.value !== null && tile.unit ? (
+  1359→                        <span className="ml-0.5 text-[10px] font-normal text-ink-3">{tile.unit}</span>
+  1360→                      ) : null}
+  1361→                    </p>
+  1362→                    <p className="mt-0.5 text-[10px] text-ink-3">{tile.label}</p>
+  1363→                  </div>
+  1364→                ))}
+  1365→              </div>
+  1366→              <p className="mt-1 text-right text-[10px] text-ink-3">на 100 г продукта</p>
+  1367→
+  1368→              {product.ingredientsText && (
+  1369→                <p className="mt-3 line-clamp-3 rounded-xl bg-soft/60 px-3 py-2 text-[11px] leading-relaxed text-ink-2">
+  1370→                  <span className="font-semibold text-ink-2">Состав: </span>
+  1371→                  {product.ingredientsText}
+  1372→                </p>
+  1373→              )}
+  1374→
+  1375→              <div className="mt-4 space-y-2">
+  1376→                <button
+  1377→                  type="button"
+  1378→                  onClick={() => findRecipesForProduct(product)}
+  1379→                  className="flex w-full items-center justify-center gap-2 rounded-2xl bg-accent py-3 text-sm font-semibold text-on-accent transition-colors hover:bg-accent-strong"
+  1380→                >
+  1381→                  <CookingPot size={16} />
+  1382→                  Найти рецепты с этим продуктом
+  1383→                </button>
+  1384→                <div className="grid grid-cols-2 gap-2">
+  1385→                  <button
+  1386→                    type="button"
+  1387→                    onClick={() => {
+  1388→                      addToShoppingList([{ name: product.name }]);
+  1389→                      setProductInList(true);
+  1390→                    }}
+  1391→                    className={cn(
+  1392→                      'flex items-center justify-center gap-1.5 rounded-2xl py-2.5 text-xs font-semibold transition-colors',
+  1393→                      productInList ? 'bg-good/10 text-good' : 'bg-soft text-ink-2 hover:text-ink',
+  1394→                    )}
+  1395→                  >
+  1396→                    {productInList ? <Check size={13} strokeWidth={3} /> : <Plus size={13} />}
+  1397→                    {productInList ? 'В списке покупок' : 'В список покупок'}
+  1398→                  </button>
+  1399→                  <button
+  1400→                    type="button"
+  1401→                    onClick={() => {
+  1402→                      setProductState({ kind: 'idle' });
+  1403→                      setManualCode('');
+  1404→                      setBarcodeSession((s) => s + 1); // перезапуск чтения кода
+  1405→                    }}
+  1406→                    className="flex items-center justify-center gap-1.5 rounded-2xl bg-soft py-2.5 text-xs font-semibold text-ink-2 transition-colors hover:text-ink"
+  1407→                  >
+  1408→                    <RefreshCw size={13} />
+  1409→                    Сканировать другой
+  1410→                  </button>
+  1411→                </div>
+  1412→              </div>
+  1413→            </div>
+  1414→          ) : (
+  1415→            <>
+  1416→              <div
+  1417→                className={cn(
+  1418→                  'relative flex aspect-[3/4] items-center justify-center overflow-hidden rounded-3xl',
+  1419→                  camState === 'on' ? 'bg-stone-900' : 'border-2 border-dashed border-accent/40 bg-card',
+  1420→                )}
+  1421→              >
+  1422→                <video
+  1423→                  ref={videoRef}
+  1424→                  playsInline
+  1425→                  muted
+  1426→                  className={cn(
+  1427→                    'absolute inset-0 h-full w-full object-cover',
+  1428→                    camState === 'on' ? 'block' : 'hidden',
+  1429→                  )}
+  1430→                />
+  1431→
+  1432→                {/* Линия-прицел */}
+  1433→                {camState === 'on' && (
+  1434→                  <>
+  1435→                    <div className="pointer-events-none absolute top-1/2 left-[12%] right-[12%] h-0.5 -translate-y-1/2 overflow-hidden rounded-full">
+  1436→                      <div className="barcode-laser h-full w-full bg-accent" />
+  1437→                    </div>
+  1438→                    <p className="pointer-events-none absolute bottom-5 left-1/2 -translate-x-1/2 rounded-full bg-black/45 px-3 py-1 text-[11px] font-medium text-white backdrop-blur-sm">
+  1439→                      Наведи на штрих-код упаковки
+  1440→                    </p>
+  1441→                  </>
+  1442→                )}
+  1443→
+  1444→                {camState !== 'on' && (
+  1445→                  <div className="flex flex-col items-center gap-3 px-8 text-center">
+  1446→                    <span
+  1447→                      className={cn(
+  1448→                        'flex h-16 w-16 items-center justify-center rounded-full',
+  1449→                        camState === 'denied' ? 'bg-soft text-ink-3' : 'bg-accent-soft text-accent',
+  1450→                      )}
+  1451→                    >
+  1452→                      {camState === 'denied' ? <CameraOff size={28} /> : <BarcodeIcon size={28} />}
+  1453→                    </span>
+  1454→                    {camState === 'denied' ? (
+  1455→                      <>
+  1456→                        <p className="text-sm font-semibold text-ink">Нет доступа к камере</p>
+  1457→                        <p className="text-xs text-ink-2">
+  1458→                          Введи цифры штрих-кода вручную ниже
+  1459→                        </p>
+  1460→                      </>
+  1461→                    ) : (
+  1462→                      <>
+  1463→                        <p className="text-sm font-medium text-ink-2">Запускаем сканер…</p>
+  1464→                        <p className="text-xs text-ink-3">Наведись на код на упаковке товара</p>
+  1465→                      </>
+  1466→                    )}
+  1467→                  </div>
+  1468→                )}
+  1469→
+  1470→                {productBusy && (
+  1471→                  <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-stone-900/70 backdrop-blur-sm">
+  1472→                    <span className="flex h-16 w-16 animate-pulse items-center justify-center rounded-full bg-accent text-on-accent">
+  1473→                      <BarcodeIcon size={30} />
+  1474→                    </span>
+  1475→                    <p className="text-sm font-medium text-white">Ищем товар в базе…</p>
+  1476→                  </div>
+  1477→                )}
+  1478→              </div>
+  1479→
+  1480→              {/* Результаты поиска по коду */}
+  1481→              {productState.kind === 'notfound' && (
+  1482→                <div className="mt-3 rounded-2xl border border-line bg-card px-4 py-3 text-center">
+  1483→                  <p className="text-xs font-semibold text-ink">Товар не найден в базе</p>
+  1484→                  <p className="mt-0.5 text-[11px] text-ink-2">
+  1485→                    Код {productState.code} нет в открытой базе продуктов. Попробуй другой код.
+  1486→                  </p>
+  1487→                </div>
+  1488→              )}
+  1489→              {productState.kind === 'error' && (
+  1490→                <div className="mt-3 rounded-2xl border border-accent/30 bg-accent-soft px-4 py-3 text-center">
+  1491→                  <p className="text-xs font-medium text-accent-ink">
+  1492→                    Сервис штрих-кодов недоступен. Проверь интернет и попробуй снова.
+  1493→                  </p>
+  1494→                </div>
+  1495→              )}
+  1496→
+  1497→              {/* Ручной ввод кода */}
+  1498→              <div className="mt-4 rounded-3xl border border-line bg-card p-4 shadow-sm">
+  1499→                <p className="mb-2.5 flex items-center gap-1.5 text-xs font-semibold text-ink">
+  1500→                  <ScanBarcode size={14} className="text-accent" />
+  1501→                  Или введи код вручную
+  1502→                </p>
+  1503→                <div className="flex gap-2">
+  1504→                  <input
+  1505→                    value={manualCode}
+  1506→                    onChange={(e) => setManualCode(e.target.value.replace(/\D/g, '').slice(0, 14))}
+  1507→                    onKeyDown={(e) => e.key === 'Enter' && submitManualCode()}
+  1508→                    inputMode="numeric"
+  1509→                    placeholder="Например 3017620422003"
+  1510→                    className="min-w-0 flex-1 rounded-xl border border-line bg-app px-3.5 py-2.5 text-sm tracking-wider text-ink placeholder:text-ink-3 focus:border-accent focus:outline-none"
+  1511→                  />
+  1512→                  <button
+  1513→                    type="button"
+  1514→                    onClick={submitManualCode}
+  1515→                    disabled={productBusy || !/^\d{8,14}$/.test(manualCode.trim())}
+  1516→                    className="shrink-0 rounded-xl bg-accent px-4 py-2.5 text-sm font-semibold text-on-accent transition-colors hover:bg-accent-strong disabled:opacity-50"
+  1517→                  >
+  1518→                    Найти
+  1519→                  </button>
+  1520→                </div>
+  1521→                <p className="mt-2 text-[11px] text-ink-3">
+  1522→                  Данные товаров — открытая база Open Food Facts
+  1523→                </p>
+  1524→              </div>
+  1525→            </>
+  1526→          )}
+  1527→        </>
+  1528→      )}
+  1529→    </div>
+  1530→  );
+  1531→}
+  1532→
+  1533→// ============================================================================
+  1534→// Результат скана: список продуктов с индикаторами уверенности + подбор рецептов
+  1535→// ============================================================================
+  1536→
+  1537→interface ScanResultProps {
+  1538→  items: ScanItem[];
+  1539→  isDemo: boolean;
+  1540→  match: MatchResult | null;
+  1541→  savedToPantry: boolean;
+  1542→  addedNames: string[];
+  1543→  renaming: string | null;
+  1544→  renameDraft: string;
+  1545→  emojiFor: (name: string) => string;
+  1546→  onToggle: (name: string) => void;
+  1547→  onRenameStart: (name: string) => void;
+  1548→  onRenameDraft: (value: string) => void;
+  1549→  onRenameCommit: () => void;
+  1550→  onSavePantry: () => void;
+  1551→  onAddMissing: (ingredient: string) => void;
+  1552→  onReset: () => void;
+  1553→}
+  1554→
+  1555→function ScanResult({
+  1556→  items,
+  1557→  isDemo,
+  1558→  match,
+  1559→  savedToPantry,
+  1560→  addedNames,
+  1561→  renaming,
+  1562→  renameDraft,
+  1563→  emojiFor,
+  1564→  onToggle,
+  1565→  onRenameStart,
+  1566→  onRenameDraft,
+  1567→  onRenameCommit,
+  1568→  onSavePantry,
+  1569→  onAddMissing,
+  1570→  onReset,
+  1571→}: ScanResultProps) {
+  1572→  const checkedCount = items.filter((i) => i.checked).length;
+  1573→
+  1574→  return (
+  1575→    <section>
+  1576→      {/* Распознанные продукты — список с индикаторами уверенности */}
+  1577→      <div className="mb-2 flex items-center justify-between gap-3">
+  1578→        <h2 className="text-base font-bold text-ink">
+  1579→          {isDemo && <span className="mr-1.5 text-xs font-semibold text-ink-3">ДЕМО · </span>}
+  1580→          Найдено: {items.length} {pluralRu(items.length, 'продукт', 'продукта', 'продуктов')}
+  1581→        </h2>
+  1582→        <button
+  1583→          type="button"
+  1584→          onClick={onSavePantry}
+  1585→          disabled={checkedCount === 0}
+  1586→          className={cn(
+  1587→            'flex shrink-0 items-center gap-1 rounded-full px-3 py-1.5 text-[11px] font-semibold transition-colors disabled:opacity-50',
+  1588→            savedToPantry ? 'bg-good/10 text-good' : 'bg-accent text-on-accent hover:bg-accent-strong',
+  1589→          )}
+  1590→        >
+  1591→          {savedToPantry ? <Check size={12} strokeWidth={3} /> : <Store size={12} />}
+  1592→          {savedToPantry
+  1593→            ? 'В запасах'
+  1594→            : `В запасы (${checkedCount})`}
+  1595→        </button>
+  1596→      </div>
+  1597→      <p className="mb-2.5 text-xs text-ink-2">
+  1598→        Отметь то, что действительно есть дома — отмеченное попадёт в запасы и в подборку
+  1599→      </p>
+  1600→      {/* Легенда цветов */}
+  1601→      <div className="mb-3 flex flex-wrap items-center gap-x-4 gap-y-1 rounded-2xl bg-soft/70 px-3.5 py-2 text-[11px] text-ink-2">
+  1602→        <span className="flex items-center gap-1.5">
+  1603→          <span className="h-2 w-2 rounded-full bg-good" aria-hidden />
+  1604→          зелёный — точно определили
+  1605→        </span>
+  1606→        <span className="flex items-center gap-1.5">
+  1607→          <span className="h-2 w-2 rounded-full bg-amber-400" aria-hidden />
+  1608→          жёлтый — возможно, проверь или замени
+  1609→        </span>
+  1610→      </div>
+  1611→
+  1612→      <div className="mb-5 space-y-2">
+  1613→        {items.map((item) => {
+  1614→          const isRenaming = renaming === item.name;
+  1615→          const isHigh = item.confidence === 'high';
+  1616→          return (
+  1617→            <div
+  1618→              key={item.name}
+  1619→              className={cn(
+  1620→                'rounded-2xl border bg-card p-3 transition-colors',
+  1621→                item.checked ? 'border-good/35' : 'border-line',
+  1622→              )}
+  1623→            >
+  1624→              <div className="flex items-center gap-3">
+  1625→                {/* Чекбокс: отмеченный продукт уйдёт в запасы */}
+  1626→                <button
+  1627→                  type="button"
+  1628→                  role="checkbox"
+  1629→                  aria-checked={item.checked}
+  1630→                  aria-label={`Отметить «${item.name}»`}
+  1631→                  onClick={() => onToggle(item.name)}
+  1632→                  className={cn(
+  1633→                    'flex h-6 w-6 shrink-0 items-center justify-center rounded-full border-2 transition-colors',
+  1634→                    item.checked ? 'border-good bg-good text-white' : 'border-line bg-soft text-transparent hover:border-ink-3',
+  1635→                  )}
+  1636→                >
+  1637→                  <Check size={13} strokeWidth={3} />
+  1638→                </button>
+  1639→                {/* Индикатор уверенности */}
+  1640→                <span
+  1641→                  className={cn(
+  1642→                    'h-2.5 w-2.5 shrink-0 rounded-full',
+  1643→                    isHigh ? 'bg-good' : 'bg-amber-400',
+  1644→                  )}
+  1645→                  aria-hidden
+  1646→                />
+  1647→                {isRenaming ? (
+  1648→                  <input
+  1649→                    autoFocus
+  1650→                    value={renameDraft}
+  1651→                    onChange={(e) => onRenameDraft(e.target.value)}
+  1652→                    onKeyDown={(e) => {
+  1653→                      if (e.key === 'Enter') onRenameCommit();
+  1654→                      if (e.key === 'Escape') onRenameCommit();
+  1655→                    }}
+  1656→                    onBlur={onRenameCommit}
+  1657→                    aria-label="Новое название продукта"
+  1658→                    className="min-w-0 flex-1 rounded-lg border border-accent bg-app px-2.5 py-1.5 text-sm text-ink focus:outline-none"
+  1659→                  />
+  1660→                ) : (
+  1661→                  <button
+  1662→                    type="button"
+  1663→                    onClick={() => onRenameStart(item.name)}
+  1664→                    className="min-w-0 flex-1 text-left"
+  1665→                    aria-label={`Проверить или заменить «${item.name}»`}
+  1666→                  >
+  1667→                    <span className="flex items-center gap-1.5 text-sm font-semibold text-ink">
+  1668→                      <span aria-hidden className="text-base">
+  1669→                        {emojiFor(item.name)}
+  1670→                      </span>
+  1671→                      <span className="truncate">{item.name}</span>
+  1672→                      <Pencil size={11} className="shrink-0 text-ink-3" aria-hidden />
+  1673→                    </span>
+  1674→                    <span
+  1675→                      className={cn(
+  1676→                        'mt-0.5 block text-[11px]',
+  1677→                        isHigh ? 'text-good' : 'font-medium text-amber-600',
+  1678→                      )}
+  1679→                    >
+  1680→                      {isHigh ? 'Точно распознано' : 'Возможно — проверь или замени вручную'}
+  1681→                    </span>
+  1682→                  </button>
+  1683→                )}
+  1684→              </div>
+  1685→            </div>
+  1686→          );
+  1687→        })}
+  1688→      </div>
+  1689→
+  1690→      {/* Можно приготовить прямо сейчас */}
+  1691→      {match && match.canCook.length > 0 && (
+  1692→        <>
+  1693→          <h2 className="mb-3 flex items-center gap-2 text-base font-bold text-ink">
+  1694→            <CookingPot size={18} className="text-good" />
+  1695→            Можно приготовить: {match.canCook.length}
+  1696→            <span className="text-xs font-normal text-ink-3">с учётом запасов</span>
+  1697→          </h2>
+  1698→          <div className="grid grid-cols-2 gap-3">
+  1699→            {match.canCook.map((dish) => (
+  1700→              <DishCard key={dish.id} dish={dish} />
+  1701→            ))}
+  1702→          </div>
+  1703→        </>
+  1704→      )}
+  1705→
+  1706→      {/* Добавь один продукт — и приготовь */}
+  1707→      {match && match.missingGroups.length > 0 && (
+  1708→        <div className="mt-6">
+  1709→          <h2 className="mb-1 text-base font-bold text-ink">Добавь один продукт</h2>
+  1710→          <p className="mb-3 text-xs text-ink-2">
+  1711→            Не хватает чего-то одного до новых рецептов — с учётом запасов шкафчика
+  1712→          </p>
+  1713→          <div className="space-y-2.5">
+  1714→            {match.missingGroups.map((g) => {
+  1715→              const added = addedNames.includes(g.ingredient);
+  1716→              return (
+  1717→                <div key={g.ingredient} className="rounded-2xl border border-line bg-card p-3.5">
+  1718→                  <div className="flex items-center justify-between gap-3">
+  1719→                    <div className="min-w-0">
+  1720→                      <p className="flex items-center gap-2 text-sm font-semibold text-ink">
+  1721→                        <span aria-hidden className="text-lg">
+  1722→                          {g.emoji}
+  1723→                        </span>
+  1724→                        Добавь: {g.ingredient}
+  1725→                      </p>
+  1726→                      <p className="mt-0.5 text-xs text-ink-2">
+  1727→                        и приготовь {g.dishes.length}{' '}
+  1728→                        {pluralRu(g.dishes.length, 'блюдо', 'блюда', 'блюд')}
+  1729→                      </p>
+  1730→                    </div>
+  1731→                    <button
+  1732→                      type="button"
+  1733→                      onClick={() => onAddMissing(g.ingredient)}
+  1734→                      className={cn(
+  1735→                        'flex shrink-0 items-center gap-1 rounded-full px-3 py-1.5 text-[11px] font-semibold transition-colors',
+  1736→                        added
+  1737→                          ? 'bg-good/10 text-good'
+  1738→                          : 'bg-accent text-on-accent hover:bg-accent-strong',
+  1739→                      )}
+  1740→                    >
+  1741→                      {added ? <Check size={12} strokeWidth={3} /> : <Plus size={12} />}
+  1742→                      {added ? 'В списке' : 'В список'}
+  1743→                    </button>
+  1744→                  </div>
+  1745→                  <div className="mt-2.5 flex flex-wrap gap-1.5">
+  1746→                    {g.dishes.slice(0, 4).map((d) => (
+  1747→                      <Link
+  1748→                        key={d.id}
+  1749→                        to={`/dish/${d.id}`}
+  1750→                        className="rounded-full bg-soft px-2.5 py-1 text-[11px] font-medium text-ink-2 transition-colors hover:text-accent"
+  1751→                      >
+  1752→                        {d.nameRu}
+  1753→                      </Link>
+  1754→                    ))}
+  1755→                    {g.dishes.length > 4 && (
+  1756→                      <span className="rounded-full px-2 py-1 text-[11px] text-ink-3">
+  1757→                        +{g.dishes.length - 4} ещё
+  1758→                      </span>
+  1759→                    )}
+  1760→                  </div>
+  1761→                </div>
+  1762→              );
+  1763→            })}
+  1764→          </div>
+  1765→        </div>
+  1766→      )}
+  1767→
+  1768→      {/* Совсем ничего */}
+  1769→      {match && match.canCook.length === 0 && match.missingGroups.length === 0 && (
+  1770→        <p className="mt-6 rounded-2xl border border-dashed border-line px-4 py-6 text-center text-sm text-ink-2">
+  1771→          Из этих продуктов пока нечего приготовить.
+  1772→          <br />
+  1773→          Попробуй отсканировать ещё раз или пополни запасы.
+  1774→        </p>
+  1775→      )}
+  1776→
+  1777→      <div className="mt-4 flex justify-center gap-4">
+  1778→        <Link to="/" className="text-xs font-medium text-ink-3 hover:text-ink-2">
+  1779→          Вся база рецептов →
+  1780→        </Link>
+  1781→        <Link to="/pantry" className="text-xs font-medium text-ink-3 hover:text-ink-2">
+  1782→          Мои запасы →
+  1783→        </Link>
+  1784→        <button
+  1785→          type="button"
+  1786→          onClick={onReset}
+  1787→          className="flex items-center gap-1 text-xs font-medium text-accent hover:underline"
+  1788→        >
+  1789→          <RefreshCw size={12} />
+  1790→          Сканировать снова
+  1791→        </button>
+  1792→      </div>
+  1793→    </section>
+  1794→  );
+  1795→}
+  1796→

@@ -1,9 +1,22 @@
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Check, Plus, ShoppingBasket, Trash2 } from 'lucide-react';
+import { Check, Plus, ShoppingBasket, Truck, Trash2 } from 'lucide-react';
 import { DISHES } from '../data/dishes';
 import { useAppStore, type ShoppingItem } from '../store/useAppStore';
 import { cn } from '../lib/utils';
+
+/**
+ * Партнёрские доставки (CPA/RevShare — стратегия монетизации 26.11):
+ * обычные ссылки на сервисы. Как только появятся партнёрские офферы,
+ * в ссылки добавляются метки — структура блока не изменится.
+ */
+const DELIVERY_SERVICES: Array<{ id: string; name: string; url: string; hint: string; bg: string }> = [
+  { id: 'lavka', name: 'Яндекс Лавка', url: 'https://lavka.yandex.ru/', hint: 'быстрая доставка за 15 минут', bg: '#FCE147' },
+  { id: 'samokat', name: 'Самокат', url: 'https://samokat.ru/', hint: 'доставка за 20–30 минут', bg: '#EAF6EC' },
+  { id: 'vkusvill', name: 'ВкусВилл', url: 'https://vkusvill.ru/', hint: 'продукты для здорового стола', bg: '#3E7B3E' },
+  { id: 'kuper', name: 'Купер', url: 'https://kuper.ru/', hint: 'заказ из нескольких магазинов разом', bg: '#ACF3D4' },
+  { id: 'ozon', name: 'Ozon Fresh', url: 'https://www.ozon.ru/fresh/', hint: 'продукты и бытовое одним заказом', bg: '#E6F0FF' },
+];
 
 export default function ShoppingScreen() {
   const shoppingList = useAppStore((s) => s.shoppingList);
@@ -83,6 +96,45 @@ export default function ShoppingScreen() {
           <Plus size={18} />
         </button>
       </div>
+
+      {/* Заказать недостающее в 1 клик — партнёрские доставки (монетизация всей базы) */}
+      {shoppingList.some((i) => !i.done) && (
+        <section
+          className="mt-5 rounded-3xl border border-line bg-card p-4 shadow-sm"
+          aria-label="Заказать в 1 клик"
+        >
+          <h2 className="flex items-center gap-1.5 text-sm font-bold text-ink">
+            <Truck size={16} className="text-accent" />
+            Заказать в 1 клик
+          </h2>
+          <p className="mt-0.5 text-xs text-ink-2">
+            Зачеркнутого достаточно? Остальное довезут — выбери свою доставку
+          </p>
+          <div className="mt-2.5 flex flex-wrap gap-1.5">
+            {DELIVERY_SERVICES.map((s) => (
+              <a
+                key={s.id}
+                href={s.url}
+                target="_blank"
+                rel="sponsored noopener noreferrer"
+                title={s.hint}
+                className="flex items-center gap-1.5 rounded-full border border-line bg-soft px-3 py-2 text-xs font-semibold text-ink transition-colors hover:border-accent hover:text-accent"
+              >
+                <span
+                  aria-hidden
+                  className="h-3.5 w-3.5 rounded-full"
+                  style={{ backgroundColor: s.bg }}
+                />
+                {s.name}
+              </a>
+            ))}
+          </div>
+          <p className="mt-2 text-[11px] leading-relaxed text-ink-3">
+            Партнёрские ссылки: сервис может заплатить нам процент от заказа — цена для тебя не
+            меняется.
+          </p>
+        </section>
+      )}
 
       {/* Группы */}
       {shoppingList.length > 0 ? (
