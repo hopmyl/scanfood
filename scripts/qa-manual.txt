@@ -10,3 +10,5 @@ chicken-stir-fry
 club-sandwich
 crispy-tofu
 fresh-spring-rolls
+oyakodon
+gyudon
